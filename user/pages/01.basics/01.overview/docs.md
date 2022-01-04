@@ -1,13 +1,12 @@
 ---
-title: 4.x Overview
+title: 5.x Overview
 taxonomy:
     category: docs
 ---
 
 
 ### The Full Life-Cycle Container Security Platform
-Note: These docs describe the 4.x version. For 3.x see the last [section](/version3/basics/overview#archived-version-3x-documentation) at the bottom of the index.
-
+Note: These docs describe the 5.x (Open Source) version. For 4.x see the [4.x Docs](https://docs.neuvector.com)
 NeuVector provides a powerful end-to-end container security platform. This includes end-to-end vulnerability scanning and complete run-time protection for containers, pods and hosts, including:
 <ol>
 <li>CI/CD Vulnerability Management & Admission Control. Scan images with a Jenkins plug-in, scan registries, and enforce admission control rules for deployments into production.
@@ -16,7 +15,6 @@ NeuVector provides a powerful end-to-end container security platform. This inclu
 <li>Run-time Vulnerability Scanning. Scans registries, images and running containers orchestration platforms and hosts for common (CVE) as well as application specific vulnerabilities.</li>
 <li>Compliance & Auditing. Runs Docker Bench tests and Kubernetes CIS Benchmarks automatically.
 <li>Endpoint/Host Security. Detects privilege escalations, monitors processes and file activity on hosts and within containers, and monitors container file systems for suspicious activity.</li>
-<li>Serverless Security. Scan AWS Lambda serverless functions for vulnerabilities and analyze permissions granted to serverless functions. Use the NeuVector serverless IDE plug-in to scan serverless code in the pipeline.</li>
 </ol>
 Other features of NeuVector include the ability to quarantine containers and to export logs through SYSLOG and webhooks, initiate packet capture for investigation, and integration with OpenShift RBACs, LDAP, Microsoft AD, and SSO with SAML. Note: Quarantine means that all network traffic is blocked.  The container will remain and continue to run - just without any network connections.  Kubernetes will not start up a container to replace a quarantined container, as the api-server is still able to reach the container.
 

@@ -1,5 +1,5 @@
 ---
-title: Deploying NeuVector 4.x
+title: Deploying NeuVector 5.x
 taxonomy:
     category: docs
 ---
