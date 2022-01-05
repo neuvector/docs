@@ -13,7 +13,6 @@ In addition to Federated policy, multi-cluster management supports monitoring of
 
 There MUST be network connectivity between the controllers in each cluster on the required ports. The controller is exposed external to its cluster by either a master or remote service, as can be seen in the sample NeuVector deployment yaml file.
 
-Note: The ability to manage multiple clusters is controlled by the license key you installed in your NeuVector cluster. A separate fee may be required in order to manage remote clusters from the Master Cluster. Please contact support@neuvector.com if your license does not allow multiple clusters. All clusters must be running version 3.0 or higher.
 
 ### Configuring the Master and Remote Clusters
 

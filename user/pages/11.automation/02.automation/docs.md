@@ -16,7 +16,7 @@ There are many automation features in NeuVector to support the entire CI/CD work
 
 
 #### CLI and REST API
-The NeuVector solution can be managed using the CLI and/or REST API. Below are common examples of automation using the REST API. The REST API yaml doc is best viewed in the Swagger 2.0 viewer. For training or questions about the API, or for specific methods, please contact support@neuvector.com. The REST API documentation is below in a yaml file which is best viewed in a reader such as swagger.io.
+The NeuVector solution can be managed using the CLI and/or REST API. Below are common examples of automation using the REST API. The REST API yaml doc is best viewed in the Swagger 2.0 viewer. The REST API documentation is below in a yaml file which is best viewed in a reader such as swagger.io.
 
 Latest update: 4.4.2
 [REST API](apis.zip)
@@ -200,73 +200,6 @@ To import the file:
 <strong>Sample python files</strong> Contains config.py, client.py, and multipart.py. Download sample files: [ImportExport](ImportExport.zip). Please put all three files in one folder to run above commands. You may need install some Python modules in order to run the script.
 ```
 sudo pip install requests six
-```
-
-#### Applying the License File
-Here’s how to use the NeuVector REST API to apply the license. Please change the IP Address and Port number of the API service according to your system.
-   IP_ADDRESS=127.0.0.1
-   API_PORT=10443
-
-Step 1: Get an API token
-
-```
-$ curl -s -k -H "Content-Type: application/json" -d '{"password": {"username": "admin", "password": "admin"}}' "https://127.0.0.1:10443/v1/auth" | jq .
-{
-  "token": {
-    "token": "f86ef7c1821facfa2daa2e1848c55994",
-    "fullname": "admin",
-    "server": "",
-    "username": "admin",
-    "password": "",
-    "email": "",
-    "role": "admin",
-    "timeout": 300,
-    "locale": "",
-    "default_password": true,
-    "modify_password": false
-  }
-}
-```
-
-Step 2: Check LICENSE
-
-```
-$ curl -s -k -H 'Content-Type: application/json' -H 'X-Auth-Token: f86ef7c1821facfa2daa2e1848c55994' https://127.0.0.1:10443/v1/system/license | jq .
-{
-  "license": null
-}
-```
-
-Here you see, the license of a newly deployed NeuVector Controller is not set.
-
-Step3: Upload LICENSE code
-
-```
-$ curl -s -k -H 'Content-Type: application/json' -H 'X-Auth-Token: f86ef7c1821facfa2daa2e1848c55994' -d '{"license_key": "LICENSE_DATA"}' https://127.0.0.1:10443/v1/system/license/update
-```
-
-Please change the placeholder LICENSE_DATA with your license code.
- 
-Step 4: Check LICENSE, again
-
-```
-$ curl -s -k -H 'Content-Type: application/json' -H 'X-Auth-Token: f86ef7c1821facfa2daa2e1848c55994' https://127.0.0.1:10443/v1/system/license | jq .
-{
-  "license": {
-    "info": {
-      "name": "neuvector.trial.license",
-      "email": "info@neuvector.com",
-      "phone": "1-669-235-5433",
-      "expire": "2018-08-31",
-      "grace_period": 90,
-      "node_limit": 10,
-      "cpu_limit": 10,
-      "scan": true,
-      "enforce": true
-    },
-    "day_to_expire": 23
-  }
-}
 ```
 
 ####Setting or Changing User Password
@@ -657,5 +590,4 @@ sleep 9
 #######################################################################
 ```
 
-### Automation Training and API Support
-Contact support@neuvector.com for REST API questions or examples. Paid training on the REST API or other aspects of NeuVector can be arranged by contacting your local representative.
+

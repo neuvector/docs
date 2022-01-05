@@ -6,7 +6,7 @@ taxonomy:
 
 ### Kubernetes ConfigMap
 
-NeuVector supports automated deployment using the Kubernetes ConfigMap feature. This enables deployment of NeuVector containers with the appropriate configurations, integrations, license file, and other settings in an automated way.
+NeuVector supports automated deployment using the Kubernetes ConfigMap feature. This enables deployment of NeuVector containers with the appropriate configurations, integrations, and other settings in an automated way.
 
 The 'always_reload: true' setting can be added in any ConfigMap yaml to force reload of that yaml every time the controller starts (version 4.3.2+). Otherwise, the ConfigMap will only be loaded at initial startup or after complete cluster restart (see persistent storage section below).
 

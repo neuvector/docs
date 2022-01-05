@@ -38,11 +38,10 @@ Multiple scanner pods can be deployed to the same host/node, but considerations 
 NeuVector supports standalone scanner deployments for local image scanning (which does not require a Controller). In the sample docker run below, the local image will be scanned and the results stored at the /var/neuvector locally. The image must be able to be accessed through the mounted docker.sock.
 
 ```
-docker run --name neuvector.scanner --rm -e SCANNER_REPOSITORY=ubuntu -e SCANNER_TAG=16.04 -e SCANNER_LICENSE=license -v /var/run/docker.sock:/var/run/docker.sock -v /var/neuvector:/var/neuvector  registry.neuvector.com/scanner
+docker run --name neuvector.scanner --rm -e SCANNER_REPOSITORY=ubuntu -e SCANNER_TAG=16.04 -v /var/run/docker.sock:/var/run/docker.sock -v /var/neuvector:/var/neuvector  registry.neuvector.com/scanner
 ```
 The following scanner environment variables can be used in the docker run command: 
 
-- SCANNER_LICENSE= license key text
 - SCANNER_REGISTRY= url of the registry
 - SCANNER_REPOSITORY= repository to scan
 - SCANNER_TAG= version tag

@@ -10,8 +10,6 @@ The Bamboo plug-in for NeuVector can be used to scan for vulnerabilities in the 
 
 Deploy the NeuVector Allinone or Controller container if you haven't already done so on a host reachable by Bamboo. Make a note of the IP address of the host where the Allinone or Controller is running.
 
-Important! Remember to apply the NeuVector license file provided to you through the console, CLI, or REST API. The scans will not work if the controller/allinone does not have a valid license.
-
 In addition, make sure there is a NeuVector scanner container deployed and configured to connect to the Allinone or Controller. In 4.0 and later, the neuvector/scanner container must be deployed separate from the allinone or controller.
 
 #### Configure Global Settings

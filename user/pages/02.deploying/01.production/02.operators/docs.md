@@ -103,7 +103,6 @@ oc adm policy add-scc-to-user privileged --serviceaccount default --namespace ne
 <li>- Login with the initial username admin and password admin.</li>
 <li>- Accept the NeuVector end user license agreement.</li>
 <li>- Change the password of the admin user.</li>
-<li>- Apply your license.</li>
 </ul>
 Optionally, you can also create additional users in the Settings -> Users & Roles menu.
 &nbsp;</p>
@@ -257,7 +256,6 @@ spec:
 <li>- Login with the initial username admin and password admin.</li>
 <li>- Accept the NeuVector end user license agreement.</li>
 <li>- Change the password of the admin user.</li>
-<li>- Apply your NeuVector license.</li>
 <li>- Optionally, you can also create additional users in the Settings -> Users & Roles menu.</li>
 </ul>
 </li>
@@ -296,4 +294,3 @@ spec:
 + Make sure the registry path and version tag is set properly (community operator; certified will use the defaults)
 + Make sure the route to the NeuVector manager service neuvector-route-webui is configured
 
-Contact support@neuvector.com for questions or assistance with Operator deployments or NeuVector features.

@@ -122,8 +122,6 @@ Please see the Reporting section for additional details and limits of the event 
 
 #### Settings
 
-##### Settings -> License
-Apply the NeuVector license here. If the license does not exist or has expired, NeuVector controller will continue to function but run-time protections and any functions provided by the enforcer will be disabled.
 
 ##### Settings -> Users & Roles
 Add other users here. Users can be assigned an Admin role, a Read-only role, or custom role. In Kubernetes, users can be assigned one or more namespaces to access. Custom roles can also be configured here for users and Groups (e.g. LDAP/AD) to be mapped to the roles. See the [users](/configuration/users) section for configuration details.

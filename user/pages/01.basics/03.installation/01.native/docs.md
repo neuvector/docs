@@ -7,12 +7,10 @@ taxonomy:
 ### Understanding How to Deploy NeuVector
 Deploy the NeuVector containers using Kubernetes, OpenShift, Rancher, Docker, or other platforms. Each type of NeuVector container has a unique purpose and may require special performance or node selection requirements for optimum operation.
 
-The NeuVector images are hosted at registry.neuvector.com. Credentials for this registry can be downloaded from the [NeuVector Customer Portal](/basics/installation/portal). If you haven't received your credentials to pull the images please contact support@neuvector.com and provide your email and company in your request. In addition, some company firewalls must allow-list this subdomain as well as any redirected URLs. If this is required, please also allow-list 'https://us-docker.pkg.dev/*' which is the current redirect for the full registry path at https://us-docker.pkg.dev/artifacts-downloads/namespaces/neuvector-cloud-live-292322/repositories/neuvector-us/downloads/*.
+The NeuVector open source images are hosted on Docker Hub at /neuvector/{image name}. 
 
 See the [Onboarding/Best Practices section](/deploying/production?target=_blank#best-practices-tips-qa-for-deploying-and-managing-neuvector) to download an on boarding guide.
 
-#### Getting Support for Deployments
-You can contact support@neuvector.com with any questions or to report issues. When reporting issues, please note the NeuVector version number and capture the support log at the bottom of the page Settings -> Configuration and attaching to your email.
 
 #### Deploy using Kubernetes, OpenShift, Rancher, or other Kubernetes-based tools
 To deploy NeuVector using Kubernetes, OpenShift, Rancher or other orchestration tools, see the preparation steps and sample files in the section [Deploying NeuVector](/deploying/production#planning-deployments). This deploys manager, controller, scanner, and enforcer containers. For simple testing using the NeuVector Allinone container, see the section Special Use Cases with Allinone.

@@ -617,7 +617,6 @@ kubectl create -f nv_master_worker.yaml</code></pre>
 
 That's it! You should be able to connect to the NeuVector console and login with admin:admin, e.g. https://&lt;public-ip>:8443
 
-Don't forget to apply your license file after logging in so that you can see all Nodes, Enforcers and Assets.
 
 </li></ol>
 NOTE: The nodeport service specified in the neuvector.yaml file will open a random port on all kubernetes nodes for the NeuVector management web console port. Alternatively, you can use a LoadBalancer or Ingress, using a public IP and default port 8443. For nodeport, be sure to open access through firewalls for that port, if needed. If you want to see which port is open on the host nodes, please do the following commands.

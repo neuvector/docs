@@ -6,7 +6,7 @@ taxonomy:
 
 
 ### The Full Life-Cycle Container Security Platform
-Note: These docs describe the 5.x (Open Source) version. For 4.x see the [4.x Docs](https://docs.neuvector.com)
+Note: These docs describe the 5.x (Open Source) version. For 4.x see the [4.x Docs](https://docs.neuvector.com). 
 NeuVector provides a powerful end-to-end container security platform. This includes end-to-end vulnerability scanning and complete run-time protection for containers, pods and hosts, including:
 <ol>
 <li>CI/CD Vulnerability Management & Admission Control. Scan images with a Jenkins plug-in, scan registries, and enforce admission control rules for deployments into production.

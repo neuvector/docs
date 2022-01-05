@@ -20,6 +20,5 @@ If you deployed NeuVector using a Helm chart or operator you should delete NeuVe
 In addition to deleting as discussed above and redeploying NeuVector, the following steps can be taken in Kubernetes to reset NeuVector, which will remove learned rules, groups, and other configuration but leave the NeuVector deployment intact.
 
 1. Scale the controller deployment to 0.
-2. (Optional) if a Persistent Volume is used, delete the persistent volume backup folder created except for NeuVector license.
+2. (Optional) if a Persistent Volume is used, delete the persistent volume backup folder created.
 3. Scale the controller deployment to 3.
-4. (Optional) Restore the license if it has not been read from a persistent volume.

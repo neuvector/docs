@@ -371,7 +371,5 @@ The output should look like
 6. After the test, if the value of label tag-neuvector-svc-admission-webhook is changed but not the value of label echo-neuvector-svc-admission-webhook, it means the webhook server didn't receive the request from the kube-apiserver. The kub-apiserver's request can't reach the NeuVector webhook server. The cause of this could be network connectivity issues, firewalls blocking the request (on default port 443 in), the resolving of the wrong IP for the controller or others.
 
 
-#### Additional Debugging Assistance
-If you would like assistance with Admission Control issues please capture the support log at the bottom of the page Settings -> Configuration and email to support@neuvector.com.
 
 

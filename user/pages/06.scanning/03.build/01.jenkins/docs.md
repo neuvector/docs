@@ -29,8 +29,6 @@ Select it and click `install without restart.'
 
 Deploy the NeuVector Controller and Scanner container if you haven't already done so on a host reachable by the Jenkins server. This can be on the same server as Jenkins if desired. Make a note of the IP address of the host where the Controller is running. Note: The default REST API port is 10443. This port must be exposed through the Allinone or Controller through a service in Kubernetes or a port map (e.g. - 10443:10443) in the Docker run or compose file.
 
-Important! Remember to apply the NeuVector license file provided to you through the console, CLI, or REST API. The scans will not work if the controller/scanner does not have a valid license.
-
 In addition, make sure there is a NeuVector scanner container deployed stand alone and configured to connect to the Controller (if Controller is being used).
 
 There are two scenarios for image scanning, local and registry scanning.
@@ -57,7 +55,7 @@ Scenario 2: global configuration example for registry image scan
 
 ##### Stand Alone Scanner
 
-For the standalone scanner mode which enter the values which include the NeuVector Scanner Registry URL, NeuVector Scanner Image Repository, NeuVector Scanner Registry User, NeuVector Scanner Registry Password, NeuVector License. Note: if performing a local scan, the registry URL, username, and password can be left blank.
+For the standalone scanner mode which enter the values which include the NeuVector Scanner Registry URL, NeuVector Scanner Image Repository, NeuVector Scanner Registry User, NeuVector Scanner Registry Password. Note: if performing a local scan, the registry URL, username, and password can be left blank.
 
 
 

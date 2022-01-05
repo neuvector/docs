@@ -52,11 +52,6 @@ Users can be restricted to one or more namespaces using the Advanced Settings.
 
 See the section [Users & Roles](/configuration/users) for advanced user management and creation of custom roles.
 
-### Apply the NeuVector License File
-
-You won’t be able to see containers, enforcers, or hosts until you apply the license key. Go to Settings -> License to paste in the license (bottom window).
-
-See the [Licensing](/configuration/licensing) section for more details.
 
 ### Connection Timeout Setting
 

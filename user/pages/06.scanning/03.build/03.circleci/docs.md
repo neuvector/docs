@@ -14,8 +14,6 @@ The ORB supports two use cases:
 1. Triggering the scan to be performed outside the CirclCI infrastructure. The ORB contacts the NeuVector scanner, which then pulls the image from a registry to be scanned. Make sure the ORB has network connectivity to the host where the NeuVector Controller/Allinone is running.
 2. Dynamically launching a NeuVector controller and scanner on a temporary vm running on the CircleCI platform. After launching and auto-configuring, the scan be done on image in the build, and after completion the NeuVector deployment is stopped and removed.  For this use case, please see the documentation on the [CircleCI ORB for NeuVector](https://circleci.com/orbs/registry/orb/neuvector/neuvector-orb).
 
-Important! Remember to apply the NeuVector license file provided to you through the console, CLI, or REST API. The scans will not work if the controller/allinone does not have a valid license.
-
 In addition, make sure there is a NeuVector scanner container deployed and configured to connect to the Allinone or Controller. In 4.0 and later, the neuvector/scanner container must be deployed separate from the allinone or controller.
 
 #### Create a Context in Your CircleCI App

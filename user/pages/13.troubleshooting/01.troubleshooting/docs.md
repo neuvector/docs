@@ -38,10 +38,9 @@ These logs may show cluster connectivity issues, admin actions, scanning activit
 #### Turning on Debug mode for NeuVector Controllers
 For issues that require in-depth investigation, debug mode can be enabled for the controllers/allinones, which will log detailed information. This can increase the log file size by a large amount, so it is recommended to turn it off after collecting them.
 
-To turn on Debug mode using the REST API, please see the section below. After collecting the log files, please email to support@neuvector.com.
 
 #### Kubernetes, OpenShift and Other Orchestration Logs
-It can be helpful to inspect the logs from orchestration tools to see all deployment activity including pod creation timestamps and status, deployments, daemonsets and other management actions of the NeuVector containers performed by the orchestration tool. These can also be collected and sent to support@neuvector.com
+It can be helpful to inspect the logs from orchestration tools to see all deployment activity including pod creation timestamps and status, deployments, daemonsets and other management actions of the NeuVector containers performed by the orchestration tool. 
 ```
 kubectl get events -n neuvector
 ```
@@ -49,7 +48,7 @@ kubectl get events -n neuvector
 ### Support Log
 The support log contains additional information which is useful for NeuVector Support, including system configuration, containers, policies, notifications, and NeuVector container details.
 
-To download the support log, go to Settings -> Configuration and select Collect Log. Please email the log file to support@neuvector.com
+To download the support log, go to Settings -> Configuration and select Collect Log. 
 
 ### Using the CLI to turn on Debug Mode
 Login to NeuVector manager pod with user and password (recommended in a separate terminal window).

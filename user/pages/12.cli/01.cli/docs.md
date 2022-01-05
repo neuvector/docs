@@ -703,57 +703,6 @@ Options:
   -h, --help  Show this message and exit.
 ```
 
-### License
-
-```
-> show system license -h
-Usage: cli show system license [OPTIONS]
-
-  Show system license.
-
-Options:
-  -h, --help  Show this message and exit.
-```
-
-License generation is to create the license request code to be sent to the NeuVector sales team. All input parameters are to provide general information about the user's deployment environment. A sales person will contact you to confirm parameters before generating the license file.
-```
-> request license generate -h
-Usage: cli request license generate [OPTIONS]
-
-  Request license generation code
-
-Options:
-  --name TEXT                 user name
-  --email TEXT                email
-  --phone TEXT                phone
-  --months INTEGER            duration in months
-  --node_limit INTEGER        number of hosts supported
-  --cpu_limit INTEGER         number of cpus supported
-  --scan [enable|disable]     Allow container scan
-  --enforce [enable|disable]  Allow enforce mode
-  -h, --help                  Show this message and exit.
-```
-
-After you have obtained the license from NeuVector, use the following CLI to load the license. Just copy the license content as the last argument.
-```
-> request license load -h
-Usage: cli request license load [OPTIONS] LICENSE
-
-  Load new license
-
-Options:
-  -h, --help  Show this message and exit.
-```
-
-```
-> request license delete -h
-Usage: cli request license delete [OPTIONS]
-
-  Delete current license
-
-Options:
-  -h, --help  Show this message and exit.
-```
 
 #### Packet Sniffer
 

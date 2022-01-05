@@ -627,8 +627,6 @@ To see how to access the console for the neuvector-webui service:
 oc get services -n neuvector
 ```
 
-Don't forget to apply your license file after logging in so that you can see all Nodes, Enforcers and Assets.
-
 If you have created your own namespace instead of using “neuvector”, replace all instances of “namespace: neuvector” and other namespace references with your namespace in the sample yaml files below.
 
 <strong>OpenShift 4.2+ with CRI-O run-time</strong>

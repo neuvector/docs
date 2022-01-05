@@ -7,8 +7,6 @@ taxonomy:
 ### Planning Deployments
 The NeuVector containers in a default deployment include the controller, manager, enforcer, scanner, and updater. Placement of where these containers (on which nodes) are deployed just be considered, and appropriate labels, taints or tolerations created to control them.
 
-<strong>Important:</strong>  The NeuVector images are hosted at registry.neuvector.com. Credentials for this registry can be downloaded from the [NeuVector Customer Portal](/basics/installation/portal). If you haven't received your credentials to pull the images please contact support@neuvector.com and provide your email and company in your request. In addition, some company firewalls must allow-list this subdomain as well as any redirected URLs. If this is required, please also allow-list 'https://us-docker.pkg.dev/*' which is the current redirect for the full registry path at https://us-docker.pkg.dev/artifacts-downloads/namespaces/neuvector-cloud-live-292322/repositories/neuvector-us/downloads/*.
-
 The enforcer should be deployed on every host/node where application containers to be monitored and protected by NeuVector will be running. 
 
 The controller manages the cluster of enforcers, and can be deployed on the same node as an enforcer or on a separate management node. The manager should be deployed on the node where the controller is running, and will provide console access to the controller. Other required NeuVector containers such as the manager, scanner, and updater are described in more detail in the Best Practices guide referenced below.
@@ -148,12 +146,6 @@ kubectl logs neuvector-controller-pod-777fdc5668-4jkjn -n neuvector | grep versi
 ### Accessing the Console
 By default the console is exposed as a service on port 8443, or nodePort with a random port on each host. Please see the first section Basics -> [Connect to Manager](/configuration/console) for options for turning off https or accessing the console through a corporate firewall which does not allow port 8443 for the console access.
 
-### A Note About Licensing
-The license key should be applied to the manager/controller from which the license request was generated. Once activated, all controllers in the cluster become authorized, even if the original controller node goes down. 
-
-The license key is tied to the node where the key request was generated, so if all controllers go down, AND the originally licensed node is no longer available, a new license key request must be generated from  a new controller node and sent to support@neuvector.com.
-
-See [Licensing](/configuration/licensing) for more details.
 
 ### Handing Host Updates or Auto-Scaling Nodes with a Pod Disruption Budget
 Maintenance or scaling activities can affect the controllers on nodes. Public cloud providers support the ability to auto-scale nodes, which can dynamically evict pods including the NeuVector controllers. To prevent disruptions to the controllers, a NeuVector pod disruption budget can be created. 

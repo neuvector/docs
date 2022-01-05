@@ -12,7 +12,7 @@ In addition, make sure there is a NeuVector scanner container deployed and confi
 
 #### Scan During Gitlab Build Using REST API
 
-Use the following script, configured for your NeuVector login credentials and replacing the license with your license, to trigger the vulnerability scans.
+Use the following script, configured for your NeuVector login credentials to trigger the vulnerability scans.
 
 ```
 ########################
@@ -48,14 +48,9 @@ NeuVector_Scan:
     NV_PORT: 10443
     NV_LOGIN_USER: "admin"
     NV_LOGIN_PASSWORD: "admin"
-    #NeuVector License
-    NV_LICENSE: "T0ANu7J05vrFNJD031/Ua1soxcQPfpFcVq/d46B8xQGI9rJRLT1D3cZnsT105fcCQQwQE2sx7Iv/ylWdGZ/zmRPRHCPAQ8oRYdMr2Hs5iXcIq1jC6t5AKv/yKJbouEP7FhamTV2l8L10nhK3IyDUb2rcoVOIsugGiqUu7ebHVlnUHAqGcPMNt+sN2uqNaEx42OMotjJRJF929xnFnTtINyC0nNbH8mudIVnZ+xAR5bNbnp7c/V7Ptvh1N1Pigtvye9acuLerGGz3vtExqiUQ3ek2kH27mCnZvue9Q3xCr/La2l1G4MEBZ9BIhFtvia7K24FFGDp+mX9u9fBQaNiWcWqSG+DP30AJZaUsxcyOSelPVrRIrs9OMKNiyCp5cGTfJPJ5xA/jTpx7/w0NyFCuH2xmqWEpYM9aOWjMS1cVipvSvLESPBC1ylDsq1Nw8W4htpqxp8swDYkxnCtHXNqGtx+ochGzBMkwx3z/OEi9SpknEQohJlOe6iU+GEP+G7Yl9+i1LjeKC+8et/e7qV42BqzNXZCH5CuXUzR6cVs06wj02BoVjW9bGwOtMXHAZEdFj6p41Ta38auXduQFM4NchClYEVpaFEP89q/hssQWQUCGNY0/T3/D2YyZPqLoE4Bv5M46uKyJWDQM1aZQ10N/IIqULAhGuv/sE68K3SOAZa8McqZAPKwfVfjhx1aonH7H2bZTdylMNqVWMoAHEmfVIIbSkwhPkmqMi34jr+D5QosSv3q7Ty9X3gRuaK4YNNkGsdd7e6WvDYlnu6b9ee8vMA4uFfSWg4H0"
-    
     NV_LOGIN_JSON: '{"password":{"username":"$NV_LOGIN_USER","password":"$NV_LOGIN_PASSWORD"}}'
-    NV_LICENSE_JSON: '{"license_key":"$NV_LICENSE"}'
     NV_SCANNING_JSON: '{"request":{"registry":"$NV_REGISTRY","username":"$NV_REGISTRY_NAME","password":"$NV_REGISTRY_PASSWORD","repository":"$NV_TO_BE_SCANNED_IMAGE_NAME","tag":"$NV_TO_BE_SCANNED_IMAGE_TAG"}}'
     NV_API_AUTH_URL: "https://$CI_SERVER_HOST:$NV_PORT/v1/auth"
-    NV_API_LICENSE_URL: "https://$CI_SERVER_HOST:$NV_PORT/v1/system/license/update"
     NV_API_SCANNING_URL: "https://$CI_SERVER_HOST:$NV_PORT/v1/scan/repository"
   script: 
     - echo "Start neuvector scanner"
