@@ -61,6 +61,8 @@ Finally, review the list of rules to make sure the new rule is in the order and 
 ###Built-In Network Threat Detection
 NeuVector automatically detects certain network attacks, regardless of protection mode. In Discover and Monitor mode, these threats will be alerted and can be found in Notifications -> Security Events. In Protect mode, these will alerted as well as blocked. Response rules can be created based on threat detection as well.
 
+Note that customized network threat detection can be configured through the WAF rules section.
+
 NeuVector includes the following detections for threats:
 
 + SYN flood attack

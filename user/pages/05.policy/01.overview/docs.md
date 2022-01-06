@@ -44,8 +44,8 @@ Response Rules provide a flexible, customizable rule engine to automate response
 #### Admission Control Rules
 Admission control rules allow or block deployments. More detail can be found in this section under Admission Controls.
 
-#### DLP Sensors
-Data Loss Prevention (Data Leak Protection) can be enabled on any selected container Group. This utilizes Deep Packet Inspection to apply regular expression based matching to the network payload entering or leaving the selected container group. Built-in sensors for credit card and US social security number are included for examples, and custom regular expressions can be added.
+#### DLP and WAF Sensors
+Data Loss Prevention (Data Leak Protection) and WAF rules can be enabled on any selected container Group. This utilizes Deep Packet Inspection to apply regular expression based matching to the network payload entering or leaving the selected container group. Built-in sensors for credit card and US social security number are included for examples, and custom regular expressions can be added.
 
 
 #### Migration, Backup, Import/Export

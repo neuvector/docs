@@ -87,11 +87,6 @@ This displays and manages the run-time Security Policy which determines what con
 
 Please see the Security Policy section of these docs for a detailed explanation of the behavior of the rules and how to edit or create rules.
 
-#### Serverless
-Configure serverless security settings for AWS Lambda projects to scan serverless functions for vulnerabilities and permissions risk. 
-
-***Important! This function will be deprecated starting with the 5.0 (mid-2022) release.***
-
 #### Security Risks
 This enables customizable Vulnerability and Compliance management investigation, triage, and reporting. Easily research image vulnerabilities and find out which nodes or containers contain those vulnerabilities. Advanced filtering makes reviewing scan and compliance check results and provides customized reporting.
 

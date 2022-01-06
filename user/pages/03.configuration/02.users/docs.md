@@ -34,7 +34,6 @@ Preconfigured roles include Admin, Reader, and CI/Ops. To create a new custom ro
 + Authentication. Enable directory and SSO (oidc/saml/ldap) configuration.
 + Authorization. Create new users and custom roles.
 + CI Scan. Allows scanning on images through REST API. Useful for configuring a build-phase plug-in scanner user.
-+ Cloud. Access to serverless security for AWS Lambda.
 + Compliance. Create custom compliance scripts and review Compliance check results.
 + Event. Access Notifications -> Events logs.
 + Registry Scan. Configure registry scanning and view results.

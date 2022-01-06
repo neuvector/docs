@@ -6,17 +6,17 @@ taxonomy:
 
 ### Policy: Groups
 
-This menu is the key area to view and manage security rules and customize Groups for use in rules. It is also used to switch modes of Groups between Discover, Monitor, and Protect. Please see the following individual sections for explanations of Custom Compliance Checks, Network Rules, Process and File Access Rules and DLP detection. Note: Network rules can be viewed in the Groups menu for any group, but must be edited separately in the [Network Rules](/policy/networkrules) menu.
+This menu is the key area to view and manage security rules and customize Groups for use in rules. It is also used to switch modes of Groups between Discover, Monitor, and Protect. Please see the following individual sections for explanations of Custom Compliance Checks, Network Rules, Process and File Access Rules and DLP/WAF detection. Note: Network rules can be viewed in the Groups menu for any group, but must be edited separately in the [Network Rules](/policy/networkrules) menu.
  
 NeuVector automatically creates Groups from your running applications. These groups start with the prefix 'nv.' You can also manually add them using a CRD or the REST API and can be created in any mode, Discover, Monitor, or Protect. Network and Response Rules require these Group definitions. For automatically created Groups ('learned' groups starting with 'nv'), NeuVector will learn the network and process rules and add them while in Discover mode. Custom Groups will not auto-learn and populate rules.
 
-![groups](groups_4.png)
+![groups](5_groups.png)
 
 It is convenient to see groups of containers and apply rules to each group. NeuVector creates a list of groups based on the container images. For example, all containers started from one Wordpress image will be in the same group. Rules are automatically created and applied to the group of containers.
 
-The Groups screen also displays a 'Scorable' icon in the right column, and a learned group can be selected and the Scorable checkbox enabled or disabled. This controls which containers are used to calculate the Security Risk Score in the Dashboard. See [Improve Security Risk Score](/navigation/improve_score#improving-the-security-risk-score) for more details.
+The Groups screen also displays a 'Scorable' icon in the upper right, and a learned group can be selected and the Scorable checkbox enabled or disabled. This controls which containers are used to calculate the Security Risk Score in the Dashboard. See [Improve Security Risk Score](/navigation/improve_score#improving-the-security-risk-score) for more details.
 
-The Groups screen is also where the CRD yaml file for 'security policy as code' can be exported. Select one or more groups and click on the Export Group policy button to download the yaml file. See the [CRD](/policy/usingcrd) section for more details on how to use CRDs. Important: Each selected group AND any linked groups through network rules will be exported (ie. The group and any other group it connects to through the whitelist network rules).
+The Groups screen is also where the CRD yaml file for 'security policy as code' can be imported and exported. Select one or more groups and click on the Export Group policy button to download the yaml file. See the [CRD](/policy/usingcrd) section for more details on how to use CRDs. Important: Each selected group AND any linked groups through network rules will be exported (ie. The group and any other group it connects to through the whitelist network rules).
 
 <strong>Auto Deletion of Unused Groups</strong>
 Learned groups (not reserved or custom groups) can be automatically deleted by NeuVector if there are no members (containers) in the group. The time period for this is configurable in Settings -> Configuration.

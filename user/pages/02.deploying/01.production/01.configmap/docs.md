@@ -52,9 +52,6 @@ data:
           write: true
         - id: ci_scan
           write: true
-        - id: cloud
-          read: true
-          write: true
         - id: rt_policy
           read: true
           write: true
