@@ -76,8 +76,6 @@ data:
         - id: authorization
           read: true
           write: true
-  eulainitcfg.yaml: |
-    license_key : 0Bca63Iy2FiXGqjk...
   ldapinitcfg.yaml: |
     # Mandatory. OpenLDAP or MicrosoftAD
     directory: OpenLDAP

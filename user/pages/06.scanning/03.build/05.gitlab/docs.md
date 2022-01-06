@@ -65,8 +65,6 @@ NeuVector_Scan:
           TOKEN=""
         fi
       done
-    - echo "Apply license"
-    - curl $NV_API_LICENSE_URL -s -k -H "Content-Type:application/json" -H "X-Auth-Token:$TOKEN" -d $NV_LICENSE_JSON
     - echo "Scanning ..."
     - sleep 20
     - curl $NV_API_SCANNING_URL -s -k -H "Content-Type:application/json" -H "X-Auth-Token:$TOKEN" -d $NV_SCANNING_JSON | jq .

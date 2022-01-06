@@ -14,7 +14,6 @@ The NeuVector containers are deployed, managed, and updated using the same orche
 
 #### Login and Initial Configuration
 + Check to make sure appropriate access to the manager (IP address, port, route) is allowed through firewalls.
-+ Apply the license file in order to see all containers, nodes, and Enforcers
 
 #### Ongoing Operation
 + Directory integration. NeuVector supports specific configurations for LDAP/AD and other integrations for groups and roles. Contact NeuVector for additional troubleshooting steps and a tool for AD troubleshooting.
