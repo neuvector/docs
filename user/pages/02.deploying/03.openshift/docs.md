@@ -94,7 +94,8 @@ system:openshift:scc:privileged   ClusterRole/system:openshift:scc:privileged   
 
 6) Create the custom resources (CRD) for NeuVector security rules. For OpenShift 4.6+ (Kubernetes 1.19+):
 ```
-oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/crd-k8s-1.19.yaml
+oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/crd-k8s-1.19.yaml
+oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/waf-crd-k8s-1.19.yaml
 ```
 <html>
 <head>
@@ -481,12 +482,14 @@ oc adm policy add-cluster-role-to-user neuvector-binding-app system:serviceaccou
 oc adm policy add-cluster-role-to-user neuvector-binding-rbac system:serviceaccount:neuvector:default
 oc create clusterrole neuvector-binding-admission --verb=get,list,watch,create,update,delete --resource=validatingwebhookconfigurations,mutatingwebhookconfigurations
 oc adm policy add-cluster-role-to-user neuvector-binding-admission system:serviceaccount:neuvector:default
-oc create clusterrole neuvector-binding-customresourcedefinition --verb=watch,create,get --resource=customresourcedefinitions
+oc create clusterrole neuvector-binding-customresourcedefinition --verb=watch,create,get,update --resource=customresourcedefinitions
 oc adm policy add-cluster-role-to-user neuvector-binding-customresourcedefinition system:serviceaccount:neuvector:default
 oc create clusterrole neuvector-binding-nvsecurityrules --verb=list,delete --resource=nvsecurityrules,nvclustersecurityrules
 oc adm policy add-cluster-role-to-user neuvector-binding-nvsecurityrules system:serviceaccount:neuvector:default
 oc adm policy add-cluster-role-to-user view system:serviceaccount:neuvector:default --rolebinding-name=neuvector-binding-view
 oc adm policy add-role-to-user admin system:serviceaccount:neuvector:default -n neuvector --rolebinding-name=neuvector-admin
+oc create clusterrole neuvector-binding-nvwafsecurityrules --verb=list,delete --resource=nvwafsecurityrules
+oc adm policy add-cluster-role-to-user neuvector-binding-nvwafsecurityrules system:serviceaccount:neuvector:default
 ```
 
 For OpenShift 4.x, also add the following for platform detection:
@@ -514,6 +517,7 @@ neuvector-binding-rbac                       /neuvector-binding-rbac            
 neuvector-binding-admission                  /neuvector-binding-admission                                      neuvector/default
 neuvector-binding-customresourcedefinition   /neuvector-binding-customresourcedefinition                       neuvector/default
 neuvector-binding-nvsecurityrules            /neuvector-binding-nvsecurityrules                                neuvector/default
+neuvector-binding-nvwafsecurityrules         /neuvector-binding-nvwafsecurityrules                             neuvector/default
 neuvector-binding-view                       /neuvector-binding-view                                           neuvector/default
 ```
 

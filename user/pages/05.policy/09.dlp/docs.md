@@ -8,22 +8,25 @@ taxonomy:
 DLP and WAF uses the Deep Packet Inspection (DPI) of NeuVector to inspect the network payloads of connections for sensitive data violations. NeuVector uses a regular expression (regex) based engine to perform packet filtering functions. Extreme care should be taken when applying sensors to container traffic, as the filtering function incurs additional system overhead and can impact performance of the host.
 
 ####WAF Sensors
-WAF sensors represent inspection of incoming network traffic to a pod/container. These sensors can be applied to any applicable group, even custom groups (e.g. namespace groups). Incoming traffic to ALL containers within the group will be inspected for WAF rule detection. This means that, while this feature is named WAF, it is useful and applicable to any network traffic, not sure web application traffic, and therefore provides broader protections than simple WAFs. Also note that, while similar to DLP, the inspection is for incoming traffic only to EVERY pod/container within the group, while DLP applies inspection to incoming and outgoing traffic from the group only (ie the security boundary, not internal traffic in the group (e.g. not east-west within a Group's containers).
+WAF sensors represent inspection of incoming network traffic to a pod/container. These sensors can be applied to any applicable group, even custom groups (e.g. namespace groups). Incoming traffic to ALL containers within the group will be inspected for WAF rule detection. This means that, while this feature is named WAF, it is useful and applicable to any network traffic, not only web application traffic, and therefore provides broader protections than simple WAFs. Also note that, while similar to DLP, the inspection is for incoming traffic only to EVERY pod/container within the group, while DLP applies inspection to incoming and outgoing traffic from the group only (ie the security boundary), not internal traffic in the group (e.g. not east-west within a Group's containers).
 
 ![waf](waf_sensors.png)
 
 #### DLP Sensors
-DLP Sensors are the patterns that are used to inspect traffic. Built in sensors such as credit card and U.S. social security have predefined regular expressions. You can add custom sensors by defining regex patterns to be used in that sensor. Note that, while similar to WAF, DLP applies inspection to incoming and outgoing traffic from the group only (ie the security boundary, not internal traffic in the group (e.g. not east-west within a Group's containers). WAF inspection is for incoming traffic only to EVERY pod/container within the group.
+DLP Sensors are the patterns that are used to inspect traffic. Built in sensors such as credit card and U.S. social security have predefined regular expressions. You can add custom sensors by defining regex patterns to be used in that sensor. Note that, while similar to WAF, DLP applies inspection to incoming and outgoing traffic from the group only (ie the security boundary), not internal traffic in the group (e.g. not east-west within a Group's containers). WAF inspection is for incoming traffic only to EVERY pod/container within the group.
 
 ![dlp](sensors.png)
 
 ####Configuring DLP and WAF sensors
 The configuration of DLP and WAF sensors is similar. Create a sensor Name and any comment, then select the sensor to Add or Edit the rules for that sensor. Key fields include:
-+ Have/Have Not. Determines if the match requires the pattern to be found (Have) in order to take the action (e.g. Deny), or only if the pattern does not exist (Have Not) should the action be taken.
-+ Pattern. This is the regular expression used to determine a match. You can test your regex against sample data to ensure correct Have/Have Not results.
++ Have/Not Have. Determines if the match requires the pattern to be found (Have) in order to take the action (e.g. Deny), or only if the pattern does not exist (Not Have) should the action be taken. It is recommended that the "Not Have" operator be combined in the rule with a pattern using the "Have" operator because a single pattern with "Not Have" operator will not be effective.
++ Pattern. This is the regular expression used to determine a match. You can test your regex against sample data to ensure correct Have/Not Have results.
 + Context. Where to look for the pattern match. Choose packet for the broadest inspection of the entire network connection, or narrow the inspection to the URL, header, or body only.
 
 ![waf](5_sensor_config.png)
+
+
+Each DLP/WAF rule supports multiple patterns (max 16 patterns are allowed per rule). Multiple patterns as well as setting the rule context can also help reduce false positives.
 
 ***Sensors must be applied to a Group to become effective.***
 
@@ -48,6 +51,7 @@ It is recommended that WAF sensors be applied only to Groups where incoming (e.g
 + DLP pattern matching does not occur for the traffic which is passing among workloads that belong to same DLP group.
 + Any traffic passing in and out of a DLP group is scanned for pattern matches. 
 + Cluster ingress and egress traffic is scanned for patterns if the workload is allowed to make ingress/egress connections.
++ Multiple patterns per DLP/WAF rule (max 16 patterns are allowed per rule).
 + Multiple alerts are generated for a single packet if it matches multiple rules.
 + For performance reasons, only the first 16 rules are alerted and matched even if the packet matches more than 16 rules.
 + Alerts are aggregated and reported together if same rule matches and alerts multiple times within 2 seconds.
@@ -246,8 +250,8 @@ kubectl delete -f https://raw.githubusercontent.com/neuvector/manifests/main/kub
 ```
 4. Create new crd schema for Kubernetes 1.19+
 ```
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/latest/crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/latest/waf-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/waf-crd-k8s-1.19.yaml
 ```
 5. Create a new neuvector-binding-nvwafsecurityrules clusterrole and clusterrolebinding
 ```

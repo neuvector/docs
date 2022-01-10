@@ -137,7 +137,8 @@ kubectl create -f nv_psp.yaml</code></pre>
 Create the custom resources (CRD) for NeuVector security rules. For Kubernetes 1.19+:
 <pre>
 <code>
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/crd-k8s-1.19.yaml</code></pre>
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/waf-crd-k8s-1.19.yaml</code></pre>
 <html>
 <head>
 <link rel="stylesheet" href="/serverless/toggle-box.css" type="text/css" />
@@ -523,12 +524,14 @@ kubectl create clusterrolebinding neuvector-binding-app --clusterrole=neuvector-
 kubectl create clusterrolebinding neuvector-binding-rbac --clusterrole=neuvector-binding-rbac --serviceaccount=neuvector:default
 kubectl create clusterrole neuvector-binding-admission --verb=get,list,watch,create,update,delete --resource=validatingwebhookconfigurations,mutatingwebhookconfigurations
 kubectl create clusterrolebinding neuvector-binding-admission --clusterrole=neuvector-binding-admission --serviceaccount=neuvector:default
-kubectl create clusterrole neuvector-binding-customresourcedefinition --verb=watch,create,get --resource=customresourcedefinitions
+kubectl create clusterrole neuvector-binding-customresourcedefinition --verb=watch,create,get,update --resource=customresourcedefinitions
 kubectl create clusterrolebinding  neuvector-binding-customresourcedefinition --clusterrole=neuvector-binding-customresourcedefinition --serviceaccount=neuvector:default
 kubectl create clusterrole neuvector-binding-nvsecurityrules --verb=list,delete --resource=nvsecurityrules,nvclustersecurityrules
 kubectl create clusterrolebinding neuvector-binding-nvsecurityrules --clusterrole=neuvector-binding-nvsecurityrules --serviceaccount=neuvector:default
 kubectl create clusterrolebinding neuvector-binding-view --clusterrole=view --serviceaccount=neuvector:default
-kubectl create rolebinding neuvector-admin --clusterrole=admin --serviceaccount=neuvector:default -n neuvector</code>
+kubectl create rolebinding neuvector-admin --clusterrole=admin --serviceaccount=neuvector:default -n neuvector
+kubectl create clusterrole neuvector-binding-nvwafsecurityrules --verb=list,delete --resource=nvwafsecurityrules
+kubectl create clusterrolebinding neuvector-binding-nvwafsecurityrules --clusterrole=neuvector-binding-nvwafsecurityrules --serviceaccount=neuvector:default</code>
 </pre>
 NOTE: If upgrading NeuVector from a previous install, you may need to delete the old binding as follows:
 <pre>
@@ -549,6 +552,7 @@ neuvector-binding-customresourcedefinition             28d
 neuvector-binding-nvsecurityrules                      28d
 neuvector-binding-rbac                                 28d
 neuvector-binding-view                                 28d
+neuvector-binding-nvwafsecurityrules                   28d
 neuvector-admin   28d</code>
 </pre>
 </li>
