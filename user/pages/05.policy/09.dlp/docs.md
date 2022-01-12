@@ -28,6 +28,23 @@ The configuration of DLP and WAF sensors is similar. Create a sensor Name and an
 
 Each DLP/WAF rule supports multiple patterns (max 16 patterns are allowed per rule). Multiple patterns as well as setting the rule context can also help reduce false positives.
 
+Example of a DLP rule with a Have/Not Have pattern:
+Have:
+```
+\b3[47]\d{2}([ -]?)(?!(\d)\2{5}|123456|234567|345678)\d{6}\1(?!(\d)\3{4}|12345|56789)\d{5}\b
+```
+This produces a false positive match for "istio_agent_go_gc_duration_seconds_sum 22.378386247999998":
+```
+$ docker exec -ti httpclient sh
+/ # curl -d "{\"context\": \"istio_agent_go_gc_duration_seconds_sum 22.378386247999998\"}" 172.17.0.5:8080/
+Hello, world!
+```
+Adding a Not Have pattern removes the false positive:
+```
+istio\_(\w){5}
+```
+
+
 ***Sensors must be applied to a Group to become effective.***
 
 ***Log4j Detection Pattern***  The WAF-like rule to detect the Log4j attempted exploit is below. Please note this should only be applied to Groups expecting ingress web connections.

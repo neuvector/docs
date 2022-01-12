@@ -16,13 +16,6 @@ Note: This sample section does not include creating the NeuVector Customer Resou
 <pre>
 <code>kubectl create namespace neuvector</code></pre>
 </li>
-<li>Configure Kubernetes secret to pull from registry.neuvector.com by downloading the Kubernetes secret manifest from your account at console.cloud.neuvector.com. Then create the secret:
-<pre>
-<code>kubectl apply -f my_secret_manifest.yaml -n neuvector</code></pre>
-For legacy Docker Hub users:<pre>
-<code>kubectl create secret docker-registry regsecret -n neuvector --docker-server=https://index.docker.io/v1/ --docker-username=your-name --docker-password=your-pword --docker-email=your-email</code></pre>
-Where ’your-name’ is your Docker username, ’your-pword’ is your Docker password, ’your-email’ is your Docker email.
-</li>
 <li>Add read permission to access the kubernetes API. RBAC is supported in kubernetes 1.8+ officially. Admission control is supported in kubernetes 1.9+. 
 <pre>
 <code>kubectl create clusterrole neuvector-binding-app --verb=get,list,watch,update --resource=nodes,pods,services,namespaces
@@ -186,12 +179,10 @@ spec:
                 - key: "nvallinone"
                   operator: NotIn
                   values: ["true"]
-      imagePullSecrets:
-        - name: regsecret
       hostPID: true
       containers:
         - name: neuvector-enforcer-pod
-          image: registry.neuvector.com/enforcer:<version>
+          image: neuvector/enforcer:<version>
           securityContext:
             privileged: true
           env:
@@ -252,12 +243,10 @@ spec:
       labels:
         app: neuvector-allinone-pod
     spec:
-      imagePullSecrets:
-        - name: regsecret
       hostPID: true
       containers:
         - name: neuvector-allinone-pod
-          image: registry.neuvector.com/allinone:<version>
+          image: neuvector/allinone:<version>
           securityContext:
             privileged: true
           readinessProbe:
@@ -344,11 +333,9 @@ spec:
       labels:
         app: neuvector-scanner-pod
     spec:
-      imagePullSecrets:
-        - name: regsecret
       containers:
         - name: neuvector-scanner-pod
-          image: registry.neuvector.com/scanner
+          image: neuvector/scanner
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
@@ -371,11 +358,9 @@ spec:
           labels:
             app: neuvector-updater-pod
         spec:
-          imagePullSecrets:
-          - name: regsecret
           containers:
           - name: neuvector-updater-pod
-            image: registry.neuvector.com/updater
+            image: neuvector/updater
             imagePullPolicy: Always
             lifecycle:
               postStart:
@@ -463,12 +448,10 @@ spec:
       labels:
         app: neuvector-allinone-pod
     spec:
-      imagePullSecrets:
-        - name: regsecret
       hostPID: true
       containers:
         - name: neuvector-allinone-pod
-          image: registry.neuvector.com/allinone:<version>
+          image: neuvector/allinone:<version>
           securityContext:
             privileged: true
           readinessProbe:
@@ -559,12 +542,10 @@ spec:
                 - key: "nvallinone"
                   operator: NotIn
                   values: ["true"]
-      imagePullSecrets:
-        - name: regsecret
       hostPID: true
       containers:
         - name: neuvector-enforcer-pod
-          image: registry.neuvector.com/enforcer:<version>
+          image: neuvector/enforcer:<version>
           securityContext:
             privileged: true
           env:
@@ -629,11 +610,9 @@ spec:
       labels:
         app: neuvector-scanner-pod
     spec:
-      imagePullSecrets:
-        - name: regsecret
       containers:
         - name: neuvector-scanner-pod
-          image: registry.neuvector.com/scanner
+          image: neuvector/scanner
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
@@ -656,11 +635,9 @@ spec:
           labels:
             app: neuvector-updater-pod
         spec:
-          imagePullSecrets:
-          - name: regsecret
           containers:
           - name: neuvector-updater-pod
-            image: registry.neuvector.com/updater
+            image: neuvector/updater
             imagePullPolicy: Always
             lifecycle:
               postStart:

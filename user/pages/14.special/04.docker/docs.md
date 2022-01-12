@@ -9,7 +9,7 @@ taxonomy:
 Deploy to Kubernetes using the [Kubernetes Allinone](/special/kubernetes) section. 
 
 ### Deploy to Swarm Cluster
-It’s simple to deploy NeuVector using a Swarm cluster. First, pull the NeuVector images using Docker UCP in the Images menu. You may need to add a version number to get the latest version on registry.neuvector.com.
+It’s simple to deploy NeuVector using a Swarm cluster. First, pull the NeuVector images using Docker UCP in the Images menu. You may need to add a version number to get the latest version on Docker Hub.
 
 Currently, Swarm/UCP does not support the seccomp capabilities (cap_add options) or deploying in ‘privileged mode’ so the NeuVector containers will need to be deployed from the command line using docker-compose or run. See the sample compose files for the allinone and enforcer below.
 
@@ -20,13 +20,12 @@ The Docker UCP HRM service uses the default port 8443 which conflicts with the N
 
 The following is an example of the docker-compose file to deploy the all-in-one container on the first node. Because the all-in-one container has an enforcer module inside, application containers on the same node can be secured. Both greenfield and brownfield deployment are supported.
 
-<strong>Important</strong>: To pull images from registry.neuvector.com instead of docker hub, replace the neuvector in the image name (e.g. registry.neuvector.com/allinone:4.2.2)
 Deploy all-in-one using docker-compose (privileged mode):
 
 ```
 allinone:
     pid: host
-    image: registry.neuvector.com/allinone:<version>
+    image: neuvector/allinone:<version>
     container_name: allinone
     privileged: true
     environment:
@@ -57,7 +56,7 @@ This is an example of docker-compose file to join an enforcer into the cluster. 
 ```
 enforcer:
     pid: host
-    image: registry.neuvector.com/enforcer:<version>
+    image: neuvector/enforcer:<version>
     container_name: enforcer
     privileged: true
     environment:
@@ -82,7 +81,7 @@ Sample docker-compose for the Scanner:
 
 ```
 Scanner:
-   image: registry.neuvector.com/scanner
+   image: neuvector/scanner
    container_name: scanner
    environment:
      - SCANNER_DOCKER_URL=tcp://192.168.1.10:2376
@@ -102,7 +101,7 @@ Deploy allinone (NO privileged mode) with docker-compose
 ```
 allinone:
     pid: host
-    image: registry.neuvector.com/allinone
+    image: neuvector/allinone
     container_name: neuvector.allinone
     cap_add:
         - SYS_ADMIN
@@ -135,7 +134,7 @@ Deploy enforcer (NO privileged mode) with docker-compose
 ```
 enforcer:
     pid: host
-    image: registry.neuvector.com/enforcer
+    image: neuvector/enforcer
     container_name: neuvector.enforcer
     cap_add:
         - SYS_ADMIN

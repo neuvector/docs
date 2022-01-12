@@ -135,7 +135,7 @@ Upgrade the NeuVector version by updating the Operator version which is associat
 <p><strong>Technical notes</strong>
 &nbsp;</p>
 <ul>
-<li>- NeuVector container images are pulled from registry.neuvector.com using the registry credentials. </li>
+<li>- NeuVector container images are pulled from Docker Hub from the NeuVector account. </li>
 <li>- NeuVector manager UI is typically exposed via an OpenShift passthrough route on a domain. For example, on IBM Cloud neuvector-route-webui-neuvector.(cluster_name)-(random_hash)-0000.(region).containers.appdomain.cloud. It can also be exposed as the service neuvector-service-webui through a node port address or public IP.</li>
 <li>- OpenShift version 4.6+</li>
 <li>- It is recommendeded to review and modify the NeuVector installation configuration by modifying the yaml values before creating the NeuVector instance. Examples include imagePullSecrets name, tag version, ingress/console access, multi-cluster federation, persistent volume PVC etc. Please refer to the Helm instructions at https://github.com/neuvector/neuvector-helm for the values that can be modified during installation.
@@ -189,8 +189,7 @@ metadata:
 spec:
   openshift: true
   tag: 4.3.0
-  registry: registry.neuvector.com
-  imagePullSecrets: regsecret
+  registry: docker.io
   exporter:
     image:
       repository: prometheus-exporter

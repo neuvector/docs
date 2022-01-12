@@ -5,11 +5,11 @@ taxonomy:
 ---
 
 ### Updating the NeuVector CVE Vulnerability Database
-The Scanner image/pod performs the scans with its internal CVE database. The scanner image is updated on the NeuVector private registry with the latest CVE database frequently, as often as daily if there are updates. To update the CVE database used in scanning, simply pull and deploy the latest Scanner image. The latest database version number can be found listed [here](https://raw.githubusercontent.com/neuvector/manifests/main/versions/scanner).
+The Scanner image/pod performs the scans with its internal CVE database. The scanner image is updated on the NeuVector Docker Hub registry with the latest CVE database frequently, as often as daily if there are updates. To update the CVE database used in scanning, simply pull and deploy the latest Scanner image. The latest database version number can be found listed [here](https://raw.githubusercontent.com/neuvector/manifests/main/versions/scanner).
 
 A container called the Updater performs the task of restarting the scanner pods in order to force a pull of the latest image, which will update the CVE database. To automatically check for updates and update the scanner, an updater cron job can be created.
 
-By default, the updater cron job shown below is automatically started from the sample deployment yaml files for Kubernetes and OpenShift. This will automatically check for new CVE database updates through new scanner versions published on the NeuVector private Docker hub registry. Manual updates on docker native deployments are shown below. For OpenShift deployments or others where images have to be manually pulled from NeuVector, the scanner with the 'latest' tag should be pulled from NeuVector to update the CVE database.
+By default, the updater cron job shown below is automatically started from the sample deployment yaml files for Kubernetes and OpenShift. This will automatically check for new CVE database updates through new scanner versions published on the NeuVector Docker hub registry. Manual updates on docker native deployments are shown below. For OpenShift deployments or others where images have to be manually pulled from NeuVector, the scanner with the 'latest' tag should be pulled from NeuVector to update the CVE database.
 
 For registry scanning, if the box 'Rescan after CVE DB update' is enabled, all images in that registry will be rescanned after a CVE database update.  For run-time scanning, all running assets will be rescanned after a CVE database update if the Auto-Scan feature is enabled.
 
@@ -39,12 +39,9 @@ spec:
           labels:
             app: neuvector-updater-pod
         spec:
-          imagePullSecrets:
-          - name: regsecret
           containers:
           - name: neuvector-updater-pod
-            image: registry.neuvector.com/updater
-#            image: neuvector/updater
+            image: neuvector/updater
             imagePullPolicy: Always
             lifecycle:
               postStart:
@@ -70,14 +67,12 @@ kubectl create -f neuvector-updater.yaml
 ###Docker Native Updates
 <strong>Important:</strong> Always use the :latest tag when pulling and running the scanner image to ensure the latest CVE database is deployed.
 
-<strong>Note</strong>: To pull images from registry.neuvector.com instead of docker hub, replace the neuvector in the image name (e.g. registry.neuvector.com/scanner:latest)
-
 For docker native:
 
 ```
 docker stop scanner
 docker rm <scanner id>
-docker pull registry.neuvector.com/scanner:latest
+docker pull neuvector/scanner:latest
 <docker run command from below>
 ```
 
@@ -93,12 +88,12 @@ docker-compose -f file.yaml up -d
 
 Sample docker run
 ```
-docker run -td --name scanner -e CLUSTER_JOIN_ADDR=controller_node_ip -e CLUSTER_ADVERTISED_ADDR=node_ip -e SCANNER_DOCKER_URL=tcp://192.168.1.10:2376 -p 18402:18402 -v /var/run/docker.sock:/var/run/docker.sock:ro registry.neuvector.com/scanner:latest
+docker run -td --name scanner -e CLUSTER_JOIN_ADDR=controller_node_ip -e CLUSTER_ADVERTISED_ADDR=node_ip -e SCANNER_DOCKER_URL=tcp://192.168.1.10:2376 -p 18402:18402 -v /var/run/docker.sock:/var/run/docker.sock:ro neuvector/scanner:latest
 ```
 And sample docker-compose
 ```
 Scanner:
-   image: registry.neuvector.com/scanner:latest
+   image: neuvector/scanner:latest
    container_name: scanner
    environment:
      - SCANNER_DOCKER_URL=tcp://192.168.1.10:2376
@@ -174,7 +169,7 @@ Run the updater file below
 kubectl create -f neuvector-manual-updater.yaml
 ```
 
-Sample file (pulls from Docker Hub using secret regsecret, modify as needed for your registry).
+Sample file
 
 ```
 apiVersion: v1
@@ -183,12 +178,9 @@ metadata:
   name: neuvector-updater-pod
   namespace: neuvector
 spec:
-  imagePullSecrets:
-  - name: regsecret
   containers:
   - name: neuvector-updater-pod
-    image: registry.neuvector.com/updater
-#    image: neuvector/updater
+    image: neuvector/updater
     imagePullPolicy: Always
     lifecycle:
       postStart:

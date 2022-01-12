@@ -23,14 +23,6 @@ There is a separate section for OpenShift instructions, and Docker EE on Kuberne
 <pre>
 <code>kubectl create namespace neuvector</code></pre>
 </li>
-<li>Configure Kubernetes secret to pull from registry.neuvector.com by downloading the Kubernetes secret manifest from your account at console.cloud.neuvector.com. Then create the secret:
-<pre>
-<code>kubectl apply -f my_secret_manifest.yaml -n neuvector</code></pre>
-For legacy Docker Hub users:
-<pre>
-<code>kubectl create secret docker-registry regsecret -n neuvector --docker-server=https://index.docker.io/v1/ --docker-username=your-name --docker-password=your-pword --docker-email=your-email</code></pre>
-Where ’your-name’ is your Docker username, ’your-pword’ is your Docker password, ’your-email’ is your Docker email.
-</li>
 <li>(<strong>Optional</strong>) Create the NeuVector Pod Security Policy (PSP).
  If you have enabled Pod Security Policies in your Kubernetes cluster, add the following for NeuVector (for example, nv_psp.yaml). Note1: PSP is deprecated in Kubernetes 1.21 and will be totally removed in 1.25. Note2: The Manager and Scanner pods run without a uid. If your PSP has a rule `Run As User: Rule: MustRunAsNonRoot` then add the following into the sample yaml below (with appropriate value for ###):
 <pre>
@@ -392,12 +384,9 @@ spec:
       labels:
         app: neuvector-manager-pod
     spec:
-      imagePullSecrets:
-        - name: regsecret
       containers:
         - name: neuvector-manager-pod
-          image: registry.neuvector.com/manager:&#60;version&#62;
-#          image: neuvector/manager:&#60;version&#62;
+          image: neuvector/manager:&#60;version&#62;
           env:
             - name: CTRL_SERVER_IP
               value: neuvector-svc-controller.neuvector
@@ -438,12 +427,9 @@ spec:
                   values:
                   - neuvector-controller-pod
               topologyKey: "kubernetes.io/hostname"
-      imagePullSecrets:
-        - name: regsecret
       containers:
         - name: neuvector-controller-pod
-          image: registry.neuvector.com/controller:&#60;version&#62;
-#          image: neuvector/controller:&#60;version&#62;
+          image: neuvector/controller:&#60;version&#62;
           securityContext:
             privileged: true
           readinessProbe:
@@ -526,13 +512,10 @@ spec:
       tolerations:
         - effect: NoSchedule
           key: node-role.kubernetes.io/master
-      imagePullSecrets:
-        - name: regsecret
       hostPID: true
       containers:
         - name: neuvector-enforcer-pod
-          image: registry.neuvector.com/enforcer:&#60;version&#62;
-#          image: neuvector/enforcer:&#60;version&#62;
+          image: neuvector/enforcer:&#60;version&#62;
           securityContext:
             privileged: true
           env:
@@ -597,13 +580,9 @@ spec:
       labels:
         app: neuvector-scanner-pod
     spec:
-      imagePullSecrets:
-        - name: regsecret
       containers:
         - name: neuvector-scanner-pod
-          image: registry.neuvector.com/scanner
-#          image: neuvector/scanner
-
+          image: neuvector/scanner
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
@@ -626,12 +605,9 @@ spec:
           labels:
             app: neuvector-updater-pod
         spec:
-          imagePullSecrets:
-          - name: regsecret
           containers:
           - name: neuvector-updater-pod
-            image: registry.neuvector.com/updater
-#            image: neuvector/updater
+            image: neuvector/updater
             imagePullPolicy: Always
             lifecycle:
               postStart:
@@ -658,7 +634,7 @@ spec:
   <div class="wrap-content">
 <pre>
 <code>
-# neuvector yaml version for 4.x.x on docker runtime, it will also work for 3.x.x
+# neuvector yaml version for 5.x.x on docker runtime
 apiVersion: v1
 kind: Service
 metadata:
@@ -746,12 +722,9 @@ spec:
       labels:
         app: neuvector-manager-pod
     spec:
-      imagePullSecrets:
-        - name: regsecret
       containers:
         - name: neuvector-manager-pod
-          image: registry.neuvector.com/manager:&#60;version&#62;
-#          image: neuvector/manager:&#60;version&#62;
+          image: neuvector/manager:&#60;version&#62;
           env:
             - name: CTRL_SERVER_IP
               value: neuvector-svc-controller.neuvector
@@ -792,12 +765,9 @@ spec:
                   values:
                   - neuvector-controller-pod
               topologyKey: "kubernetes.io/hostname"
-      imagePullSecrets:
-        - name: regsecret
       containers:
         - name: neuvector-controller-pod
-          image: registry.neuvector.com/controller:&#60;version&#62;
-#          image: neuvector/controller:&#60;version&#62;
+          image: neuvector/controller:&#60;version&#62;
           securityContext:
             privileged: true
           readinessProbe:
@@ -880,13 +850,10 @@ spec:
       tolerations:
         - effect: NoSchedule
           key: node-role.kubernetes.io/master
-      imagePullSecrets:
-        - name: regsecret
       hostPID: true
       containers:
         - name: neuvector-enforcer-pod
-          image: registry.neuvector.com/enforcer:&#60;version&#62;
-#          image: neuvector/enforcer:&#60;version&#62;
+          image: neuvector/enforcer:&#60;version&#62;
           securityContext:
             privileged: true
           env:
@@ -951,12 +918,9 @@ spec:
       labels:
         app: neuvector-scanner-pod
     spec:
-      imagePullSecrets:
-        - name: regsecret
       containers:
         - name: neuvector-scanner-pod
-          image: registry.neuvector.com/scanner
-#          image: neuvector/scanner
+          image: neuvector/scanner
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
@@ -979,12 +943,10 @@ spec:
           labels:
             app: neuvector-updater-pod
         spec:
-          imagePullSecrets:
-          - name: regsecret
           containers:
           - name: neuvector-updater-pod
             image: registry.neuvector.com/updater
-#            image: neuvector/updater
+            image: neuvector/updater
             imagePullPolicy: Always
             lifecycle:
               postStart:
@@ -1010,7 +972,7 @@ spec:
   <div class="wrap-content">
 <pre>
 <code>
-# neuvector yaml version for 4.x.x AWS Bottlerocket containerd, it will also work for 3.x.x
+# neuvector yaml version for 5.x.x AWS Bottlerocket containerd
 apiVersion: v1
 kind: Service
 metadata:
@@ -1098,12 +1060,9 @@ spec:
       labels:
         app: neuvector-manager-pod
     spec:
-      imagePullSecrets:
-        - name: regsecret
       containers:
         - name: neuvector-manager-pod
-          image: registry.neuvector.com/manager:&#60;version&#62;
-#          image: neuvector/manager:&#60;version&#62;
+          image: neuvector/manager:&#60;version&#62;
           env:
             - name: CTRL_SERVER_IP
               value: neuvector-svc-controller.neuvector
@@ -1144,12 +1103,9 @@ spec:
                   values:
                   - neuvector-controller-pod
               topologyKey: "kubernetes.io/hostname"
-      imagePullSecrets:
-        - name: regsecret
       containers:
         - name: neuvector-controller-pod
-          image: registry.neuvector.com/controller:&#60;version&#62;
-#          image: neuvector/controller:&#60;version&#62;
+          image: neuvector/controller:&#60;version&#62;
           securityContext:
             privileged: true
           readinessProbe:
@@ -1232,12 +1188,9 @@ spec:
       tolerations:
         - effect: NoSchedule
           key: node-role.kubernetes.io/master
-      imagePullSecrets:
-        - name: regsecret
       hostPID: true
       containers:
         - name: neuvector-enforcer-pod
-#          image: registry.neuvector.com/enforcer:&#60;version&#62;
           image: neuvector/enforcer:&#60;version&#62;
           securityContext:
             privileged: true
@@ -1303,12 +1256,9 @@ spec:
       labels:
         app: neuvector-scanner-pod
     spec:
-      imagePullSecrets:
-        - name: regsecret
       containers:
         - name: neuvector-scanner-pod
-          image: registry.neuvector.com/scanner
-#          image: neuvector/scanner
+          image: neuvector/scanner
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
@@ -1331,12 +1281,9 @@ spec:
           labels:
             app: neuvector-updater-pod
         spec:
-          imagePullSecrets:
-          - name: regsecret
           containers:
           - name: neuvector-updater-pod
-            image: registry.neuvector.com/updater
-#            image: neuvector/updater
+            image: neuvector/updater
             imagePullPolicy: Always
             lifecycle:
               postStart:
@@ -1576,7 +1523,7 @@ spec:
 
 The following sample is a complete deployment reference (Kubernetes 1.19+) using the containerd run-time. For docker or other run-times please see the required changes shown after it.
 ```
-# neuvector yaml version for 4.x.x on containerd runtime
+# neuvector yaml version for 5.x.x on containerd runtime
 apiVersion: v1
 kind: Service
 metadata:
@@ -1664,11 +1611,9 @@ spec:
       labels:
         app: neuvector-manager-pod
     spec:
-      imagePullSecrets:
-        - name: regsecret
       containers:
         - name: neuvector-manager-pod
-          image: registry.neuvector.com/manager:<version>
+          image: neuvector/manager:<version>
           env:
             - name: CTRL_SERVER_IP
               value: neuvector-svc-controller.neuvector
@@ -1713,11 +1658,9 @@ spec:
                   values:
                   - neuvector-controller-pod
               topologyKey: "kubernetes.io/hostname"
-      imagePullSecrets:
-        - name: regsecret
       containers:
         - name: neuvector-controller-pod
-          image: registry.neuvector.com/controller:<version>
+          image: neuvector/controller:<version>
           securityContext:
             # the following two lines are required for k8s v1.19+. pls comment out both lines if version is pre-1.19. Otherwise, a validating data error message will show
             seccompProfile:
@@ -1812,12 +1755,10 @@ spec:
       tolerations:
         - effect: NoSchedule
           key: node-role.kubernetes.io/master
-      imagePullSecrets:
-        - name: regsecret
       hostPID: true
       containers:
         - name: neuvector-enforcer-pod
-          image: registry.neuvector.com/enforcer:<version>
+          image: neuvector/enforcer:<version>
           securityContext:
             # the following two lines are required for k8s v1.19+. pls comment out both lines if version is pre-1.19. Otherwise, a validating data error message will show
             seccompProfile:
@@ -1890,11 +1831,9 @@ spec:
       labels:
         app: neuvector-scanner-pod
     spec:
-      imagePullSecrets:
-        - name: regsecret
       containers:
         - name: neuvector-scanner-pod
-          image: registry.neuvector.com/scanner
+          image: neuvector/scanner
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
@@ -1917,11 +1856,9 @@ spec:
           labels:
             app: neuvector-updater-pod
         spec:
-          imagePullSecrets:
-          - name: regsecret
           containers:
           - name: neuvector-updater-pod
-            image: registry.neuvector.com/updater
+            image: neuvector/updater
             imagePullPolicy: Always
             lifecycle:
               postStart:

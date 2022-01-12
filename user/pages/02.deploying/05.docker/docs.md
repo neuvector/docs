@@ -28,7 +28,7 @@ The following is an example of the docker-compose file to deploy the allinone co
 ```
 allinone:
     pid: host
-    image: registry.neuvector.com/allinone:<version>
+    image: neuvector/allinone:<version>
     container_name: allinone
     privileged: true
     environment:
@@ -63,7 +63,7 @@ This is an example of docker-compose file to join an enforcer into the cluster. 
 ```
 enforcer:
     pid: host
-    image: registry.neuvector.com/enforcer:<version>
+    image: neuvector/enforcer:<version>
     container_name: enforcer
     privileged: true
     environment:
@@ -90,14 +90,14 @@ From NeuVector 4.0+, a separate scanner container must be deployed to perform vu
 Sample docker run to deploy the scanner on the same host as the controller
 
 ```
-docker run -td --name scanner -e CLUSTER_JOIN_ADDR=controller_node_ip -p 18402:18402 -v /var/run/docker.sock:/var/run/docker.sock:ro registry.neuvector.com/scanner:latest
+docker run -td --name scanner -e CLUSTER_JOIN_ADDR=controller_node_ip -p 18402:18402 -v /var/run/docker.sock:/var/run/docker.sock:ro neuvector/scanner:latest
 ```
 
 And sample docker-compose
 
 ```
 Scanner:
-   image: registry.neuvector.com/scanner:latest
+   image: neuvector/scanner:latest
    container_name: scanner
    environment:
      - CLUSTER_JOIN_ADDR=controller_node_ip
@@ -109,12 +109,12 @@ Scanner:
 
 To deploy the scanner on a different host than the controller, add the environment variable CLUSTER_ADVERTISED_ADDR so the controller can reach the scanner.
 ```
-docker run -td --name scanner -e CLUSTER_JOIN_ADDR=controller_node_ip -e CLUSTER_ADVERTISED_ADDR=scanner_host_ip -p 18402:18402 -v /var/run/docker.sock:/var/run/docker.sock:ro registry.neuvector.com/scanner:latest
+docker run -td --name scanner -e CLUSTER_JOIN_ADDR=controller_node_ip -e CLUSTER_ADVERTISED_ADDR=scanner_host_ip -p 18402:18402 -v /var/run/docker.sock:/var/run/docker.sock:ro neuvector/scanner:latest
 ```
 
 To deploy multiple scanners on the same host as the controller, remove the port mapping and CLUSTER_ADVERTISED_ADDR environment variable.
 ```
-docker run -itd --name s1  -e CLUSTER_JOIN_ADDR=controller_node_ip registry.neuvector.com/scanner:latest
+docker run -itd --name s1  -e CLUSTER_JOIN_ADDR=controller_node_ip neuvector/scanner:latest
 ```
 Where s1 is scanner 1 (use s2, s3 etc for each additional scanner).
 
@@ -130,7 +130,7 @@ For some platform configurations it is possible to deploy the NeuVector containe
 ```
 allinone:
     pid: host
-    image: registry.neuvector.com/allinone:<version>
+    image: neuvector/allinone:<version>
     container_name: neuvector.allinone
     cap_add:
         - SYS_ADMIN
@@ -164,7 +164,7 @@ allinone:
 ```
 enforcer:
     pid: host
-    image: registry.neuvector.com/enforcer:<version>
+    image: neuvector/enforcer:<version>
     container_name: neuvector.enforcer
     cap_add:
         - SYS_ADMIN
@@ -209,7 +209,7 @@ docker run -d --name allinone \
     -v /var/run/docker.sock:/var/run/docker.sock:ro \
     -v /sys/fs/cgroup:/host/cgroup:ro \
     -v /proc:/host/proc:ro \
-registry.neuvector.com/allinone:<version>
+neuvector/allinone:<version>
 ```
 
 #### Deploy enforcer (privileged mode) with docker run
@@ -227,7 +227,7 @@ docker run -d --name enforcer \
     -v /var/run/docker.sock:/var/run/docker.sock:ro \
     -v /sys/fs/cgroup:/host/cgroup:ro \
     -v /proc:/host/proc:ro \
-registry.neuvector.com/enforcer:<version>
+neuvector/enforcer:<version>
 ```
 
 
@@ -257,7 +257,7 @@ docker run -d --name allinone \
     -v /var/run/docker.sock:/var/run/docker.sock:ro \
     -v /sys/fs/cgroup:/host/cgroup:ro \
     -v /proc:/host/proc:ro \
-registry.neuvector.com/allinone:<version>
+neuvector/allinone:<version>
 ```
 
 #### Deploy enforcer (NO privileged mode) with docker run
@@ -281,7 +281,7 @@ docker run -d --name enforcer \
     -v /var/run/docker.sock:/var/run/docker.sock:ro \
     -v /sys/fs/cgroup:/host/cgroup:ro \
     -v /proc:/host/proc:ro \
-registry.neuvector.com/enforcer:<version>
+neuvector/enforcer:<version>
 ```
 
 ### Deploy Separate NeuVector Components on Different Hosts
@@ -291,7 +291,7 @@ If planning to dedicate a docker host to a Controller and/or Manager (no Enforce
 Controller compose file (replace [controller IP] with IP of the first controller node)
 ```
 controller:
-    image: registry.neuvector.com/controller:<version>
+    image: neuvector/controller:<version>
     container_name: controller
     pid: host
     privileged: true
@@ -315,13 +315,13 @@ controller:
 Docker run can also be used, for example
 
 ```
-docker run -itd --privileged --name neuvector.controller -e CLUSTER_JOIN_ADDR=controller_ip -p 18301:18301 -p 18301:18301/udp -p 18300:18300 -p 18400:18400 -p 10443:10443 -v /var/neuvector:/var/neuvector -v /var/run/docker.sock:/var/run/docker.sock:ro -v /proc:/host/proc:ro -v /sys/fs/cgroup/:/host/cgroup/:ro registry.neuvector.com/controller:<version>
+docker run -itd --privileged --name neuvector.controller -e CLUSTER_JOIN_ADDR=controller_ip -p 18301:18301 -p 18301:18301/udp -p 18300:18300 -p 18400:18400 -p 10443:10443 -v /var/neuvector:/var/neuvector -v /var/run/docker.sock:/var/run/docker.sock:ro -v /proc:/host/proc:ro -v /sys/fs/cgroup/:/host/cgroup/:ro neuvector/controller:<version>
 ```
 
 Manager compose file (replace [controller IP] with IP of controller node to connect to). The Docker UCP HRM service uses the default port 8443 which conflicts with the NeuVector console port. If using the default HRM port, then change the NeuVector port mapping in the example below to another port, for example 9443:8443 for the manager container as shown below.
 ```
 manager:
-    image: registry.neuvector.com/manager:<version>
+    image: neuvector/manager:<version>
     container_name: nvmanager
     environment:
       - CTRL_SERVER_IP=[controller IP]
@@ -332,7 +332,7 @@ manager:
 The compose file for the Enforcer:
 ```
 enforcer:
-    image: registry.neuvector.com/enforcer:<version>
+    image: neuvector/enforcer:<version>
     pid: host
     container_name: enforcer
     privileged: true
@@ -371,13 +371,13 @@ In general you’ll need to replace the privileged setting with:
 The above syntax is for Docker EE v17.06.0+. Versions prior to this use the : instead of =, for example apparmor:unconfined.
 
 ### Updating the NeuVector CVE Vulnerability Database
-A container called the Updater is published and regularly updated on NeuVector’s registry.neuvector.com and Docker Hub. This image can be pulled, and when run it will update the CVE database used to scan for vulnerabilities. 
+A container called the Updater is published and regularly updated on NeuVector’s Docker Hub. This image can be pulled, and when run it will update the CVE database used to scan for vulnerabilities. 
 
 The sample neuvector-updater.yaml runs the updater and can be scripted with a cron job to periodically pull the latest image and run the updater. Replace the IP addresses in the sample below with one or more addresses for the NeuVector controllers.
 
 ```
 updater:
-  image: registry.neuvector.com/updater
+  image: neuvector/updater
   container_name: updater
   environment:
     - CLUSTER_JOIN_ADDR=<ip1,ip2,...>

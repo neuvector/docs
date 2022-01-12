@@ -5,22 +5,12 @@ taxonomy:
 ---
 
 ### Deploy Separate NeuVector Components with RedHat OpenShift
-NeuVector is compatible with standard ovs SDN plug-ins as well as others such as flannel, weave, or calico. The samples below assume a standard ovs plug-in is used. This also assumes a local docker registry will be used (see instructions at end for creating the secret for dynamically pulling from registry.neuvector.com or Docker Hub).
+NeuVector is compatible with standard ovs SDN plug-ins as well as others such as flannel, weave, or calico. The samples below assume a standard ovs plug-in is used. This also assumes a local docker registry will be used (see instructions at end for creating the secret for dynamically pulling from neuvector or Docker Hub).
 
 NeuVector supports Helm-based deployment with a [Helm chart](https://github.com/neuvector/neuvector-helm) at https://github.com/neuvector/neuvector-helm. The NeuVector Operator can also be used to deploy and is based on the helm chart. To deploy the latest NeuVector container versions using an Operator, please use either the Red Hat Certified Operator from Operator Hub or the community operator, as detailed in the [Operator section](/deploying/production/operators).
 
-To deploy manually, first pull the appropriate NeuVector containers from the NeuVector private registry into your local registry. Note: the scanner image should be pulled regularly for CVE database updates from NeuVector.
+To deploy manually, first pull the appropriate NeuVector containers from the NeuVector registry into your local registry. Note: the scanner image should be pulled regularly for CVE database updates from NeuVector.
 
-```
-docker login registry.neuvector.com
-docker pull registry.neuvector.com/manager:<version>
-docker pull registry.neuvector.com/controller:<version>
-docker pull registry.neuvector.com/enforcer:<version>
-docker pull registry.neuvector.com/scanner
-docker pull registry.neuvector.com/updater
-docker logout registry.neuvector.com
-```
-Or for legacy docker hub:
 ```
 docker login docker.io
 docker pull docker.io/neuvector/manager:<version>
@@ -54,11 +44,11 @@ oc new-project neuvector
  Note: For OpenShift 4.2+, change docker-registry.default.svc below to image-registry.openshift-image-registry.svc in the commands below
 ```
 docker login -u <user_name> -p `oc whoami -t` docker-registry.default.svc:5000
-docker tag registry.neuvector.com/enforcer:<version> docker-registry.default.svc:5000/neuvector/enforcer:<version>
-docker tag registry.neuvector.com/controller:<version> docker-registry.default.svc:5000/neuvector/controller:<version>
-docker tag registry.neuvector.com/manager:<version> docker-registry.default.svc:5000/neuvector/manager:<version>
-docker tag registry.neuvector.com/scanner docker-registry.default.svc:5000/neuvector/scanner
-docker tag registry.neuvector.com/updater docker-registry.default.svc:5000/neuvector/updater
+docker tag docker.io/neuvector/enforcer:<version> docker-registry.default.svc:5000/neuvector/enforcer:<version>
+docker tag docker.io/neuvector/controller:<version> docker-registry.default.svc:5000/neuvector/controller:<version>
+docker tag docker.io/neuvector/manager:<version> docker-registry.default.svc:5000/neuvector/manager:<version>
+docker tag docker.io/neuvector/scanner docker-registry.default.svc:5000/neuvector/scanner
+docker tag docker.io/neuvector/updater docker-registry.default.svc:5000/neuvector/updater
 docker push docker-registry.default.svc:5000/neuvector/enforcer:<version>
 docker push docker-registry.default.svc:5000/neuvector/controller:<version>
 docker push docker-registry.default.svc:5000/neuvector/manager:<version>
@@ -66,8 +56,8 @@ docker push docker-registry.default.svc:5000/neuvector/scanner
 docker push docker-registry.default.svc:5000/neuvector/updater
 docker logout docker-registry.default.svc:5000
 ```
-Note1: If you pulled from docker hub, replace the registry.neuvector.com with docker.io/neuvector in the examples above (e.g. docker tag docker.io/neuvector/enforcer...).
-Note2: Please see the section Updating the CVE Database below for recommendations for keeping the latest scanner image updated in your registry.
+
+Note: Please see the section Updating the CVE Database below for recommendations for keeping the latest scanner image updated in your registry.
 
 4) Login as system:admin account
 ```
@@ -320,7 +310,7 @@ Also change the volumes from docker.sock to:
 
   <div class="wrap-content">
 <pre><code>
-# neuvector yaml version for NeuVector 4.x.x on CRI-O, it will also work for 3.x.x
+# neuvector yaml version for NeuVector 5.x.x on CRI-O
 apiVersion: v1
 kind: Service
 metadata:
@@ -1099,7 +1089,7 @@ app: neuvector-enforcer-pod
 ```
 
 ### Updating the CVE Database on OpenShift Deployments
-The latest scanner image always contains the most recent CVE database update from NeuVector. For this reason, a version tag is not recommended when pulling the image. However, updating the CVE database requires regular pulling of the latest scanner image so the updater cron job can redeploy the scanner(s).  The samples above assume NeuVector images are pulled, tagged and pushed to a local OpenShift registry. Deployment is then from this registry instead of directly from registry.neuvector.com (or the legacy NeuVector registry on docker hub). 
+The latest scanner image always contains the most recent CVE database update from NeuVector. For this reason, a version tag is not recommended when pulling the image. However, updating the CVE database requires regular pulling of the latest scanner image so the updater cron job can redeploy the scanner(s).  The samples above assume NeuVector images are pulled, tagged and pushed to a local OpenShift registry. Deployment is then from this registry instead of directly from neuvector (or the legacy NeuVector registry on docker hub). 
 
 To regularly update the CVE database, we recommend a script/cron job be created to pull the latest NeuVector scanner image and perform the tagging and pushing steps to the local registry. This will ensure the CVE database is being updated regularly and images and containers are being scanned for new vulnerabilities.
 
@@ -1158,11 +1148,11 @@ oc adm manage-node nodename --schedulable
 oc adm manage-node nodename --schedulable=false
 ```
 
-### Configure Secret to Pull NeuVector Containers from registry.neuvector.com or Docker Hub
+### Configure Secret to Pull NeuVector Containers from neuvector or Docker Hub
 
-To configure Openshift to pull from the registry.neuvector.com or Docker Hub. 
+To configure Openshift to pull from the neuvector or Docker Hub. 
 
-For registry.neuvector.com, login to the NeuVector customer portal to view and download the credentials.
+For neuvector, login to the NeuVector customer portal to view and download the credentials.
 
 ```
 oc secrets new-dockercfg regsecret -n neuvector --docker-server=https://index.docker.io/v1/ --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>
@@ -1250,7 +1240,7 @@ spec:
 
 The following sample is a complete deployment reference using the cri-o run-time. For other run-times please make the appropriate changes to the volumes/volume mounts for the crio.sock.
 ```
-# neuvector yaml version for NeuVector 4.x.x on cri-o oc version 4.2+
+# neuvector yaml version for NeuVector 5.x.x on cri-o oc version 4.2+
 apiVersion: v1
 kind: Service
 metadata:

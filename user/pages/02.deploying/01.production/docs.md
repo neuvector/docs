@@ -11,7 +11,7 @@ The enforcer should be deployed on every host/node where application containers 
 
 The controller manages the cluster of enforcers, and can be deployed on the same node as an enforcer or on a separate management node. The manager should be deployed on the node where the controller is running, and will provide console access to the controller. Other required NeuVector containers such as the manager, scanner, and updater are described in more detail in the Best Practices guide referenced below.
 
-If you haven’t done so, pull the images from the registry.neuvector.com (or NeuVector docker hub). If you are using a secret to dynamically pull during deployment, there's no need to pull them manually first.
+If you haven’t done so, pull the images from the NeuVector docker hub. If you are using a secret to dynamically pull during deployment, there's no need to pull them manually first.
 
 ####Best Practices, Tips, Q&A for Deploying and Managing NeuVector
 Download and review this [Deployment Best Practices document](NV_Onboarding_1.2.pdf) for tips such as performance and sizing, best practices, and frequently asked questions about deployments.

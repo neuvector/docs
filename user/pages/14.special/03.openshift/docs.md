@@ -6,18 +6,16 @@ taxonomy:
 
 
 ### Deploy Using RedHat OpenShift
-NeuVector is compatible with standard ovs SDN plug-ins as well as others such as flannel, weave, or calico. The samples below assume a standard ovs plug-in is used. This also assumes a local docker registry will be used (see instructions at end for creating the secret for dynamically pulling from registry.neuvector.com or Docker Hub). The default yaml deployment deploys one allinone on a labeled node and enforcers on all others, including the master. 
+NeuVector is compatible with standard ovs SDN plug-ins as well as others such as flannel, weave, or calico. The samples below assume a standard ovs plug-in is used. This also assumes a local docker registry will be used. The default yaml deployment deploys one allinone on a labeled node and enforcers on all others, including the master. 
 
-First, pull the appropriate NeuVector containers from the NeuVector private registry into your local registry.
+First, pull the appropriate NeuVector containers from the NeuVector registry into your local registry.
 
-For registry.neuvector.com
+For Docker Hub
 ```
-docker login registry.neuvector.com
-docker pull registry.neuvector.com/allinone:<version>
-docker pull registry.neuvector.com/enforcer:<version>
-docker pull registry.neuvector.com/scanner
-docker pull registry.neuvector.com/updater
-docker logout registry.neuvector.com
+docker pull docker.io/neuvector/allinone:<version>
+docker pull docker.io/neuvector/enforcer:<version>
+docker pull docker.io/neuvector/scanner
+docker pull docker.io/neuvector/updater
 ```
 
 Next, tag/push the containers, set the route and allow privileged NeuVector containers using the instructions below. By default, OpenShift does not allow privileged containers. Also, by default OpenShift does not schedule pods on the Master node. See the instructions at the end to enable/disable this.
@@ -41,10 +39,10 @@ oc new-project neuvector
 Note: For OpenShift 4.2+, change docker-registry.default.svc below to image-registry.openshift-image-registry.svc in the commands below.
 ```
 docker login -u <user_name> -p `oc whoami -t` docker-registry.default.svc:5000
-docker tag registry.neuvector.com/allinone:<version> docker-registry.default.svc:5000/neuvector/allinone
-docker tag registry.neuvector.com/enforcer:<version> docker-registry.default.svc:5000/neuvector/enforcer
-docker tag registry.neuvector.com/scanner docker-registry.default.svc:5000/neuvector/scanner
-docker tag registry.neuvector.com/updater docker-registry.default.svc:5000/neuvector/updater
+docker tag docker.io/neuvector/allinone:<version> docker-registry.default.svc:5000/neuvector/allinone
+docker tag docker.io/neuvector/enforcer:<version> docker-registry.default.svc:5000/neuvector/enforcer
+docker tag docker.io/neuvector/scanner docker-registry.default.svc:5000/neuvector/scanner
+docker tag docker.io/neuvector/updater docker-registry.default.svc:5000/neuvector/updater
 docker push docker-registry.default.svc:5000/neuvector/allinone
 docker push docker-registry.default.svc:5000/neuvector/enforcer
 docker push docker-registry.default.svc:5000/neuvector/scanner
@@ -460,8 +458,6 @@ spec:
       labels:
         app: neuvector-scanner-pod
     spec:
-      imagePullSecrets:
-        - name: regsecret
       containers:
         - name: neuvector-scanner-pod
           image: docker-registry.default.svc:5000/neuvector/scanner
@@ -487,8 +483,6 @@ spec:
           labels:
             app: neuvector-updater-pod
         spec:
-          imagePullSecrets:
-          - name: regsecret
           containers:
           - name: neuvector-updater-pod
             image: docker-registry.default.svc:5000/neuvector/updater
@@ -548,23 +542,4 @@ oc adm manage-node nodename --schedulable
 
 ```
 oc adm manage-node nodename --schedulable=false
-```
-
-### Configure Secret to Pull NeuVector Containers from registry.neuvector.com or Docker Hub
-
-Download the credentials to access registry.neuvector.com from your NeuVector Customer portal. To configure Openshift to pull from the private NeuVector registry on Docker Hub. 
-
-```
-oc secrets new-dockercfg regsecret -n neuvector --docker-server=https://index.docker.io/v1/ --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>
-```
-
-You will also need to add the regsecret to the yaml file in the template/spec section for the allinone and enforcer. For example:
-```
-template:
-    metadata:
-      labels:
-        app: neuvector-allinone-pod
-    spec:
-      imagePullSecrets:
-        - name: regsecret
 ```
