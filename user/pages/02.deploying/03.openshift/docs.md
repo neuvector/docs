@@ -1148,26 +1148,6 @@ oc adm manage-node nodename --schedulable
 oc adm manage-node nodename --schedulable=false
 ```
 
-### Configure Secret to Pull NeuVector Containers from neuvector or Docker Hub
-
-To configure Openshift to pull from the neuvector or Docker Hub. 
-
-For neuvector, login to the NeuVector customer portal to view and download the credentials.
-
-```
-oc secrets new-dockercfg regsecret -n neuvector --docker-server=https://index.docker.io/v1/ --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>
-```
-
-You will also need to add the regsecret to the yaml file in the template/spec section for the manager, controller, and enforcer. For example:
-```
-template:
-    metadata:
-      labels:
-        app: neuvector-controller-pod
-    spec:
-      imagePullSecrets:
-        - name: regsecret
-```
 
 ### OpenShift Deployment in Non-Privileged Mode
 The following instructions can be used to deploy NeuVector without using privileged mode containers. The controller and enforcer deployments should be changed, which is shown in the excerpted snippets below.

@@ -945,7 +945,6 @@ spec:
         spec:
           containers:
           - name: neuvector-updater-pod
-            image: registry.neuvector.com/updater
             image: neuvector/updater
             imagePullPolicy: Always
             lifecycle:

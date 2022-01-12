@@ -6,7 +6,7 @@ taxonomy:
 
 ### Updating NeuVector Components
 
-It’s super easy to update your NeuVector containers. If there is a new release available, pull it from your repository or registry.neuvector.com (Docker Hub for legacy customers). It is recommended to use a ‘rolling update’ strategy to keep at least one Allinone or Controller container running at any time during an update. 
+It’s super easy to update your NeuVector containers. If there is a new release available, pull it from Docker Hub. It is recommended to use a ‘rolling update’ strategy to keep at least one Allinone or Controller container running at any time during an update. 
 
 **IMPORTANT**
 
@@ -49,7 +49,6 @@ kubectl apply -f <yaml file>
 
 To update to a new version of NeuVector from the command line.
 
-<strong>Important</strong>: To pull images from registry.neuvector.com instead of docker hub, replace the neuvector in the image name (e.g. registry.neuvector.com/controller:4.2.2)
 ```
 kubectl set image deployment/neuvector-controller-pod neuvector-controller-pod=neuvector/controller:4.2.2 -n neuvector
 kubectl set image deployment/neuvector-manager-pod neuvector-manager-pod=neuvector/manager:4.2.2 -n neuvector
@@ -69,7 +68,7 @@ kubectl rollout undo -n neuvector deployment/neuvector-controller-pod   // same 
 ```
 
 ### Updating the Vulnerability CVE Database
-The NeuVector Scanner image is regularly updated on registry.neuvector.com with new CVE database updates, using the 'latest' tag.
+The NeuVector Scanner image is regularly updated on neuvector with new CVE database updates, using the 'latest' tag.
 
 The default NeuVector deployment includes deployment of scanner pods as well as an Updater cron job to update the scanners every day.
 
@@ -79,7 +78,6 @@ The CVE database version can be seen in the Console in the Vulnerabilities tab. 
 
 ```
 docker inspect neuvector/updater
-#docker inspect registry.neuvector.com/updater
 ```
 
 ```

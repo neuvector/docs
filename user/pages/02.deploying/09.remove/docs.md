@@ -12,7 +12,7 @@ To remove the NeuVector deployment on Kubernetes, use the same yaml file for dep
 $ kubectl delete -f neuvector.yaml
 ```
 
-This will remove the services and container deployments of NeuVector. You may also want to delete the neuvector namespace, regsecret, persistent volume and cluster roles and clusterrolebindings created in the deployment steps.
+This will remove the services and container deployments of NeuVector. You may also want to delete the neuvector namespace, persistent volume and cluster roles and clusterrolebindings created in the deployment steps.
 
 If you deployed NeuVector using a Helm chart or operator you should delete NeuVector using Helm or the appropriate operator command.
 
