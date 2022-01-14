@@ -13,6 +13,24 @@ The controller manages the cluster of enforcers, and can be deployed on the same
 
 If you haven’t done so, pull the images from the NeuVector docker hub. If you are using a secret to dynamically pull during deployment, there's no need to pull them manually first.
 
+<p><strong>Important Notice for Preview Version Users </strong>
+The images are on the NeuVector Docker Hub registry as:
+neuvector/manager.preview
+neuvector/controller.preview
+neuvector/enforcer.preview
+neuvector/scanner.preview
+neuvector/updater.preview
+&nbsp;
+Please be sure to update the image references in appropriate yaml files.
+&nbsp;
+If deploying with the current NeuVector Helm chart, the following changes should be made:
+<li>Update the image/registry paths to the preview version on Docker hub</li>
+<li>Add the new Update verb in the cluster role for crd</li>
+<li>Add the appropriate new cluster role/bindings for admission and crd</li>
+<li>Apply the new crd schema's for crd and war-crd</li>
+These changes can be seen at https://open-docs.neuvector.com/deploying/kubernetes#deploy-using-kubernetes and https://open-docs.neuvector.com/policy/dlp#adding-waf-crd-support-to-previous-neuvector-deployments.
+</p>
+
 ####Best Practices, Tips, Q&A for Deploying and Managing NeuVector
 Download and review this [Deployment Best Practices document](NV_Onboarding_1.2.pdf) for tips such as performance and sizing, best practices, and frequently asked questions about deployments.
 
