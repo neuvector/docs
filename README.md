@@ -1,6 +1,7 @@
 # NeuVector Docs
 
-NeuVector document is written in Markdown language and uses [Grav](https://getgrav.org/) to manage the content. 
+NeuVector documentation is written in Markdown language and uses [Grav](https://getgrav.org/) to manage the content. 
+A viewable version of these docs can be see at https://open-docs.neuvector.com
 
 # License
 
