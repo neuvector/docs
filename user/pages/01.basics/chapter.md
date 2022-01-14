@@ -261,22 +261,22 @@ img {
 <body>
 	<p class="titles">Welcome to the NeuVector Docs</p>
 	<p class="subtitles">Here you can access the complete documentation for NeuVector, the only Kubernetes-native container security platform.</p>
-<p><strong>Important Notice for Preview Version Users </strong>
-The images are on the NeuVector Docker Hub registry as:
-neuvector/manager.preview
-neuvector/controller.preview
-neuvector/enforcer.preview
-neuvector/scanner.preview
-neuvector/updater.preview
+<p><strong>Important Notice for Preview Version Users </strong></p>
+<p>The images are on the NeuVector Docker Hub registry as:
+<li>neuvector/manager.preview</li>
+<li>neuvector/controller.preview</li>
+<li>neuvector/enforcer.preview</li>
+<li>neuvector/scanner.preview</li>
+<li>neuvector/updater.preview</li></p>
 &nbsp;
-Please be sure to update the image references in appropriate yaml files.
+<p>Please be sure to update the image references in appropriate yaml files.</p>
 &nbsp;
-If deploying with the current NeuVector Helm chart, the following changes should be made:
+<p>If deploying with the current NeuVector Helm chart, the following changes should be made:
 <li>Update the image/registry paths to the preview version on Docker hub</li>
 <li>Add the new Update verb in the cluster role for crd</li>
 <li>Add the appropriate new cluster role/bindings for admission and crd</li>
-<li>Apply the new crd schema's for crd and waf-crd</li>
-These changes can be seen at https://open-docs.neuvector.com/deploying/kubernetes#deploy-using-kubernetes and https://open-docs.neuvector.com/policy/dlp#adding-waf-crd-support-to-previous-neuvector-deployments.
+<li>Apply the new crd schema's for crd and waf-crd</li></p>
+<p>These changes can be seen in the details <a href="https://open-docs.neuvector.com/deploying/kubernetes#deploy-using-kubernetes">here</a> and waf/crd upgrade instructions <a href="https://open-docs.neuvector.com/policy/dlp#adding-waf-crd-support-to-previous-neuvector-deployments">here</a>.
 </p>
 <table style="border: none">	
 <tr>		
