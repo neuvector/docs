@@ -20,14 +20,12 @@ There is a separate section for OpenShift instructions, and Docker EE on Kuberne
 
 ####Important Notice for Preview Version Users
 <p>The images are on the NeuVector Docker Hub registry as:
-<li>neuvector/manager.preview</li>
-<li>neuvector/controller.preview</li>
-<li>neuvector/enforcer.preview</li>
-<li>neuvector/scanner.preview</li>
-<li>neuvector/updater.preview</li></p>
-&nbsp;
+<li>neuvector/manager.preview:5.0.0-preview.1</li>
+<li>neuvector/controller.preview:5.0.0-preview.1</li>
+<li>neuvector/enforcer.preview:5.0.0-preview.1</li>
+<li>neuvector/scanner.preview:latest</li>
+<li>neuvector/updater.preview:latest</li></p>
 <p>Please be sure to update the image references in appropriate yaml files.</p>
-&nbsp;
 <p>If deploying with the current NeuVector Helm chart, the following changes should be made:
 <li>Update the image/registry paths to the preview version on Docker hub</li>
 <li>Add the new Update verb in the cluster role for crd</li>
@@ -263,7 +261,17 @@ Then create the appropriate service(s):
 <code>
 kubectl create -f nv_master_worker.yaml</code></pre>
 </li>
-<li>Create the primary NeuVector services and pods from the appropriate Kubernetes sample yaml below. Important! Replace the &lt;version> tags for the manager, controller and enforcer image references in the yaml file. Also make any other modifications required for your deployment environment (such as LoadBalancer/NodePort/Ingress for manager access etc).
+<li>Create the primary NeuVector services and pods using the preset Preview version commands or modify the sample yamls below. The preset Preview versions invoke a LoadBalancer for the NeuVector Console. If using the sample yaml files below replace the image names and &lt;version> tags for the manager, controller and enforcer image references in the yaml file. Also make any other modifications required for your deployment environment (such as LoadBalancer/NodePort/Ingress for manager access etc).
+For 5.0.0 Preview with Containerd run-time:
+<pre>
+<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/neuvector-containerd-k8s.yaml</code></pre>
+For 5.0.0 Preview with docker run-time:
+<pre>
+<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/neuvector-docker-k8s.yaml</code></pre>
+For 5.0.0 Preview with AWS Bottlerocket run-time:
+<pre>
+<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/neuvector-aws-bottlerocket-k8s.yaml</code></pre>
+Or, if modifying any of the above yaml or samples from below:
 <pre>
 <code>kubectl create -f neuvector.yaml</code></pre>
 
