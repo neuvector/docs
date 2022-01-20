@@ -21,13 +21,10 @@ If you haven’t done so, pull the images from the NeuVector docker hub.
 <li>neuvector/scanner.preview:latest</li>
 <li>neuvector/updater.preview:latest</li></p>
 <p>Please be sure to update the image references in appropriate yaml files.</p>
-<p>If deploying with the current NeuVector Helm chart, the following changes should be made:
-<li>Update the image/registry paths to the preview version on Docker hub</li>
-<li>Add the new Update verb in the cluster role for crd</li>
-<li>Add the appropriate new cluster role/bindings for admission and crd</li>
-<li>Apply the new crd schema's for crd and waf-crd</li></p>
-<p>These changes can be seen in the details <a href="https://open-docs.neuvector.com/deploying/kubernetes#deploy-using-kubernetes">here</a> and waf/crd upgrade instructions <a href="https://open-docs.neuvector.com/policy/dlp#adding-waf-crd-support-to-previous-neuvector-deployments">here</a>.
-</p>
+<p>If deploying with the current NeuVector Helm chart (v1.8.9+), the following changes should be made to values.yml:
+<li>Update the registry to docker.io</li>
+<li>Update image names/tags to the preview version on Docker hub, as shown above</li>
+<li>Leave the imagePullSecrets empty</li></p>
 
 ####Best Practices, Tips, Q&A for Deploying and Managing NeuVector
 Download and review this [Deployment Best Practices document](NV_Onboarding_1.2.pdf) for tips such as performance and sizing, best practices, and frequently asked questions about deployments.

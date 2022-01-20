@@ -16,3 +16,9 @@ taxonomy:
 ##### Bug Fixes
 + TBD
 
+##### Other
++ Helm chart v1.8.9 is published for 5.0.0 deployments. If using this with the preview version of 5.0.0 the following changes should be made to values.yml:
+  - Update the registry to docker.io
+  - Update image names/tags to the preview version on Docker hub
+  - Leave the imagePullSecrets empty
+
