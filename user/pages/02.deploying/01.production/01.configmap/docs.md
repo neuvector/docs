@@ -356,31 +356,14 @@ kubectl create secret generic neuvector-init --from-file=$HOME/init/eulainitcfg.
 ```
 ***Important!*** Remove the the pipe '|' character in each section, as shown below.
 
-Note that the secret is referred to in the standard Kubernetes and OpenShift Controller [deployment yaml files](/deploying/kubernetes#kubernetes-deployment-examples-for-neuvector) under Volumes.
-
-Note the removal of the pipe character below if using configmap sections in a secret.
+Note the removal of the pipe character below if using configmap sections in a secret, enabled set to true, and uncomment out the section to be included in the secret.
 ```
-  configmap:
-    enabled: false
-    data:
-      # eulainitcfg.yaml: |
-      #  ...
-      # ldapinitcfg.yaml: |
-      #  ...
-      # oidcinitcfg.yaml: |
-      # ...
-      # samlinitcfg.yaml: |
-      # ...
-      # sysinitcfg.yaml: |
-      # ...
-      # userinitcfg.yaml: |
-      # ...
-  secret:
+secret:
     # NOTE: files defined here have preferrence over the ones defined in the configmap section
-    enabled: false
-    data: {}
-      # eulainitcfg.yaml:
-      #   license_key: 0Bca63Iy2FiXGqjk...
+    enabled: true
+    data:
+      eulainitcfg.yaml:
+        license_key: 0Bca63Iy2FiXGqjk...
       #   ...
       # ldapinitcfg.yaml:
       #   directory: OpenLDAP
@@ -397,6 +380,8 @@ Note the removal of the pipe character below if using configmap sections in a se
 ```
 
 After controller is deployed, all the configuration files from both configmap and secret will be stored in /etc/config folder.
+
+Note that the secret is referred to in the standard Kubernetes and OpenShift Controller [deployment yaml files](/deploying/kubernetes#kubernetes-deployment-examples-for-neuvector) under Volumes.
 
 ### ConfigMaps and Persistent Storage
 Both the ConfigMaps and the [persistent storage](/deploying/production#backups-and-persistent-data) backup are only read when a new NeuVector cluster is deployed, or the cluster fails and is restarted. They are not used during rolling upgrades.
