@@ -63,7 +63,7 @@ Notes:
 Please go to Settings -> Configuration to configure proxy settings for registry scanning.
 
 
-#### Native Docker registry
+#### Native Docker registry (and Harbor)
 ##### Add Native Docker registry
 + Choose Docker registry as type
 + Give unique name to the registry

@@ -11,7 +11,7 @@ NeuVector supports automated deployment using the Kubernetes ConfigMap feature. 
 The 'always_reload: true' setting can be added in any ConfigMap yaml to force reload of that yaml every time the controller starts (version 4.3.2+). Otherwise, the ConfigMap will only be loaded at initial startup or after complete cluster restart (see persistent storage section below).
 
 #### Complete Sample NeuVector ConfigMap (initcfg.yaml)
-This contains all the settings available. Please remove the sections not needed and edit the sections needed.
+This contains all the settings available. Please remove the sections not needed and edit the sections needed. Note: If using configmap in a secret, see section below for formatting changes.
 ```
 apiVersion: v1
 data:
@@ -354,8 +354,47 @@ Then create a secret for sections with sensitive data, such as:
 ```
 kubectl create secret generic neuvector-init --from-file=$HOME/init/eulainitcfg.yaml --from-file=$HOME/init/ldapinitcfg.yaml --from-file=$HOME/init/oidcinitcfg.yaml --from-file=$HOME/init/samlinitcfg.yaml --from-file=$HOME/init/sysinitcfg.yaml --from-file=$HOME/init/userinitcfg.yaml -n neuvector
 ```
+***Important!*** Remove the the pipe '|' character in each section, as shown below.
 
 Note that the secret is referred to in the standard Kubernetes and OpenShift Controller [deployment yaml files](/deploying/kubernetes#kubernetes-deployment-examples-for-neuvector) under Volumes.
+
+Note the removal of the pipe character below if using configmap sections in a secret.
+```
+  configmap:
+    enabled: false
+    data:
+      # eulainitcfg.yaml: |
+      #  ...
+      # ldapinitcfg.yaml: |
+      #  ...
+      # oidcinitcfg.yaml: |
+      # ...
+      # samlinitcfg.yaml: |
+      # ...
+      # sysinitcfg.yaml: |
+      # ...
+      # userinitcfg.yaml: |
+      # ...
+  secret:
+    # NOTE: files defined here have preferrence over the ones defined in the configmap section
+    enabled: false
+    data: {}
+      # eulainitcfg.yaml:
+      #   license_key: 0Bca63Iy2FiXGqjk...
+      #   ...
+      # ldapinitcfg.yaml:
+      #   directory: OpenLDAP
+      #   ...
+      # oidcinitcfg.yaml:
+      #   Issuer: https://...
+      #   ...
+      # samlinitcfg.yaml:
+      #   ...
+      # sysinitcfg.yaml:
+      #   ...
+      # userinitcfg.yaml:
+      #   ...
+```
 
 After controller is deployed, all the configuration files from both configmap and secret will be stored in /etc/config folder.
 

