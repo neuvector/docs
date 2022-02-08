@@ -44,4 +44,32 @@ Multiple rules can be created for the same process. The rules are executed seque
 + Wildcards &#42; can be used to match all for name or path
 Example:  To allow the ping process to run from any directory 
 ![pingRule](ping.png)
-Violations will be logged in Notifications -> Security Events.![violation](process_event.png)
+Violations will be logged in Notifications -> Security Events.![violation](process_event.png)
+
+####Built-in Suspicious Process Detection
+The following built-in detections are automatically enabled in NeuVector.
+
+| Process | Direction | Reported name |
+| ------- | ----------- | -------------- |
+| nmap | outgoing | port scanner |
+| nc | outgoing | netcat process |
+| ncat | outgoing | netcat process |
+| netcat| outgoing | netcat process |
+| sshd | incoming | ssh from remote |
+| ssh | outgoing | ssh to remote |
+| scp | outgoing | secure copy |
+| telnet | outgoing | telnet to remote |
+| in.telnetd | incoming | telnet from remote |
+| iodine | outgoing | dns tunneling |
+| iodined | incoming | dns tunneling |
+| dnscat |outgoing | dns tunneling |
+| dns2tcpc | outgoing | dns tunneling |
+| dns2tcpd | incoming | dns tunneling |
+| socat | outgoing | socat | relay process |
+ 
+In addition the following detections are enabled:
++ docker cp
++ root privilege escalation (user role into root role)
++ tunnel: reverse shell (triggered when stdin and stdout are redirected to the same socket)
+
+Suspicious processes are alerted when in Discover or Monitor mode, and blocked when in Protect mode. Detection applies to containers as well as hosts, with the exception of 'sshd' which is not considered suspicious on hosts. Processes listed above can be added to the Allow List for containers (Groups) including hosts if it should be allowed.
