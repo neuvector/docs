@@ -273,7 +273,7 @@ img {
 <li>Update the registry to docker.io</li>
 <li>Update image names/tags to the preview version on Docker hub, as shown above</li>
 <li>Leave the imagePullSecrets empty</li></p>
-<p align="left">If upgrading from NeuVector 4.x, please see <a href="/updating/updating#upgrading-from-neuvector-4&#46;x-to-5&#46;x>instructions</a></p>
+<p style="text-align:left">If upgrading from NeuVector 4.x, please see these <a href="/releasenotes/5x#upgrading-from-neuvector-4x-to-5x>instructions.</a></p>
 <table style="border: none">	
 <tr>		
 	<td class="mainoptions"> <img src="install-neuvector-icon.png" width="100" height="100" class="mainoptionicon">

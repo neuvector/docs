@@ -146,4 +146,15 @@ kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kube
 ```
 kubectl create clusterrole neuvector-binding-nvwafsecurityrules --verb=list,delete --resource=nvwafsecurityrules
 kubectl create clusterrolebinding neuvector-binding-nvwafsecurityrules --clusterrole=neuvector-binding-nvwafsecurityrules --serviceaccount=neuvector:default
-kubect
+kubectl create clusterrole neuvector-binding-nvadmissioncontrolsecurityrules --verb=list,delete --resource=nvadmissioncontrolsecurityrules
+kubectl create clusterrolebinding neuvector-binding-nvadmissioncontrolsecurityrules --clusterrole=neuvector-binding-nvadmissioncontrolsecurityrules --serviceaccount=neuvector:default
+```
+
+6. Update image names and paths for pulling NeuVector images from Docker hub (docker.io), e.g.
++ neuvector/manager.preview:5.0.0-preview.1
++ neuvector/controller.preview:5.0.0-preview.1
++ neuvector/enforcer.preview:5.0.0-preview.1
++ neuvector/scanner.preview:latest
++ neuvector/updater.preview:latest
+
+Optionally, remove any references to the NeuVector license and secrets in Helm charts, deployment yaml, configmap, scripts etc, as these are no longer required to pull the images or to start using NeuVector.
