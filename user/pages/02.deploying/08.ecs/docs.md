@@ -4,6 +4,9 @@ taxonomy:
     category: docs
 ---
 
+### Important: Deployment on AWS ECS is No Longer Supported
+
+The reference section below is not being maintained. However, it may provide some assistance in understanding how to deploy the Allinone on ECS.
 
 ### Deploy on AWS Using ECS
 This is an example of how to deploy NeuVector using ECS.

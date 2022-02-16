@@ -7,6 +7,33 @@ taxonomy:
 
 ### Release Notes for 4.x
 
+
+#### 4.4.4 February 2022
+#####Enhancements
++ Add environment variable for Enforcer to turn off secrets scanning, which in some environments can consume resources. Set to ENF_NO_SECRET_SCANS=1
++ In Vulnerability Explorer > CSV download,  show affected containers in multiple rows instead of in the same cell.
+
+##### Bug Fixes
++ Reduce secrets scanning by Enforcer to avoid possibility of long running scanning tasks which can consume memory. This may be caused by large image registry or database scan locally.
++ Fix bug when attempting to export CSV for CVE's found in the vulnerability explorer Security Risks -> Vulnerabilities without using filter, the CSV file is empty.
++ Fix timing issue when upgrading from 4.2.2 which can result in implicit deny for all traffic. Most recent fix is related to XFF settings during rolling updates.
+
+##### Other
++ Allow users to specify different image SHA hash instead of tags https://github.com/neuvector/neuvector-helm/pull/140. Will be propagated to Operator.
+
+#### 4.4.3 January 2022
+##### Enhancements
++ Replace the self-signed certificate for Manager which is expiring January 23, 2022 with new one expiring Jan. 2024.
++ Improve ability to display unmanaged workloads in Network Activity map which are not relevant.
+
+##### Bug Fixes
++ Fix Controller crashes when scanning gitlab registry.
++ Admission control not blocking for some images. This is because a vulnerability found in multiple packages is treated as 1 vulnerability in Controller's admission control and is fixed.
++ Upgrade from 4.2.2 to 4.3.2 results in implicit deny for all traffic if high traffic during rolling upgrade.
+
+##### Other
++ Helm chart v1.8.9 is published for 5.0.0 deployments.
+
 #### 4.4.2 December 2021
 ##### Enhancements
 + Add support for scanning embedded java jars and jars without Maven file, for example log4j-core-2.5.jar, when pom.xml doesn’t exist.

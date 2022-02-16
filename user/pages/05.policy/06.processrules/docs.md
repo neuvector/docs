@@ -65,7 +65,7 @@ The following built-in detections are automatically enabled in NeuVector.
 | dnscat |outgoing | dns tunneling |
 | dns2tcpc | outgoing | dns tunneling |
 | dns2tcpd | incoming | dns tunneling |
-| socat | outgoing | socat | relay process |
+| socat | outgoing | relay process |
  
 In addition the following detections are enabled:
 + docker cp

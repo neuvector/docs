@@ -21,6 +21,7 @@ taxonomy:
 AWS Bottlerocket Note: Must change path of the containerd socket specific to Bottleneck. Please see Kubernetes deployment section for details.
 
 #### Not Supported
+* Cilium as a cni
 * Docker on Mac
 * Docker on Windows
 * Rkt (container linux) from CoreOS

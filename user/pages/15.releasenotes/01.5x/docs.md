@@ -7,6 +7,9 @@ taxonomy:
 
 ### Release Notes for 5.x (Open Source Version)
 
+####Support for deployment on AWS ECS Deprecated
+Support for deployment on ECS is no longer provided. The allinone should still be able to be deployed on ECS, however, the documentation of the steps and settings is no longer supported.
+
 #### 5.0 'Tech Preview' January 2022
 ##### Enhancements
 + First release of an unsupported, 'tech-preview' version of NeuVector 5.0 open source version.
