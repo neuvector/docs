@@ -262,17 +262,18 @@ img {
 	<p class="titles">Welcome to the NeuVector Docs</p>
 	<p class="subtitles">Here you can access the complete documentation for NeuVector, the only Kubernetes-native container security platform.</p>
 <p><strong>Important Notice for Preview Version Users </strong></p>
-<p>The images are on the NeuVector Docker Hub registry as:
+<p align="left">The images are on the NeuVector Docker Hub registry as:
 <li>neuvector/manager.preview:5.0.0-preview.1</li>
 <li>neuvector/controller.preview:5.0.0-preview.1</li>
 <li>neuvector/enforcer.preview:5.0.0-preview.1</li>
 <li>neuvector/scanner.preview:latest</li>
 <li>neuvector/updater.preview:latest</li></p>
-<p>Please be sure to update the image references in appropriate yaml files.</p>
-<p>If deploying with the current NeuVector Helm chart (v1.8.9+), the following changes should be made to values.yml:
+<p align="left">Please be sure to update the image references in appropriate yaml files.</p>
+<p align="left">If deploying with the current NeuVector Helm chart (v1.8.9+), the following changes should be made to values.yml:
 <li>Update the registry to docker.io</li>
 <li>Update image names/tags to the preview version on Docker hub, as shown above</li>
 <li>Leave the imagePullSecrets empty</li></p>
+<p align="left">If upgrading from NeuVector 4.x, please see <a href="/updating/updating#upgrading-from-neuvector-4&#46;x-to-5&#46;x>instructions</a></p>
 <table style="border: none">	
 <tr>		
 	<td class="mainoptions"> <img src="install-neuvector-icon.png" width="100" height="100" class="mainoptionicon">

@@ -25,3 +25,49 @@ Support for deployment on ECS is no longer provided. The allinone should still b
   - Update image names/tags to the preview version on Docker hub
   - Leave the imagePullSecrets empty
 
+
+### Upgrading from NeuVector 4.x to 5.x
+
+For Helm users, update to NeuVector Helm chart 1.8.9 or later.
+
+1. Delete old neuvector-binding-customresourcedefinition clusterrole
+```
+kubectl delete clusterrole neuvector-binding-customresourcedefinition
+```
+
+2. Apply new update verb for neuvector-binding-customresourcedefinition clusterrole
+```
+kubectl create clusterrole neuvector-binding-customresourcedefinition --verb=watch,create,get,update --resource=customresourcedefinitions
+```
+
+3. Delete old crd schema for Kubernetes 1.19+
+```
+kubectl delete -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/crd-k8s-1.19.yaml
+```
+
+4. Create new crd schema for Kubernetes 1.19+
+```
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/latest/crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/latest/waf-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/latest/admission-crd-k8s-1.19.yaml
+```
+
+5. Create a new neuvector-binding-nvwafsecurityrules clusterrole and clusterrolebinding
+```
+kubectl create clusterrole neuvector-binding-nvwafsecurityrules --verb=list,delete --resource=nvwafsecurityrules
+kubectl create clusterrolebinding neuvector-binding-nvwafsecurityrules --clusterrole=neuvector-binding-nvwafsecurityrules --serviceaccount=neuvector:default
+kubectl create clusterrole neuvector-binding-nvadmissioncontrolsecurityrules --verb=list,delete --resource=nvadmissioncontrolsecurityrules
+kubectl create clusterrolebinding neuvector-binding-nvadmissioncontrolsecurityrules --clusterrole=neuvector-binding-nvadmissioncontrolsecurityrules --serviceaccount=neuvector:default
+```
+
+6. Update image names and paths for pulling NeuVector images from Docker hub (docker.io), e.g.
++ neuvector/manager.preview:5.0.0-preview.1
++ neuvector/controller.preview:5.0.0-preview.1
++ neuvector/enforcer.preview:5.0.0-preview.1
++ neuvector/scanner.preview:latest
++neuvector/updater.preview:latest
+
+Optionally, remove any references to the NeuVector license and secrets in Helm charts, deployment yaml, configmap, scripts etc, as these are no longer required to pull the images or to start using NeuVector.
+
+
+
