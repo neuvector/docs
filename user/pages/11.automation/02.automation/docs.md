@@ -18,8 +18,7 @@ There are many automation features in NeuVector to support the entire CI/CD work
 #### CLI and REST API
 The NeuVector solution can be managed using the CLI and/or REST API. Below are common examples of automation using the REST API. The REST API yaml doc is best viewed in the Swagger 2.0 viewer. The REST API documentation is below in a yaml file which is best viewed in a reader such as swagger.io.
 
-Latest update: 4.4.2
-[REST API](apis.zip)
+Latest update can be found [here](https://raw.githubusercontent.com/neuvector/neuvector/main/controller/api/apis.yaml).
 
 <strong>Important</strong> - If you are making REST API calls, please be sure make a DELETE call against /v1/auth when done. There is a maximum of 32 concurrent sessions for each user. If this is exceeded, an authentication failure will occur.
 

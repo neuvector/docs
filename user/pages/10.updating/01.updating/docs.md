@@ -151,9 +151,9 @@ kubectl create clusterrolebinding neuvector-binding-nvadmissioncontrolsecurityru
 ```
 
 6. Update image names and paths for pulling NeuVector images from Docker hub (docker.io), e.g.
-+ neuvector/manager.preview:5.0.0-preview.1
-+ neuvector/controller.preview:5.0.0-preview.1
-+ neuvector/enforcer.preview:5.0.0-preview.1
++ neuvector/manager.preview:5.0.0-preview.2
++ neuvector/controller.preview:5.0.0-preview.2
++ neuvector/enforcer.preview:5.0.0-preview.2
 + neuvector/scanner.preview:latest
 + neuvector/updater.preview:latest
 

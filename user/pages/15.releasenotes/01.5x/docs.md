@@ -7,6 +7,9 @@ taxonomy:
 
 ### Release Notes for 5.x (Open Source Version)
 
+####Preview.2 version released Feb 2022
++ Minor file and license changes in source, no features added.
+
 ####Support for deployment on AWS ECS Deprecated
 Support for deployment on ECS is no longer provided. The allinone should still be able to be deployed on ECS, however, the documentation of the steps and settings is no longer supported.
 
