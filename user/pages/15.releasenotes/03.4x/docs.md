@@ -7,6 +7,24 @@ taxonomy:
 
 ### Release Notes for 4.x
 
+#### 4.4.4-s1 Security Patch February 2022
++ Update alpine in Manager to remove recent CVEs including High ratings CVE-2022-25235, CVE-2022-25236 and CVE-2022-25314
++ Note: Recent CVEs have also been published in the Manager CLI module related to the python package. The python package will be replace in the 5.0 version with python3 to remove any CVEs. This is currently scheduled for GA in May 2022. The CLI is not remotely accessible and can't be accessed through the GUI, so proper Kubernetes RBACs to restrict 'kubectl exec' commands into the Manager pod will protect against exploits.
++ List of manager 4.4.4 CVEs
+  - alpine:3.15.0	High	CVE-2022-25235	https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-25235	expat
+  - alpine:3.15.0	High	CVE-2022-25236	https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-25236	expat
+  - alpine:3.15.0	Medium	CVE-2022-25313	https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-25313	expat
+  - alpine:3.15.0	High	CVE-2022-25314	https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-25314	expat
+  - alpine:3.15.0	High	CVE-2022-25315   https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-25315	expat
+  - alpine:3.15.0	Medium	CVE-2020-26137	https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26137	usr/lib/python2.7/site-packages/urllib3-1.25.3
+  - alpine:3.15.0	High	CVE-2020-7212	https://github.com/advisories/GHSA-hmv2-79q8-fv6g	usr/lib/python2.7/site-packages/urllib3-1.25.3
+  - alpine:3.15.0	High	CVE-2021-33503	https://github.com/advisories/GHSA-q2q7-5pp4-w6pg	usr/lib/python2.7/site-packages/urllib3-1.25.3
+  - alpine:3.15.0	Medium	CVE-2021-3572	https://github.com/advisories/GHSA-5xp3-jfq3-5q8x	usr/lib/python2.7/site-packages/pip-20.3.4
+
+#### Other Updates February 2022
++ Update Helm chart to 1.9.1. Allow users to specify different image SHA hash instead of tags, add support for k3s in Rancher UI.
++ Community Operator is updated to 1.3.5 to support 4.4.4.
++ Certified Operator is updated to to 1.3.2 to support 4.4.4.
 
 #### 4.4.4 February 2022
 #####Enhancements
