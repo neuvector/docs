@@ -21,7 +21,7 @@ taxonomy:
 AWS Bottlerocket Note: Must change path of the containerd socket specific to Bottleneck. Please see Kubernetes deployment section for details.
 
 #### Not Supported
-* Cilium as a cni
+* Cilium as a cni (limited support). Protect mode (inline blocking) should NOT be used with Cilium, as all traffic will be blocked. This limitation will be removed in a future release.
 * Docker on Mac
 * Docker on Windows
 * Rkt (container linux) from CoreOS
