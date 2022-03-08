@@ -6,7 +6,7 @@ taxonomy:
 
 ### Scan for Vulnerabilities during Gitlab Build Pipeline
 
-NeuVector can be configured to scan for vulnerabilities triggered in the Gitlab build pipeline. There is a (Gitlab plug-in here)[https://gitlab.com/neuvector/gitlab-plugin] which can be configured and used. Please follow the instructions on the gitlab site for using the plugin.
+NeuVector can be configured to scan for vulnerabilities triggered in the Gitlab build pipeline. There is a [Gitlab plug-in here](https://gitlab.com/neuvector/gitlab-plugin) which can be configured and used. Please follow the instructions on the gitlab site for using the plugin.
 
 The scan can also use the NeuVector REST API by configuring the provided script below to access the controller.
 
