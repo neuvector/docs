@@ -131,6 +131,8 @@ oc create clusterrole neuvector-binding-nvwafsecurityrules --verb=list,delete --
 oc adm policy add-cluster-role-to-user neuvector-binding-nvwafsecurityrules system:serviceaccount:neuvector:default
 oc create clusterrole neuvector-binding-nvadmissioncontrolsecurityrules --verb=list,delete --resource=nvadmissioncontrolsecurityrules
 oc adm policy add-cluster-role-to-user neuvector-binding-nvadmissioncontrolsecurityrules system:serviceaccount:neuvector:default
+oc create clusterrole neuvector-binding-nvdlpsecurityrules --verb=list,delete --resource=nvdlpsecurityrules
+oc adm policy add-cluster-role-to-user neuvector-binding-nvdlpsecurityrules system:serviceaccount:neuvector:default
 ```
 
 For OpenShift 4.x, also add the following for platform detection:
@@ -160,6 +162,7 @@ neuvector-binding-customresourcedefinition   /neuvector-binding-customresourcede
 neuvector-binding-nvsecurityrules            /neuvector-binding-nvsecurityrules                                neuvector/default
 neuvector-binding-nvwafsecurityrules         /neuvector-binding-nvwafsecurityrules                             neuvector/default
 neuvector-binding-nvadmissioncontrolsecurityrules /neuvector-binding-nvadmissioncontrolsecurityrules           neuvector/default
+neuvector-binding-nvdlpsecurityrules         /neuvector-binding-nvdlpsecurityrules                             neuvector/default
 neuvector-binding-view                       /neuvector-binding-view                                           neuvector/default
 ```
 

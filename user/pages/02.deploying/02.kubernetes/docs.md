@@ -173,7 +173,9 @@ kubectl create rolebinding neuvector-admin --clusterrole=admin --serviceaccount=
 kubectl create clusterrole neuvector-binding-nvwafsecurityrules --verb=list,delete --resource=nvwafsecurityrules
 kubectl create clusterrolebinding neuvector-binding-nvwafsecurityrules --clusterrole=neuvector-binding-nvwafsecurityrules --serviceaccount=neuvector:default
 kubectl create clusterrole neuvector-binding-nvadmissioncontrolsecurityrules --verb=list,delete --resource=nvadmissioncontrolsecurityrules
-kubectl create clusterrolebinding neuvector-binding-nvadmissioncontrolsecurityrules --clusterrole=neuvector-binding-nvadmissioncontrolsecurityrules --serviceaccount=neuvector:default</code>
+kubectl create clusterrolebinding neuvector-binding-nvadmissioncontrolsecurityrules --clusterrole=neuvector-binding-nvadmissioncontrolsecurityrules --serviceaccount=neuvector:default
+kubectl create clusterrole neuvector-binding-nvdlpsecurityrules --verb=list,delete --resource=nvdlpsecurityrules
+kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --clusterrole=neuvector-binding-nvdlpsecurityrules --serviceaccount=neuvector:default</code>
 </pre>
 NOTE: If upgrading NeuVector from a previous install, you may need to delete the old binding as follows:
 <pre>
@@ -196,7 +198,8 @@ neuvector-binding-rbac                                 28d
 neuvector-binding-view                                 28d
 neuvector-binding-nvadmissioncontrolsecurityrules      28d
 neuvector-binding-nvwafsecurityrules                   28d
-neuvector-admin   28d</code>
+neuvector-binding-nvdlpsecurityrules                   28d
+neuvector-admin                                        28d</code>
 </pre>
 </li>
 <li>(<strong>Optional</strong>) Create the Federation Master and/or Remote Multi-Cluster Management Services. If you plan to use the multi-cluster management functions in NeuVector, one cluster must have the Federation Master service deployed, and each remote cluster must have the Federation Worker service. For flexibility, you may choose to deploy both Master and Worker services on each cluster so any cluster can be a master or remote.
