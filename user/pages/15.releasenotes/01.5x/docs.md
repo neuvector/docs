@@ -81,14 +81,18 @@ kubectl delete -f https://raw.githubusercontent.com/neuvector/manifests/main/kub
 kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/latest/crd-k8s-1.19.yaml
 kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/latest/waf-crd-k8s-1.19.yaml
 kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/latest/admission-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/latest/dlp-crd-k8s-1.19.yaml
 ```
 
-5. Create a new neuvector-binding-nvwafsecurityrules clusterrole and clusterrolebinding
+5. Create a new DLP and WAF clusterrole and clusterrolebinding
 ```
 kubectl create clusterrole neuvector-binding-nvwafsecurityrules --verb=list,delete --resource=nvwafsecurityrules
 kubectl create clusterrolebinding neuvector-binding-nvwafsecurityrules --clusterrole=neuvector-binding-nvwafsecurityrules --serviceaccount=neuvector:default
 kubectl create clusterrole neuvector-binding-nvadmissioncontrolsecurityrules --verb=list,delete --resource=nvadmissioncontrolsecurityrules
-kubectl create clusterrolebinding neuvector-binding-nvadmissioncontrolsecurityrules --clusterrole=neuvector-binding-nvadmissioncontrolsecurityrules --serviceaccount=neuvector:default
+kubectl create clusterrolebinding neuvector-binding-nvadmissioncontrolsecurityrules --clusterrole=neuvector-binding-nvadmissioncontrolsecurityrules --serviceaccount=neuvector:defaultkubectl create clusterrole neuvector-binding-nvdlpsecurityrules --verb=list,delete --resource=nvdlpsecurityrules
+kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --clusterrole=neuvector-binding-nvdlpsecurityrules --serviceaccount=neuvector:default
+oc create clusterrole neuvector-binding-nvdlpsecurityrules --verb=list,delete --resource=nvdlpsecurityrules
+oc adm policy add-cluster-role-to-user neuvector-binding-nvdlpsecurityrules system:serviceaccount:neuvector:default
 ```
 
 6. Update image names and paths for pulling NeuVector images from Docker hub (docker.io), e.g.
