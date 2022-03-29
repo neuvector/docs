@@ -5,8 +5,16 @@ taxonomy:
 ---
 
 ### Policy: File Access Rules
+There are two types of Process/File protections in NeuVector. One is Zero-drift, where allowed process and file activity are automatically determined based on the container image, and second is a behavioral learning based. Each can be customized (rules added manually) if desired.
+
 NeuVector has built-in detection of suspicious file system activity. Sensitive files in containers normally do not change at run-time. By modifying the content of the sensitive files, an attacker can gain unauthorized privileges, such as in the Dirty-Cow linux kernel attack, or damage the system’s integrity, for example by manipulating the /etc/hosts file. Most containers don't run in read-only mode. Any suspicious activity in containers, hosts, or the NeuVector Enforcer container itself will be detected and logged into Notifications -> Security Events.
 
+#### Zero-drift File Protection
+This is the default mode for process and file protections. Zero-drift automatically allows only processes which originate from the parent process that is in the original container image, and does not allow file updates or new files to be installed. When in Discover or Monitor mode, zero-drift will alert on any suspicious process or file activity. In Protect mode, it will block such activity. Zero-drift does not require file activity to be added to an allow-list. Disabling zero-drift for a group will cause the process and file rules listed for the group to take effect instead.
+
+The ability to enable/disable zero-drift mode is in the console in Policy -> Groups. Multiple groups can be selected to toggle this setting for all selected groups.
+
+#### Basic File Protections
 If a package installation is detected, an automatic re-scan of the container or host will be triggered to detect any vulnerabilities, IF auto-scan has been enabled in Security Risks -> Vulnerabilities.
 
 In addition to monitoring predefined files/directories, users can add custom files/directories to be monitored, and block such files/directories from being modified.
@@ -20,7 +28,7 @@ Below is a list of the file system monitoring and what is monitored (container, 
 
 + /bin, /usr/bin, /usr/sbin, /usr/local/bin - container, enforcer+ Files of setuid and setgid attribute - container, host, enforcer+ Libraries: libc, pthread, ld-linux.* - container, host, enforcer+ Package installation: dpkg, rpm, apk - container, host, enforcer+ /etc/hosts, /etc/passwd, /etc/resolv.conf - container, host, enforcer+ Binaries of the running processes - container
 
-#### Auto-learning Allowed Applications in Discover Mode
+#### Behavioral-learning based Allowed Applications in Discover Mode
 When in Discover mode, NeuVector can learn and whitelist applications ONLY for specified directories or files. To enable learning, a custom rule must be created and the Action must be set to Block, as described below.
 
 #### Creating Custom File/Directory Monitoring Rules
@@ -78,5 +86,8 @@ Showing a sample security event in Notifications -> Security Events, alerted as 
 If other special mitigations, responses, or alerts are desired for File System Violations, a Response Rule can be created. See the example below and the section Run-Time Security Policy -> Response Rules for more details.
 
 ![FileResponse](file-response1.png)
+
+###Split Mode File Protections
+Container Groups can have Process/File rules in a different mode than Network rules, as described [here](/policy/modes#split-policy-mode).
 
 

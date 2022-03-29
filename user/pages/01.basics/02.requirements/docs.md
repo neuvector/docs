@@ -11,7 +11,7 @@ taxonomy:
 * Recommended browser: Chrome for better performance
 
 #### Supported Platforms
-* Officially supported linux distributions, Ubuntu, CentOS/Red Hat (Including all RHEL version e.g. 6/7/8), Debian, Rancher OS, CoreOS, AWS 'Bottlerocket'(see Note below), SUSE and Photon.
+* Officially supported linux distributions, Ubuntu, CentOS/Red Hat (Including all RHEL version e.g. 6/7/8), Debian, Rancher OS, CoreOS, AWS 'Bottlerocket'(see Note below), SUSE Linux and Photon.
 * Officially supported container management systems, Kubernetes, native docker, docker swarm, docker UCP/DataCenter, docker Cloud, Rancher, Google GKE/Kubernetes,  Amazon AWS EKS, Microsoft Azure AKS, VMware Photon, RedHat OpenShift 3.x,4.x, IBM IKS, SUSE CaaS, Mirantis Kubernetes Engine.
 * Docker run-time version: 1.9.0 and up; Docker API version: 1.21, CE and EE.
 * Containerd and CRI-O run-times (requires changes to volume paths in sample yamls). See changes required for Containerd in the Kubernetes deployment section and CRI-O in the OpenShift deployment section.

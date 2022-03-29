@@ -58,6 +58,9 @@ Be sure to click Deploy to save the new rule.
 
 Finally, review the list of rules to make sure the new rule is in the order and priority desired. Rules are applied from top to bottom.
 
+###Split Mode Network Protections
+Container Groups can have Process/File rules in a different mode than Network rules, as described [here](/policy/modes#split-policy-mode).
+
 ###Built-In Network Threat Detection
 NeuVector automatically detects certain network attacks, regardless of protection mode. In Discover and Monitor mode, these threats will be alerted and can be found in Notifications -> Security Events. In Protect mode, these will alerted as well as blocked. Response rules can be created based on threat detection as well.
 

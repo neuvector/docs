@@ -8,7 +8,7 @@ taxonomy:
 To detect Violations of normal behavior, NeuVector maintains a security Policy which can be managed from the GUI, CLI, CRD, or REST API.
 
 #### Groups
-This provides the primary view of service Groups and custom Groups to set the mode (Discover, Monitor, Protect) for each service and to manage rules. Groups are automatically created by NeuVector, but custom groups can be added. Rules for each Group are automatically created by NeuVector when containers begin running. 
+This provides the primary view of service Groups and custom Groups to set the mode (Discover, Monitor, Protect) for each service and to manage rules. Groups are automatically created by NeuVector, but custom groups can be added. Rules for each Group are automatically created by NeuVector when containers begin running. Container Groups can have a Split Policy Mode where the Process/File rules are in a different enforcement mode than the Network rules, as described [here](/policy/modes#split-policy-mode).
 
 To select a Group to view or manage, select the check box next to it. This is where Process Profile Rules, File Access Rules, DLP, and Custom Compliance checks are managed. Network Rules can be viewed here but are managed in a separate menu.
 Network and Response Rules in NeuVector are created using a ‘from’ and ‘to’ field, which requires a Group as input. A group can be an application, derived from image labels, DNS name or other customized grouping. DNS subdomains are supported, e.g. *.foo.com. IP addresses or subnets can also be used which is useful to control ingress and egress from non-containerized workloads.
