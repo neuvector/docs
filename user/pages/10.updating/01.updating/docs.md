@@ -1,4 +1,4 @@
-preview.3---
+---
 title: Updating NeuVector
 taxonomy:
     category: docs

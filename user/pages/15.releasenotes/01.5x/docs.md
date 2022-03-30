@@ -91,14 +91,12 @@ kubectl create clusterrolebinding neuvector-binding-nvwafsecurityrules --cluster
 kubectl create clusterrole neuvector-binding-nvadmissioncontrolsecurityrules --verb=list,delete --resource=nvadmissioncontrolsecurityrules
 kubectl create clusterrolebinding neuvector-binding-nvadmissioncontrolsecurityrules --clusterrole=neuvector-binding-nvadmissioncontrolsecurityrules --serviceaccount=neuvector:defaultkubectl create clusterrole neuvector-binding-nvdlpsecurityrules --verb=list,delete --resource=nvdlpsecurityrules
 kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --clusterrole=neuvector-binding-nvdlpsecurityrules --serviceaccount=neuvector:default
-oc create clusterrole neuvector-binding-nvdlpsecurityrules --verb=list,delete --resource=nvdlpsecurityrules
-oc adm policy add-cluster-role-to-user neuvector-binding-nvdlpsecurityrules system:serviceaccount:neuvector:default
 ```
 
 6. Update image names and paths for pulling NeuVector images from Docker hub (docker.io), e.g.
-+ neuvector/manager.preview:5.0.0-preview.1
-+ neuvector/controller.preview:5.0.0-preview.1
-+ neuvector/enforcer.preview:5.0.0-preview.1
++ neuvector/manager.preview:5.0.0-preview.3
++ neuvector/controller.preview:5.0.0-preview.3
++ neuvector/enforcer.preview:5.0.0-preview.3
 + neuvector/scanner.preview:latest
 +neuvector/updater.preview:latest
 
