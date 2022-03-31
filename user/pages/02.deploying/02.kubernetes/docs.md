@@ -264,7 +264,7 @@ Then create the appropriate service(s):
 kubectl create -f nv_master_worker.yaml</code></pre>
 </li>
 <li>Create the primary NeuVector services and pods using the preset Preview version commands or modify the sample yamls below. The preset Preview versions invoke a LoadBalancer for the NeuVector Console. If using the sample yaml files below replace the image names and &lt;version> tags for the manager, controller and enforcer image references in the yaml file. Also make any other modifications required for your deployment environment (such as LoadBalancer/NodePort/Ingress for manager access etc).
-For 5.0.0 Preview with Containerd run-time:
+For 5.0.0 Preview with Containerd run-time (see below for Rancher K3s containerd changes):
 <pre>
 <code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/neuvector-containerd-k8s.yaml</code></pre>
 For 5.0.0 Preview with docker run-time:
@@ -990,10 +990,346 @@ spec:
   </div><!-- End .wrap-content -->    
   </div><!-- End .accordion-content -->
   </li>
+<!-- NOTE: Toggle Box #2.5 -->
+<li>
+	<input class="title-option" id="acc25" name="accordion-1" type="checkbox" />
+  <label class="title-panel" onClick="" for="acc25"><span><i class="icon-code"></i>Kubernetes v1.9-1.23 with <strong>Rancher K3s containerd</strong> Run-time</span></label>
+
+  <!-- NOTE: Toggle box content animation option -->
+  <div class="accordion-content animated animation5">
+  <div class="wrap-content">
+<pre>
+<code>
+apiVersion: v1
+kind: Service
+metadata:
+  name: neuvector-svc-crd-webhook
+  namespace: neuvector
+spec:
+  ports:
+  - port: 443
+    targetPort: 30443
+    protocol: TCP
+    name: crd-webhook
+  type: ClusterIP
+  selector:
+    app: neuvector-controller-pod
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: neuvector-svc-admission-webhook
+  namespace: neuvector
+spec:
+  ports:
+  - port: 443
+    targetPort: 20443
+    protocol: TCP
+    name: admission-webhook
+  type: ClusterIP
+  selector:
+    app: neuvector-controller-pod
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: neuvector-service-webui
+  namespace: neuvector
+spec:
+  ports:
+    - port: 8443
+      name: manager
+      protocol: TCP
+  type: LoadBalancer
+  selector:
+    app: neuvector-manager-pod
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: neuvector-svc-controller
+  namespace: neuvector
+spec:
+  ports:
+  - port: 18300
+    protocol: "TCP"
+    name: "cluster-tcp-18300"
+  - port: 18301
+    protocol: "TCP"
+    name: "cluster-tcp-18301"
+  - port: 18301
+    protocol: "UDP"
+    name: "cluster-udp-18301"
+  clusterIP: None
+  selector:
+    app: neuvector-controller-pod
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neuvector-manager-pod
+  namespace: neuvector
+spec:
+  selector:
+    matchLabels:
+      app: neuvector-manager-pod
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: neuvector-manager-pod
+    spec:
+      containers:
+        - name: neuvector-manager-pod
+          image: neuvector/manager:&#60;version&#62;
+          env:
+            - name: CTRL_SERVER_IP
+              value: neuvector-svc-controller.neuvector
+      restartPolicy: Always
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neuvector-controller-pod
+  namespace: neuvector
+spec:
+  selector:
+    matchLabels:
+      app: neuvector-controller-pod
+  minReadySeconds: 60
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: neuvector-controller-pod
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - neuvector-controller-pod
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: neuvector-controller-pod
+          image: neuvector/controller:&#60;version&#62;
+          securityContext:
+            privileged: true
+          readinessProbe:
+            exec:
+              command:
+              - cat
+              - /tmp/ready
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          env:
+            - name: CLUSTER_JOIN_ADDR
+              value: neuvector-svc-controller.neuvector
+            - name: CLUSTER_ADVERTISED_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: CLUSTER_BIND_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          volumeMounts:
+            - mountPath: /var/neuvector
+              name: nv-share
+              readOnly: false
+            - mountPath: /run/containerd/containerd.sock
+              name: runtime-sock
+              readOnly: true
+            - mountPath: /host/proc
+              name: proc-vol
+              readOnly: true
+            - mountPath: /host/cgroup
+              name: cgroup-vol
+              readOnly: true
+            - mountPath: /etc/config
+              name: config-volume
+              readOnly: true
+      terminationGracePeriodSeconds: 300
+      restartPolicy: Always
+      volumes:
+        - name: nv-share
+          hostPath:
+            path: /var/neuvector
+        - name: runtime-sock
+          hostPath:
+            path: /run/k3s/containerd/containerd.sock
+        - name: proc-vol
+          hostPath:
+            path: /proc
+        - name: cgroup-vol
+          hostPath:
+            path: /sys/fs/cgroup
+        - name: config-volume
+          projected:
+            sources:
+              - configMap:
+                  name: neuvector-init
+                  optional: true
+              - secret:
+                  name: neuvector-init
+                  optional: true
+
+---
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: neuvector-enforcer-pod
+  namespace: neuvector
+spec:
+  selector:
+    matchLabels:
+      app: neuvector-enforcer-pod
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: neuvector-enforcer-pod
+    spec:
+      tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
+      hostPID: true
+      containers:
+        - name: neuvector-enforcer-pod
+          image: neuvector/enforcer:&#60;version&#62;
+          securityContext:
+            privileged: true
+          env:
+            - name: CLUSTER_JOIN_ADDR
+              value: neuvector-svc-controller.neuvector
+            - name: CLUSTER_ADVERTISED_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: CLUSTER_BIND_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          volumeMounts:
+            - mountPath: /lib/modules
+              name: modules-vol
+              readOnly: true
+            - mountPath: /run/containerd/containerd.sock
+              name: runtime-sock
+              readOnly: true
+            - mountPath: /host/proc
+              name: proc-vol
+              readOnly: true
+            - mountPath: /host/cgroup
+              name: cgroup-vol
+              readOnly: true
+      terminationGracePeriodSeconds: 1200
+      restartPolicy: Always
+      volumes:
+        - name: modules-vol
+          hostPath:
+            path: /lib/modules
+        - name: runtime-sock
+          hostPath:
+            path: /run/k3s/containerd/containerd.sock
+        - name: proc-vol
+          hostPath:
+            path: /proc
+        - name: cgroup-vol
+          hostPath:
+            path: /sys/fs/cgroup
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neuvector-scanner-pod
+  namespace: neuvector
+spec:
+  selector:
+    matchLabels:
+      app: neuvector-scanner-pod
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: neuvector-scanner-pod
+    spec:
+      containers:
+        - name: neuvector-scanner-pod
+          image: neuvector/scanner
+          imagePullPolicy: Always
+          env:
+            - name: CLUSTER_JOIN_ADDR
+              value: neuvector-svc-controller.neuvector
+      restartPolicy: Always
+
+---
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: neuvector-updater-pod
+  namespace: neuvector
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: neuvector-updater-pod
+        spec:
+          containers:
+          - name: neuvector-updater-pod
+            image: neuvector/updater
+            imagePullPolicy: Always
+            lifecycle:
+              postStart:
+                exec:
+                  command:
+                  - /bin/sh
+                  - -c
+                  - TOKEN=`cat /var/run/secrets/kubernetes.io/serviceaccount/token`; /usr/bin/curl -kv -X PATCH -H "Authorization:Bearer $TOKEN" -H "Content-Type:application/strategic-merge-patch+json" -d '{"spec":{"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"'`date +%Y-%m-%dT%H:%M:%S%z`'"}}}}}' 'https://kubernetes.default/apis/apps/v1/namespaces/neuvector/deployments/neuvector-scanner-pod'
+            env:
+              - name: CLUSTER_JOIN_ADDR
+                value: neuvector-svc-controller.neuvector
+          restartPolicy: Never</code></pre>
+  </div><!-- End .wrap-content -->    
+  </div><!-- End .accordion-content -->
+  </li>
 <!-- NOTE: Toggle Box #3 -->
 <li>
 	<input class="title-option" id="acc3" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc3"><span><i class="icon-code"></i>Kubernetes v1.9-1.23 with <strong>AWS BottleRocket containers</strong> Run-time</span></label>
+  <label class="title-panel" onClick="" for="acc3"><span><i class="icon-code"></i>Kubernetes v1.9-1.23 with <strong>AWS BottleRocket containerd</strong> Run-time</span></label>
 
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
@@ -1334,7 +1670,7 @@ spec:
 </body>
 </html>
 
-<strong>Containerd Run-time</strong>
+####Containerd Run-time
 If using the containerd run-time instead of docker, the volumeMounts for controller and enforcer pods in the sample yamls change to:
 ```
             - mountPath: /run/containerd/containerd.sock
@@ -1347,7 +1683,21 @@ And the volumes change from docker.sock to:
           hostPath:
             path: /run/containerd/containerd.sock
 ```
-
+For SUSE K3s containerd deployments, change the volumes path to /k3s/:
+```
+          volumeMounts:
+            ...
+            - mountPath: /run/containerd/containerd.sock
+              name: runtime-sock
+              readOnly: true
+            ...
+      volumes:
+        ...
+        - name: runtime-sock
+          hostPath:
+            path: /run/k3s/containerd/containerd.sock
+        ...
+```
 Or for the AWS Bottlerocket OS with containerd:
 ```
           volumeMounts:
