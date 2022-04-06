@@ -95,7 +95,8 @@ curl  -X POST -k  -H "X-Auth-Token: $_TOKEN_" -H "Content-Type: application/json
 
 ####WAF Setup and Testing	
 The downloadable file below provides an unsupported script for creating WAF sensors via CRD and running common WAF rule tests against those sensors. The README provides instructions for running it.
-[Download](waf_test.tgz)
+
+[Download WAF test script](waf_test.zip)
 
 #### Sample Alerts
 
