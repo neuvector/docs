@@ -38,22 +38,88 @@ Make sure the following permissions have been set from Microsoft Graph
 
 #### Okta Configuration
 
-Configure the **Login redirect URIs** in Okta Application's General tab with NeuVector's OpenID Connect Redirect URI, and Retrieve Client ID and secret on Okta Application's Sign On Tab.
-![OpenID6](openid6.png)
+Login to your Okta account.
 
-Okta console can operate in two modes, Classic Mode and Developer Mode.
+On the lefthand side menu, click “Applications -> Applications“ 
+In the center pane, click “Create App Integration”:
 
-In the **Classic Mode**, issuer URL is located at Okta Application page's Sign On Tab. In order to have the user's group membership returned in the claim, you need to add "groups" scope in NeuVector OpenID Connect configuration page.
+![create](okta1.png)
 
-In the **Developer Mode**, Okta allows you to customize the claims. This is done in the API page by managing Authorization Servers. The issuer URL is located in each authorization server's Settings tab.
+A new pane will pop up to select the “Sign-in method”:
 
-![OpenID7](openid7.png)
+![newapp](okta2)
 
-In the Claims page, you can create new claims with for user's Groups and carry the claim in ID Token. You can choose to include the claim in the 'Any' Scope. If a specific scope is configured, make sure to add the scope to NeuVector OpenID Connect setting page, so that the claim can be included after the user is authenticated.
+Select “OIDC – OpenID Connect” option.
 
-By default, NeuVector looks for "groups" in the claim to identify the user's group membership. If other claim name is used, you can customize the claim name in NeuVector's OpenID Connect Setting page.
+A derived pane will appear, for “Application Type” selection:
 
-![OpenID8](openid8.png)
+![apptype](okta3.png)
+
+Select “Native Application” option.
+
+The central pane will now show the Native App Integration form where you have to fill in accordingly the following values:
+
+For General Settings section:
+
+App. Integration Name: Name for this integration. Freely choose any name
+Grant Type (check):  
++ Authorization Code
++ Refresh Token
++ Resource Owner Password 
++ Implicit (hybrid) 
+
+For Sign-in redirect URIs section:
+
+Go to your NeuVector console and navigate to “Settings” -> “OpenId Connect Settings”.  At the top of the page, next to “OpenID Connect Redirect URI” label click “Copy to Clipboard”.
+
+![copy](okta4.png)
+
+This will copy to the redirect URI to memory.
+Paste it in its corresponding textbox:
+
+![paste](okta5.png)
+
+For Assignments section:
+
+Select “Allow everyone in your organization to access” to have this integration available for everyone in your org.
+
+![assignments](okta6.png)
+
+Then click the save button at the bottom of the page.
+
+Once your general setting are saved, you will be taken to your new application integration setup and a client Id will be generated automatically.
+
+In “Client Credentials” section, click edit and modify the “Client Authentication” section from “Use PKCE (for public clients)” to “Use Client Authentication”, and hit save. This will generate a new secret automatically which we will need in upcoming NeuVector setup steps:
+
+![clientauth](okta7.png)
+
+Navigate to the “Sign On” tab and edit the “OpenID Connect ID Token” section:
+Change the Issuer from 	“Dynamic (based on request domain)” to the fixed “Okta URL”:
+
+![token](okta8.png)
+
+The Okta console can operate in two modes, Classic Mode and Developer Mode.
+In classic mode, the issuer URL is located at Okta Application page's Sign On Tab. To have the user's group membership returned in the claim, you need to add "groups" scope in the NeuVector OpenID Connect configuration page:
+
+![claims](okta9.png)
+
+In the Developer Mode, Okta allows you to customize the claims. This is done in the API page by managing Authorization Servers (navigate to left hand menu -> Security -> API). The issuer URL is located in each authorization server's Settings tab:
+
+![api](okta10.png)
+
+Claims are name/value pairs that contain information about a user as well as meta-information about the OIDC service. 
+In “OpenID Connect ID Token” section, you can create new claims for user's Groups and carry the claim in the ID Token (an ID Token is a JSON Web Token, a compact URL-Safe means of representing claims to be transferred between two parties, so identity information about the user is encoded right into the token and the token can be definitively verified to prove that is hasn’t been tampered with). If a specific scope is configured, make sure to add the scope to NeuVector OpenID Connect setting page, so that the claim can be included after the user is authenticated:
+
+![scopes](okta11.png)
+
+By default, NeuVector looks for "groups" in the claim to identify the user's group membership. If other claim name is used, you can customize the claim name in NeuVector's OpenID Connect Setting page. To configure claims, edit the “OpenID Connect ID Token” section as shown in the next image:
+
+![claims](okta12.png)
+
+In your application integration page, navigate to “Assignments” tab and make sure you have the corresponding assignments listed:
+
+![assignments](okta13.png)
+
 
 #### NeuVector OpenID Connect Configuration
 
