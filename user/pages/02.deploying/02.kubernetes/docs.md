@@ -264,9 +264,11 @@ Then create the appropriate service(s):
 kubectl create -f nv_master_worker.yaml</code></pre>
 </li>
 <li>Create the primary NeuVector services and pods using the preset Preview version commands or modify the sample yamls below. The preset Preview versions invoke a LoadBalancer for the NeuVector Console. If using the sample yaml files below replace the image names and &lt;version> tags for the manager, controller and enforcer image references in the yaml file. Also make any other modifications required for your deployment environment (such as LoadBalancer/NodePort/Ingress for manager access etc).
-For 5.0.0 Preview with Containerd run-time (see below for Rancher K3s containerd changes):
 <pre>
 <code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/neuvector-containerd-k8s.yaml</code></pre>
+For 5.0.0 Preview with Rancher on K3s containerd run-time:
+<pre>
+<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/neuvector-rancher-containerd-k3s.yaml</code></pre>
 For 5.0.0 Preview with docker run-time:
 <pre>
 <code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/neuvector-docker-k8s.yaml</code></pre>

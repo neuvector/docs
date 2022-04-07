@@ -11,7 +11,10 @@ NeuVector supports automated deployment using the Kubernetes ConfigMap feature. 
 The 'always_reload: true' setting can be added in any ConfigMap yaml to force reload of that yaml every time the controller starts (version 4.3.2+). Otherwise, the ConfigMap will only be loaded at initial startup or after complete cluster restart (see persistent storage section below).
 
 #### Complete Sample NeuVector ConfigMap (initcfg.yaml)
-This contains all the settings available. Please remove the sections not needed and edit the sections needed. Note: If using configmap in a secret, see section below for formatting changes.
+
+The latest ConfigMap can be found [here](https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/initcfg.yaml).
+
+The sample is also shown below. This contains all the settings available. Please remove the sections not needed and edit the sections needed. Note: If using configmap in a secret, see section below for formatting changes.
 ```
 apiVersion: v1
 data:
