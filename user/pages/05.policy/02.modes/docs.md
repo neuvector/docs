@@ -45,8 +45,11 @@ If new services are discovered by NeuVector, for example a previously unknown co
 
 ![NewServiceMode](newservices.png)
 
-#### Split Policy Mode
+#### Network Service Policy Mode
 There is a global setting available in Settings -> Configuration to separately set the network protection mode for enforcement of network rules. Enabling this (default is disabled), causes all network rules to be in the protection mode selected (Discover, Monitor, Protect), while process/file rules remain in the protection mode for that Group, as displayed in the Policy -> Groups screen. In this way, network rules can be set to Protect (blocking), while process/file policy can be set to Monitor, or vice versa.
+
+#### Automated Promotion of Group Modes
+Promotes a Group’s protection Mode based on elapsed time and criteria. This automation does not apply to CRD created Groups. This features allows a new application to run in Discover for some time period, learning the behavior and NeuVector creating allow-list rules for Network and Process, then automatically moving to Monitor, then Protect mode. The criterion for moving from Discover to Monitor mode is: elapsed time for learning all network and process activity of at least one live pod in the Group. The criterion for moving from Monitor to Protect mode is: there are no security events (network, process etc) for the timeframe set for the Group.
 
 ##### Conflict Resolution Between Services In Different Modes
 For network connections between containers in different service groups, if their policy modes are different, the following table shows how the system resolves the conflicts.

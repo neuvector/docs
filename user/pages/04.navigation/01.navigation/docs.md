@@ -124,7 +124,13 @@ Add other users here. Users can be assigned an Admin role, a Read-only role, or 
 ##### Settings -> Configuration
 Configure a unique cluster name, new services mode, and other settings here.
 
+If deploying on a Rancher or OpenShift cluster, authentication can be enabled such that Rancher users or OpenShift users can log into the NeuVector console with the associated RBACs. For Rancher users, a connecting button/link from the Rancher console allows Rancher admin's to open and access the NeuVector console directly.
+
 The [New Service Mode](/policy/modes#new-service-mode) sets which protection mode any new services (applications) previously unknown or undefined in NeuVector will by default be set to. For production environments, it is not recommended to set this to Discover. 
+
+The [Network Service Policy Mode](/policy/modes#network-service-policy-mode), if enabled, applies the selected policy mode globally to the network rules for all groups, and each Group’s individual policy mode will only apply to process and file rules.
+
+The [Automated Promotion of Group Modes](/policy/modes#automated-promotion-of-group-modes) promotes a Group’s protection Mode automatically (from Discover to Monitor to Protect) based on elapsed time and criteria.
 
 The Auto-Deletion of Unused Groups is useful for automated 'clean-up' of the discovered (and auto-created rules for) groups which are no longer in use, especially high-churn development environments. See Policy -> Groups for the list of groups in NeuVector. Removing unused Groups will clean up the Groups list and all associated rules for those groups.
 
