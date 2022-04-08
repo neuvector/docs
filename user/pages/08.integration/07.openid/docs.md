@@ -47,7 +47,7 @@ In the center pane, click “Create App Integration”:
 
 A new pane will pop up to select the “Sign-in method”:
 
-![newapp](okta2)
+![newapp](okta2.png)
 
 Select “OIDC – OpenID Connect” option.
 
