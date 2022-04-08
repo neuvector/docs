@@ -263,9 +263,9 @@ img {
 	<p class="subtitles">Here you can access the complete documentation for NeuVector, the only Kubernetes-native container security platform.</p>
 <p><strong>Important Notice for Preview Version Users </strong></p>
 <p>The images are on the NeuVector Docker Hub registry as:
-<li>neuvector/manager.preview:5.0.0-preview.3</li>
-<li>neuvector/controller.preview:5.0.0-preview.3</li>
-<li>neuvector/enforcer.preview:5.0.0-preview.3</li>
+<li>neuvector/manager:5.0.0-b1</li>
+<li>neuvector/controller:5.0.0-b1</li>
+<li>neuvector/enforcer:5.0.0-b1</li>
 <li>neuvector/scanner.preview:latest</li>
 <li>neuvector/updater.preview:latest</li></p>
 <p>Please be sure to update the image references in appropriate yaml files.</p>

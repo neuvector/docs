@@ -14,9 +14,9 @@ To deploy manually, first pull the appropriate NeuVector containers from the Neu
 ####Important Notice for Preview Version Users
 
 The images are on the NeuVector Docker Hub registry as:
-<li>neuvector/manager.preview:5.0.0-preview.3</li>
-<li>neuvector/controller.preview:5.0.0-preview.3</li>
-<li>neuvector/enforcer.preview:5.0.0-preview.3</li>
+<li>neuvector/manager:5.0.0-b1</li>
+<li>neuvector/controller:5.0.0-b1</li>
+<li>neuvector/enforcer:5.0.0-b1</li>
 <li>neuvector/scanner.preview:latest</li>
 <li>neuvector/updater.preview:latest</li>
 <p>Please be sure to update the image references in appropriate yaml files.</p>

@@ -6,7 +6,7 @@ taxonomy:
 
 
 ### The Full Life-Cycle Container Security Platform
-Note: These docs describe the 5.x (Open Source) version. Preview versions of the 5.x images are accessible from Docker Hub with the preview suffix, e.g. neuvector/controller.preview. For 4.x versions see the [4.x Docs](https://docs.neuvector.com). 
+Note: These docs describe the 5.x (Open Source) version. The 5.x images are accessible from Docker Hub with the appropriate tag, e.g. neuvector/controller:(version). For 4.x versions see the [4.x Docs](https://docs.neuvector.com). 
 
 NeuVector provides a powerful end-to-end container security platform. This includes end-to-end vulnerability scanning and complete run-time protection for containers, pods and hosts, including:
 <ol>

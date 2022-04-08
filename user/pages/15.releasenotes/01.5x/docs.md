@@ -7,6 +7,11 @@ taxonomy:
 
 ### Release Notes for 5.x (Open Source Version)
 
+#### Beta 1 version released April 2022
++ Feature complete, including Automated Promotion of Group Modes. Promotes a Group’s protection Mode based on elapsed time and criteria. Does not apply to CRD created Groups. This features allows a new application to run in Discover for some time period, learning the behavior and NeuVector creating allow-list rules for Network and Process, then automatically moving to Monitor, then Protect mode. Discover to Monitor criterion: Elapsed time for learning all network and process activity of at least one live pod in the Group. Monitor to Protect criterion: There are no security events (network, process etc) for the timeframe set for the Group.
++ Support for Rancher 2.6.4 feature charts.
++ Tags for Enforcer, Manager, Controller: 5.0.0-b1 (e.g. neuvector/controller:5.0.0-b1)
++ Helm chart update appVersion to 5.0.0-b1 and chart version to 2.2.0-b1
 
 ####Preview.3 version released March 2022
 ***Important***: To update previous preview deployments for new CRD WAF, DLP and Admission control features, please update the CRD yaml and add new rbac/role bindings:
@@ -94,9 +99,9 @@ kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --cluster
 ```
 
 6. Update image names and paths for pulling NeuVector images from Docker hub (docker.io), e.g.
-+ neuvector/manager.preview:5.0.0-preview.3
-+ neuvector/controller.preview:5.0.0-preview.3
-+ neuvector/enforcer.preview:5.0.0-preview.3
++ neuvector/manager:5.0.0-b1
++ neuvector/controller:5.0.0-b1
++ neuvector/enforcer:5.0.0-b1
 + neuvector/scanner.preview:latest
 +neuvector/updater.preview:latest
 
