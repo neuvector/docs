@@ -23,8 +23,8 @@ There is a separate section for OpenShift instructions, and Docker EE on Kuberne
 <li>neuvector/manager:5.0.0-b1</li>
 <li>neuvector/controller:5.0.0-b1</li>
 <li>neuvector/enforcer:5.0.0-b1</li>
-<li>neuvector/scanner.preview:latest</li>
-<li>neuvector/updater.preview:latest</li></p>
+<li>neuvector/scanner:latest</li>
+<li>neuvector/updater:latest</li></p>
 <p>Please be sure to update the image references in appropriate yaml files.</p>
 <p>If deploying with the current NeuVector Helm chart (v1.8.9+), the following changes should be made to values.yml:
 <li>Update the registry to docker.io</li>

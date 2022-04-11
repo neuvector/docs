@@ -154,7 +154,7 @@ kubectl create clusterrolebinding neuvector-binding-nvadmissioncontrolsecurityru
 + neuvector/manager:5.0.0-b1
 + neuvector/controller:5.0.0-b1
 + neuvector/enforcer:5.0.0-b1
-+ neuvector/scanner.preview:latest
-+ neuvector/updater.preview:latest
++ neuvector/scanner:latest
++ neuvector/updater:latest
 
 Optionally, remove any references to the NeuVector license and secrets in Helm charts, deployment yaml, configmap, scripts etc, as these are no longer required to pull the images or to start using NeuVector.
