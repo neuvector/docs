@@ -78,7 +78,7 @@ After the build is finished, a NeuVector report will be generated. It will show 
 
 Scenario 1: local configuration example
 
-![local-image](jenkins3a.png)
+![local-image](jenkins_local.png)
 
 Scenario 2: registry configuration example
 
