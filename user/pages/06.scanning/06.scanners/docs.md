@@ -48,6 +48,7 @@ The following scanner environment variables can be used in the docker run comman
 - SCANNER_REGISTRY_USERNAME= user
 - SCANNER_REGISTRY_PASSWORD= password
 - SCANNER_SCAN_LAYERS= true or false
+- SCANNER_ON_DEMAND (optional)
 - CLUSTER_JOIN_ADDR (optional), CLUSTER_JOIN_PORT (optional) - to send results to controller for use in Admission control rules (Kubernetes deployed controller).
 - CLUSTER_ADVERTISED_ADDR (optional) - if scanner is on different host than controller, to send results for use in Admission control rules (Kubernetes deployed controller).
 

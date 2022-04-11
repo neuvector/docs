@@ -1,3 +1,5 @@
+
+
 ---
 title: Jenkins Details
 taxonomy:
@@ -46,12 +48,13 @@ Click the ‘Add Registry’ to enter values for the registry you will use in yo
 
 Scenario 1: global configuration example for local image scan
 
-
 ![global-image](jenkins1a.png)
 
 Scenario 2: global configuration example for registry image scan
 
-![global-registry](jenkins2a.png)
+For global registry configuration, follow the instructions above for local, then add the registry details as below.
+
+![global-registry](registry_console.png)
 
 ##### Stand Alone Scanner
 
@@ -79,7 +82,7 @@ Scenario 1: local configuration example
 
 Scenario 2: registry configuration example
 
-![local-registry](jenkins4a.png)
+![local-registry](jenkins_registry.png)
 
 
 #### Jenkins Pipeline
@@ -94,11 +97,20 @@ Select the NeuVector Vulnerability Scanner from the drop-down, configure it, and
 
 Copy the script into your Jenkins task script.
 
-Simple pipeline script example (to insert into your pipeline script):
+Scenario 1: Simple local pipeline script example (to insert into your pipeline script):
 <pre>
 <code>...
-  stage('Scan image') {
-    neuvector registrySelection: 'Local', repository: 'alpine'
+  stage('Scan local image') {
+    neuvector registrySelection: 'Local', repository: 'your_username/your_image'
+  }
+...</code>
+</pre>
+
+Scenario 2: Simple registry pipeline script example (to insert into your pipeline script):
+<pre>
+<code>...
+  stage('Scan local image') {
+    neuvector registrySelection: 'your_registry', repository: 'your_username/your_image'
   }
 ...</code>
 </pre>
