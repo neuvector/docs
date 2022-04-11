@@ -35,7 +35,7 @@ kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --cluster
 + Support for Federation of clusters (multi-cluster manager) through a proxy.
 + Monitor required rbac's clusterrole/bindings and alert in events and UI if any are missing.
 + Support criteria of resource limitations in admission control rules.
-
++ Removed support for Jfrog Xray scan result integration (Artifactory registry scan is still supported).
 
 #####Bug Fixes
 + Fix issue of worker federation role backup should restore into non-federated clusters.

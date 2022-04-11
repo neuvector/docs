@@ -202,11 +202,6 @@ JFrog management page admin->HTTP Setting showing docker access method  - Reposi
     - To scan all tags for a repository, for example alpine, use alpine:&#42;
     - The wildcard must be preceded by the full name, path, or starting string
     - &#42; to scan all tags
-+ Enable Xray if supported
-+ Add Xray server address
-+ Provide a username and password if required by the Xray server
-![xray](jfrog101.png)
-
 
 ##### Adding JFrog Artifactory registry (Docker Access method – subdomain)
 JFrog management page admin->HTTP Setting showing docker access method – Sub Domain
@@ -225,9 +220,6 @@ Add JFrog Artifactory registry (Docker Access method – subdomain)
     - To scan all tags for a repository, for example alpine, use alpine:&#42;
     - The wildcard must be preceded by the full name, path, or starting string
     - &#42; for scanning all tags from all subdomains
-+ Enable Xray if supported
-    - Add Xray server address
-    - Provide a username and password if required by the Xray server
 
 Note: Create a virtual repository and add all local and remote repository to it. Specify this virtual repository in the filter section to scan all tags from local and remote remote repository.
 
@@ -263,15 +255,11 @@ JFrog management page admin->Local Repository->guo repository-> Advanced - showi
     - The wildcard must be preceded by the full name, path, or starting string
     - &#42; for scanning all tags
 
-+ Enable Xray if supported
-+ Add Xray server address
-+ Provide a username and password if required by the Xray server
-
 Adding JFrog registry for port access method for registry docker-local with port 8181
  
 ![jfrogport](jfrog104.png)
 
-Adding JFrog registry for port access method for registry guo with port 8182
+Adding JFrog registry for port access method for registry with port 8182
 
 ![jfrogport](jfrog105.png)
 
