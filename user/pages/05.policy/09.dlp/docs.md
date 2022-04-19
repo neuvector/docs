@@ -7,8 +7,18 @@ taxonomy:
 ### Data Loss Prevention (DLP) and Web Application Firewall (WAF)
 DLP and WAF uses the Deep Packet Inspection (DPI) of NeuVector to inspect the network payloads of connections for sensitive data violations. NeuVector uses a regular expression (regex) based engine to perform packet filtering functions. Extreme care should be taken when applying sensors to container traffic, as the filtering function incurs additional system overhead and can impact performance of the host.
 
+DLP and WAF filtering are applied differently depending on the group(s) to which they are applied. In general, WAF filtering is applied to inbound and outbound connections except for internal traffic where only inbound filtering is applied. DLP filtering applies to inbound and outbound connections from a 'security domain', but not any internal connections within a security domain. See the detailed descriptions below.
+
+Configuring DLP or WAF is a two step process:
+1. Define and test the sensor(s), which is the set of regular expressions used to match the header, URL, or entire packet.
+2. Apply the desired sensor to a Group, in the Policy -> Groups screen.
+
 ####WAF Sensors
-WAF sensors represent inspection of incoming network traffic to a pod/container. These sensors can be applied to any applicable group, even custom groups (e.g. namespace groups). Incoming traffic to ALL containers within the group will be inspected for WAF rule detection. This means that, while this feature is named WAF, it is useful and applicable to any network traffic, not only web application traffic, and therefore provides broader protections than simple WAFs. Also note that, while similar to DLP, the inspection is for incoming traffic only to EVERY pod/container within the group, while DLP applies inspection to incoming and outgoing traffic from the group only (ie the security boundary), not internal traffic in the group (e.g. not east-west within a Group's containers).
+WAF sensors represent inspection of network traffic to/from a pod/container. These sensors can be applied to any applicable group, even custom groups (e.g. namespace groups). Incoming traffic to ALL containers within the group will be inspected for WAF rule detection. In addition, any outbound (egress) connections external to the cluster will be inspected. 
+
+This means that, while this feature is named WAF, it is useful and applicable to any network traffic, not only web application traffic, and therefore provides broader protections than simple WAFs. For example, API security can be enforced on outbound connections to an external api service, allowing only GET requests and blocking POSTs. 
+
+Also note that, while similar to DLP, the inspection is for incoming traffic to EVERY pod/container within the group, while DLP applies inspection to incoming and outgoing traffic from the group only (ie the security boundary), not internal traffic in the group (e.g. not east-west within a Group's containers).
 
 ![waf](waf_sensors.png)
 

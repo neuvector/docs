@@ -9,6 +9,7 @@ Custom scripts can be run on containers and hosts for use in compliance checks a
 
 <strong>Caution!</strong> Custom scripts should be used with extreme caution. The custom script can run any executable in the container namespace with container privilege. Executables can be very destructive, such as rm, format, fdisk etc. This caution applies to hosts/nodes as well. Custom check scripts on hosts can be even more destructive if they can access the master node in the cluster.
 
++ A custom script is controlled by the run-time policy permission with namespaced RBAC; users should setup the Kubernetes user roles properly.
 + Custom scripts are run with the same privilege as the running container.
 + The compliance result is removed once a custom script is deleted.
 + Custom Compliance checks need to follow a format in order to report the result correctly in the compliance report for the container or node.
