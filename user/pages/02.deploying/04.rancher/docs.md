@@ -44,6 +44,8 @@ Note in the above screen shot, two Rancher users admin and gkosaka have been aut
 
 ![local](local_admin.png)
 
+***Important:*** It is recommended to login directly to the NeuVector console as admin/admin to manually change the admin password to a strong password. This will only change the NeuVector identity provider admin user password (you may see another admin user whose identify provider is Rancher). Alternatively, include a [ConfigMap as a secret](/deploying/production/configmap#protect-sensitive-data-using-a-secret) in the initial deployment from Rancher (see chart values for ConfigMap settings) to set the default admin password to a strong password.
+
 #### Disabling NeuVector/Rancher SSO
 To disable the ability to login to NeuVector from Rancher Manager, go to Settings -> Configuration.
 
