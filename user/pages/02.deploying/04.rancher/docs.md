@@ -4,10 +4,10 @@ taxonomy:
     category: docs
 ---
 
-### Deploy and Manage NeuVector through Rancher
-NeuVector is able to be deployed easily through Rancher charts and managed through Rancher Manager. The default (Helm-based) NeuVector deployment will deploy NeuVector containers into the cattle-neuvector-system namespace in the NeuVector project.
+### Deploy and Manage NeuVector through Rancher Apps & Marketplace
+NeuVector is able to be deployed easily through Rancher Apps and Marketplace and managed through Rancher Manager. The default (Helm-based) NeuVector deployment will deploy NeuVector containers into the cattle-neuvector-system namespace in the NeuVector project.
 
-Note: Only NeuVector deployments through Rancher charts can be managed directly (single sign on to NeuVector console) through Rancher. If adding clusters to Rancher with NeuVector already deployed, or where NeuVector has been deployed directly onto the cluster, these clusters will not be enabled for SSO integration.
+Note: Only NeuVector deployments through Apps & Marketplace of Rancher version 2.6.5+ can be managed directly (single sign on to NeuVector console) through Rancher. If adding clusters to Rancher with NeuVector already deployed, or where NeuVector has been deployed directly onto the cluster, these clusters will not be enabled for SSO integration.
 
 ####Deploy NeuVector
 
@@ -34,13 +34,13 @@ After successful NeuVector deployment, you will see a summary of the deployments
 
 You will now see a NeuVector menu item in the left, and selecting that will show a NeuVector tile/button, which when clicked will take you to the NeuVector console, in a new tab.
 
-![nv_console[(nv_access.png)
+![nv_console](nv_access.png)
 
 When this Single Sign On (SSO) access method is used for the first time, a corresponding user in the NeuVector cluster is created for the Rancher user login. The same user name of the Rancher logged in user will be created in NeuVector, with a role of either admin or fedAdmin, and Identity provider as Rancher. 
 
 ![users](nv_admin.png)
 
-Note in the above screen shot, two Rancher users admin and gkosaka have been automatically created for SSO. If another user is create manually in NeuVector, the Identity provider would shown as NeuVector, as shown below. This local admin user can login directly to the NeuVector console.
+Note in the above screen shot, two Rancher users admin and gkosaka have been automatically created for SSO. If another user is create manually in NeuVector, the Identity provider would be listed as NeuVector, as shown below. This local user can login directly to the NeuVector console without going through Rancher.
 
 ![local](local_admin.png)
 
