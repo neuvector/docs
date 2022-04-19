@@ -4,7 +4,53 @@ taxonomy:
     category: docs
 ---
 
-### Deploy Separate NeuVector Components with Rancher
+### Deploy and Manage NeuVector through Rancher
+NeuVector is able to be deployed easily through Rancher charts and managed through Rancher Manager. The default (Helm-based) NeuVector deployment will deploy NeuVector containers into the cattle-neuvector-system namespace in the NeuVector project.
+
+Note: Only NeuVector deployments through Rancher charts can be managed directly (single sign on to NeuVector console) through Rancher. If adding clusters to Rancher with NeuVector already deployed, or where NeuVector has been deployed directly onto the cluster, these clusters will not be enabled for SSO integration.
+
+####Deploy NeuVector
+
+First, find the NeuVector chart in Rancher charts, select it and review the instructions and various configuration values.
+
+![rancher_chart](rancher_chart.png)
+
+Deploy the NeuVector chart, first configuring appropriate values for a Rancher deployment, such as:
++ Container run-time, e.g. docker for RKE and containerd for RKE2, or select the K3s value if using K3s.
++ Manager service type: change to LoadBalancer if available on public cloud deployments.
++ Indicate if this cluster will be either a multi-cluster federated Primary, or remote (or select both if either option is desired).
++ Persistent volume for configuration backups
++ Note: If daily updates of scanner database is desired, may need to change the  scanner image path to neuvector/scanner and tag to latest.
+
+![nv_values](rancher_chart_values.png)
+
+Click 'Install' after you have reviewed and updated any chart values.
+
+After successful NeuVector deployment, you will see a summary of the deployments, daemon sets, and cron job for NeuVector. You will also be able to see the services deployed in the Services Discovery menu on the left.
+
+![deployed](nv_deployed.png)
+
+####Manage NeuVector
+
+You will now see a NeuVector menu item in the left, and selecting that will show a NeuVector tile/button, which when clicked will take you to the NeuVector console, in a new tab.
+
+![nv_console[(nv_access.png)
+
+When this Single Sign On (SSO) access method is used for the first time, a corresponding user in the NeuVector cluster is created for the Rancher user login. The same user name of the Rancher logged in user will be created in NeuVector, with a role of either admin or fedAdmin, and Identity provider as Rancher. 
+
+![users](nv_admin.png)
+
+Note in the above screen shot, two Rancher users admin and gkosaka have been automatically created for SSO. If another user is create manually in NeuVector, the Identity provider would shown as NeuVector, as shown below. This local admin user can login directly to the NeuVector console.
+
+![local](local_admin.png)
+
+#### Disabling NeuVector/Rancher SSO
+To disable the ability to login to NeuVector from Rancher Manager, go to Settings -> Configuration.
+
+![rancher_sso](rancher_sso.png)
+
+
+####Rancher Legacy Deployments
 The sample file will deploy one manager and 3 controllers. It will deploy an enforcer on every node. See the bottom section for specifying dedicated manager or controller nodes using node labels. Note: It is not recommended to deploy (scale) more than one manager behind a load balancer due to potential session state issues.
 
 Note: Deployment on Rancher 2.x/Kubernetes should follow the Kubernetes reference section and/or Helm based deployment.
