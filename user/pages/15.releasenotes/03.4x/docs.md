@@ -6,6 +6,10 @@ taxonomy:
 
 
 ### Release Notes for 4.x
+
+#### 4.4.4-s3 Security Patch April 2022
++ Update all images to remediate high [CVE-2022-28391](https://nvd.nist.gov/vuln/detail/CVE-2022-28391) in busybox (alpine).
+
 #### 4.4.4-s2 Security Patch March 2022
 + Update to remediate CVE-2022-0778, an OpenSSL vulnerability found in the Alpine base image used by NeuVector images. Short description: It is possible to trigger an infinite loop by crafting a certificate that has invalid elliptic curve parameters. Since certificate parsing happens before verification of the certificate signature, any process that parses an externally supplied certificate may be subject to a denial of service attack. More details can be found at the following links. 
   - https://security.alpinelinux.org/vuln/CVE-2022-0778

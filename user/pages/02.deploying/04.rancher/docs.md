@@ -5,19 +5,19 @@ taxonomy:
 ---
 
 ### Deploy and Manage NeuVector through Rancher Apps & Marketplace
-NeuVector is able to be deployed easily through Rancher Apps and Marketplace and managed through Rancher Manager. The default (Helm-based) NeuVector deployment will deploy NeuVector containers into the cattle-neuvector-system namespace in the NeuVector project.
+NeuVector is able to be deployed easily through Rancher Apps and Marketplace and managed through Rancher Manager. The default (Helm-based) NeuVector deployment will deploy NeuVector containers into the cattle-neuvector-system namespace.
 
 Note: Only NeuVector deployments through Apps & Marketplace of Rancher version 2.6.5+ can be managed directly (single sign on to NeuVector console) through Rancher. If adding clusters to Rancher with NeuVector already deployed, or where NeuVector has been deployed directly onto the cluster, these clusters will not be enabled for SSO integration.
 
 ####Deploy NeuVector
 
-First, find the NeuVector chart in Rancher charts, select it and review the instructions and various configuration values.
+First, find the NeuVector chart in Rancher charts, select it and review the instructions and various configuration values. (Optional) Create a project to deploy into if desired, e.g. NeuVector. Note: If you see more than one NeuVector chart, don't select the one that is for upgrading legacy NeuVector 4.x Helm chart deployments.
 
 ![rancher_chart](rancher_chart.png)
 
 Deploy the NeuVector chart, first configuring appropriate values for a Rancher deployment, such as:
 + Container run-time, e.g. docker for RKE and containerd for RKE2, or select the K3s value if using K3s.
-+ Manager service type: change to LoadBalancer if available on public cloud deployments.
++ Manager service type: change to LoadBalancer if available on public cloud deployments. If access is only desired through Rancher, any allowed value will work here. See the Important note below about changing the default admin password in NeuVector.
 + Indicate if this cluster will be either a multi-cluster federated Primary, or remote (or select both if either option is desired).
 + Persistent volume for configuration backups
 + Note: If daily updates of scanner database is desired, may need to change the  scanner image path to neuvector/scanner and tag to latest.
