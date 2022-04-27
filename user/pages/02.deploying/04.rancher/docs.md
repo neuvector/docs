@@ -20,7 +20,6 @@ Deploy the NeuVector chart, first configuring appropriate values for a Rancher d
 + Manager service type: change to LoadBalancer if available on public cloud deployments. If access is only desired through Rancher, any allowed value will work here. See the Important note below about changing the default admin password in NeuVector.
 + Indicate if this cluster will be either a multi-cluster federated Primary, or remote (or select both if either option is desired).
 + Persistent volume for configuration backups
-+ Note: If daily updates of scanner database is desired, may need to change the  scanner image path to neuvector/scanner and tag to latest.
 
 ![nv_values](rancher_chart_values.png)
 
