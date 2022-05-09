@@ -7,11 +7,91 @@ taxonomy:
 
 ### Release Notes for 5.x (Open Source Version)
 
+#### 5.0.0 General Availability (GA) Release May 2022
+#####Enhancements
++ Automated Promotion of Group Modes. Promotes a Group’s protection Mode based on elapsed time and criteria. Does not apply to CRD created Groups. This features allows a new application to run in Discover for some time period, learning the behavior and NeuVector creating allow-list rules for Network and Process, then automatically moving to Monitor, then Protect mode. Discover to Monitor criterion: Elapsed time for learning all network and process activity of at least one live pod in the Group. Monitor to Protect criterion: There are no security events (network, process etc) for the timeframe set for the Group.
++ Support for Rancher 2.6.5 Apps and Marketplace chart. Deploys into cattle-neuvector-system namespace and enables SSO from Rancher to NeuVector. Note: Previous deployments from Rancher (e.g. Partner catalog charts, version 1.9.x and earlier), must be completely removed in order to update to the new chart.
++ Support scanning of SUSE Linux (SLE, SLES), and Microsoft Mariner
++ Zero-drift process and file protection. This is the new default mode for process and file protections. Zero-drift automatically allows only processes which originate from the parent process that is in the original container image, and does not allow file updates or new files to be installed. When in Discover or Monitor mode, zero-drift will alert on any suspicious process or file activity. In Protect mode, it will block such activity. Zero-drift does not require processes to be learned or added to an allow-list. Disabling zero-drift for a group will cause the process and file rules listed for the group to take effect instead.
++ Split policy mode protection for network, process/file. There is now a global setting available in Settings -> Configuration to separately set the network protection mode for enforcement of network rules. Enabling this (default is disabled), causes all network rules to be in the protection mode selected (Discover, Monitor, Protect), while process/file rules remain in the protection mode for that Group, as displayed in the Policy -> Groups screen. In this way, network rules can be set to Protect (blocking), while process/file policy can be set to Monitor, or vice versa.
++ WAF rule detection, enhanced DLP rules (header, URL, full packet). Used for ingress connections to web application pods as well as outbound connections to api-services to enforce api security.
++ CRD for WAF, DLP and admission controls. NOTE: required additional cluster role bindings/permissions. See Kubernetes and OpenShift deployment sections. CRD import/export and versioning for admission controls supported through CRD. 
++ Rancher SSO integration to launch NeuVector console through Rancher Manager. This feature is only available if the NeuVector containers are deployed through Rancher. This deployment pulls from the mirrored Rancher repository (e.g. rancher/mirrored-neuvector-controller:5.0.0) and deploys into the cattle-neuvector-system namespace. NOTE: Requires updated Rancher release 2.6.5 May 2022 or later, and only admin and cluster owner roles are supported at this time.
++ Supports deployment on RKE2.
++ Support for Federation of clusters (multi-cluster manager) through a proxy. Configure proxy in Settings -> Configuration, and enable proxy when configuring federation connections.
++ Monitor required rbac's clusterrole/bindings and alert in events and UI if any are missing.
++ Support criteria of resource limitations in admission control rules.
++ Support Microsoft Teams format for webhooks.
++ Support AD/LDAP nested groups under mapped role group.
++ Support clusterrolebindings or rolebindings with group info in IDP for Openshift.
+
+#####Bug Fixes
++ Fix issue of worker federation role backup should restore into non-federated clusters.
++ Improve page loading times for large number of CVEs in Security Risks -> Vulnerabilities
++ Allow user to switch mode when they select all groups in Policy -> Groups menu. Warn if the Nodes group is also selected.
++ Collapse compliance check items of the same name and make expandable.
++ Enhance security of gRPC communications.
++ Fixed: unable to get correct workload privileged info in rke2 setup.
++ Fix issue with support of openSUSE Leap 15.3 (k8s/crio).
+
+
+####Other Updates
++ Helm chart update appVersion to 5.0.0 and chart version to 2.2.0
++ Removed serverless scanning feature/menu.
++ Removed support for Jfrog Xray scan result integration (Artifactory registry scan is still supported).
++ Support for deployment on ECS is no longer provided. The allinone should still be able to be deployed on ECS, however, the documentation of the steps and settings is no longer supported.
+
+
+### Upgrading from NeuVector 4.x to 5.x
+
+For Helm users, update to NeuVector Helm chart 2.0.0 or later.
+
+1. Delete old neuvector-binding-customresourcedefinition clusterrole
+```
+kubectl delete clusterrole neuvector-binding-customresourcedefinition
+```
+
+2. Apply new update verb for neuvector-binding-customresourcedefinition clusterrole
+```
+kubectl create clusterrole neuvector-binding-customresourcedefinition --verb=watch,create,get,update --resource=customresourcedefinitions
+```
+
+3. Delete old crd schema for Kubernetes 1.19+
+```
+kubectl delete -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/crd-k8s-1.19.yaml
+```
+
+4. Create new crd schema for Kubernetes 1.19+
+```
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/waf-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/dlp-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/admission-crd-k8s-1.19.yaml
+```
+
+5. Create a new DLP and WAF clusterrole and clusterrolebinding
+```
+kubectl create clusterrole neuvector-binding-nvwafsecurityrules --verb=list,delete --resource=nvwafsecurityrules
+kubectl create clusterrolebinding neuvector-binding-nvwafsecurityrules --clusterrole=neuvector-binding-nvwafsecurityrules --serviceaccount=neuvector:default
+kubectl create clusterrole neuvector-binding-nvadmissioncontrolsecurityrules --verb=list,delete --resource=nvadmissioncontrolsecurityrules
+kubectl create clusterrolebinding neuvector-binding-nvadmissioncontrolsecurityrules --clusterrole=neuvector-binding-nvadmissioncontrolsecurityrules --serviceaccount=neuvector:defaultkubectl create clusterrole neuvector-binding-nvdlpsecurityrules --verb=list,delete --resource=nvdlpsecurityrules
+kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --clusterrole=neuvector-binding-nvdlpsecurityrules --serviceaccount=neuvector:default
+```
+
+6. Update image names and paths for pulling NeuVector images from Docker hub (docker.io), e.g.
++ neuvector/manager:5.0.0
++ neuvector/controller:5.0.0
++ neuvector/enforcer:5.0.0
++ neuvector/scanner:latest
++ neuvector/updater:latest
+
+Optionally, remove any references to the NeuVector license and registry secret in Helm charts, deployment yaml, configmap, scripts etc, as these are no longer required to pull the images or to start using NeuVector.
+
 #### Beta 1 version released April 2022
 + Feature complete, including Automated Promotion of Group Modes. Promotes a Group’s protection Mode based on elapsed time and criteria. Does not apply to CRD created Groups. This features allows a new application to run in Discover for some time period, learning the behavior and NeuVector creating allow-list rules for Network and Process, then automatically moving to Monitor, then Protect mode. Discover to Monitor criterion: Elapsed time for learning all network and process activity of at least one live pod in the Group. Monitor to Protect criterion: There are no security events (network, process etc) for the timeframe set for the Group.
 + Support for Rancher 2.6.5 Apps and Marketplace chart. Deploys into cattle-neuvector-system namespace and enables SSO from Rancher to NeuVector. Note: Previous deployments from Rancher (e.g. Partner catalog charts, version 1.9.x and earlier), must be completely removed in order to update to the new chart.
 + Tags for Enforcer, Manager, Controller: 5.0.0-b1 (e.g. neuvector/controller:5.0.0-b1)
-+ Helm chart update appVersion to 5.0.0-b1 and chart version to 2.2.0-b1
+
 
 ####Preview.3 version released March 2022
 ***Important***: To update previous preview deployments for new CRD WAF, DLP and Admission control features, please update the CRD yaml and add new rbac/role bindings:
@@ -35,7 +115,7 @@ kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --cluster
 + Support for Federation of clusters (multi-cluster manager) through a proxy.
 + Monitor required rbac's clusterrole/bindings and alert in events and UI if any are missing.
 + Support criteria of resource limitations in admission control rules.
-+ Removed support for Jfrog Xray scan result integration (Artifactory registry scan is still supported).
+
 
 #####Bug Fixes
 + Fix issue of worker federation role backup should restore into non-federated clusters.
@@ -62,50 +142,7 @@ Support for deployment on ECS is no longer provided. The allinone should still b
   - Leave the imagePullSecrets empty
 
 
-### Upgrading from NeuVector 4.x to 5.x
 
-For Helm users, update to NeuVector Helm chart 1.8.9 or later.
-
-1. Delete old neuvector-binding-customresourcedefinition clusterrole
-```
-kubectl delete clusterrole neuvector-binding-customresourcedefinition
-```
-
-2. Apply new update verb for neuvector-binding-customresourcedefinition clusterrole
-```
-kubectl create clusterrole neuvector-binding-customresourcedefinition --verb=watch,create,get,update --resource=customresourcedefinitions
-```
-
-3. Delete old crd schema for Kubernetes 1.19+
-```
-kubectl delete -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/crd-k8s-1.19.yaml
-```
-
-4. Create new crd schema for Kubernetes 1.19+
-```
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/latest/crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/latest/waf-crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/latest/admission-crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/latest/dlp-crd-k8s-1.19.yaml
-```
-
-5. Create a new DLP and WAF clusterrole and clusterrolebinding
-```
-kubectl create clusterrole neuvector-binding-nvwafsecurityrules --verb=list,delete --resource=nvwafsecurityrules
-kubectl create clusterrolebinding neuvector-binding-nvwafsecurityrules --clusterrole=neuvector-binding-nvwafsecurityrules --serviceaccount=neuvector:default
-kubectl create clusterrole neuvector-binding-nvadmissioncontrolsecurityrules --verb=list,delete --resource=nvadmissioncontrolsecurityrules
-kubectl create clusterrolebinding neuvector-binding-nvadmissioncontrolsecurityrules --clusterrole=neuvector-binding-nvadmissioncontrolsecurityrules --serviceaccount=neuvector:defaultkubectl create clusterrole neuvector-binding-nvdlpsecurityrules --verb=list,delete --resource=nvdlpsecurityrules
-kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --clusterrole=neuvector-binding-nvdlpsecurityrules --serviceaccount=neuvector:default
-```
-
-6. Update image names and paths for pulling NeuVector images from Docker hub (docker.io), e.g.
-+ neuvector/manager:5.0.0-b1
-+ neuvector/controller:5.0.0-b1
-+ neuvector/enforcer:5.0.0-b1
-+ neuvector/scanner:latest
-+neuvector/updater:latest
-
-Optionally, remove any references to the NeuVector license and secrets in Helm charts, deployment yaml, configmap, scripts etc, as these are no longer required to pull the images or to start using NeuVector.
 
 
 
