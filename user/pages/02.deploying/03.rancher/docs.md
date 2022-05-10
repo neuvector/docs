@@ -15,6 +15,8 @@ First, find the NeuVector chart in Rancher charts, select it and review the inst
 
 ![rancher_chart](rancher_chart.png)
 
+Create the namespace cattle-system-neuvector. This is a fixed namespace for deployment and is required to properly enabled single sign-on.
+
 Deploy the NeuVector chart, first configuring appropriate values for a Rancher deployment, such as:
 + Container run-time, e.g. docker for RKE and containerd for RKE2, or select the K3s value if using K3s.
 + Manager service type: change to LoadBalancer if available on public cloud deployments. If access is only desired through Rancher, any allowed value will work here. See the Important note below about changing the default admin password in NeuVector.

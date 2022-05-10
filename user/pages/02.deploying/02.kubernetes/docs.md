@@ -18,11 +18,11 @@ NeuVector supports Helm-based deployment with a Helm chart at https://github.com
 
 There is a separate section for OpenShift instructions, and Docker EE on Kubernetes has some special steps described in the Docker section.
 
-####Important Notice for Preview Version Users
-<p>The images are on the NeuVector Docker Hub registry as:
-<li>neuvector/manager:5.0.0-b1</li>
-<li>neuvector/controller:5.0.0-b1</li>
-<li>neuvector/enforcer:5.0.0-b1</li>
+####NeuVector Images on Docker Hub
+<p>The images are on the NeuVector Docker Hub registry. Use the appropriate version tag for the manager, controller, enforcer, and leave the version as 'latest' for scanner and updater. For example:
+<li>neuvector/manager:5.0.0</li>
+<li>neuvector/controller:5.0.0</li>
+<li>neuvector/enforcer:5.0.0</li>
 <li>neuvector/scanner:latest</li>
 <li>neuvector/updater:latest</li></p>
 <p>Please be sure to update the image references in appropriate yaml files.</p>
@@ -30,6 +30,8 @@ There is a separate section for OpenShift instructions, and Docker EE on Kuberne
 <li>Update the registry to docker.io</li>
 <li>Update image names/tags to the preview version on Docker hub, as shown above</li>
 <li>Leave the imagePullSecrets empty</li></p>
+
+Note: If deploying from the Rancher Manager 2.6.5+ NeuVector chart, images are pulled automatically from the Rancher NeuVector mirrored image repo, and deploys into the cattle-neuvector-system namespace.
 
 ###Deploy NeuVector
 

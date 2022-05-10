@@ -11,14 +11,14 @@ NeuVector supports Helm-based deployment with a [Helm chart](https://github.com/
 
 To deploy manually, first pull the appropriate NeuVector containers from the NeuVector registry into your local registry. Note: the scanner image should be pulled regularly for CVE database updates from NeuVector.
 
-####Important Notice for Preview Version Users
+####NeuVector Images on Docker Hub
 
-The images are on the NeuVector Docker Hub registry as:
-<li>neuvector/manager:5.0.0-b1</li>
-<li>neuvector/controller:5.0.0-b1</li>
-<li>neuvector/enforcer:5.0.0-b1</li>
+<p>The images are on the NeuVector Docker Hub registry. Use the appropriate version tag for the manager, controller, enforcer, and leave the version as 'latest' for scanner and updater. For example:
+<li>neuvector/manager:5.0.0</li>
+<li>neuvector/controller:5.0.0</li>
+<li>neuvector/enforcer:5.0.0</li>
 <li>neuvector/scanner:latest</li>
-<li>neuvector/updater:latest</li>
+<li>neuvector/updater:latest</li></p>
 <p>Please be sure to update the image references in appropriate yaml files.</p>
 <p>If deploying with the current NeuVector Helm chart (v1.8.9+), the following changes should be made to values.yml:
 <li>Update the registry to docker.io</li>

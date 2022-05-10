@@ -150,11 +150,12 @@ kubectl create clusterrole neuvector-binding-nvadmissioncontrolsecurityrules --v
 kubectl create clusterrolebinding neuvector-binding-nvadmissioncontrolsecurityrules --clusterrole=neuvector-binding-nvadmissioncontrolsecurityrules --serviceaccount=neuvector:default
 ```
 
-6. Update image names and paths for pulling NeuVector images from Docker hub (docker.io), e.g.
-+ neuvector/manager:5.0.0-b1
-+ neuvector/controller:5.0.0-b1
-+ neuvector/enforcer:5.0.0-b1
-+ neuvector/scanner:latest
-+ neuvector/updater:latest
+6. Update image names and paths for pulling NeuVector images from Docker hub (docker.io).
+<p>The images are on the NeuVector Docker Hub registry. Use the appropriate version tag for the manager, controller, enforcer, and leave the version as 'latest' for scanner and updater. For example:
+<li>neuvector/manager:5.0.0</li>
+<li>neuvector/controller:5.0.0</li>
+<li>neuvector/enforcer:5.0.0</li>
+<li>neuvector/scanner:latest</li>
+<li>neuvector/updater:latest</li></p>
 
 Optionally, remove any references to the NeuVector license and secrets in Helm charts, deployment yaml, configmap, scripts etc, as these are no longer required to pull the images or to start using NeuVector.

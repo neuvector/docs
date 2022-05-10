@@ -14,10 +14,10 @@ The controller manages the cluster of enforcers, and can be deployed on the same
 If you haven’t done so, pull the images from the NeuVector docker hub.
 
 <p><strong>Important Notice for Preview Version Users </strong></p>
-<p>The images are on the NeuVector Docker Hub registry as:
-<li>neuvector/manager:5.0.0-b1</li>
-<li>neuvector/controller:5.0.0-b1</li>
-<li>neuvector/enforcer:5.0.0-b1</li>
+<p>The images are on the NeuVector Docker Hub registry. Use the appropriate version tag for the manager, controller, enforcer, and leave the version as 'latest' for scanner and updater. For example:
+<li>neuvector/manager:5.0.0</li>
+<li>neuvector/controller:5.0.0</li>
+<li>neuvector/enforcer:5.0.0</li>
 <li>neuvector/scanner:latest</li>
 <li>neuvector/updater:latest</li></p>
 <p>Please be sure to update the image references in appropriate yaml files.</p>
