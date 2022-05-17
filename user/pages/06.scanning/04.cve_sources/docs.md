@@ -62,6 +62,7 @@ docker exec scanner scanner -v -d /etc/neuvector/db/
 | Source | URL | 
 | ------ | --------------------------------------------------- | 
 |nvd and Mitre |https://nvd.nist.gov/feeds/json/cve/1.1 |
+|SUSE linux |https://ftp.suse.com/pub/projects/security/oval/ |
 |ubuntu |https://launchpad.net/ubuntu-cve-tracker  |
 |redhat |https://www.redhat.com/security/data/oval/v2/ |
 |debian |https://security-tracker.debian.org/tracker/data/json |
@@ -76,7 +77,8 @@ docker exec scanner scanner -v -d /etc/neuvector/db/
 |apache |https://www.cvedetails.com/vendor/45/Apache.html |
 |java |https://openjdk.java.net/groups/vulnerability/advisories/  |
 |python |https://github.com/pyupio/safety-db |
-|github maven|https://github.com/advisories?query=maven|
+|github maven|https://github.com/advisories?query=maven |
+|Microsoft mariner |https://github.com/microsoft/CBL-MarinerVulnerabilityData |
 
 Note: NVD is a superset of CVE https://cve.mitre.org/about/cve_and_nvd_relationship.html
 

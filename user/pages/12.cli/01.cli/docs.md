@@ -67,7 +67,7 @@ MODES:
   Turn off debug mdoe.
 ```
 
-All CLI commands are listed below.
+More CLI commands are listed below.
 
 
 ## Command Line Reference & Commands
@@ -133,11 +133,8 @@ Options:
   -h, --help  Show this message and exit.
 
 Commands:
-  email     Set user Email address.
-  locale    Set user locale.
-  password  Set user password.
-  role      Set user role.
-  timeout   Set user idle timeout in seconds (30 ~ 3600).
+  local   Set local user.
+  remote  Set remote user.
 ```
 
 ```
@@ -150,8 +147,8 @@ Options:
   -h, --help  Show this message and exit.
 
 Commands:
-  email    Unset user Email address.
-  timeout  Unset user idle timeout.
+  local   Unset local user.
+  remote  Unset remote user.
 ```
   
 ```
