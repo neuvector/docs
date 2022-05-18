@@ -44,7 +44,7 @@ taxonomy:
 
 ### Upgrading from NeuVector 4.x to 5.x
 
-For Helm users, update to NeuVector Helm chart 2.0.0 or later.
+For Helm users, update to NeuVector Helm chart 2.0.0 or later. If updating an Operator or Helm install on OpenShift, see note below.
 
 1. Delete old neuvector-binding-customresourcedefinition clusterrole
 ```
@@ -69,7 +69,7 @@ kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kube
 kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/admission-crd-k8s-1.19.yaml
 ```
 
-5. Create a new DLP and WAF clusterrole and clusterrolebinding
+5. Create a new Admission, DLP and WAF clusterrole and clusterrolebinding
 ```
 kubectl create clusterrole neuvector-binding-nvwafsecurityrules --verb=list,delete --resource=nvwafsecurityrules
 kubectl create clusterrolebinding neuvector-binding-nvwafsecurityrules --clusterrole=neuvector-binding-nvwafsecurityrules --serviceaccount=neuvector:default
@@ -87,6 +87,13 @@ kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --cluster
 + neuvector/updater:latest
 
 Optionally, remove any references to the NeuVector license and registry secret in Helm charts, deployment yaml, configmap, scripts etc, as these are no longer required to pull the images or to start using NeuVector.
+
+**Note about SCC and Upgrading via Operator/Helm**
+
+Privileged SCC is added to the Service Account specified in the deployment yaml by Operator version 1.3.4 and above in new deployments. In the case of upgrading the NeuVector Operator from a previous version to 1.3.4 or Helm to 2.0.0, please delete Privileged SCC before upgrading.
+```
+oc delete rolebinding -n neuvector system:openshift:scc:privileged
+```
 
 #### Beta 1 version released April 2022
 + Feature complete, including Automated Promotion of Group Modes. Promotes a Group’s protection Mode based on elapsed time and criteria. Does not apply to CRD created Groups. This features allows a new application to run in Discover for some time period, learning the behavior and NeuVector creating allow-list rules for Network and Process, then automatically moving to Monitor, then Protect mode. Discover to Monitor criterion: Elapsed time for learning all network and process activity of at least one live pod in the Group. Monitor to Protect criterion: There are no security events (network, process etc) for the timeframe set for the Group.

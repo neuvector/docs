@@ -118,7 +118,7 @@ spec:
 
 ### Upgrading from NeuVector 4.x to 5.x
 
-For Helm users, update to NeuVector Helm chart 1.8.9 or later.
+For Helm users, update to NeuVector Helm chart 2.0.0 or later. If updating an Operator or Helm install on OpenShift, see note below.
 
 1. Delete old neuvector-binding-customresourcedefinition clusterrole
 ```
@@ -137,25 +137,35 @@ kubectl delete -f https://raw.githubusercontent.com/neuvector/manifests/main/kub
 
 4. Create new crd schema for Kubernetes 1.19+
 ```
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/latest/crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/latest/waf-crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/latest/admission-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/waf-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/dlp-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/admission-crd-k8s-1.19.yaml
 ```
 
-5. Create a new neuvector-binding-nvwafsecurityrules clusterrole and clusterrolebinding
+5. Create a new DLP, WAP, Admission clusterrole and clusterrolebinding
 ```
 kubectl create clusterrole neuvector-binding-nvwafsecurityrules --verb=list,delete --resource=nvwafsecurityrules
 kubectl create clusterrolebinding neuvector-binding-nvwafsecurityrules --clusterrole=neuvector-binding-nvwafsecurityrules --serviceaccount=neuvector:default
 kubectl create clusterrole neuvector-binding-nvadmissioncontrolsecurityrules --verb=list,delete --resource=nvadmissioncontrolsecurityrules
 kubectl create clusterrolebinding neuvector-binding-nvadmissioncontrolsecurityrules --clusterrole=neuvector-binding-nvadmissioncontrolsecurityrules --serviceaccount=neuvector:default
+kubectl create clusterrole neuvector-binding-nvdlpsecurityrules --verb=list,delete --resource=nvdlpsecurityrules
+kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --clusterrole=neuvector-binding-nvdlpsecurityrules --serviceaccount=neuvector:default
 ```
 
 6. Update image names and paths for pulling NeuVector images from Docker hub (docker.io).
-<p>The images are on the NeuVector Docker Hub registry. Use the appropriate version tag for the manager, controller, enforcer, and leave the version as 'latest' for scanner and updater. For example:
-<li>neuvector/manager:5.0.0</li>
-<li>neuvector/controller:5.0.0</li>
-<li>neuvector/enforcer:5.0.0</li>
-<li>neuvector/scanner:latest</li>
-<li>neuvector/updater:latest</li></p>
+The images are on the NeuVector Docker Hub registry. Use the appropriate version tag for the manager, controller, enforcer, and leave the version as 'latest' for scanner and updater. For example:
++ neuvector/manager:5.0.0
++ neuvector/controller:5.0.0
++ neuvector/enforcer:5.0.0
++ neuvector/scanner:latest
++ neuvector/updater:latest
 
 Optionally, remove any references to the NeuVector license and secrets in Helm charts, deployment yaml, configmap, scripts etc, as these are no longer required to pull the images or to start using NeuVector.
+
+**Note about SCC and Upgrading via Operator/Helm**
+
+Privileged SCC is added to the Service Account specified in the deployment yaml by Operator version 1.3.4 and above in new deployments. In the case of upgrading the NeuVector Operator from a previous version to 1.3.4 or Helm to 2.0.0, please delete Privileged SCC before upgrading.
+```
+oc delete rolebinding -n neuvector system:openshift:scc:privileged
+```

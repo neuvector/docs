@@ -17,7 +17,7 @@ To deploy the latest NeuVector container versions, please use either the [Red Ha
 
 Privileged SCC is added to the Service Account specified in the deployment yaml by Operator version 1.3.4 and above in new deployments. In the case of upgrading the NeuVector Operator from a previous version to 1.3.4, please delete Privileged SCC before upgrading.
 ```
-oc delete rolebinding -nneuvector system:openshift:scc:privileged
+oc delete rolebinding -n neuvector system:openshift:scc:privileged
 ```
 
 **Important**: NeuVector Certified Operator versions are tied to NeuVector product versions, and each new version must go through a certification process with Red Hat before being published. Version 1.3.4 operator version is tied to NeuVector 5.0.0. Version 1.2.7 of the NeuVector Certified Operator deploys version 4.2.2 of NeuVector, and 1.2.8 deploys Neuvector 4.3.1. If you wish to be able to change the version tags of the NeuVector containers deployed, please use the Community version.
