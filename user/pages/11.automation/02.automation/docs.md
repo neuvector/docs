@@ -158,6 +158,20 @@ Sample output:
   }
 }
 ```
+#### Report if a vulnerability is in the base image layers
+To identify CVE's in the base image when using REST API to scan images, the base image must be identified in the API call, as in the example below.
+```
+curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" -d '{"request": {"registry": "https://registry.hub.docker.com/", "repository": "garricktam/debian", "tag": "latest", "scan_layers": false, "base_image": "2244...../nodejs:3.2......"}}' "https://$RESTURL/v1/scan/repository"
+{noformat}
+```
+
+<strong>Limitations:</strong> If the image to be scanned is a remote image, with "registry" specified, the base image must also be a remote image, and the name must start with http or https.  If the image to be scanned is a local image, then the base image must also be a local image as well. 
+For example,
+```
+{"request": {"repository": "neuvector/manager", "tag": "4.0.2", "scan_layers": true, "base_image": "alpine:3.12.0"}}
+{"request": {"registry": "https://10.1.127.12:5000/", "repository": "neuvector/manager", "tag": "4.0.0", "scan_layers": true, "base_image": "https://registry.hub.docker.com/alpine:3.12.0"}}
+{"request": {"repository": "neuvector/manager", "tag": "4.0.2", "scan_layers": true, "base_image": "10.1.127.12:5000/neuvector/manager:4.0.2”}}
+```
 
 #### Create Policy Rules Automatically
 To create a new rule in the NeuVector policy controller, the groups for the FROM and TO fields must exist first. The following sample creates a new Group based on the container label nv-service-type=data, and another Group for label nv-service-type=website. A rule is then created to allow traffic from the wordpress container to the mysql container using only the mysql protocol.
