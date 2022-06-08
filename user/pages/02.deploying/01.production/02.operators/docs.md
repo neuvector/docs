@@ -9,7 +9,7 @@ taxonomy:
 Operators take human operational knowledge and encode it into software that is more easily shared with consumers. Operators are pieces of software that ease the operational complexity of running another piece of software. More technically, Operators are a method of packaging, deploying, and managing a Kubernetes application.
 
 ### NeuVector Operators
-The NeuVector Operator is based on the NeuVector helm-chart. The NeuVector RedHat OpenShift Operator runs in the OpenShift container platform to deploy and manage the NeuVector Security cluster components. The NeuVector Operator contains all necessary information to deploy NeuVector using helm charts. You simply need to install the NeuVector operator from the OpenShift embedded Operator hub and create the NeuVector instance.
+The NeuVector Operator is based on the NeuVector Helm chart. The NeuVector RedHat OpenShift Operator runs in the OpenShift container platform to deploy and manage the NeuVector Security cluster components. The NeuVector Operator contains all necessary information to deploy NeuVector using Helm charts. You simply need to install the NeuVector operator from the OpenShift embedded Operator hub and create the NeuVector instance.
 
 To deploy the latest NeuVector container versions, please use either the [Red Hat Certified Operator](https://catalog.redhat.com/software/operators/search?q=neuvector) from Operator Hub or the [community operator](https://github.com/redhat-openshift-ecosystem/community-operators-prod/tree/main/operators/neuvector-community-operator). Documentation for the community operator can be found [here](https://github.com/neuvector/neuvector-operator).
 
@@ -20,7 +20,7 @@ Privileged SCC is added to the Service Account specified in the deployment yaml 
 oc delete rolebinding -n neuvector system:openshift:scc:privileged
 ```
 
-**Important**: NeuVector Certified Operator versions are tied to NeuVector product versions, and each new version must go through a certification process with Red Hat before being published. Version 1.3.4 operator version is tied to NeuVector 5.0.0. Version 1.2.7 of the NeuVector Certified Operator deploys version 4.2.2 of NeuVector, and 1.2.8 deploys Neuvector 4.3.1. If you wish to be able to change the version tags of the NeuVector containers deployed, please use the Community version.
+**Important**: NeuVector Certified Operator versions are tied to NeuVector product versions, and each new version must go through a certification process with Red Hat before being published. Version 1.3.4 operator version is tied to NeuVector 5.0.0. Version 1.2.7 of the NeuVector Certified Operator deploys version 4.2.2 of NeuVector, and 1.2.8 deploys NeuVector 4.3.1. If you wish to be able to change the version tags of the NeuVector containers deployed, please use the Community version.
 
 
 <html>
@@ -86,7 +86,7 @@ oc adm policy add-scc-to-user privileged --serviceaccount default --namespace ne
 
 <li>When the operator is installed and ready for use, a NeuVector instance can be installed.
 <p><ul>
-<li>- Click View operator (after the operator installation) or select the Neuvector Operator from the Installed operators view</li>
+<li>- Click View operator (after the operator installation) or select the NeuVector Operator from the Installed operators view</li>
 <li>- Click Create instance</li>
 <li>- Select Configure via YAML View</li>
 <li>- Paste the prepared YAML configuration values</li>
@@ -238,7 +238,7 @@ spec:
 
 <li>When the operator is installed and ready for use, a NeuVector instance can be installed.
 <ul>
-<li>- Click View operator (after the operator installation) or select the Neuvector Operator from the Installed operators view</li>
+<li>- Click View operator (after the operator installation) or select the NeuVector Operator from the Installed operators view</li>
 <li>- Click Create instance</li>
 <li>- Select Configure via YAML View</li>
 <li>- Paste the prepared YAML configuration values</li>

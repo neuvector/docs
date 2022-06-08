@@ -25,7 +25,7 @@ sudo usermod -aG docker jenkins
 #### Jenkins Plugin Installation
 First, go to Jenkins in your browser to search for the NeuVector plug-in. This can be found in:
 
--&gt; Manage Jenkins -&gt; Manage Plugins -&gt; Available -&gt; filter -&gt; search `Neuvector Vulnerability Scanner` -&gt;
+-&gt; Manage Jenkins -&gt; Manage Plugins -&gt; Available -&gt; filter -&gt; search `NeuVector Vulnerability Scanner` -&gt;
 
 Select it and click `install without restart.'
 

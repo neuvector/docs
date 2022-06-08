@@ -7,7 +7,7 @@ taxonomy:
 ### Deploy Separate NeuVector Components with RedHat OpenShift
 NeuVector is compatible with standard ovs SDN plug-ins as well as others such as flannel, weave, or calico. The samples below assume a standard ovs plug-in is used. This also assumes a local docker registry will be used (see instructions at end for creating the secret for dynamically pulling from neuvector or Docker Hub).
 
-NeuVector supports Helm-based deployment with a [Helm chart](https://github.com/neuvector/neuvector-helm) at https://github.com/neuvector/neuvector-helm. The NeuVector Operator can also be used to deploy and is based on the helm chart. To deploy the latest NeuVector container versions using an Operator, please use either the Red Hat Certified Operator from Operator Hub or the community operator, as detailed in the [Operator section](/deploying/production/operators).
+NeuVector supports Helm-based deployment with a [Helm chart](https://github.com/neuvector/neuvector-helm) at https://github.com/neuvector/neuvector-helm. The NeuVector Operator can also be used to deploy and is based on the Helm chart. To deploy the latest NeuVector container versions using an Operator, please use either the Red Hat Certified Operator from Operator Hub or the community operator, as detailed in the [Operator section](/deploying/production/operators).
 
 To deploy manually, first pull the appropriate NeuVector containers from the NeuVector registry into your local registry. Note: the scanner image should be pulled regularly for CVE database updates from NeuVector.
 
@@ -51,7 +51,7 @@ oc login -u <user_name>
 ```
 
 2) Create a new project.
- Note: If the --node-selector argument is used when creating a project this will restrict pod placement such as for the Neuvector enforcer to specific nodes.
+ Note: If the --node-selector argument is used when creating a project this will restrict pod placement such as for the NeuVector enforcer to specific nodes.
 ```
 oc new-project neuvector
 ```

@@ -29,7 +29,7 @@ oc login -u <user_name>
 ```
 
 2. Create a new project
-Note: If the --node-selector argument is used when creating a project this will restrict pod placement such as for the Neuvector enforcer to specific nodes.
+Note: If the --node-selector argument is used when creating a project this will restrict pod placement such as for the NeuVector enforcer to specific nodes.
 ```
 oc new-project neuvector
 ```

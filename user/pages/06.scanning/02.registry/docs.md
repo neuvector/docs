@@ -433,7 +433,7 @@ The following is a sample screen-capture of the page that reveals both the Exter
 + Provide Gitlab external URL and the private token obtained from the last section
 ![gitlab](gitlabregistryscan.png)
 
-Note:  The Registry URL is used for pulling images into the Neuvector scanner-platform from GitLab to do registry scanning.  While the External URL is used for retrieving a list of images, registries, and metadata used by the registry scanning feature.
+Note:  The Registry URL is used for pulling images into the NeuVector scanner-platform from GitLab to do registry scanning.  While the External URL is used for retrieving a list of images, registries, and metadata used by the registry scanning feature.
 
 #### IBM Cloud Container Registry 
 Ref:  https://www.ibm.com/cloud/container-registry

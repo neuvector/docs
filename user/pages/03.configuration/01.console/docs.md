@@ -88,7 +88,7 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt
 kubectl create secret tls neuvector-ingress-tls -n neuvector --key="tls.key" --cert="tls.crt"
 ```
 
-Then, use the following yaml file to expose the 443 port that redirects the https connection to the manager.
+Then, use the following yaml file to expose the 443 port that redirects the HTTPS connection to the manager.
 
 ```
 apiVersion: v1
