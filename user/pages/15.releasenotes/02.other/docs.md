@@ -24,7 +24,7 @@ taxonomy:
 + Allow users to specify NeuVector release version
 + Deploys latest scanner CVE db version
 + Container operator image location moved to registry.neuvector.com/public
-+ Neuvector instance name defaults to neuvector (before it was example-neuvector)
++ NeuVector instance name defaults to neuvector (before it was example-neuvector)
 + Updated readme document on install page and added link to release notes
 
 #### Helm Chart 1.8.2

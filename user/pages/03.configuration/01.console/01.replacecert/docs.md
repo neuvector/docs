@@ -9,7 +9,7 @@ The built-in self-signed certificate can be replaced by a supported PKCS certifi
 
 The NeuVector web console supports 2 different self-signed certificate types, specifically, the PKCS8 (Private-Key Information Syntax Standard) and PKCS1 (RSA Cryptography Standard).  The self-signed certificate can be replaced with either of these PKCS types.  
 
-The steps to generate the secret that will be consumed by Neuvector’s web console originating from the key and certificate using either of the PKCS methods will be illustrated below.  The important note here is, with the use of the wildcard for the DNS as being part of the alternate-subject-name parameter during the key and certificate creation, this enables the name of your choosing to be mapped to the Management console IP-Address without restricting to a particular CN.
+The steps to generate the secret that will be consumed by NeuVector’s web console originating from the key and certificate using either of the PKCS methods will be illustrated below.  The important note here is, with the use of the wildcard for the DNS as being part of the alternate-subject-name parameter during the key and certificate creation, this enables the name of your choosing to be mapped to the Management console IP-Address without restricting to a particular CN.
 
 #### Generate and Use a PKCS8 Self-signed Certificate
 1. Create a PKCS8 key and certificate

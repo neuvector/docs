@@ -5,13 +5,13 @@ taxonomy:
 ---
 
 ### Planning Deployments
-The NeuVector containers in a default deployment include the controller, manager, enforcer, scanner, and updater. Placement of where these containers (on which nodes) are deployed just be considered, and appropriate labels, taints or tolerations created to control them.
+The NeuVector containers in a default deployment include the controller, manager, enforcer, scanner, and updater. Placement of where these containers (on which nodes) are deployed must be considered, and appropriate labels, taints or tolerations created to control them.
 
 The enforcer should be deployed on every host/node where application containers to be monitored and protected by NeuVector will be running. 
 
 The controller manages the cluster of enforcers, and can be deployed on the same node as an enforcer or on a separate management node. The manager should be deployed on the node where the controller is running, and will provide console access to the controller. Other required NeuVector containers such as the manager, scanner, and updater are described in more detail in the Best Practices guide referenced below.
 
-If you haven’t done so, pull the images from the NeuVector docker hub.
+If you haven’t done so, pull the images from the NeuVector Docker Hub.
 
 <p><strong>Important Notice for Preview Version Users </strong></p>
 <p>The images are on the NeuVector Docker Hub registry. Use the appropriate version tag for the manager, controller, enforcer, and leave the version as 'latest' for scanner and updater. For example:
@@ -23,7 +23,7 @@ If you haven’t done so, pull the images from the NeuVector docker hub.
 <p>Please be sure to update the image references in appropriate yaml files.</p>
 <p>If deploying with the current NeuVector Helm chart (v1.8.9+), the following changes should be made to values.yml:
 <li>Update the registry to docker.io</li>
-<li>Update image names/tags to the preview version on Docker hub, as shown above</li>
+<li>Update image names/tags to the preview version on Docker Hub, as shown above</li>
 <li>Leave the imagePullSecrets empty</li></p>
 
 ####Best Practices, Tips, Q&A for Deploying and Managing NeuVector
@@ -38,7 +38,7 @@ Deployment using an Operator, including RedHat Certified Operator and Kubernetes
 Automated deployment on Kubernetes is supported using a ConfigMap. Please see the [Deploying Using ConfigMap](/deploying/production/configmap) section for more details.
 
 ### Deploying the Controllers
-We recommend that multiple controllers be run for an high availability (HA) configuration. The controllers use the consensus based RAFT protocol to elect a leader and if the leader goes down, to elect another leader. Because of this, the number of active controllers should be an odd number, for example 3, 5, 7 etc.
+We recommend that multiple controllers be run for a high availability (HA) configuration. The controllers use the consensus based RAFT protocol to elect a leader and if the leader goes down, to elect another leader. Because of this, the number of active controllers should be an odd number, for example 3, 5, 7 etc.
 
 ### Controller HA
 The controllers will synchronize all data between themselves, including configuration, policy, conversations, events, and notifications. 
@@ -99,7 +99,7 @@ spec:
   storageClassName: ibmc-file-retain-custom
 ```
 
-After the Persistent Volume Claim is created, modify the Neuvector sample yaml file as shown below (old section commented out):
+After the Persistent Volume Claim is created, modify the NeuVector sample yaml file as shown below (old section commented out):
 
 ```
 ...
@@ -157,7 +157,7 @@ kubectl logs neuvector-controller-pod-777fdc5668-4jkjn -n neuvector | grep versi
 ```
 
 ### Accessing the Console
-By default the console is exposed as a service on port 8443, or nodePort with a random port on each host. Please see the first section Basics -> [Connect to Manager](/configuration/console) for options for turning off https or accessing the console through a corporate firewall which does not allow port 8443 for the console access.
+By default the console is exposed as a service on port 8443, or nodePort with a random port on each host. Please see the first section Basics -> [Connect to Manager](/configuration/console) for options for turning off HTTPS or accessing the console through a corporate firewall which does not allow port 8443 for the console access.
 
 
 ### Handing Host Updates or Auto-Scaling Nodes with a Pod Disruption Budget
@@ -181,7 +181,7 @@ Then
 kubectl create -f nv_pdb.yaml
 ```
 
-For more details: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+For more details: [https://kubernetes.io/docs/tasks/run-application/configure-pdb/](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)
 
 ### Deploy Without Privileged Mode
 On some systems, deployment without using privileged mode is supported. These systems must support seccom capabilities and setting the apparmor profile.

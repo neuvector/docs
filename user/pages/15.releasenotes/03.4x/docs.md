@@ -331,7 +331,7 @@ docker run --name neuvector.scanner --rm -e SCANNER_REPOSITORY=ubuntu -e SCANNER
 
 ##### Bug Fixes
 + Issue with jumbo frames (enabled on some public clouds). Symptom: the main prometheus application URI /graph becomes inaccessible when the prometheus group is placed into Protect mode.
-+ Missing namespace option in vulnerabilities filter. Allow users to select/type the Namespace where Neuvector is installed as filter entry.
++ Missing namespace option in vulnerabilities filter. Allow users to select/type the Namespace where NeuVector is installed as filter entry.
 + False positive in OpenSSL version 1.1.1c-1 affected by CVE-2020-1967.
 + Unexpected implicit deny violations for user created address group using wildcard hostnames. Problems with using DNS Name (with wildcards) for Firewall Traffic.
 + Improve detection to remove SQL Injection false positive.

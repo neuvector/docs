@@ -5,7 +5,7 @@ taxonomy:
 ---
 
 ### Console Access
-The console requires https access on default port 8443. The default user and password are admin.
+The console requires HTTPS access on default port 8443. The default user and password are admin.
 
 Please see the first section Basics -> Connect to Manager for configuration options such as turning off https, accessing the console through a corporate firewall which does not allow port 8443, or replacing the self-signed certificate.
 

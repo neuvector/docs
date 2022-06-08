@@ -14,7 +14,7 @@ See the bottom section for specifying dedicated manager or controller nodes usin
 
 If your deployment supports an integrated load balancer, change type NodePort to LoadBalancer for the console in the yaml file below.
 
-NeuVector supports Helm-based deployment with a Helm chart at https://github.com/neuvector/neuvector-helm.
+NeuVector supports Helm-based deployment with a Helm chart at [https://github.com/neuvector/neuvector-helm](https://github.com/neuvector/neuvector-helm).
 
 There is a separate section for OpenShift instructions, and Docker EE on Kubernetes has some special steps described in the Docker section.
 
