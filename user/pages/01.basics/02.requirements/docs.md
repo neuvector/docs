@@ -26,6 +26,7 @@ AWS Bottlerocket Note: Must change path of the containerd socket specific to Bot
 * Docker on Windows
 * Rkt (container linux) from CoreOS
 * AppArmor on K3S / SLES environments. Certain configurations may conflict with NeuVector and cause scanner errors; AppArmor should be disabled when deploying NeuVector.
+* IPv6 is not supported
 * VMWare Integrated Containers (VIC) except in nested mode
 * CloudFoundry
 * Console: IE 11 not supported due to performance issues.

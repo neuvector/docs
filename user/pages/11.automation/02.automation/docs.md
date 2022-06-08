@@ -183,17 +183,17 @@ IMPORTANT! These samples are provided as examples only and are not officially su
 
 To export all configuration:
 ```
-./config.py export -u admin -w admin -s $_controllerIP_ -f $_FILENAME_    // exporting the configuration with all settings
+./config.py export -u admin -w admin -s $_controllerIP_ -p $_controllerPort_ -f $_FILENAME_    // exporting the configuration with all settings
 ```
 
 To export policy only:
 ```
-./config.py export -u admin -w admin -s $_controllerIP_ -f $_FILENAME_ --section policy  // exporting the configuration with policy only
+./config.py export -u admin -w admin -s $_controllerIP_ -p $_controllerPort_ -f $_FILENAME_ --section policy  // exporting the configuration with policy only
 ```
 
 To import the file:
 ```
-./config.py import -u admin -w admin -s $_controllerIP_ -f $_FILENAME_    // importing the configuration
+./config.py import -u admin -w admin -s $_controllerIP_ -p $_controllerPort_ -f $_FILENAME_    // importing the configuration
 ```
 
 <strong>Sample python files</strong> Contains config.py, client.py, and multipart.py. Download sample files: [ImportExport](ImportExport.zip). Please put all three files in one folder to run above commands. You may need install some Python modules in order to run the script.
