@@ -38,24 +38,25 @@ DNS.1 = *
 ```
 kubectl create secret generic https-cert -n neuvector --from-file=tls.key --from-file=tls.pem
 ```
-3. Edit the yaml for the manager and controller pods to add the mounts
+3. Edit the yaml for the manager and controller deployments to add the mounts
 ```
-containers:
-                                     ......
-                                     ......
-                                     volumeMounts:
-                                       - mountPath: /etc/neuvector/certs/ssl-cert.key
-                                         subPath: tls.key
-                                         name: cert
-                                         readOnly: true
-                                       - mountPath: /etc/neuvector/certs/ssl-cert.pem
-                                         subPath: tls.pem
-                                         name: cert
-                                         readOnly: true
-                                   volumes:
-                                     - name: cert
-                                       secret:
-                                         secretName: https-cert
+spec:
+  template:
+    spec:
+      containers:
+        volumeMounts:
+        - mountPath: /etc/neuvector/certs/ssl-cert.key
+          name: cert
+          readOnly: true
+          subPath: tls.key
+        - mountPath: /etc/neuvector/certs/ssl-cert.pem
+          name: cert
+          readOnly: true
+          subPath: tls.pem
+      volumes:
+      - name: cert
+        secret:
+          secretName: https-cert
 ```
 
 #### Generate and Use PKCS1 Self-signed Certificate
