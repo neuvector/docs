@@ -370,23 +370,43 @@ In general you’ll need to replace the privileged setting with:
 ```
 The above syntax is for Docker EE v17.06.0+. Versions prior to this use the : instead of =, for example apparmor:unconfined.
 
-### Updating the NeuVector CVE Vulnerability Database
-A container called the Updater is published and regularly updated on NeuVector’s Docker Hub. This image can be pulled, and when run it will update the CVE database used to scan for vulnerabilities. 
 
-The sample neuvector-updater.yaml runs the updater and can be scripted with a cron job to periodically pull the latest image and run the updater. Replace the IP addresses in the sample below with one or more addresses for the NeuVector controllers.
+###Docker Native Updates
+<strong>Important:</strong> Always use the :latest tag when pulling and running the scanner image to ensure the latest CVE database is deployed.
 
-```
-updater:
-  image: neuvector/updater
-  container_name: updater
-  environment:
-    - CLUSTER_JOIN_ADDR=<ip1,ip2,...>
-```
-
-Then run the updater. It will update the database and the container will stop after completion.
 
 ```
-docker-compose -f neuvector-updater.yaml up -d
+docker stop scanner
+docker rm <scanner id>
+docker pull neuvector/scanner:latest
+<docker run command from below>
 ```
 
-You will be able to see the updater activity in the NeuVector logs (Events), as well as the updater container may be scanned by NeuVector while it was running.
+Note: 'docker rm -f <scanner id>' can also be used to force stop and removal of the running scanner.
+
+For docker-compose
+
+```
+docker-compose -f file.yaml down
+docker-compose -f file.yaml pull		// pre-pull the image before starting the scanner
+docker-compose -f file.yaml up -d
+```
+
+Sample docker run
+```
+docker run -td --name scanner -e CLUSTER_JOIN_ADDR=controller_node_ip -e CLUSTER_ADVERTISED_ADDR=node_ip -e SCANNER_DOCKER_URL=tcp://192.168.1.10:2376 -p 18402:18402 -v /var/run/docker.sock:/var/run/docker.sock:ro neuvector/scanner:latest
+```
+And sample docker-compose
+```
+Scanner:
+   image: neuvector/scanner:latest
+   container_name: scanner
+   environment:
+     - SCANNER_DOCKER_URL=tcp://192.168.1.10:2376
+     - CLUSTER_JOIN_ADDR=controller_node_ip
+     - CLUSTER_ADVERTISED_ADDR=node_ip
+   ports:
+     - 18402:18402
+   volumes:
+     - /var/run/docker.sock:/var/run/docker.sock:ro
+```
