@@ -499,170 +499,7 @@ echo `date +%Y%m%d_%H%M%S` log out
 curl -k -X 'DELETE' -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" "https://$_controllerIP_:$_controllerRESTAPIPort_/v1/auth" > /dev/null 2>&1
 ```
 
-#### Get the CVE Database Version and Date
 
-```
-curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" "https://127.0.0.1:10443/v1/scan/scanner"
-```
-
-Output:
-```
-{
-	"scanners": [
-		{
-			"cvedb_create_time": "2020-07-07T10:34:04Z",
-			"cvedb_version": "1.950",
-			"id": "0f043705948557828ac1831ee596588a0d050950113117ddd19ecd604982f4d9",
-			"port": 18402,
-			"server": "127.0.0.1"
-		},
-		{
-			"cvedb_create_time": "2020-07-07T10:34:04Z",
-			"cvedb_version": "1.950",
-			"id": "9fa02c644d603f59331c95735158d137002d32a75ed1014326f5039f38d4d717",
-			"port": 18402,
-			"server": "192.168.9.95"
-		}
-	]
-}
-```
-
-#### Manage Federation for Master and Remote (Worker) Clusters
-
-Generally, listing Federation members can use a GET to the following endpoint (see samples for specific syntax):
-https://neuvector-svc-controller.neuvector:10443/v1/fed/member
-
-Selected Federation Management API's:
-```
-_masterClusterIP_=$1
-_workerClusterIP_=$2
-# this is used if one of clusters is going to be kicked by master cluster
-_CLUSTER_name_=$3
-
-echo `date +%Y%m%d_%H%M%S` [$_curCase_] login as default admin user
-curl -k -H "Content-Type: application/json" -d '{"password": {"username": "admin", "password": "admin"}}' "https://$_masterClusterIP_:10443/v1/auth" > /dev/null 2>&1 > ./$_LOGFOLDER_/token.json
-_TOKEN_M_=`cat ./$_LOGFOLDER_/token.json | jq -r '.token.token'`
-
-echo `date +%Y%m%d_%H%M%S` [$_curCase_] promote to master cluster
-curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_M_" -d '{"master_rest_info": {"port": 11443, "server": "'$_masterClusterIP_'"}, "name": "master"}' "https://$_masterClusterIP_:10443/v1/fed/promote" > /dev/null 2>&1
-echo `date +%Y%m%d_%H%M%S` [$_curCase_] idle 6 seconds for logon session timeout
-sleep 6
-
-echo `date +%Y%m%d_%H%M%S` [$_curCase_] login as default admin user on master cluster
-curl -k -H "Content-Type: application/json" -d '{"password": {"username": "admin", "password": "admin"}}' "https://$_masterClusterIP_:10443/v1/auth" > /dev/null 2>&1 > ./token.json
-_TOKEN_M_=`cat ./token.json | jq -r '.token.token'`
-
-echo `date +%Y%m%d_%H%M%S` [$_curCase_] checking fed join_token on master cluster
-curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_M_" "https://$_masterClusterIP_:10443/v1/fed/join_token" > /dev/null 2>&1 > ./join_token.json
-cat ./join_token.json | jq -c .
-_JOIN_TOKEN_=`cat ./join_token.json | jq -r '.join_token'`
-
-echo `date +%Y%m%d_%H%M%S` [$_curCase_] login as default admin user on worker cluster
-curl -k -H "Content-Type: application/json" -d '{"password": {"username": "admin", "password": "admin"}}' "https://$_workerClusterIP_:10443/v1/auth" > /dev/null 2>&1 > ./token.json
-_TOKEN_W_=`cat ./token.json | jq -r '.token.token'`
-
-echo `date +%Y%m%d_%H%M%S` [$_curCase_] joining the cluster
-curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_W_" -d '{"join_token": "'$_JOIN_TOKEN_'", "name": "worker", "joint_rest_info": {"port": 10443, "server": "'$_workerClusterIP_'"}}' "https://$_workerClusterIP_:10443/v1/fed/join" > /dev/null 2>&1
-echo `date +%Y%m%d_%H%M%S` [$_curCase_] idle 9 seconds for events
-sleep 9
-
-########## whenever there is a change on cluster such as a cluster is kicked/left/joined, run this to check the status ############
-echo `date +%Y%m%d_%H%M%S` [$_curCase_] checking fed member on master cluster
-curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_M_" "https://$_masterClusterIP_:10443/v1/fed/member" > /dev/null 2>&1 > ./fedMember.json
-cat ./fedMember.json | jq -c .
-
-echo `date +%Y%m%d_%H%M%S` [$_curCase_] checking fed member on worker cluster
-curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_W_" "https://$_workerClusterIP_:10443/v1/fed/member" > /dev/null 2>&1 > ./fedMember.json
-cat ./fedMember.json | jq -c .
-_CLUSTER_id_=`cat ./fedMember.json | jq -r --arg _CLUSTER_name_ "$_CLUSTER_name_" '.joint_clusters[] | select(.name == $_CLUSTER_name_).id'`
-###################################################################################################################################
-
-########## for ur information to leave or kick the cluster ############
-echo `date +%Y%m%d_%H%M%S` [$_curCase_] requesting to leave on worker cluster
-curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_W_" -d '{"force": false}' "https://$_workerClusterIP_:10443/v1/fed/leave" > /dev/null 2>&1
-echo `date +%Y%m%d_%H%M%S` [$_curCase_] idle 9 seconds for events
-sleep 9
-
-echo `date +%Y%m%d_%H%M%S` [$_curCase_] requesting to kick on master cluster, $_CLUSTER_id_
-curl -k -X "DELETE" -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_M_" "https://$_masterClusterIP_:10443/v1/fed/cluster/$_CLUSTER_id_" > /dev/null 2>&1
-echo `date +%Y%m%d_%H%M%S` [$_curCase_] idle 9 seconds for events
-sleep 9
-#######################################################################
-```
-
-
-=======
-echo `date +%Y%m%d_%H%M%S` [$_curCase_] $_DESC_: $_RESULT_-$_ERRCODE_
-```
-
-Note: You may need to install jq ($sudo yum install jq)
-
-For Kubernetes based deployments you can set the Controller IP as follows:
-```
-_podNAME_=`kubectl get pod -n neuvector -o wide | grep "allinone\|controller" | head -n 1 | awk '{print $1}'`
-_controllerIP_=`kubectl exec $_podNAME_ -n neuvector -- consul info | grep leader_addr | awk -F":| " '{print $3}'`
-```
-
-Note: In a multiple controller deployment the requests must be sent to a single controller IP so multiple requests for status of long running image scans go to the controller performing the scan.
-
-For scanning locally instead of in a registry:
-```
-curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" -d '{"request": {"tag": "3.4", "repository": "nvlab/alpine", "scan_layers": true}}' "https://$_controllerIP_:443/v1/scan/repository"
-```
-
-Sample output:
-```
-{
-  "report": {
-    "image_id": "c7fc7faf8c28d48044763609508ebeebd912ad6141a722386b89d044b62e4d45",
-    "registry": "",
-    "repository": "nvlab/alpine",
-    "tag": "3.4",
-    "digest": "sha256:2441496fb9f0d938e5f8b27aba5cc367b24078225ceed82a9a5e67f0d6738c80",
-    "base_os": "alpine:3.4.6",
-    "cvedb_version": "1.568",
-    "vulnerabilities": [
-      {
-        "name": "CVE-2018-0732",
-        "score": 5,
-        "severity": "Medium",
-        "vectors": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
-        "description": "During key agreement in a TLS handshake using a DH(E) based ciphersuite a malicious server can send a very large prime value to the client. This will cause the client to spend an unreasonably long period of time generating a key for this prime resulting in a hang until the client has finished. This could be exploited in a Denial Of Service attack. Fixed in OpenSSL 1.1.0i-dev (Affected 1.1.0-1.1.0h). Fixed in OpenSSL 1.0.2p-dev (Affected 1.0.2-1.0.2o).",
-        "package_name": "openssl",
-        "package_version": "1.0.2n-r0",
-        "fixed_version": "1.0.2o-r1",
-        "link": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-0732",
-        "score_v3": 7.5,
-        "vectors_v3": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
-      },
-                  ...
-    ],
-    "layers": [
-      {
-        "digest": "c68318b6ae6a2234d575c4b6b33844e3e937cf608c988a0263345c1abc236c14",
-        "cmds": "/bin/sh",
-        "vulnerabilities": [
-          {
-            "name": "CVE-2018-0732",
-            "score": 5,
-            "severity": "Medium",
-            "vectors": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
-            "description": "During key agreement in a TLS handshake using a DH(E) based ciphersuite a malicious server can send a very large prime value to the client. This will cause the client to spend an unreasonably long period of time generating a key for this prime resulting in a hang until the client has finished. This could be exploited in a Denial Of Service attack. Fixed in OpenSSL 1.1.0i-dev (Affected 1.1.0-1.1.0h). Fixed in OpenSSL 1.0.2p-dev (Affected 1.0.2-1.0.2o).",
-            "package_name": "openssl",
-            "package_version": "1.0.2n-r0",
-            "fixed_version": "1.0.2o-r1",
-            "link": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-0732",
-            "score_v3": 7.5,
-            "vectors_v3": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
-          },
-                                  ...
-        ],
-        "size": 5060096
-      }
-    ]
-  }
-}
-```
 #### Report if a vulnerability is in the base image layers
 To identify CVE's in the base image when using REST API to scan images, the base image must be identified in the API call, as in the example below.
 ```
@@ -684,7 +521,6 @@ To create a new rule in the NeuVector policy controller, the groups for the FROM
 Be sure to update the username and password for access to the controller.
 
 ```
-#!/bin/sh
 TOKEN_JSON=$(curl -k -H "Content-Type: application/json" -d '{"password": {"username": "admin", "password": "admin"}}' "https://`docker inspect neuvector.allinone | jq -r '.[0].NetworkSettings.IPAddress'`:10443/v1/auth")
 _TOKEN_=`echo $TOKEN_JSON | jq -r '.token.token'`
 curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" -d '{"config": {"name": "mydb", "criteria": [{"value": "data", "key": "nv.service.type", "op": "="}]}}' "https://`docker inspect neuvector.allinone | jq -r '.[0].NetworkSettings.IPAddress'`:10443/v1/group"
@@ -1107,6 +943,3 @@ echo `date +%Y%m%d_%H%M%S` [$_curCase_] idle 9 seconds for events
 sleep 9
 #######################################################################
 ```
-
-
->>>>>>> f94c640495e544b13ab616d74fbb73a0158e4c01
