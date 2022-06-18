@@ -56,6 +56,7 @@ spec:
       volumes:
       - name: cert
         secret:
+          defaultMode: 420
           secretName: https-cert
 ```
 
