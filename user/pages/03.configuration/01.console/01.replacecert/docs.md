@@ -38,7 +38,7 @@ DNS.1 = *
 ```
 kubectl create secret tls https-cert -n neuvector --from-file=tls.key --from-file=tls.crt
 ```
-3. Edit the yaml for the manager and controller deployments to add the mounts
+3. Edit the yaml direclty for the manager and controller deployments to add the mounts
 ```
 spec:
   template:
@@ -59,7 +59,7 @@ spec:
           defaultMode: 420
           secretName: https-cert
 ```
-Or update with the helm chart with similar values
+Or update with the helm chart with similar values.yaml
 ```
 manager:
   certificate:
@@ -83,4 +83,5 @@ controller:
     keyFile: tls.key
     pemFile: tls.crt
 ```
-then update with `helm upgrade -i neuvector ...`
+Then update with `helm upgrade -i neuvector ...`
+For reference here are all the values https://github.com/neuvector/neuvector-helm/blob/5.0.0/charts/core/values.yaml
