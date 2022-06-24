@@ -83,5 +83,4 @@ controller:
     keyFile: tls.key
     pemFile: tls.crt
 ```
-Then update with `helm upgrade -i neuvector ...`
-For reference here are all the values https://github.com/neuvector/neuvector-helm/blob/5.0.0/charts/core/values.yaml
+Then update with `helm upgrade -i neuvector ...`. For reference here are all the values https://github.com/neuvector/neuvector-helm/tree/master/charts/core.
