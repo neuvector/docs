@@ -14,7 +14,7 @@ The steps to generate the secret that will be consumed by NeuVector’s web cons
 #### Generate and Use a PKCS8 Self-signed Certificate
 1. Create a PKCS8 key and certificate
 ```
-openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout tls.key -out tls.pem -config ca.cfg -extensions 'v3_req'
+openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout tls.key -out tls.crt -config ca.cfg -extensions 'v3_req'
 Sample ca.cfg
 [req]
 distinguished_name = req_distinguished_name
@@ -36,7 +36,7 @@ DNS.1 = *
 ```
 2. Create the secret from the generated key and certificate files from above
 ```
-kubectl create secret generic https-cert -n neuvector --from-file=tls.key --from-file=tls.pem
+kubectl create secret tls https-cert -n neuvector --from-file=tls.key --from-file=tls.crt
 ```
 3. Edit the yaml for the manager and controller deployments to add the mounts
 ```
@@ -59,34 +59,28 @@ spec:
           defaultMode: 420
           secretName: https-cert
 ```
+Or update with the helm chart with similar values
+```
+manager:
+  certificate:
+    secret: https-cert
+    keyFile: tls.key
+    pemFile: tls.crt
+  ingress:
+    enabled: true
+    host:  %CHANGE_HOST_NAME%
+    ingressClassName: ""
+    path: "/"  # or this could be "/api", but might need "rewrite-target" annotation
+    annotations:
+      ingress.kubernetes.io/protocol: https
+      # ingress.kubernetes.io/rewrite-target: /
+    tls: true
+    secretName: https-cert
 
-#### Generate and Use PKCS1 Self-signed Certificate
-1. Create a PKCS1 key and certificate
+controller:
+  certificate:
+    secret: https-cert
+    keyFile: tls.key
+    pemFile: tls.crt
 ```
-openssl genrsa -out tls.key 2048
-openssl req -x509 -nodes -days 730 -config openssl.cnf  -new -key tls.key -out tls.pem
-Sample openssl.cnf
-[req]
-distinguished_name = req_distinguished_name
-x509_extensions = v3_req
-prompt = no
-[req_distinguished_name]
-C = US
-ST = California
-L = San Jose
-O = NeuVector Inc.
-OU = Neuvector
-CN = Neuvector(PKCS#1)
-[v3_req]
-keyUsage = keyEncipherment, dataEncipherment
-extendedKeyUsage = serverAuth
-subjectAltName = @alt_names
-[alt_names]
-DNS.1 = *
-```
-2. Create the secret from the generated key and certificate files from above
-```
-kubectl create secret generic https-cert -n neuvector --from-file=tls.key --from-file=tls.pem
-```
-3. Modify the yaml for the manager and controller pods by adding the mounts by following step “3” in the Generate and Use PKCS8 Self-signed Certificate section above.
-
+then update with `helm upgrade -i neuvector ...`
