@@ -36,7 +36,7 @@ DNS.1 = *
 ```
 2. Create the secret from the generated key and certificate files from above
 ```
-kubectl create secret tls https-cert -n neuvector --from-file=tls.key --from-file=tls.crt
+kubectl create secret tls https-cert -n neuvector --key=tls.key --cert=tls.crt
 ```
 3. Edit the yaml direclty for the manager and controller deployments to add the mounts
 ```
