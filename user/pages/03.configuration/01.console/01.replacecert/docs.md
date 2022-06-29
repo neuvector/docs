@@ -52,7 +52,7 @@ spec:
         - mountPath: /etc/neuvector/certs/ssl-cert.pem
           name: cert
           readOnly: true
-          subPath: tls.pem
+          subPath: tls.crt
       volumes:
       - name: cert
         secret:
