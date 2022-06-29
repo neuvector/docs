@@ -142,7 +142,7 @@ To use TLS/SSL passthrough instead of the redirect example above (supported on s
 ```
 
 ### Replacing the NeuVector Self-signed Certificates
-Please see the next section [Replacing the Self-Signed Certificates(/configuration/console/replacecert) for details. The certificate must be replaced in both the Manager and Controller/Allinone yamls.
+Please see the next section [Replacing the Self-Signed Certificates](/configuration/console/replacecert) for details. The certificate must be replaced in both the Manager and Controller/Allinone yamls.
 
 ### Configuring AWS ALB with Certificate ARN
 Here is a sample ingress configuration using the AWS load balancer with the certificate ARN (actual ARN obfuscated).
