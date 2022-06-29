@@ -38,7 +38,7 @@ DNS.1 = *
 ```
 kubectl create secret tls https-cert -n neuvector --key=tls.key --cert=tls.crt
 ```
-3. Edit the yaml direclty for the manager and controller deployments to add the mounts
+3. Edit the yaml directly for the manager and controller deployments to add the mounts
 ```
 spec:
   template:
