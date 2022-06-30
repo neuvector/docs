@@ -3,7 +3,8 @@ title: 5.x Release Notes
 taxonomy:
     category: docs
 ---
- 
+
+### Release Notes for 5.x (Open Source Version)
 
 #### 5.0.1 June 2022
 ##### Enhancements
@@ -71,8 +72,6 @@ neuvector-manager-pod-588488bb78-p6vf9      1/1     Running   0          111s   
 neuvector-scanner-pod-87474dcff-s8vgt       1/1     Running   0          114s    10.42.0.31   localhost.localdomain   <none>           <none>
 ```
 
-
-### Release Notes for 5.x (Open Source Version)
 
 #### 5.0.0 General Availability (GA) Release May 2022
 #####Enhancements
