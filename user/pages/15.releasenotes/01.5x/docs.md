@@ -3,6 +3,73 @@ title: 5.x Release Notes
 taxonomy:
     category: docs
 ---
+ 
+
+#### 5.0.1 June 2022
+##### Enhancements
++ Support vulnerability scan of openSUSE Leap OS (in scanner image).
++ Scanner: implement wipe-out attributes during reconstructing image repo.
++ Verify NeuVector deployment and support for SELinux enabled hosts. See below for details on interim patching until helm chart is updated.
++ Distinguish between Feature Chart and Partner Charts in Rancher UI more prominently.+ Improve ingress annotation for nginx in Rancher helm chart. Add / update
+ingress.kubernetes.io/protocol: https to nginx.ingress.kubernetes.io/backend-protocol: "HTTPS".
++ Current OpenShift Operator supports passthrough routes for api and federation services. Additional Helm Value parameters are added to support edge and re-encrypt route termination types. 
+
+##### Bug Fixes
++ AKS cluster could add unexpected key in admission control webhook.
++ Enforcer is not becoming operational on k8s 1.24 cluster with 1.64 containerd runtime. Separately, enforcer sometimes fails to start.
++ Any admin-role user(local user or SSO) who promotes a cluster to fed master should be automatically promoted to fedAdmin role.
++ When sso using Rancher default admin into NeuVector on master cluster, the NeuVector login role is admin, not fedAdmin.
++ Fix several goroutine crashes.
++ Implicit violation from host IP not associated with node.
++ ComplianceProfile does not show PCI tag.
++ LDAP group mapping sometimes is not shown.
++ Risk Review and Improvement tool will result in error message "Failed to update system config: Request in wrong format".
++ OKD 3.11 - Clusterrole error shows even if it exists.
+
+##### CVE Remediations
++ High CVE-2022-29458 cve found on ncurses package in all images.
++ High CVE-2022-27778 and CVE-2022-27782 found on curl package in Updater image.
+
+##### Details on SELinux Support
+NeuVector does not need any additional setting for SELinux enabled clusters to deploy and function. Tested deploying NeuVector on RHEL 8.5 based SELinux enabled RKE2 hardened cluster. Neuvector deployed successfully if PSP is enabled and patching Manager and Scanner deployment. The next chart release should fix the below issue.
+
+Attached example for enabling psp from Rancher chart and given below the commands for patching Manager and Scanner deployment. The user ID in the patch command can be any number.
+
+```
+kubectl patch deploy -ncattle-neuvector-system neuvector-scanner-pod --patch '{"spec":{"template":{"spec":{"securityContext":{"runAsUser": 5400}}}}}'
+kubectl patch deploy -ncattle-neuvector-system neuvector-manager-pod --patch '{"spec":{"template":{"spec":{"securityContext":{"runAsUser": 5400}}}}}'
+```
+
+Example for enabling PSP:
+
+```
+[neuvector@localhost nv]$ getenforce
+Enforcing
+[neuvector@localhost nv]$ sestatus
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Memory protection checking:     actual (secure)
+Max kernel policy version:      33
+
+[neuvector@localhost nv]$ kk get psp
+Warning: policy/v1beta1 PodSecurityPolicy is deprecated in v1.21+, unavailable in v1.25+
+NAME                      PRIV    CAPS                                      SELINUX    RUNASUSER          FSGROUP     SUPGROUP    READONLYROOTFS   VOLUMES
+global-restricted-psp     false                                             RunAsAny   MustRunAsNonRoot   MustRunAs   MustRunAs   false            configMap,emptyDir,projected,secret,downwardAPI,persistentVolumeClaim
+neuvector-binding-psp     true    SYS_ADMIN,NET_ADMIN,SYS_PTRACE,IPC_LOCK   RunAsAny   RunAsAny           RunAsAny    RunAsAny    false            *
+system-unrestricted-psp   true    *                                         RunAsAny   RunAsAny           RunAsAny    RunAsAny    false            *
+[neuvector@localhost nv]$ nvpo.sh
+NAME                                        READY   STATUS    RESTARTS   AGE     IP           NODE                    NOMINATED NODE   READINESS GATES
+neuvector-controller-pod-54f69f7f9c-6h822   1/1     Running   0          5m51s   10.42.0.29   localhost.localdomain   <none>           <none>
+neuvector-enforcer-pod-jz77b                1/1     Running   0          5m51s   10.42.0.30   localhost.localdomain   <none>           <none>
+neuvector-manager-pod-588488bb78-p6vf9      1/1     Running   0          111s    10.42.0.32   localhost.localdomain   <none>           <none>
+neuvector-scanner-pod-87474dcff-s8vgt       1/1     Running   0          114s    10.42.0.31   localhost.localdomain   <none>           <none>
+```
 
 
 ### Release Notes for 5.x (Open Source Version)
