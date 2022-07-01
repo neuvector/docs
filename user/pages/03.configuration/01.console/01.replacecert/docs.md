@@ -90,3 +90,7 @@ kubectl create secret generic https-cert -n neuvector --from-file=tls.key --from
 ```
 3. Modify the yaml for the manager and controller pods by adding the mounts by following step “3” in the Generate and Use PKCS8 Self-signed Certificate section above.
 
+#### Support chained certificates
+To support End-to-end TLS, some ingresses/Application Gateways will only support backend servers that can be trusted.  NeuVector added support for chained certificates in version 3.2.2.  Microsoft's Application Gateway is one example of an Application Gateway requiring a chained certificate when using a not well-known CA.
+
+To add a chained certificate, the example tls.pem file should be a concatenation of the certificates.
