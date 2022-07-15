@@ -16,7 +16,7 @@ First, find the NeuVector chart in Rancher charts, select it and review the inst
 ![rancher_chart](rancher_chart.png)
 
 Deploy the NeuVector chart, first configuring appropriate values for a Rancher deployment, such as:
-+ Container run-time, e.g. select docker for RKE or select K3s containerd if using K3s or rke2.
++ Container run-time, e.g. select docker for RKE or K3s containerd if using K3s or rke2.
 + Manager service type: change to LoadBalancer if available on public cloud deployments. If access is only desired through Rancher, any allowed value will work here. See the Important note below about changing the default admin password in NeuVector.
 + Indicate if this cluster will be either a multi-cluster federated Primary, or remote (or select both if either option is desired).
 + Persistent volume for configuration backups
