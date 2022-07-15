@@ -268,7 +268,7 @@ kubectl create -f nv_master_worker.yaml</code></pre>
 <li>Create the primary NeuVector services and pods using the preset Preview version commands or modify the sample yamls below. The preset Preview versions invoke a LoadBalancer for the NeuVector Console. If using the sample yaml files below replace the image names and &lt;version> tags for the manager, controller and enforcer image references in the yaml file. Also make any other modifications required for your deployment environment (such as LoadBalancer/NodePort/Ingress for manager access etc).
 <pre>
 <code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/neuvector-containerd-k8s.yaml</code></pre>
-For 5.0.0 Preview with Rancher on K3s containerd run-time:
+For 5.0.0 Preview with Rancher on K3s or rke2 containerd run-time:
 <pre>
 <code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/neuvector-rancher-containerd-k3s.yaml</code></pre>
 For 5.0.0 Preview with docker run-time:
@@ -997,7 +997,7 @@ spec:
 <!-- NOTE: Toggle Box #2.5 -->
 <li>
 	<input class="title-option" id="acc25" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc25"><span><i class="icon-code"></i>Kubernetes v1.9-1.23 with <strong>Rancher K3s containerd</strong> Run-time</span></label>
+  <label class="title-panel" onClick="" for="acc25"><span><i class="icon-code"></i>Kubernetes v1.9-1.23 with <strong>Rancher K3s or rke2 containerd</strong> Run-time</span></label>
 
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
@@ -1687,7 +1687,7 @@ And the volumes change from docker.sock to:
           hostPath:
             path: /run/containerd/containerd.sock
 ```
-For SUSE K3s containerd deployments, change the volumes path to /k3s/:
+For SUSE K3s or rke2 containerd deployments, change the volumes path to /k3s/:
 ```
           volumeMounts:
             ...
