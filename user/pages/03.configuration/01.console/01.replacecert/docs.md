@@ -108,7 +108,6 @@ manager:
       ingress.kubernetes.io/protocol: https
     tls: true
     secretName: https-cert
-
 controller:
   certificate:
     secret: https-cert
