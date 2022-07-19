@@ -43,7 +43,7 @@ Preconfigured roles include Admin, Reader, and CI/Ops. To create a new custom ro
 + System Config. Allow configuration of Settings -> Configuration.
 
 #### Mapping Groups to Roles and Namespaces
-Groups can be mapped to preset or customer roles in NeuVector. In addition, a role can be restricted to one or namespaces.
+Groups can be mapped to preset or custom roles in NeuVector. In addition, a role can be restricted to one or more namespaces.
 
 In the LDAP/AD, SAML, or OIDC configuration in Settings, the last section of the configuration screen maps Groups to Roles and Namespaces. First select a default role, if any, for mapping.
 

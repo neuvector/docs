@@ -14,7 +14,7 @@ Use the left side menu to navigate in your NeuVector console. Note that there ar
 ![Navigation](4-3_Network_Activity.png)
 
 #### Dashboard
-The Dashboard shows a summary of risk scores, security events, and application protocols detected by NeuVector. It also details for these security events. PDF reports can be generated from the Dashboard which contain detailed charts and explanations.
+The Dashboard shows a summary of risk scores, security events, and application protocols detected by NeuVector. It also shows details for some of these security events. PDF reports can be generated from the Dashboard which contain detailed charts and explanations.
 
 At the top of the dashboard there is a summary of the security risks in the cluster. The wrench tool next to the overall risk score can be clicked to open a wizard which will guide you through recommended steps to reduce/improve the risk score. Mousing over each risk gauge will provide a description of it to the right and how to improve the risk score. Also see the separate documentation section Improving Security Risk Score.
 
@@ -156,11 +156,11 @@ In order to preserve the original source IP address, the user needs to add the f
 
 "externalTrafficPolicy":"Local"
  
-Many implementations of LoadBalancer services and Ingress controllers will add the X-FORWARDED-FOR line to the HTTP request header to communicate the real source IP to the backend applications. In 4.1.0 release, we added a feature to recognize this set of HTTP headers, identify the original source IP and enforce the policy according to that.
+Many implementations of LoadBalancer services and Ingress controllers will add the X-FORWARDED-FOR line to the HTTP request header to communicate the real source IP to the backend applications. This product can recognize this set of HTTP headers, identify the original source IP and enforce the policy according to that.
 
 This improvement created some unexpected issues in some setup. If the above line has been added to the exposed services and NeuVector network policies have been created in a way that expect the network connections are coming from internal proxy/ingress services, because we now identify the connections are from "external" to the cluster, normal application traffic might trigger alerts or get blocked if the applications are put in "Protect" mode.
 
-In 4.1.2, switch is added to disable this feature. Disabling it tells NeuVector not to identify that the connection is from "external" using X-FORWARDED-FOR headers. By default this is enabled, and the X-FORWARDED-FOR header is used in policy enforcement. To disable it, go to Settings -> Configuration, and disable the "X-Forwarded-For based policy match" setting.
+A switch is available to disable this feature. Disabling it tells NeuVector not to identify that the connection is from "external" using X-FORWARDED-FOR headers. By default this is enabled, and the X-FORWARDED-FOR header is used in policy enforcement. To disable it, go to Settings -> Configuration, and disable the "X-Forwarded-For based policy match" setting.
 
 ##### Settings -> LDAP/AD, SAML, and OpenID Connect
 NeuVector supports integration with LDAP/AD, SAML, and OpenID Connect for SSO and user group mapping. See the [Enterprise Integration](/integration/integration) section for configuration details.
