@@ -42,7 +42,7 @@ Response Rules enable users to define actions to respond to security events. Eve
 Response Rules provide a flexible, customizable rule engine to automate responses to important security events.
 
 #### Admission Control Rules
-Admission control rules allow or block deployments. More detail can be found in this section under Admission Controls.
+Admission control rules allow or block deployments. More details can be found in this section under Admission Controls.
 
 #### DLP and WAF Sensors
 Data Loss Prevention (Data Leak Protection) and WAF rules can be enabled on any selected container Group. This utilizes Deep Packet Inspection to apply regular expression based matching to the network payload entering or leaving the selected container group. Built-in sensors for credit card and US social security number are included for examples, and custom regular expressions can be added.
