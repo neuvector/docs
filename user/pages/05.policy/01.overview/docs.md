@@ -20,7 +20,7 @@ Reserved group names created automatically by NeuVector include:
 + External. Connections coming into the cluster (ingress).
 + Nodes. Nodes or hosts identified by NeuVector.
 
-The Groups menu is also where the "Export Group Policy" can be performed. This exports the security policy (rules) for the selected groups as a yaml file in the format of the NeuVector custom resource definition (CRD) which can be reviewed then deployed into other clusters.
+The Groups menu is also where the "Export Group Policy" can be performed. This exports the security policy (rules) for the selected groups as a yaml file in the format of the NeuVector custom resource definition (CRD) which can be reviewed and then deployed into other clusters.
 
 Note that the Status of a Group's containers is shown in Policy -> Groups -> Members, which indicates the NeuVector protection mode (Discover, Monitor, Protect). If the container is shown in an 'Exit' state, it is still on the host but is stopped. Removing the container will remove it from an Exit state.
 
@@ -42,7 +42,7 @@ Response Rules enable users to define actions to respond to security events. Eve
 Response Rules provide a flexible, customizable rule engine to automate responses to important security events.
 
 #### Admission Control Rules
-Admission control rules allow or block deployments. More detail can be found in this section under Admission Controls.
+Admission control rules allow or block deployments. More details can be found in this section under Admission Controls.
 
 #### DLP and WAF Sensors
 Data Loss Prevention (Data Leak Protection) and WAF rules can be enabled on any selected container Group. This utilizes Deep Packet Inspection to apply regular expression based matching to the network payload entering or leaving the selected container group. Built-in sensors for credit card and US social security number are included for examples, and custom regular expressions can be added.
