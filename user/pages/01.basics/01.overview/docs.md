@@ -46,7 +46,7 @@ The All-in-One container includes a Controller, an Enforcer and a Manager in one
 The Scanner is a container which performs the vulnerability and compliance scanning for images, containers and nodes. It is typically deployed as a replicaset and can be scaled up to as many parallel scanners as desired in order to increase the scanning performance. The Controller assigns scanning jobs to each available scanner in a round-robin fashion until all scans are completed. The scanner also contains the latest CVE database and is updated regularly by NeuVector.
 
 ##### Updater
-The Updater is a container which when run, updates the CVE database for NeuVector. NeuVector regulary publishes new scanner images to include the latest CVE for vulnerability scans. The updater re-deploys all scanner pods by taking the deployment to zero and scaling it back up, forcing a pull of an updated scanner image. 
+The Updater is a container which when run, updates the CVE database for NeuVector. NeuVector regularly publishes new scanner images to include the latest CVE for vulnerability scans. The updater re-deploys all scanner pods by taking the deployment to zero and scaling it back up, forcing a pull of an updated scanner image. 
 
 #### Architecture
 Here is a general architecture overview of NeuVector. Not shown is the separate scanner container, which can also be run as a stand-alone pipeline scanner.
