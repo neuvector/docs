@@ -20,7 +20,7 @@ Reserved group names created automatically by NeuVector include:
 + External. Connections coming into the cluster (ingress).
 + Nodes. Nodes or hosts identified by NeuVector.
 
-The Groups menu is also where the "Export Group Policy" can be performed. This exports the security policy (rules) for the selected groups as a yaml file in the format of the NeuVector custom resource definition (CRD) which can be reviewed then deployed into other clusters.
+The Groups menu is also where the "Export Group Policy" can be performed. This exports the security policy (rules) for the selected groups as a yaml file in the format of the NeuVector custom resource definition (CRD) which can be reviewed and then deployed into other clusters.
 
 Note that the Status of a Group's containers is shown in Policy -> Groups -> Members, which indicates the NeuVector protection mode (Discover, Monitor, Protect). If the container is shown in an 'Exit' state, it is still on the host but is stopped. Removing the container will remove it from an Exit state.
 
