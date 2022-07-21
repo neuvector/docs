@@ -28,7 +28,7 @@ Add a rule using the ‘+’ either below another rule in the right column, or u
 > Specify the destination GROUP where these connections are allowed or denied.
 
 + **Applications**
-> Enter applications for NeuVector to allow or deny. NeuVector understands deep application behavior and will analyze the payload to determine application protocols. Protocols include HTTP, HTTPS, SSL, SSH,DNS, DNCP, NTP, TFTP, ECHO, RTSP, SIP, MySQL, Redis, Zookeeper, Cassandra, MongoDB, PostgresSQL, Kafka, Couchbase, ActiveMQ, ElasticSearch, RabbitMQ, Radius, VoltDB, Consul, Syslog, Etcd, Spark, Apache, Nginx, Jetty, NodeJS, Oracle, MSSQL and gRPC.
+> Enter applications for NeuVector to allow or deny. NeuVector understands deep application behavior and will analyze the payload to determine application protocols. Protocols include HTTP, HTTPS, SSL, SSH, DNS, DNCP, NTP, TFTP, ECHO, RTSP, SIP, MySQL, Redis, Zookeeper, Cassandra, MongoDB, PostgresSQL, Kafka, Couchbase, ActiveMQ, ElasticSearch, RabbitMQ, Radius, VoltDB, Consul, Syslog, Etcd, Spark, Apache, Nginx, Jetty, NodeJS, Oracle, MSSQL and gRPC.
 
 Note: To select Any/All, leave this field blank
 
@@ -68,29 +68,29 @@ Note that customized network threat detection can be configured through the WAF 
 
 NeuVector includes the following detections for threats:
 
-+ SYN flood attack
-+ ICMP flood attack
-+ IP Teardrop attack
-+ TCP split handshake attack
-+ PING death attack 
-+ DNS flood DDOS attack
++ Apache Struts RCE attack
++ Cipher Overflow attack
++ Detect HTTP negative content-length buffer overflow
++ Detect MySQL access deny
 + Detect SSH version 1, 2 or 3
 + Detect SSL TLS v1.0
-+ SSL heartbeed attack
-+ Detect HTTP negative content-length buffer overflow
-+ HTTP smugging attack
-+ HTTP Slowloris DDOS attack
-+ TCP small window attack
 + DNS buffer overflow attack
-+ Detect MySQL access deny
-+ DNS zone transfer attack
-+ ICMP tunneling attack
++ DNS flood DDOS attack
 + DNS null type attack
-+ SQL injection attack
-+ Apache Struts RCE attack
 + DNS tunneling attack
-+ TCP Small MSS attack
-+ Cipher Overflow attack
++ DNS zone transfer attack
++ HTTP Slowloris DDOS attack
++ HTTP smuggling attack
++ ICMP flood attack
++ ICMP tunneling attack
++ IP Teardrop attack
 + Kubernetes man-in-the-middle attack per CVE-2020-8554
++ PING death attack 
++ SQL injection attack
++ SSL heartbleed attack
++ SYN flood attack
++ TCP small window attack
++ TCP split handshake attack
++ TCP Small MSS attack
 
 

@@ -16,7 +16,7 @@ It is convenient to see groups of containers and apply rules to each group. NeuV
 
 The Groups screen also displays a 'Scorable' icon in the upper right, and a learned group can be selected and the Scorable checkbox enabled or disabled. This controls which containers are used to calculate the Security Risk Score in the Dashboard. See [Improve Security Risk Score](/navigation/improve_score#improving-the-security-risk-score) for more details.
 
-The Groups screen is also where the CRD yaml file for 'security policy as code' can be imported and exported. Select one or more groups and click on the Export Group policy button to download the yaml file. See the [CRD](/policy/usingcrd) section for more details on how to use CRDs. Important: Each selected group AND any linked groups through network rules will be exported (ie. The group and any other group it connects to through the whitelist network rules).
+The Groups screen is also where the CRD yaml file for 'security policy as code' can be imported and exported. Select one or more groups and click on the Export Group policy button to download the yaml file. See the [CRD](/policy/usingcrd) section for more details on how to use CRDs. Important: Each selected group AND any linked groups through network rules will be exported (i.e. the group and any other group it connects to through the whitelist network rules).
 
 <strong>Auto Deletion of Unused Groups</strong>
 Learned groups (not reserved or custom groups) can be automatically deleted by NeuVector if there are no members (containers) in the group. The time period for this is configurable in Settings -> Configuration.
