@@ -27,7 +27,7 @@ After the scan is completed you will see the results below it. Click on the repo
 
 The scan results include vulnerabilities by image layer, if this option was selected during registry/repository configuration, as well the compliance checks results. Click the compliance tab when viewing the scan results for the image to see compliance checks.
 
-Scanning will also discover and list all Modules (ie, an inventory) in the image, as shown below. It will also summarize the vulnerability risk by module and list all vulnerabilities for each module.
+Scanning will also discover and list all Modules (i.e. an inventory) in the image, as shown below. It will also summarize the vulnerability risk by module and list all vulnerabilities for each module.
 
 ![Modules](Image_Modules.png)
 
@@ -41,7 +41,7 @@ At least one repository filter is required (can't be left blank).
 Notes:
 1. To scan all image tags, add filter as &#42; or &#42;:&#42;. This works on all registry types except the public docker registry.
 2. Repository should be full name if organization is nil for public docker registry or add library before repository as given above.
-3. Create a virtual repository and add all local repository to it to scan all tags on a JFrog registry with the subdomain docker access method.
+3. Create a virtual repository and add all local repository to it to scan all tags on a JFrog registry with the subdomain docker access method. [Is something missing or extra?] 
 4. Regular expressions can be used in a filter. For example alpine:3.[8|9].* will scan all 3.8.x and 3.9.x images and tags on docker hub.
 
 #### Registry scan options
@@ -50,7 +50,7 @@ Notes:
     - Provides information about commands executed, packages added in the layer
     - Images size of each layer 
 + Auto Scan:
-    - Auto Scan is only supported with OpenShift imagestream integration. Proper role binding should be configured in advance.
+    - Auto Scan is only supported with OpenShift imagestream integration. Proper role binding should be configured in advance. [Only with OpenShift?] 
     - When Auto Scan is enabled, as soon as an image is pushed to the registry, the image scan will be scheduled.
 + Periodical Scan:
     - Enable periodic scan to scan periodically
@@ -187,7 +187,7 @@ In OpenShift 3.7, API calls to pull container image metadata or to download an i
 #### JFrog Artifactory
 
 Adding JFrog Artifactory registry (Docker Access method – Repository Path)
-JFrog management page admin->HTTP Setting showing docker access method  - Repository Path
+JFrog management page admin -> HTTP Setting showing docker access method  - Repository Path
 
 ![jfrog](12-jfrog.png)
 
@@ -204,7 +204,7 @@ JFrog management page admin->HTTP Setting showing docker access method  - Reposi
     - &#42; to scan all tags
 
 ##### Adding JFrog Artifactory registry (Docker Access method – subdomain)
-JFrog management page admin->HTTP Setting showing docker access method – Sub Domain
+JFrog management page admin -> HTTP Setting showing docker access method – Sub Domain
 
 ![artifactory](14-artifact.png)
 
@@ -231,14 +231,14 @@ Adding subdomain based JFrog registry to scan all tags from all subdomains
 
 ##### Add JFrog Artifactory registry (Docker Access method – port)
 
-JFrog management page admin->HTTP Setting showing docker access method - Port 
+JFrog management page admin -> HTTP Setting showing docker access method - Port 
 ![jfrogport](jfrogport1.png)
 
-JFrog management page admin->Local Repository->docker-local repository-> Advanced - showing repository URL and registry port 8181
+JFrog management page admin -> Local Repository -> docker-local repository -> Advanced - showing repository URL and registry port 8181
 
 ![jfrogport](jfrogport2.png)
 
-JFrog management page admin->Local Repository->guo repository-> Advanced - showing repository URL and registry port 8182
+JFrog management page admin -> Local Repository -> guo [What is quo?] repository -> Advanced - showing repository URL and registry port 8182
 
 ![jfrogport](jfrogport3.png)
 
@@ -297,12 +297,12 @@ https://cloud.google.com/container-registry/docs/advanced-authentication
 https://cloud.google.com/container-registry/docs/advanced-authentication#json_key_file
 
 ##### Enable Cloud Resource Manager API for the project
-Google Cloud Platform->Choose Project->API and Services->Enable APIS and Services->Search “Cloud Resource Manager API”->Enable API
+Google Cloud Platform -> Choose Project -> API and Services -> Enable APIS and Services -> Search “Cloud Resource Manager API”->Enable API
 https://console.cloud.google.com/apis/library?project=nvtest-219600&q=Cloud%20Resource%20Manager%20API   (change project name)
 ![gcp](17-gcp.png)
 
 ##### Create key for container service account
-Google Cloud Platform-->IAM-->Service Account-->account with container registry-->CreateKey(action)-->
+Google Cloud Platform -> IAM -> Service Account -> account with container registry -> CreateKey(action) -> 
 ![gcpiam](18-gcpiam.png)
 
 ##### Copy json file to client machine
@@ -329,7 +329,7 @@ Ref:
 https://azure.microsoft.com/en-us/services/container-registry/
 
 ##### Obtain Azure container username and password as shown below
-Azure container registry -> user-> access keys->password
+Azure container registry -> user -> access keys -> password
 
 Showing azure portal username and password for container registry access
 ![azure](20-azure.png)
@@ -338,9 +338,9 @@ Showing azure portal username and password for container registry access
 + Choose Azure registry as type
 + Give unique name to the registry
 + Type registry URL. Sample https://neuvector.azure.io (obtain from azure portal)
-    - Container registry->user->Overview->Login Server 
+    - Container registry -> user -> Overview -> Login Server 
 + Add username and password
-    - Azure container registry -> user-> access keys->password
+    - Azure container registry -> user-> access keys -> password
 + Add repository as filter in the below format
     - repository:tag
     - example alpine:&#42;
@@ -386,7 +386,7 @@ Adding Sonatype Nexus docker registry with username/password and repository &#42
 
 #### Gitlab Container Registry
 
-##### Sample GitLab Environmnent Configurations
+##### Sample GitLab Environment Configurations
 ```
 sudo docker run --detach \
   --hostname gitlab \
@@ -419,7 +419,7 @@ Registry_URL: https://10.1.7.73:9095
 
 ##### Obtaining External and Registry URLs
 External-URL:   The external url is the API-Server's URL.  
-Registry-URL:  This can be obtained from the Container Registry page of the GitLab webconsole.  One way to get to this page is navigating from the GitLab’s webconsole from Projects > Your Projects > Administrator / … > Left-Pane (Container Registry) > Mouse-over (root/.../)
+Registry-URL:  This can be obtained from the Container Registry page of the GitLab webconsole.  One way to get to this page is navigating from the GitLab’s webconsole from Projects -> Your Projects -> Administrator / …  -> Left-Pane (Container Registry) -> Mouse-over (root/.../)
  
 The following is a sample screen-capture of the page that reveals both the External-URL and the Registry-URL:
 
@@ -446,7 +446,7 @@ Ref:  https://www.ibm.com/cloud/container-registry
     - Create apikey from CLI
         - ibmcloud iam api-key-create atibmKey
     - Create apikey from GUI
-        - IBM Cloud->Manage-Access(IAM)-IBM Cloud API Keys
+        - IBM Cloud -> Manage-Access(IAM) -> IBM Cloud API Keys
 + Provide IBM Cloud Account 
     - Obtain IBM cloud account from CLI
         - Ibmcloud cr info
