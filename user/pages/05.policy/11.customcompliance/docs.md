@@ -47,11 +47,11 @@ Other Notes
 
 
 ###Creating a custom check script
-+ Select the service group user created or auto learned group from Policy->Group
++ Select the service group (user created or auto learned) from Policy -> Group.
 + Click custom check tab.
 + Enter name of the script. Spaces are not allowed.
 + Copy and paste script to script section.
-+ Click ADD button to add script
++ Click ADD button to add script.
 + Multiple scripts can be created and managed from the option provided in the right side corner.
 + Scripts are run on the containers covered by the service group as soon as script is created as well as when the script is updated.
 + View the script result from Assets -> Container -> Compliance, or Assets -> Nodes -> Compliance.

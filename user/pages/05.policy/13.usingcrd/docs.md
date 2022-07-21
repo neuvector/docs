@@ -260,10 +260,10 @@ metadata: null
 
 For example:
 + This is a namespaced CRD, of NvSecurityRule
-+ Nginx-pod.demo can talk to node-pod.demo over HTTP, and allowed processes are listed
-+ Node-pod.demo can talk to redis-pod.demo using the Redis protocol
++ nginx-pod.demo can talk to node-pod.demo over HTTP, and allowed processes are listed
++ node-pod.demo can talk to redis-pod.demo using the Redis protocol
 + The policymode of the services are set to Monitor mode
-+ Node-pod.demo is allowed to egress to google.com using SSL
++ node-pod.demo is allowed to egress to google.com using SSL
 + Group names such as nv.node-pod.demo are referenced but not defined in the CRD, so are expected to already exist when deployed. See below for defining Groups.
 
 
@@ -272,7 +272,7 @@ Policy mode configuration and Group definition is supported within the CRD confi
 
 Important! The imported target policy mode is not allowed to be modified from the NeuVector console (Policy -> Groups). For example, once the mode is set to Monitor, it can only be changed through CRD modification, not through the console.
 
-Note: The CRD import behavior has been changed in 4.x to ignore the PolicyMode of any 'linked' group, leaving the Policy mode unchanged if the linked group already exists. If the linked group does not exist it will be automatically created and set to the default New Services Mode in Settings -> Configuration.
+Note: The CRD import behavior ignores the PolicyMode of any 'linked' group, leaving the Policy mode unchanged if the linked group already exists. If the linked group does not exist it will be automatically created and set to the default New Services Mode in Settings -> Configuration.
 
 ####Policy Mode Configuration Requirements
 + Mode only applies to the configured Target group
@@ -322,7 +322,7 @@ Policy Mode Configuration Yaml file Example
 <strong>Criteria</strong>
 + Must not be empty unless the name is nodes, external, or containers
 + name - If the name has the service format nv.xxx.yyy, then refer to the above section Policy Mode Configuration section details
-+ key-The key conforms to the regular expression pattern ^[a-zA-Z0-9]+[.:a-zA-Z0-9_-]*$
++ key - The key conforms to the regular expression pattern ^[a-zA-Z0-9]+[.:a-zA-Z0-9_-]*$
 + op (operation)
     - string = "=" 
     - string = "!="
@@ -330,63 +330,63 @@ Policy Mode Configuration Yaml file Example
     - string = "prefix"
     - string = "regex"
     - string = "!regex"
-+ value-A string without limitations
-+ key-Must not be empty
-+ op-Operator
++ value - A string without limitations
++ key - Must not be empty
++ op - Operator
     - If the operator is equal (=) or not-equal (!=), then its’ value must not be empty.
     - If the operator is equal (=) or not-equal (!=) with a value (such as * or ?), then the value cannot have any regular expresssion format like ^$.
     - Example:
     - Key: service
     - Op :  =
     - Value: ab?c*e^$  (this is incorrect)
-+ Action-allow or deny
++ Action - Allow or deny
 + Applications (supported values)
-    -HTTP
-    -SSL
-    -SSH
-    -DNS
-    -DHCP
-    -NTP
-    -TFTP
-    -Echo
-    -RTSP
-    -SIP
-    -MySQL
-    -Redis
-    -ZooKeeper
-    -Cassandra
-    -MongoDB
-    -PostgreSQL
-    -Kafka
-    -Couchbase
-    -Wordpress
-    -ActiveMQ
-    -CouchDB"
-    -ElasticSearch
-    -Memcached
-    -RabbitMQ
-    -Radius
-    -VoltDB
-    -Consul
-    -Syslog
-    -etcd
-    -Spark
-    -Apache
-    -nginx
-    -Jetty
-    -Oracle
-    -MSSQL
-    -GRPC
-+ Port-The specified format is xxx/yyy. Where xxx=protocol(tcp, udp), and yyy=port_number (0-65535).
+    - ActiveMQ
+    - Apache
+    - Cassandra
+    - Consul
+    - Couchbase
+    - CouchDB"
+    - DHCP
+    - DNS
+    - Echo
+    - ElasticSearch
+    - etcd
+    - GRPC
+    - HTTP
+    - Jetty
+    - Kafka
+    - Memcached
+    - MongoDB
+    - MSSQL
+    - MySQL
+    - nginx
+    - NTP
+    - Oracle
+    - PostgreSQL
+    - RabbitMQ
+    - Radius
+    - Redis
+    - RTSP
+    - SIP
+    - Spark
+    - SSH
+    - SSL
+    - Syslog
+    - TFTP
+    - VoltDB
+    - Wordpress
+    - ZooKeeper
++ Port - The specified format is xxx/yyy. Where xxx=protocol(tcp, udp), and yyy=port_number (0-65535).
     - TCP/123 or TCP/any
     - UDP/123 or UDP/123
     - ICMP
     - 123 = TCP/123
-+ Process - a list of process with action, name, path for each
++ Process - A list of process with action, name, path for each
     - action: allow/deny  #This action has precedence over the file access rule.  This should be set to allow if the intent is to allow the file access rule to take effect.
     - name: process name
     - path: process path (optional)
-+ File - a list of file access rules; these apply only to the defined target container group
++ File - A list of file access rules; these apply only to the defined target container group
     - app: list of apps
     - behavior: block_access / monitor_change  #This blocks access to the defined filter below.  If monitor_change is chosen, then a security-event will be generated from the NeuVector’s webconsole Notifications > Security events page.
     - filter:  path/filename
@@ -394,7 +394,7 @@ Policy Mode Configuration Yaml file Example
 
 
 ###RBAC Support with CRDs
-Utilizing Kubernetes existing RBAC model, NeuVector extends the CRD (Custom Resource Definition) to support RBAC by utilizing Kubernetes’s Rolebinding in association with the configured Namespace in the NeuVector  configured CRD rules when using the NvSecurityRule resource-type.  This configured Namespace is then used to enforce the configured Target, which must be reside in this namespace configured in the NeuVector security policy.  When rolebinding a defined clusterrole, this can be used to bind to a Kubernetes User or Group.  The two clusterrole resources types that NeuVector supports are NvSecurityRule and NvClusterSecurityRule.
+Utilizing Kubernetes existing RBAC model, NeuVector extends the CRD (Custom Resource Definition) to support RBAC by utilizing Kubernetes’s Rolebinding in association with the configured Namespace in the NeuVector  configured CRD rules when using the NvSecurityRule resource-type. This configured Namespace is then used to enforce the configured Target, which must reside in this namespace configured in the NeuVector security policy. When rolebinding a defined clusterrole, this can be used to bind to a Kubernetes User or Group. The two clusterrole resources types that NeuVector supports are NvSecurityRule and NvClusterSecurityRule.
 
 <strong>Rolebinding & Clusterolebinding with 2 Users in different Namespaces to a Clusterrole 
 (NvSecurityRules & NvClusterSecurityRules resources)</strong>
@@ -669,7 +669,7 @@ NeuVector supports the exporting of certain NeuVector group types from a Kuberne
   spec:
 ```
 
-Note: The CRD import behavior has been changed in 4.x to ignore the PolicyMode of any 'linked' group, leaving the Policy mode unchanged if the linked group already exists. If the linked group does not exist it will be automatically created and set to the default New Services Mode in Settings -> Configuration.
+Note: The CRD import behavior ignores the PolicyMode of any 'linked' group, leaving the Policy mode unchanged if the linked group already exists. If the linked group does not exist it will be automatically created and set to the default New Services Mode in Settings -> Configuration.
 
 
 <strong>Unsupported Export Group-Types</strong>
@@ -679,7 +679,7 @@ Note: The CRD import behavior has been changed in 4.x to ignore the PolicyMode o
 <strong>Import Scenarios</strong>
 + The import will create new groups in the destination system if the groups do not yet exist in the destination environment, and the currently used Kubernetes user-context has the necessary permissions to access the namespaces configured in the CRD-yaml file to be imported.
 + If the imported group exists in the destination system with different criteria or values, the import will be rejected.
-+ The imported group exists in the destination system with identical configurations, we will reuse the existing group with different type.
++ If the imported group exists in the destination system with identical configurations, we will reuse the existing group with different type.
 
 ###CRD Samples for Global Rules
 

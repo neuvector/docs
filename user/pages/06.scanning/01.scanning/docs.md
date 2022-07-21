@@ -10,13 +10,13 @@ NeuVector enables full lifecycle scanning & compliance through vulnerability sca
 Scanning is performed at all phases of the pipeline from Build to Registry to Run-Time, on various assets, as shown below.
 
 
-| **Scan Type**        | Image   | Node  | Container | Orchestrator | Function |
-| -------------------- | ------  | ----- | --------- | ------------ | -------- |
-| **Vulnerabilities**  |   Yes   |  Yes  |    Yes    |     Yes      |   Yes    |
-| **CIS Benchmarks**   |   Yes   |  Yes  |    Yes    |     Yes      |   N/A    |
-| **Custom Compliance**|   No    |  Yes  |    Yes    |     No       |   No     |
-| **Secrets**          |   Yes   |  Yes  |    Yes    |     No       |   Yes    |
-| **Modules**          |   Yes   |  N/A  |    N/A    |     N/A      |   N/A    |
+| **Scan Type**        | Image   | Node  | Container | Orchestrator |
+| -------------------- | ------  | ----- | --------- | ------------ |
+| **Vulnerabilities**  |   Yes   |  Yes  |    Yes    |     Yes      |
+| **CIS Benchmarks**   |   Yes   |  Yes  |    Yes    |     Yes      |
+| **Custom Compliance**|   No    |  Yes  |    Yes    |     No       |
+| **Secrets**          |   Yes   |  Yes  |    Yes    |     No       |
+| **Modules**          |   Yes   |  N/A  |    N/A    |     N/A      |
 
 Images are scanned either in Registry scanning or through Build-phase plug-ins such as Jenkins, CircleCI, Gitlab etc.
 
@@ -29,8 +29,6 @@ The CIS Benchmarks support by NeuVector include:
 The open source implementation of these benchmarks can be found on the [NeuVector Github page](https://github.com/neuvector).
 
 Note 1: Secrets can also be detected on Nodes and in Containers with [Custom Scripts](/policy/customcompliance).
-
-Note 2: Function scanning is provided in [Serverless Security](/serverless).
 
 #### Kubernetes Resource Deployment File Scanning
 NeuVector is able to scan deployment yaml files for configuration assessments against Admission Control rules. This is useful to scan deployment yaml files early in the pipeline to determine if the deployment would violate any rules before attempting the deployment. Please see [Configuration Assessment](/policy/admission/assessment) under Admission Controls for more details.

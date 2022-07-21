@@ -68,10 +68,10 @@ The following is an example of how secrets detected in an image scan will be dis
 Here is a list of the types of secrets being detected.
 + General Private Keys
 + General detection of credentials including 'apikey', 'api_key', 'password', 'secret', 'passwd' etc.
-+ General passwords in yaml files including 'password', passwd', 'api_token' etc.
++ General passwords in yaml files including 'password', 'passwd', 'api_token' etc.
 + General secrets keys in key/value pairs
 + Putty Private key
-+ Xml Private key
++ XML Private key
 + AWS [credentials / IAM](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html)
 + Facebook client secret
 + Facebook endpoint secret
