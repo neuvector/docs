@@ -30,7 +30,7 @@ The open source implementation of these benchmarks can be found on the [NeuVecto
 
 Note 1: Secrets can also be detected on Nodes and in Containers with [Custom Scripts](/policy/customcompliance).
 
-Note 2: Function scanning is provided in [Serverless Security](/serverless).
+Note 2: Function scanning is provided in [Serverless Security](/serverless). [NOTE: Is this valid for v5 or should it be removed? How about the table above containing 'Function' column?]
 
 #### Kubernetes Resource Deployment File Scanning
 NeuVector is able to scan deployment yaml files for configuration assessments against Admission Control rules. This is useful to scan deployment yaml files early in the pipeline to determine if the deployment would violate any rules before attempting the deployment. Please see [Configuration Assessment](/policy/admission/assessment) under Admission Controls for more details.
