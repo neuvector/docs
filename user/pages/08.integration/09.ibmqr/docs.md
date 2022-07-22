@@ -4,9 +4,9 @@ taxonomy:
     category: docs
 ---
 
-### Integrating with IBM Qradar
+### Integrating with IBM QRadar
 
-The IBM® QRadar® Security Information and Event Management (SIEM) helps security teams accurately detect and prioritize threats across the enterprise, and it provides intelligent insights that enable teams to respond quickly to reduce the impact of incidents. By consolidating log events and network flow data from thousands of devices, endpoints and applications distributed throughout your network, QRadar correlates all this different information and aggregates related events into single alerts to accelerates incident analysis and remediation. QRadar SIEM is available on premises and in a cloud environment.
+The IBM® QRadar® Security Information and Event Management (SIEM) helps security teams accurately detect and prioritize threats across the enterprise, and it provides intelligent insights that enable teams to respond quickly to reduce the impact of incidents. By consolidating log events and network flow data from thousands of devices, endpoints and applications distributed throughout your network, QRadar correlates all this different information and aggregates related events into single alerts to accelerate incident analysis and remediation. QRadar SIEM is available on premises and in a cloud environment.
 
 NeuVector is a full lifecycle container security platform which fully supports QRadar integration. This integration enables QRadar to be able to collect events, logs and incident information for container and Kubernetes environment. By using NeuVector’s DSM for QRadar, customers will be able to normalize the NeuVector security log data in QRadar, then analyze, report or remediate container security events.
 
@@ -18,7 +18,7 @@ It is also available for download from this site [here](NeuVectorDSM_1.0.2.zip)
 ####How to Integrate NeuVector with QRadar
 Before importing the NeuVector DSM into QRadar, we recommend you check/modify these QRadar configurations to make sure everything will work as expected:
 1. IBM QRadar version 7.3.1 and later
-2. Configure QRadar “System Settings” to make sure the Syslog Payload Length is big enough for example:
+2. Configure QRadar “System Settings” to make sure the Syslog Payload Length is big enough, for example: **[the highlighter in the next graph needs to be changed to 'prettier' one]**
 
 ![QRadar](Qradar1.png)
 
@@ -30,12 +30,12 @@ Enable Syslog configuration in Settings -> Configuration. The Server IP/URL and 
 
   
 ####Configure QRadar to Analyze NeuVector Logs
-1. Enable or Import the NeuVector DSM to QRadar
+1. Enable or Import the NeuVector DSM to QRadar. 
 When adding a new QRadar log source, if “NeuVector” appears in the QRadar log source type, then please ignore the log source importing instructions below and take the next step “Add and enable log sources for NeuVector”.
 ![QRadar](Qradar3.png)
-If the “NeuVector” log source type was not found in QRadar, please refer to QRadar user manual to install NeuVector DSM via Admin > Extension Management.
+If the “NeuVector” log source type was not found in QRadar, please refer to QRadar user manual to install NeuVector DSM via Admin -> Extension Management.
 ![QRadar](Qradar4.png)
-2. Add and enable log sources for NeuVector
+2. Add and enable log sources for NeuVector. 
 Now we can add a new log source for NeuVector logs:
 ![QRadar](Qradar5.png)
 “Log Source Identifier” should be the lead controller’s pod name. NeuVector’s lead controller’s pod name can be found in the raw log data of QRadar or from NeuVector’s management console “Assets\Controllers” as below:
