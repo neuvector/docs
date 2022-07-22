@@ -10,7 +10,7 @@ NeuVector can be configured to scan for vulnerabilities triggered in the Gitlab 
 
 The scan can also use the NeuVector REST API by configuring the provided script below to access the controller.
 
-In addition, make sure there is a NeuVector scanner container deployed and configured to connect to the Allinone or Controller. In 4.0 and later, the neuvector/scanner container must be deployed separate from the allinone or controller.
+In addition, make sure there is a NeuVector scanner container deployed and configured to connect to the Allinone or Controller. The neuvector/scanner container must be deployed separate from the allinone or controller.
 
 #### Scan During Gitlab Build Using REST API
 
