@@ -11,7 +11,7 @@ Scanner pods should be deployed to separate nodes to spread the workload across 
 
 By default, NeuVector deploys 2 scanner pods, as part of the sample deployments in the section Deploying NeuVector. These replicasets can be scaled up or down as needed.
 
-The scanner container the latest CVE database and is regularly updated (with 'latest' tag) by NeuVector. The updater redeploys the scanner, forcing a pull of the latest scanner image in order to get the latest CVE database. See the section [Updating the CVE Database](/scanning/updating) for more details on the updater.
+The scanner container must use the latest CVE database and is regularly updated (with 'latest' tag) by NeuVector. The updater redeploys the scanner, forcing a pull of the latest scanner image in order to get the latest CVE database. See the section [Updating the CVE Database](/scanning/updating) for more details on the updater.
 
 Please note that in initial releases the presence and status of multiple scanners is only visible in Kubernetes with 'kubectl get pods -n neuvector' and will not be displayed in the web console. 
 

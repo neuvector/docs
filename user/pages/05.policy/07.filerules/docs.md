@@ -22,7 +22,7 @@ In addition to monitoring predefined files/directories, users can add custom fil
 Important: NeuVector alerts, and does not block modifications to predefined files/directories or in system containers such as Kubernetes ones. Blocking is only an option for user configured custom files/directories for non-system containers. This is so that regular updates of system folder or sensitive configurations are not blocked unintentionally, resulting in erratic system behavior.
 
 The following files and directories are monitored by default:
-+ Executable files+ Sensitive setuid/setgid files+ System libraries, libc, pthread, ...+ Package installation, Debian/Ubuntu, RedHat/CentOS, Alpine+ Sensitive system files, /etc/passwd, /etc/hosts, /etc/resolv.conf …+ Running processes' executable filesThe following activities are monitored:+ Files, directories, symlinks (hard link and soft link) + created, deleted, modified (content change) and moved
++ Executable files+ Sensitive setuid/setgid files+ System libraries, libc, pthread, ...+ Package installation, SUSE Linux Enterprise Server, Debian/Ubuntu, RedHat/CentOS, Alpine+ Sensitive system files, /etc/passwd, /etc/hosts, /etc/resolv.conf …+ Running processes' executable filesThe following activities are monitored:+ Files, directories, symlinks (hard link and soft link) + created, deleted, modified (content change) and moved
 
 Below is a list of the file system monitoring and what is monitored (container, host/node, and/or NeuVector enforcer container itself):
 

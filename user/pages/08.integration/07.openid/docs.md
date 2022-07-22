@@ -13,11 +13,11 @@ Locate the OpenID Connect Redirect URI on the top of the NeuVector OpenID Connec
 ![OpenID1](openid1.png)
 
 #### Microsoft Azure Configuration
-In Azure Active Directory > App registrations > Application name > Settings Page, locate Application ID string. This is used to set the Client ID in NeuVector. The Client secret can be located in Azure's Keys setting.
+In Azure Active Directory -> App registrations -> Application name -> Settings Page, locate Application ID string. This is used to set the Client ID in NeuVector. The Client secret can be located in Azure's Keys setting.
 
 ![OpenID3](openid3.png)
 
-The Issuer URL takes https://login.microsoftonline.com/{tenantID}/v2.0 format. To locate the tenantID, go to **Azure Active Directory > Properties Page** and found the Directory ID, replace it with the tenantID in the URL
+The Issuer URL takes https://login.microsoftonline.com/{tenantID}/v2.0 format. To locate the tenantID, go to **Azure Active Directory -> Properties Page** and found the Directory ID, replace it with the tenantID in the URL
 
 ![OpenID4](openid4.png)
 
@@ -25,7 +25,7 @@ If the users are assigned to the groups in the active directory, their group mem
 
 By default, NeuVector looks for "groups" in the claim to identify the user's group membership. If other claim name is used, you can customize the claim name in NeuVector's OpenID Connect Setting page.
 
-The group claim returned by Azure are identified by the "Object ID" instead of the name. The group's object ID can be located in **Azure Active Directory > Groups > Group name Page**. You should use this value to configure group-based role mapping in NeuVector -> Settings.
+The group claim returned by Azure are identified by the "Object ID" instead of the name. The group's object ID can be located in **Azure Active Directory -> Groups -> Group name Page**. You should use this value to configure group-based role mapping in NeuVector -> Settings.
 
 ![OpenID5](openid5.png)
 
@@ -127,7 +127,7 @@ Configure the proper Issuer URL, Client ID and Client secret in the page.
 
 ![OpenID9](openid9.png)
 
-After the user is authenticated, the proper role can be derived with group-based role mapping configuration. To setup group-based role mapping,
+After the user is authenticated, the proper role can be derived with group-based role mapping configuration. To setup group-based role mapping:
 
 1. If group-based role mapping is not configured or the matched groups cannot be located, the authenticated user will be assigned with the Default role. If the Default role is set to None, when group-based role mapping fails, the user is not able to login.
 2. Specify a list of groups respectively in Admin and Reader role map. The user's group membership is returned by the claims in the ID Token after the user is authenticated. If the matched group is located, the corresponding role will be assigned to the user.
