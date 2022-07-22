@@ -27,6 +27,7 @@ taxonomy:
 ![azure_config5](azure5.png)
 
 6 In the NeuVector management console, login as an administrator. Select “Settings" in the administrator dropdown menu at the top-right corner. Click SAML settings
+[Settings option is in the left hand menu currently, so the text above and the following graph needs to be updated]
 
 ![azure_config6](azure6.png)
 
@@ -35,7 +36,7 @@ taxonomy:
 + Copy "Azure AD Identifier" as the Issuer.
 + Open downloaded the certificate and copy the text to X.509 Certificate box.
 + Set a default role. 
-+ Enter the group name for role mapping. The group claim returned by Azure are identified by the "Object ID" instead of the name. The group's object ID can be located in **Azure Active Directory > Groups > Group name Page**. You should use this value to configure group-based role mapping in NeuVector.
++ Enter the group name for role mapping. The group claim returned by Azure are identified by the "Object ID" instead of the name. The group's object ID can be located in **Azure Active Directory -> Groups -> Group name Page**. You should use this value to configure group-based role mapping in NeuVector.
 
 ![OpenID5](openid5.png)
 
