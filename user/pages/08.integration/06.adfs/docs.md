@@ -30,7 +30,7 @@ This section describes the setup steps in ADFS first, then in the NeuVector cons
 
 ![adfsSetup](adfs5.png)
 
-6.Check “Enable support for the SAML 2.0 WebSSO protocol” and enter  the SAML Redirect URI from NeuVector Settings>SAML Setting page into the “Relying party SAML 2.0 SSO service URL” field.  Select “Next” to continue.
+6.Check “Enable support for the SAML 2.0 WebSSO protocol” and enter  the SAML Redirect URI from NeuVector Settings -> SAML Setting page into the “Relying party SAML 2.0 SSO service URL” field.  Select “Next” to continue.
 
 ![adfsSetup](adfs6.png)
 
@@ -55,7 +55,7 @@ This section describes the setup steps in ADFS first, then in the NeuVector cons
 12.Select “Add Rule…” and choose “Send LDAP Attributes as Claims”; then select “Next”.  Name the rule and choose Active Directory as the Attribute store. Only Username outgoing claim is required for authentication if default role is set; else groups is needed for role mapping.  Email is optional.
 + SAM-Account-Name -> Username
 + E-Mail-Address -> Email
-+ Token-Groups – Unqalified Names -> groups
++ Token-Groups – Unqualified Names -> groups
 ![adfsSetup](adfs11-12.png)
 
 13.Select “Add Rule…” and choose “Transform an Incoming Claim”; then select “Next”.  Name the rule and set the field as captured in the screenshot below.  The Outgoing name ID format needs to be Transient Identifier.
@@ -66,7 +66,7 @@ This section describes the setup steps in ADFS first, then in the NeuVector cons
 ####NeuVector Setup
 
 1.Identify Provider Single Sign-On URL
-+ View Endpoints from AD FS Management > Service and use “SAML 2.0/WS-Federation” endpoint URL.
++ View Endpoints from AD FS Management -> Service and use “SAML 2.0/WS-Federation” endpoint URL.
 + Example: https://&lt;adfs-fqdn>/adfs/ls
 
 2.Identity Provider Issuer
@@ -74,7 +74,7 @@ This section describes the setup steps in ADFS first, then in the NeuVector cons
 + Example: http://&lt;adfs-fqdn>/adfs/services/trust
 
 3.X.509 Certificate
-+ From AD FS Management, select Service > Certificate, right click on Token-signing certificate and choose “View Certificate…”
++ From AD FS Management, select Service -> Certificate, right click on Token-signing certificate and choose “View Certificate…”
 + Select the Details tab and click “Copy to File”
 + Save it as a Base-64 encoded x.509 (.CER) file
 + Copy and paste the contents of the file into the X.509 Certificate field
