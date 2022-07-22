@@ -33,7 +33,7 @@ Once you enter the data for the first step of creating a service account, you ne
 
 ![GCR](gcr5.png)
 
-Be sure to select Basic —> Viewer for the access. If you have an existing service account, ensure that the access is set this way. (Hint: Even access permissions that appear to be more powerful don’t seem to allow for proper access. Don't skip this step.
+Be sure to select Basic -> Viewer for the access. If you have an existing service account, ensure that the access is set this way. (Hint: Even access permissions that appear to be more powerful don’t seem to allow for proper access.) Don't skip this step.
 
 Once you’ve done this step, you can breeze past Step 3 and proceed with creating the Service Account.
 
@@ -41,7 +41,7 @@ If you don’t immediately land on the info panel for your new service account, 
 
 ![GCR](gcr6.png)
 
-Click “ADD KEY” —> “Create New Key”
+Click “ADD KEY” -> “Create New Key”
 
 ![GCR](gcr7.png)
 
