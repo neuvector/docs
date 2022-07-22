@@ -15,7 +15,7 @@ For registry scanning, if the box 'Rescan after CVE DB update' is enabled, all i
 
 #### Updater Cron Job
 
-This cron job is deployed by NeuVector automatically as part of the sample deployment, so is typically not required to start manually.
+This cron job is deployed by NeuVector automatically as part of the sample deployment, so it is typically not required to start manually.
 
 The Updater is a container image which, when run, restarts the scanner deployment, forcing the pull of the latest Scanner image. The updater re-deploys all scanner pods by taking the deployment to zero and scaling it back up.
 
