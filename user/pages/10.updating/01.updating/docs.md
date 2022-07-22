@@ -50,9 +50,9 @@ kubectl apply -f <yaml file>
 To update to a new version of NeuVector from the command line.
 
 ```
-kubectl set image deployment/neuvector-controller-pod neuvector-controller-pod=neuvector/controller:4.2.2 -n neuvector
-kubectl set image deployment/neuvector-manager-pod neuvector-manager-pod=neuvector/manager:4.2.2 -n neuvector
-kubectl set image DaemonSet/neuvector-enforcer-pod neuvector-enforcer-pod=neuvector/enforcer:4.2.2 -n neuvector
+kubectl set image deployment/neuvector-controller-pod neuvector-controller-pod=neuvector/controller:*<VERSION_TAG>* -n neuvector
+kubectl set image deployment/neuvector-manager-pod neuvector-manager-pod=neuvector/manager:*<VERSION_TAG>* -n neuvector
+kubectl set image DaemonSet/neuvector-enforcer-pod neuvector-enforcer-pod=neuvector/enforcer:*<VERSION_TAG>* -n neuvector
 ```
 
 To check the status of the rolling update:
@@ -118,7 +118,7 @@ spec:
 
 ### Upgrading from NeuVector 4.x to 5.x
 
-For Helm users, update to NeuVector Helm chart 2.0.0 or later. If updating an Operator or Helm install on OpenShift, see note below.
+For Helm users, update to NeuVector Helm chart 2.2.0 or later. If updating an Operator or Helm install on OpenShift, see note below.
 
 1. Delete old neuvector-binding-customresourcedefinition clusterrole
 ```
@@ -165,7 +165,7 @@ Optionally, remove any references to the NeuVector license and secrets in Helm c
 
 **Note about SCC and Upgrading via Operator/Helm**
 
-Privileged SCC is added to the Service Account specified in the deployment yaml by Operator version 1.3.4 and above in new deployments. In the case of upgrading the NeuVector Operator from a previous version to 1.3.4 or Helm to 2.0.0, please delete Privileged SCC before upgrading.
+Privileged SCC is added to the Service Account specified in the deployment yaml by Operator version 1.3.4 and above in new deployments. In the case of upgrading the NeuVector Operator from a previous version to 1.3.4 or Helm to 2.2.0, please delete Privileged SCC before upgrading.
 ```
 oc delete rolebinding -n neuvector system:openshift:scc:privileged
 ```
