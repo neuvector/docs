@@ -51,11 +51,11 @@ Install the app by either uploading the tarball or following the Splunkbase prom
 
 Go to Settings -> Configuration -> Syslog  
 
-  a. set the server value as the IP address that Splunk is running  
-  b. choose TCP as the protocol;  
-  c. set port number as 10514;  
-  d. choose Info Level;  
-  e. click SUBMIT to save the setting.  
+  a. Set the server value as the IP address that Splunk is running.  
+  b. Choose TCP as the protocol.  
+  c. Set port number as 10514.  
+  d. Choose Info Level.  
+  e. Click SUBMIT to save the setting.  
 
 
 ![syslog](syslog-config.png)
