@@ -10,9 +10,9 @@ Scan for vulnerabilities during the build phase of the pipeline using plug-ins s
 
 To trigger a build-phase scan, the plug-in (e.g. Jenkins) must be able to connect to the Controller or Allinone. Note: The default REST API port for plug-ins to call the scanner is 10443. This port must be exposed through the Allinone or Controller through a service in Kubernetes or a port map (e.g. - 10443:10443) in the Docker run or compose file.
 
-Make sure there is a NeuVector scanner container deployed and properly configured to connect to the Allinone or Controller. In 4.0 and later, the neuvector/scanner container must be deployed separately from the allinone or controller, and is included in the sample deployment yaml files.
+Make sure there is a NeuVector scanner container deployed and properly configured to connect to the Allinone or Controller. The neuvector/scanner container must be deployed separately from the allinone or controller, and is included in the sample deployment yaml files.
 
-You can download the plug-in from the Jenkins Plug-in Manager. Other plug-ins are accessible through the catalogs of the build tool, or on the [NeuVector github](https://github.com/neuvector) page. The Bamboo scanner is available at https://github.com/neuvector/bamboo-plugin/releases/tag/1.0.1.  The CircleCI ORB is available at https://github.com/neuvector/circleci-orb and through the CircleCI ORB catalog. 
+You can download the plug-in from the Jenkins Plug-in Manager. Other plug-ins are accessible through the catalogs of the build tool, or on the [NeuVector github](https://github.com/neuvector) page. The Bamboo scanner is available at https://github.com/neuvector/bamboo-plugin/releases/.  The CircleCI ORB is available at https://github.com/neuvector/circleci-orb and through the CircleCI ORB catalog. 
 
 #### Local Build-Phase Scanning
 For local scanning, the NeuVector scanner will try to scan the image on a local host (or a host reachable by the remote host docker command).
