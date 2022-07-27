@@ -21,7 +21,7 @@ The Issuer URL takes https://login.microsoftonline.com/{tenantID}/v2.0 format. T
 
 ![OpenID4](openid4.png)
 
-If the users are assigned to the groups in the active directory, their group membership can be added to the claim. Find the application in **Azure Active Directory -> App registrations** and edit the manifest. Modify value of "groupMembershipClaims" to "All".
+If the users are assigned to the groups in the active directory, their group membership can be added to the claim. Find the application in **Azure Active Directory -> App registrations** and edit the manifest. Modify value of "groupMembershipClaims" to "Application Group".  There is a maximum number of groups that will get emitted into a token.  If the user belongs to a large number of groups ( > 200) and the value "All" is used, the token will not include the groups and authorization will failed.  Using the value "Application Group" instead of "All" will reduce the number of applicable groups returned in the token.  
 
 By default, NeuVector looks for "groups" in the claim to identify the user's group membership. If other claim name is used, you can customize the claim name in NeuVector's OpenID Connect Setting page.
 
