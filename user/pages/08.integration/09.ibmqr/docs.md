@@ -18,7 +18,7 @@ It is also available for download from this site [here](NeuVectorDSM_1.0.2.zip)
 ####How to Integrate NeuVector with QRadar
 Before importing the NeuVector DSM into QRadar, we recommend you check/modify these QRadar configurations to make sure everything will work as expected:
 1. IBM QRadar version 7.3.1 and later
-2. Configure QRadar “System Settings” to make sure the Syslog Payload Length is big enough, for example: **[the highlighter in the next graph needs to be changed to 'prettier' one]**
+2. Configure QRadar “System Settings” to make sure the Syslog Payload Length is big enough, for example: 
 
 ![QRadar](Qradar1.png)
 
