@@ -41,7 +41,7 @@ At least one repository filter is required (can't be left blank).
 Notes:
 1. To scan all image tags, add filter as &#42; or &#42;:&#42;. This works on all registry types except the public docker registry.
 2. Repository should be full name if organization is nil for public docker registry or add library before repository as given above.
-3. Create a virtual repository and add all local repository to it to scan all tags on a JFrog registry with the subdomain docker access method. [Is something missing or extra?] 
+3. Create a virtual repository and add all local repository to it to scan all tags on a JFrog registry with the subdomain docker access method.
 4. Regular expressions can be used in a filter. For example alpine:3.[8|9].* will scan all 3.8.x and 3.9.x images and tags on docker hub.
 
 #### Registry scan options
@@ -50,7 +50,7 @@ Notes:
     - Provides information about commands executed, packages added in the layer
     - Images size of each layer 
 + Auto Scan:
-    - Auto Scan is only supported with OpenShift imagestream integration. Proper role binding should be configured in advance. [Only with OpenShift?] 
+    - Auto Scan is only supported with OpenShift imagestream integration. Proper role binding should be configured in advance.
     - When Auto Scan is enabled, as soon as an image is pushed to the registry, the image scan will be scheduled.
 + Periodical Scan:
     - Enable periodic scan to scan periodically
