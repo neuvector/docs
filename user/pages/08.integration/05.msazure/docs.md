@@ -26,8 +26,7 @@ taxonomy:
 
 ![azure_config5](azure5.png)
 
-6 In the NeuVector management console, login as an administrator. Select “Settings" in the administrator dropdown menu at the top-right corner. Click SAML settings
-[Settings option is in the left hand menu currently, so the text above and the following graph needs to be updated]
+6 In the NeuVector management console, login as an administrator. Select “Settings" in the administrator dropdown menu in the left side menu. Click SAML settings
 
 ![azure_config6](azure6.png)
 
