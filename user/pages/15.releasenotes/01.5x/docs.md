@@ -6,6 +6,16 @@ taxonomy:
 
 ### Release Notes for 5.x (Open Source Version)
 
+#### 5.0.2 July 2022
+##### Enhancements
++ Rancher hardened and SELinux clusters are supported.
+
+##### Bug Fixes
++ Agent process high cpu usage on k3s systems.
++ AD LDAP groups not working properly after upgrade to 5.0.
++ Enforcer keeps restating due to error=too many open files (rke2/cilium).
++ Support log is unable to download successfully.
+
 #### 5.0.1 June 2022
 ##### Enhancements
 + Support vulnerability scan of openSUSE Leap OS (in scanner image).
