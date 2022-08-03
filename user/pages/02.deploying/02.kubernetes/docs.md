@@ -28,7 +28,7 @@ There is a separate section for OpenShift instructions, and Docker EE on Kuberne
 <p>Please be sure to update the image references in appropriate yaml files.</p>
 <p>If deploying with the current NeuVector Helm chart (v1.8.9+), the following changes should be made to values.yml:
 <li>Update the registry to docker.io</li>
-<li>Update image names/tags to the preview version on Docker hub, as shown above</li>
+<li>Update image names/tags to the current version on Docker hub, as shown above</li>
 <li>Leave the imagePullSecrets empty</li></p>
 
 Note: If deploying from the Rancher Manager 2.6.5+ NeuVector chart, images are pulled automatically from the Rancher NeuVector mirrored image repo, and deploys into the cattle-neuvector-system namespace.
@@ -265,16 +265,16 @@ Then create the appropriate service(s):
 <code>
 kubectl create -f nv_master_worker.yaml</code></pre>
 </li>
-<li>Create the primary NeuVector services and pods using the preset Preview version commands or modify the sample yamls below. The preset Preview versions invoke a LoadBalancer for the NeuVector Console. If using the sample yaml files below replace the image names and &lt;version> tags for the manager, controller and enforcer image references in the yaml file. Also make any other modifications required for your deployment environment (such as LoadBalancer/NodePort/Ingress for manager access etc).
+<li>Create the primary NeuVector services and pods using the preset version commands or modify the sample yamls below. The preset versions invoke a LoadBalancer for the NeuVector Console. If using the sample yaml files below replace the image names and &lt;version> tags for the manager, controller and enforcer image references in the yaml file. Also make any other modifications required for your deployment environment (such as LoadBalancer/NodePort/Ingress for manager access etc).
 <pre>
 <code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/neuvector-containerd-k8s.yaml</code></pre>
-For 5.0.0 Preview with Rancher on K3s containerd run-time:
+For 5.0.0 with Rancher on K3s containerd run-time:
 <pre>
 <code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/neuvector-rancher-containerd-k3s.yaml</code></pre>
-For 5.0.0 Preview with docker run-time:
+For 5.0.0 with docker run-time:
 <pre>
 <code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/neuvector-docker-k8s.yaml</code></pre>
-For 5.0.0 Preview with AWS Bottlerocket run-time:
+For 5.0.0 with AWS Bottlerocket run-time:
 <pre>
 <code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/neuvector-aws-bottlerocket-k8s.yaml</code></pre>
 Or, if modifying any of the above yaml or samples from below:

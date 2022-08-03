@@ -22,7 +22,7 @@ To deploy manually, first pull the appropriate NeuVector containers from the Neu
 <p>Please be sure to update the image references in appropriate yaml files.</p>
 <p>If deploying with the current NeuVector Helm chart (v1.8.9+), the following changes should be made to values.yml:
 <li>Update the registry to docker.io</li>
-<li>Update image names/tags to the preview version on Docker hub, as shown above</li>
+<li>Update image names/tags to the current version on Docker hub, as shown above</li>
 <li>Leave the imagePullSecrets empty</li></p>
 
 ###Deploy on OpenShift
