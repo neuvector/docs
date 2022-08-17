@@ -6,7 +6,7 @@ taxonomy:
 
 ### CI/CD Build Phase Vulnerability Scanning
 
-Scan for vulnerabilities during the build phase of the pipeline using plug-ins such as Jenkins, Azure Devops, Bamboo, and CircleCI, or use the REST API. NeuVector supports two types of build-phase scanning: registry and local. For registry scanning, the NeuVector controller and scanner must be able to connect to the registry to pull the image. 
+Scan for vulnerabilities during the build phase of the pipeline using plug-ins such as Jenkins, Azure Devops, [Github Action](https://github.com/neuvector/neuvector-image-scan-action), Bamboo, and CircleCI, or use the REST API. NeuVector supports two types of build-phase scanning: registry and local. For registry scanning, the NeuVector controller and scanner must be able to connect to the registry to pull the image. 
 
 To trigger a build-phase scan, the plug-in (e.g. Jenkins) must be able to connect to the Controller or Allinone. Note: The default REST API port for plug-ins to call the scanner is 10443. This port must be exposed through the Allinone or Controller through a service in Kubernetes or a port map (e.g. - 10443:10443) in the Docker run or compose file.
 
