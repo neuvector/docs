@@ -22,6 +22,7 @@ AWS Bottlerocket Note: Must change path of the containerd socket specific to Bot
 
 #### Not Supported
 * Cilium as a cni (limited support). Protect mode (inline blocking) should NOT be used with Cilium, as all traffic will be blocked. This limitation will be removed in a future release.
+* AWS ECS is no longer supported.
 * Docker on Mac
 * Docker on Windows
 * Rkt (container linux) from CoreOS
