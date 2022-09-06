@@ -4,8 +4,8 @@ taxonomy:
     category: docs
 ---
 
-### Managing NeuVector from the Command Line
-The NeuVector solution can be managed using the CLI. The CLI uses a RestAPI for the Controller to issue commands to the Controller. The Controller then manages the Enforcer(s) appropriately. You can access the NeuVector CLI by typing the cli command for the Manager or Allinone, for example:
+### Using the NeuVector Command Line
+The NeuVector solution supports a limited set of functions using the CLI. The CLI is supported through the Manager, which in turn uses a RestAPI to issue commands to the Controller. The Controller then manages the Enforcer(s) appropriately. A complete set of operations is supported through the REST API, which can be exposed directly from the Controller. You can access the NeuVector CLI by typing the cli command for the Manager or Allinone, for example:
 ```
 kubectl exec -it neuvector-manager-pod-5bb76b6754-rlmnp -n neuvector -- cli 
 ```
