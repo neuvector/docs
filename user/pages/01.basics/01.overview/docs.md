@@ -37,7 +37,7 @@ The Enforcer is a lightweight container that enforces the security policies. One
 Note:  For Docker native (non Kubernetes) deployments the Enforcer container and the Controller cannot be deployed on the same node (except in the All-in-One case below).
 
 ##### Manager
-The Manager is a stateless container that provides a web-UI (HTTPS only) and CLI console for users to manage the NeuVector security solution. More than one Manager container can be deployed as necessary.
+The Manager is a stateless container that provides a web-UI (HTTPS only) console for users to manage the NeuVector security solution. More than one Manager container can be deployed as necessary.
 
 ##### All-in-One
 The All-in-One container includes a Controller, an Enforcer and a Manager in one package. It's useful for easy installation in single-node or small-scale deployments.

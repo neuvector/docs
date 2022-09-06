@@ -14,22 +14,12 @@ https://<manager_host_ip>:8443
 
 ![Navigation](3_0_Dashboard.png)
 
-You can manage NeuVector from the Console or command line.
+You can manage NeuVector from the Console or by using the REST API.
 
 Note1: See below for cases where your corporate firewall blocks 8443.
 
 Note2: If your Chrome browser blocks the NeuVector self-signed certificate, see the next section on Chrome Certificate Upload.
 
-### Connect to CLI
-
-On the same host where the manager or all-in-one or controller container is running, issue the following command line,
-
-```
-# docker exec -it  <manager_container_name> cli
-```
-```
-# kubectl exec -it -n <manager_pod_name> -n neuvector cli
-```
 
 ### Connect to REST API Server
 All operations in NeuVector can be invoked through the REST API instead of the console. The REST API server is part of the Controller/Allinone container. For details on the REST API, please see the section on Workflow and [Automation](/automation/automation).

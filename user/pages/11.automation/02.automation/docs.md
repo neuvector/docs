@@ -1,5 +1,5 @@
 ---
-title: Automating NeuVector
+title: REST API and Automation
 taxonomy:
     category: docs
 ---
@@ -12,11 +12,11 @@ There are many automation features in NeuVector to support the entire CI/CD work
 + CIS benchmarks automatically run on hosts
 + Helm chart on github for automated deployment on Kubernetes
 + Response rules to automate responses to security events
-+ CLI and REST API for building automation of any NeuVector function
++ REST API for building automation of any NeuVector function
 
 
-#### CLI and REST API
-The NeuVector solution can be managed using the CLI and/or REST API. Below are common examples of automation using the REST API. The REST API yaml doc is best viewed in the Swagger 2.0 viewer. The REST API documentation is below in a yaml file which is best viewed in a reader such as swagger.io.
+#### REST API
+The NeuVector solution can be managed using the REST API. Below are common examples of automation using the REST API. The REST API yaml doc is best viewed in the Swagger 2.0 viewer. The REST API documentation is below in a yaml file which is best viewed in a reader such as swagger.io.
 
 Latest update can be found [here](https://raw.githubusercontent.com/neuvector/neuvector/main/controller/api/apis.yaml). Also in the NeuVector GitHub source code [repo](https://github.com/neuvector/neuvector/blob/main/controller/api/apis.yaml).
 
