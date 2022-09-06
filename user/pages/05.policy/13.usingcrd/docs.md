@@ -346,7 +346,7 @@ Policy Mode Configuration Yaml file Example
     - Cassandra
     - Consul
     - Couchbase
-    - CouchDB"
+    - CouchDB
     - DHCP
     - DNS
     - Echo
