@@ -35,20 +35,20 @@ Large images will take more time to pull as well as need to be expanded to scan 
 Multiple scanner pods can be deployed to the same host/node, but considerations should be made to ensure the host has enough memory, CPU, and network bandwidth for maximizing scanner performance.
 
 ### Standalone Scanner for Local Scanning
-NeuVector supports standalone scanner deployments for local image scanning (which does not require a Controller). In the sample docker run below, the local image will be scanned and the results stored at the /var/neuvector locally. The image must be able to be accessed through the mounted docker.sock.
+NeuVector supports standalone scanner deployments for local image scanning (which does not require a Controller). In the sample docker run below, the local image will be scanned and the results stored at the /var/neuvector locally. For local scanning, the image must be able to be accessed through the mounted docker.sock, otherwise a registry can be specified.
 
 ```
-docker run --name neuvector.scanner --rm -e SCANNER_REPOSITORY=ubuntu -e SCANNER_TAG=16.04 -v /var/run/docker.sock:/var/run/docker.sock -v /var/neuvector:/var/neuvector  neuvector/scanner
+docker run --name neuvector.scanner --rm -e SCANNER_REPOSITORY=ubuntu -e SCANNER_TAG=16.04 -e SCANNER_ON_DEMAND=true -v /var/run/docker.sock:/var/run/docker.sock -v /var/neuvector:/var/neuvector  neuvector/scanner
 ```
 The following scanner environment variables can be used in the docker run command: 
 
-- SCANNER_REGISTRY= url of the registry
+- SCANNER_REGISTRY= url of the registry (optional instead of local scan)
 - SCANNER_REPOSITORY= repository to scan
 - SCANNER_TAG= version tag
-- SCANNER_REGISTRY_USERNAME= user
-- SCANNER_REGISTRY_PASSWORD= password
-- SCANNER_SCAN_LAYERS= true or false
-- SCANNER_ON_DEMAND (optional)
+- SCANNER_REGISTRY_USERNAME= user (optional instead of local scan)
+- SCANNER_REGISTRY_PASSWORD= password (optional instead of local scan)
+- SCANNER_SCAN_LAYERS= true or false (to return layered scan results)
+- SCANNER_ON_DEMAND=true (required)
 - CLUSTER_JOIN_ADDR (optional), CLUSTER_JOIN_PORT (optional) - to send results to controller for use in Admission control rules (Kubernetes deployed controller).
 - CLUSTER_ADVERTISED_ADDR (optional) - if scanner is on different host than controller, to send results for use in Admission control rules (Kubernetes deployed controller).
 
