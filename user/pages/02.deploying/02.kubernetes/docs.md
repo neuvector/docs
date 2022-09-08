@@ -20,9 +20,9 @@ There is a separate section for OpenShift instructions, and Docker EE on Kuberne
 
 ####NeuVector Images on Docker Hub
 <p>The images are on the NeuVector Docker Hub registry. Use the appropriate version tag for the manager, controller, enforcer, and leave the version as 'latest' for scanner and updater. For example:
-<li>neuvector/manager:5.0.0</li>
-<li>neuvector/controller:5.0.0</li>
-<li>neuvector/enforcer:5.0.0</li>
+<li>neuvector/manager:5.0.3</li>
+<li>neuvector/controller:5.0.3</li>
+<li>neuvector/enforcer:5.0.3</li>
 <li>neuvector/scanner:latest</li>
 <li>neuvector/updater:latest</li></p>
 <p>Please be sure to update the image references in appropriate yaml files.</p>
