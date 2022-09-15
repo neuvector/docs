@@ -6,6 +6,25 @@ taxonomy:
 
 ### Release Notes for 5.x (Open Source Version)
 
+#### 5.0.3 September, 2022
+##### Enhancements
++ Do not display the EULA after successful restart from persistent volume.
++ Use the image filter in vulnerability profile setting to skip container scan results.
++ Support scanner in GitHub actions at https://github.com/neuvector/neuvector-image-scan-action.
++ Add Enforcer environment variables for disabling secrets scanning and running CIS benchmarks
+```
+    env:
+      - name: ENF_NO_SECRET_SCANS  (available after v4.4.4)
+        value: "1"
+      - name: ENF_NO_AUTO_BENCHMARK (after v5.0.3)
+        value: "1"
+```
+
+##### Bug Fixes
++ Enforcer unable to start occasionally.
++ Connection leak on multi-cluster federation environments.
++ Compliance page not loading some times in Security Risks -> Compliance 
+
 #### 5.0.2 July 2022
 ##### Enhancements
 + Rancher hardened and SELinux clusters are supported.
@@ -224,7 +243,6 @@ Support for deployment on ECS is no longer provided. The allinone should still b
   - Update the registry to docker.io
   - Update image names/tags to the preview version on Docker hub
   - Leave the imagePullSecrets empty
-
 
 
 

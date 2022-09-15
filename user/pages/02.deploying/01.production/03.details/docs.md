@@ -50,6 +50,12 @@ taxonomy:
 * CONTAINER_NET_TYPE
 > (Optional) To support special network plug-in set value to "macvlan”
 
+* ENF_NO_SECRET_SCANS
+> (Optional) Set the value to “1” to disable scanning for secrets in files (improves performance).
+
+* ENF_NO_AUTO_BENCHMARK
+> (Optional) Set the value to “1” to disable CIS benchmarks on host and containers (improves performance).
+
 
 ### Open Ports
 
