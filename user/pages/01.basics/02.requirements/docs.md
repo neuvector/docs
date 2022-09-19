@@ -21,6 +21,7 @@ taxonomy:
 AWS Bottlerocket Note: Must change path of the containerd socket specific to Bottleneck. Please see Kubernetes deployment section for details.
 
 #### Not Supported
+* CoreOS is not supported for CVE scanning, as there is no CVE feed published by the maintainers.
 * Cilium as a cni (limited support). Protect mode (inline blocking) should NOT be used with Cilium, as all traffic will be blocked. This limitation will be removed in a future release.
 * AWS ECS is no longer supported.
 * Docker on Mac
