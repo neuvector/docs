@@ -119,6 +119,7 @@ neuvector-scanner-pod-87474dcff-s8vgt       1/1     Running   0          114s   
 + Support Microsoft Teams format for webhooks.
 + Support AD/LDAP nested groups under mapped role group.
 + Support clusterrolebindings or rolebindings with group info in IDP for Openshift.
++ Allow network rules and admission control rules to be promoted to a Federated rule.
 
 #####Bug Fixes
 + Fix issue of worker federation role backup should restore into non-federated clusters.
