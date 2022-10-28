@@ -6,6 +6,18 @@ taxonomy:
 
 ### Release Notes for 5.x (Open Source Version)
 
+#### 5.0.4 October, 2022
+
+##### Security updates
++ Update alpine to remove critical CVE-2022-40674 in the manager expat library, as well as other minor CVEs.
+
+##### Enhancements
++ Add support for Antrea CNI
+
+##### Bug Fixes
++ Fix unexpected process.profile.violation incident in the NV.Protect group.
++ When SSL is disabled on manager UI access, user password is printed to the manager log.
+
 #### 5.0.3 September, 2022
 ##### Enhancements
 + Do not display the EULA after successful restart from persistent volume.
