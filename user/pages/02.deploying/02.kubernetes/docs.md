@@ -39,12 +39,17 @@ Note: If deploying from the Rancher Manager 2.6.5+ NeuVector chart, images are p
 <pre>
 <code>kubectl create namespace neuvector</code></pre>
 </li>
-<li>(<strong>Optional</strong>) Create the NeuVector Pod Security Policy (PSP).
- If you have enabled Pod Security Policies in your Kubernetes cluster, add the following for NeuVector (for example, nv_psp.yaml). Note1: PSP is deprecated in Kubernetes 1.21 and will be totally removed in 1.25. Note2: The Manager and Scanner pods run without a uid. If your PSP has a rule `Run As User: Rule: MustRunAsNonRoot` then add the following into the sample yaml below (with appropriate value for ###):
+<li>(<strong>Optional</strong>) Create the NeuVector Pod Security Admission (PSA) or Pod Security Policy (PSP).
+ If you have enabled Pod Security Admission (aka Pod Security Standards) in Kubernetes 1.25+, or Pod Security Policies (prior to 1.25) in your Kubernetes cluster, add the following for NeuVector (for example, nv_psp.yaml). Note1: PSP is deprecated in Kubernetes 1.21 and will be totally removed in 1.25. Note2: The Manager and Scanner pods run without a uid. If your PSP has a rule `Run As User: Rule: MustRunAsNonRoot` then add the following into the sample yaml below (with appropriate value for ###):
 <pre>
 <code>
 securityContext:
     runAsUser: ###</code></pre>
+For PSA in Kubernetes 1.25+, label the NeuVector namespace with privileged profile for deploying on a PSA enabled cluster.
+<pre>
+<code>
+$ kubectl label  namespace neuvector "pod-security.kubernetes.io/enforce=privileged"
+</code></pre>
 <html>
 <head>
 <link rel="stylesheet" href="/serverless/toggle-box.css" type="text/css" />
@@ -55,7 +60,7 @@ securityContext:
 
 <!-- NOTE: Toggle Box #1 -->
 	<input class="title-option" id="acc0" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc0"><span><i class="icon-code"></i>View Sample NeuVector PSP</span></label>
+  <label class="title-panel" onClick="" for="acc0"><span><i class="icon-code"></i>View Sample NeuVector PSP (1.24 and earlier)</span></label>
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
   <div class="wrap-content">
