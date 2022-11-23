@@ -6,6 +6,13 @@ taxonomy:
 
 ### Release Notes for 5.x (Open Source Version)
 
+#### 5.0.5 November, 2022
+
+##### Bug Fixes
++ Upgrading to 5.0.x results in an error message about Manager, Controller, Enforcer running different versions.
++ Enforcers experiencing go routine panic resulting in dp kill.  WebUI does not reflect enforcer as online.
++ Unexpected Process.Profile.Violation incident in NV.Protect group on which command on coreos.
+
 #### 5.0.4 October, 2022
 
 ##### Security updates
