@@ -565,6 +565,8 @@ spec:
       tolerations:
         - effect: NoSchedule
           key: node-role.kubernetes.io/master
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/control-plane
       hostPID: true
       containers:
         - name: neuvector-enforcer-pod
@@ -919,6 +921,8 @@ spec:
       tolerations:
         - effect: NoSchedule
           key: node-role.kubernetes.io/master
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/control-plane
       hostPID: true
       containers:
         - name: neuvector-enforcer-pod
@@ -1062,6 +1066,8 @@ spec:
       tolerations:
         - effect: NoSchedule
           key: node-role.kubernetes.io/master
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/control-plane
         # if there is an extra info for taints as above, please add it here. This is required to match all the taint info defined on the taint node. Otherwise, the Enforcer won't deploy on the taint node
         - effect: NoSchedule
           key: mykey
@@ -1495,6 +1501,8 @@ spec:
       tolerations:
         - effect: NoSchedule
           key: node-role.kubernetes.io/master
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/control-plane
       hostPID: true
       containers:
         - name: neuvector-enforcer-pod
