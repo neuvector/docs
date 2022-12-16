@@ -6,6 +6,38 @@ taxonomy:
 
 ### Release Notes for 5.x (Open Source Version)
 
+#### 5.1.0 December, 2022
+
+##### Enhancements
++ Centralized, multi-cluster scanning (CVE) database. The primary (master) cluster can scan a registry/repo designated as a federated registry. The scan results from these registries will be synchronized to all managed (remote) clusters. This enables display of scan results in the managed cluster console as well as use of the results in admission control rules of the managed cluster. Registries only need to be scanned once instead of by each cluster, reducing CPU/memory and network bandwidth usage. 
++ Enhance admission control rules:
+  - Custom criteria for admission control rules. Allow users to define resource criteria on all pod related fields and to be used in rules, for example item.metadata.annotationsKey contains 'neuvector', item.metadata.name='xyzzy' etc.
+  - Add criteria to check for high risk RBAC settings for service accounts when deploying pods. These include criteria 'any action of workload resources', 'any action on RBAC', 'create workload resources', 'listing secrets', and 'exec into a container'.
+  - Add semantic version comparison to modules for admission control rules. This enables > or < operators to applied to version numbers in rules (e.g. don't allow module curl<6.2.0 to be deployed). This allows specific version checks on installed packages.
+  - Add an admission control rule for Pod Security Admission (PSA) supported in Kubernetes 1.25+.
++ Add new env variable NO_DEFAULT_ADMIN which when enabled does not create an 'admin' user. This is used for Rancher SSO integration as the default. If not enabled, persistently warn the user and record events to change the default admin password if it is not changed from default.
++ Blocking login after failed login attemps now becomes the default. The default value is 5 attempts, and configurable in Settings -> Users & Roles-> Password Profile.
++ Add new env variable for performance tuning ENF_NO_SYSTEM_PROFILES, value: "1". When enabled, it will disable the process and file monitors. No learning processes, no profile modes, no process/file (package) incidents, and no file activity monitor will be performed. This will reduce CPU/memory resource usage and file operations.
++ Add a custom auto-scaling setting for scanner pods, with value Delayed, Immediate,  and Disabled. Important: Scanner auto-scaling is not supported when scanner is deployed with an OpenShift operator, as the operator will always change the number of pods to its configured value.
+  - Delayed strategy:
+    -  When lead controller continuously sees "task count" > 0 for > 90 seconds, a new scanner pod is started if maxScannerPods is not reached yet
+    -  When lead controller continuously sees "task count" is 0 for > 180 seconds, it scales down one scanner pod if minScannerPods is not reached yet
+  - Immediate strategy:
+    -  Every time when lead controller sees "task count" > 0, a new scanner pod is started if maxScannerPods is not reached yet
+    -  When lead controller continuously sees "task count" is 0 for > 180 seconds, it scales down one scanner pod if minScannerPods is not reached yet
++ Custom groups are now able to use namespace labels, including Rancher's namespace labels. Generally, pod and namespace labels can now be added to Custom Groups.
++ Add ability to hide selected namespaces, groups in Network Activity view.
++ Full support for Cilium cni.
++ Full support of OpenShift 4.9.
++ Build tools are now available for the NeuVector/Open Zero Trust (OZT) project at https://github.com/openzerotrust/openzerotrust.io. 
++ NeuVector now lists the version ID and SHA256 digest for each version of the controller, manager, enforcer at https://github.com/neuvector/manifests/tree/main/versions.
++ Anonymous telemetry data (number of nodes, groups, rules) is now reported to a Rancher cloud service upon deployment to assist the project team in understanding usage behavior. This can be disabled (opt-out) in UI or with configMap (No_Telemetry_Report) or REST API.
+
+##### Bug Fixes
++ Reduce controller memory consumption from unnecessary cis benchmark data created during rolling updates. This issue does not occur on new deployments.
++ Remove license from configuration screen (no longer required).
+
+
 #### 5.0.5 November, 2022
 
 ##### Bug Fixes
