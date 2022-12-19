@@ -59,7 +59,7 @@ The primary (master) cluster can scan a registry/repo designated as a federated 
 
 Federated registries can only be configured by a federated admin on the master cluster in Assets -> Registries. After adding and scanning a federated repository, the scan results will be synchronized to all managed clusters. Admission control rules in each managed cluster which require image scanning (e.g. CVE, compliance based rules) will automatically use both federated scan results as well as any registry scans results locally configured.
 
-Federated registry scan results are always sync'd to managed clusters. The primary cluster can also receive scan results [from stand alone scanner scans](scanning/scanners#standalone-scanner-for-local-scanning) or scanner plug-ins invoked from a build CI/CD pipeline. To enable build phase (CI/CD) repository scanning results to also sync to managed clusters, first enable it by editing the primary (master) cluster settings as shown below.
+Federated registry scan results are always sync'd to managed clusters. The primary cluster can also receive scan results [from stand alone scanner scans](/scanning/scanners#standalone-scanner-for-local-scanning) or scanner plug-ins invoked from a build CI/CD pipeline. To enable build phase (CI/CD) repository scanning results to also sync to managed clusters, first enable it by editing the primary (master) cluster settings as shown below.
 
 ![master_settings](fed_primary_config.png)
 ![fed_sync](fed_reg_sync.png)

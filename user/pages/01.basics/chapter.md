@@ -263,9 +263,9 @@ img {
 	<p class="subtitles">Here you can access the complete documentation for NeuVector, the only Kubernetes-native container security platform.</p>
 <p><strong>NeuVector Images on Docker Hub </strong></p>
 <p>The images are on the NeuVector Docker Hub registry. Use the appropriate version tag for the manager, controller, enforcer, and leave the version as 'latest' for scanner and updater. For example:
-<li>neuvector/manager:5.0.3</li>
-<li>neuvector/controller:5.0.3</li>
-<li>neuvector/enforcer:5.0.3</li>
+<li>neuvector/manager:5.1.0</li>
+<li>neuvector/controller:5.1.0</li>
+<li>neuvector/enforcer:5.1.0</li>
 <li>neuvector/scanner:latest</li>
 <li>neuvector/updater:latest</li></p>
 <p>Please be sure to update the image references in appropriate yaml files.</p>
