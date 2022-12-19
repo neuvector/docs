@@ -19,16 +19,16 @@ taxonomy:
 + Blocking login after failed login attemps now becomes the default. The default value is 5 attempts, and configurable in Settings -> Users & Roles-> Password Profile.
 + Add new env variable for performance tuning ENF_NO_SYSTEM_PROFILES, value: "1". When enabled, it will disable the process and file monitors. No learning processes, no profile modes, no process/file (package) incidents, and no file activity monitor will be performed. This will reduce CPU/memory resource usage and file operations.
 + Add a custom auto-scaling setting for scanner pods, with value Delayed, Immediate,  and Disabled. Important: Scanner auto-scaling is not supported when scanner is deployed with an OpenShift operator, as the operator will always change the number of pods to its configured value.
-  - Delayed strategy:
+  - ***Delayed strategy:***
     -  When lead controller continuously sees "task count" > 0 for > 90 seconds, a new scanner pod is started if maxScannerPods is not reached yet
     -  When lead controller continuously sees "task count" is 0 for > 180 seconds, it scales down one scanner pod if minScannerPods is not reached yet
-  - Immediate strategy:
+  - ***Immediate strategy:***
     -  Every time when lead controller sees "task count" > 0, a new scanner pod is started if maxScannerPods is not reached yet
     -  When lead controller continuously sees "task count" is 0 for > 180 seconds, it scales down one scanner pod if minScannerPods is not reached yet
 + Custom groups are now able to use namespace labels, including Rancher's namespace labels. Generally, pod and namespace labels can now be added to Custom Groups.
 + Add ability to hide selected namespaces, groups in Network Activity view.
 + Full support for Cilium cni.
-+ Full support of OpenShift 4.9.
++ Full support of OpenShift 4.9 and 4.10.
 + Build tools are now available for the NeuVector/Open Zero Trust (OZT) project at https://github.com/openzerotrust/openzerotrust.io. 
 + NeuVector now lists the version ID and SHA256 digest for each version of the controller, manager, enforcer at https://github.com/neuvector/manifests/tree/main/versions.
 + Anonymous telemetry data (number of nodes, groups, rules) is now reported to a Rancher cloud service upon deployment to assist the project team in understanding usage behavior. This can be disabled (opt-out) in UI or with configMap (No_Telemetry_Report) or REST API.

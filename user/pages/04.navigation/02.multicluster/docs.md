@@ -5,7 +5,7 @@ taxonomy:
 ---
 
 ### Enterprise Console
-The NeuVector console can be used to manage large enterprise multi-cluster and multi-cloud deployments. One cluster should be selected as the Master cluster, and other Remote clusters will then be able to join the Master. Once connected, the Master cluster can push Federated rules down to each remote cluster, which display as Federated rules in the consoles of each remote cluster.
+The NeuVector console can be used to manage large enterprise multi-cluster and multi-cloud deployments. One cluster should be selected as the Master cluster, and other Remote clusters will then be able to join the Master. Once connected, the Master cluster can push Federated rules down to each remote cluster, which display as Federated rules in the consoles of each remote cluster. Scanned Federated registries will also sync the scan results with remote clusters.
 
 In addition to Federated policy, multi-cluster management supports monitoring of each remote cluster in a summary page, as shown below.
 
@@ -53,4 +53,14 @@ You can click on the manage icon in the list, or use the pull down multi-cluster
 ### Federated Policy
 
 Please see the Policy -> Federated Policy section for instructions on how to create Federated rules that will be pushed to each cluster.
+
+### Federated Registries for Distributed Image Scanning Results
+The primary (master) cluster can scan a registry/repo designated as a federated registry. The scan results from these registries will be synchronized to all managed (remote) clusters. This enables display of scan results in the managed cluster console as well as use of the results in admission control rules of the managed cluster. Registries only need to be scanned once instead of by each cluster, reducing CPU/memory and network bandwidth usage. 
+
+Federated registries can only be configured by a federated admin on the master cluster in Assets -> Registries. After adding and scanning a federated repository, the scan results will be synchronized to all managed clusters. Admission control rules in each managed cluster which require image scanning (e.g. CVE, compliance based rules) will automatically use both federated scan results as well as any registry scans results locally configured.
+
+Federated registry scan results are always sync'd to managed clusters. The primary cluster can also receive scan results [from stand alone scanner scans](scanning/scanners#standalone-scanner-for-local-scanning) or scanner plug-ins invoked from a build CI/CD pipeline. To enable build phase (CI/CD) repository scanning results to also sync to managed clusters, first enable it by editing the primary (master) cluster settings as shown below.
+
+![master_settings](fed_primary_config.png)
+![fed_sync](fed_reg_sync.png)
 

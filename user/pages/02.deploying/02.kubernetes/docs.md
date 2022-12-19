@@ -329,7 +329,7 @@ If you have created your own namespace instead of using “neuvector”, replace
 <!-- NOTE: Toggle Box #1 -->
 <li>
 	<input class="title-option" id="acc1" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc1"><span><i class="icon-code"></i>Kubernetes v1.9-1.23 with <strong>containerd</strong> Run-time</span></label>
+  <label class="title-panel" onClick="" for="acc1"><span><i class="icon-code"></i>Kubernetes v1.9-1.25 with <strong>containerd</strong> Run-time</span></label>
 
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
@@ -665,7 +665,7 @@ spec:
 <!-- NOTE: Toggle Box #2 -->
 <li>
 	<input class="title-option" id="acc2" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc2"><span><i class="icon-code"></i>Kubernetes v1.9-1.23 with <strong>docker</strong> Run-time</span></label>
+  <label class="title-panel" onClick="" for="acc2"><span><i class="icon-code"></i>Kubernetes v1.9-1.25 with <strong>docker</strong> Run-time</span></label>
 
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
@@ -1001,7 +1001,7 @@ spec:
 <!-- NOTE: Toggle Box #2.5 -->
 <li>
 	<input class="title-option" id="acc25" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc25"><span><i class="icon-code"></i>Kubernetes v1.9-1.23 with <strong>Rancher K3s containerd</strong> Run-time</span></label>
+  <label class="title-panel" onClick="" for="acc25"><span><i class="icon-code"></i>Kubernetes v1.9-1.25 with <strong>Rancher K3s containerd</strong> Run-time</span></label>
 
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
@@ -1336,7 +1336,7 @@ spec:
 <!-- NOTE: Toggle Box #3 -->
 <li>
 	<input class="title-option" id="acc3" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc3"><span><i class="icon-code"></i>Kubernetes v1.9-1.23 with <strong>AWS BottleRocket containerd</strong> Run-time</span></label>
+  <label class="title-panel" onClick="" for="acc3"><span><i class="icon-code"></i>Kubernetes v1.9-1.25 with <strong>AWS BottleRocket containerd</strong> Run-time</span></label>
 
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">

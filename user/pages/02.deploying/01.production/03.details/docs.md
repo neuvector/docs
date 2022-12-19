@@ -32,6 +32,9 @@ taxonomy:
 * DISABLE_PACKET_CAPTURE
 > (Optional) Add this to the yaml to disable packet capture; remove to re-enable (default).
 
+* NO_DEFAULT_ADMIN 
+> (Optional) When enabled does not create an 'admin' user in the local cluster. This is used for Rancher SSO integration as the default. If not enabled, persistently warn the user and record events to change the default admin password if it is not changed from default.
+
 
 ##### Manager
 * CTRL_SERVER_IP
@@ -55,6 +58,9 @@ taxonomy:
 
 * ENF_NO_AUTO_BENCHMARK
 > (Optional) Set the value to “1” to disable CIS benchmarks on host and containers (improves performance).
+
+* ENF_NO_SYSTEM_PROFILES
+> (Optional) Set the value to "1" to disable the process and file monitors. No learning processes, no profile modes, no process/file (package) incidents, and no file activity monitor will be performed. This will reduce CPU/memory resource usage and file operations.
 
 
 ### Open Ports

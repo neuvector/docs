@@ -136,7 +136,12 @@ Image, imageScanned, cveHighCount, cveMediumCount, Image compliance violations, 
 Before NeuVector performs the match against the Admission Control rules, NeuVector retrieves the image information (For example, 10.1.127.3:5000/neuvector/toolbox/iperf:latest) from the cluster apiserver
 (Please refer to Request from apiserver section below). The image is composed by registry server (https://10.1.127.3:5000), repository (neuvector/toolbox/iperf) and tag (latest).
 NeuVector uses this information to match the results in NeuVector Assets -> Registry scan page and collects the corresponding information such as cve name, cve high or medium count etc. Image compliance violations are considered any image which has secrets or setuid/setgid violations.If users are using the image from docker registry to create a cluster resource, normally the registry server information is empty or docker.io and currently NeuVector is using the following hard-coded registry servers to match the registry scan result instead of empty or docker.io string. Of course, if there are more other than the following supported docker registry servers defined in the registry scan page, NeuVector is unable to get the registry scan results successfully.
-If users are using the built-in image such as alpine or ubuntu from the docker registry, there is a hidden organization name called library. When you look at the results for docker build-in image in NeuVector Assets > Registry scan page, the repository name will be library/alpine or library/ubuntu. Currently NeuVector assumes there is only one hidden library organization name in docker registry. If there is more  than one, NeuVector is unable to get the registry scan results successfully as well.The above limitation could also apply on other type of docker registry servers if any.### Admission Control Modes
+If users are using the built-in image such as alpine or ubuntu from the docker registry, there is a hidden organization name called library. When you look at the results for docker build-in image in NeuVector Assets > Registry scan page, the repository name will be library/alpine or library/ubuntu. Currently NeuVector assumes there is only one hidden library organization name in docker registry. If there is more  than one, NeuVector is unable to get the registry scan results successfully as well.The above limitation could also apply on other type of docker registry servers if any.
+
+#### Creating Custom Criteria Rules
+Users can create a customized criterion to be used to allow or block deployments based on common objects found in the image yaml (scanned upon deployment). Select the object to be used, for example annotationsKey and the matching value, for example neuvector to create the criterion. It is also recommended to use additional criteria to further target the rule, such as namespace, PSP/PSA, CVE conditions etc.
+
+![admission](custom_admission.png)### Admission Control Modes
 There are two modes NeuVector supports - Monitor and Protect.+ Monitor: there is an alert message in the event log if a decision is denied. In this case, the cluster apiserver is allowed to create a resource successfully. Note: even if the rule action is Deny, in Monitor mode this will only alert.
 + Protect: this is an inline protection mode. Once a decision is denied, the cluster resource will not be able to be created successfully, and an event will be logged.
 
@@ -145,6 +150,11 @@ There are two modes NeuVector supports - Monitor and Protect.+ Monitor: there i
 Rules can be Allow (whitelist) or Deny (blacklist) rules. Rules are evaluated in the order displayed, from top to bottom. Allow rules are evaluated first, and are useful to define exceptions (subsets) to Deny rules. If a resource deployment does not match any rules, the default action is to Allow the deployment.
 
 There are two pre-configured rules which should be allowed to enable Kubernetes system container and NeuVector deployments.
+
+Admission control rules apply to all resources which create pods (e.g. deployments, daemonsets, replicasets etc)
+
+### Federated Scan Results in Admission Control Rules
+The primary (master) cluster can scan a registry/repo designated as a federated registry. The scan results from these registries will be synchronized to all managed (remote) clusters. This enables display of scan results in the managed cluster console as well as use of the results in admission control rules of the managed cluster. Registries only need to be scanned once instead of by each cluster, reducing CPU/memory and network bandwidth usage. See the [multi-cluster](/navigation/multicluster/) section for more details.
 
 ### Troubleshooting
 

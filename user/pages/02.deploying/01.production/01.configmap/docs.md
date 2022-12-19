@@ -19,6 +19,8 @@ The sample is also shown below. This contains all the settings available. Please
 apiVersion: v1
 data:
   passwordprofileinitcfg.yaml: |
+    # Optional. true or false or empty string(false)
+    always_reload: false
     active_profile_name: default
     pwd_profiles:
     # only default profile is supported.
@@ -37,6 +39,8 @@ data:
       enable_password_history: false
       password_keep_history_count: 0
   roleinitcfg.yaml: |
+    # Optional. true or false or empty string(false)
+    always_reload: false
     roles:
     # Optional.
     - Comment: test role
@@ -77,6 +81,8 @@ data:
           read: true
           write: true
   ldapinitcfg.yaml: |
+    # Optional. true or false or empty string(false)
+    always_reload: false
     # Mandatory. OpenLDAP or MicrosoftAD
     directory: OpenLDAP
     # Mandatory.
@@ -137,6 +143,8 @@ data:
             - custom-admin1
             - custom-admin2
   oidcinitcfg.yaml: |
+    # Optional. true or false or empty string(false)
+    always_reload: false
     # Mandatory
     Issuer: https://...
     # Mandatory
@@ -193,6 +201,8 @@ data:
             - custom-admin2
     group_claim: groups
   samlinitcfg.yaml: |
+    # Optional. true or false or empty string(false)
+    always_reload: false
     # Mandatory
     SSO_URL: https://...
     # Mandatory
@@ -248,6 +258,8 @@ data:
             - custom-admin2
     group_claim: groups
   sysinitcfg.yaml: |
+    # Optional. true or false or empty string(false)
+    always_reload: false
     # Optional. Choose between  Discover or Monitor or Protect or empty string(Discover)
     New_Service_Policy_Mode: Discover
     # Optional. input valid ipv4 address or empty string
@@ -302,7 +314,18 @@ data:
       Username: username
       Password: password
     Xff_Enabled: true
+    Net_Service_Status: false
+    Net_Service_Policy_Mode: Discover
+    Scanner_Autoscale:
+    # Optional. Choose between immediate or delayed or empty string
+      Strategy: 
+      Min_Pods: 1
+      Max_Pods: 3
+    # Optional. true or false or empty string(false)
+    No_Telemetry_Report: false
   userinitcfg.yaml: |
+    # Optional. true or false or empty string(false)
+    always_reload: false
     users:
     # add multiple users below
     -
@@ -336,7 +359,6 @@ kind: ConfigMap
 metadata:
   name: neuvector-init
   namespace: neuvector
-
 ```
 
 

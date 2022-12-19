@@ -17,6 +17,19 @@ Please note that in initial releases the presence and status of multiple scanner
 
 Scan results from all scanners are shown in the Assets -> Registries menu. Additional scanner monitoring features will be added in future releases.
 
+#### Auto-scaling of Scanner Pods
+Scanner pods can be configured to auto-scale based on certain criteria. This will ensure that scanning jobs are handled quickly and efficiently, especially if there are thousands of images to be scanned or re-scanned. There are three possible settings: delayed, immediate,  and disabled. When images are queued for scanning by the controller, it keeps a 'task count' of the queue size. 
++ Delayed strategy:
+  -  When lead controller continuously sees "task count" > 0 for > 90 seconds, a new scanner pod is started if maxScannerPods is not reached yet
+  -  When lead controller continuously sees "task count" is 0 for > 180 seconds, it scales down one scanner pod if minScannerPods is not reached yet
++ Immediate strategy:
+  -  Every time when lead controller sees "task count" > 0, a new scanner pod is started if maxScannerPods is not reached yet
+  -  When lead controller continuously sees "task count" is 0 for > 180 seconds, it scales down one scanner pod if minScannerPods is not reached yet
+
+Scanner auto-scaling is configured in Settings -> Configuration. The minimumScannerPods setting sets the minimum scanner pods running at any time, while the maxScannerPods sets the maximum number of pods that the auto-scaling strategy can scale up to. NOTE: Setting a minimum value will not adjust the original scanner deployment replicaset value. The minimum value will be applied during the first scale up/down event.
+
+***Important:*** Scanner auto-scaling is not supported when scanner is deployed with an OpenShift operator, as the operator will always change the number of pods to its configured value.
+
 #### Operations and Debugging
 Each scanner pod will query the registries to be scanned to pull down the complete list of available images and other data. Each scanner will then be assigned an image to pull and scan from the registry.
 

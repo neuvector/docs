@@ -67,3 +67,9 @@ The following table lists communications from each NeuVector container. The Alli
 The following table summarizes the listening ports for each NeuVector container.
 
 ![Listening](Communication_Matrix_Listening_Ports.png)
+
+##### Additional Ports
+In version 5.1, a new listener port has been added on 8181 in the controller for local controller communication only.
+```
+tcp        0      0 :::8181                 :::*                    LISTEN      8/opa
+```

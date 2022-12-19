@@ -13,6 +13,8 @@ Note: Registry image scanning is performed by the scanner and the image is pulle
 
 To increase registry scanning performance and scalability, multiple scanner pods can be deployed on different nodes to distribute the scanning tasks across multiple scanners. See the section [Multiple Parallel Scanners](/scanning/scanners) for details.
 
+For multi-cluster (federated) environments, the primary (master) cluster can scan a registry/repo designated as a federated registry. The scan results from these registries will be synchronized to all managed (remote) clusters. This enables display of scan results in the managed cluster console as well as use of the results in admission control rules of the managed cluster. Registries only need to be scanned once instead of by each cluster, reducing CPU/memory and network bandwidth usage. See the [multi-cluster](/navigation/multicluster/) section for more details.
+
 
 ### Configure Registry Scanning
 To configure registries and repositories to be scanning, go to the Assets -> Registries menu in the NeuVector console. Add or edit registries to be scanned. Use the Filter to define repositories or subsets of images to be scanned. If your registry requires access through a proxy, this can be configured in Settings -> Configuration.

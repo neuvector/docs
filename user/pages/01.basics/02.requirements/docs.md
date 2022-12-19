@@ -12,9 +12,10 @@ taxonomy:
 
 #### Supported Platforms
 * Officially supported linux distributions, Ubuntu, CentOS/Red Hat (Including all RHEL version e.g. 6/7/8), Debian, Rancher OS, CoreOS, AWS 'Bottlerocket'(see Note below), SUSE Linux and Photon.
-* Officially supported container management systems, Kubernetes, native docker, docker swarm, docker UCP/DataCenter, docker Cloud, SUSE Rancher (RKE, RKE2, K3s etc), Google GKE/Kubernetes,  Amazon AWS EKS, Microsoft Azure AKS, VMware Photon, RedHat OpenShift, IBM IKS, SUSE CaaS, Mirantis Kubernetes Engine, Nutanix Kubernetes Engine.
+* Officially supported container management systems, Kubernetes, native docker, docker swarm, docker UCP/DataCenter, docker Cloud, SUSE Rancher (RKE, RKE2, K3s etc), Google GKE/Kubernetes,  Amazon AWS EKS, Microsoft Azure AKS, VMware Photon, RedHat OpenShift (3.x to 4.10), IBM IKS, SUSE CaaS, Mirantis Kubernetes Engine, Nutanix Kubernetes Engine.
 * Docker run-time version: 1.9.0 and up; Docker API version: 1.21, CE and EE.
 * Containerd and CRI-O run-times (requires changes to volume paths in sample yamls). See changes required for Containerd in the Kubernetes deployment section and CRI-O in the OpenShift deployment section.
+* Most commercially supported CNI's including calico, weave, flannel, cilium, ovs etc are supported.
 * Console: Chrome or Firefox browser recommended. IE 11 not supported due to performance issues.
 * Minikube is supported for simple initial evaluation but not for full proof of concept. See below for changes required for the Allinone yaml to run on Minikube.
 
@@ -22,7 +23,6 @@ AWS Bottlerocket Note: Must change path of the containerd socket specific to Bot
 
 #### Not Supported
 * CoreOS is not supported for CVE scanning, as there is no CVE feed published by the maintainers.
-* Cilium as a cni (limited support). Protect mode (inline blocking) should NOT be used with Cilium, as all traffic will be blocked. This limitation will be removed in a future release.
 * AWS ECS is no longer supported.
 * Docker on Mac
 * Docker on Windows

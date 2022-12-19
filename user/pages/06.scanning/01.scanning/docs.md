@@ -77,3 +77,11 @@ The auto-scan will also be triggered when ever there is an update to the NeuVect
 Admission control rules can be created to prevent deployment of vulnerable images based on Registry scanning results. See the Security Policy -> [Admission Control](/policy/admission) section for details.
 
 Please see the section Security Policy -> [Response Rules](/policy/responserules) for instructions for creating automated responses to vulnerabilities detected either during registry scanning, run-time scanning, or CIS benchmarks. Responses can include quarantine, webhook notification, and suppression.
+
+#### Federated Registries for Distributed Image Scanning Results
+The primary (master) cluster can scan a registry/repo designated as a federated registry. The scan results from these registries will be synchronized to all managed (remote) clusters. This enables display of scan results in the managed cluster console as well as use of the results in admission control rules of the managed cluster. Registries only need to be scanned once instead of by each cluster, reducing CPU/memory and network bandwidth usage. See the [multi-cluster](/navigation/multicluster) section for more details.
+
+#### Auto-scaling of Scanner Pods
+Scanner pods can be configured to auto-scale based on certain criteria. This will ensure that scanning jobs are handled quickly and efficiently, especially if there are thousands of images to be scanned or re-scanned. There are three possible settings: delayed, immediate,  and disabled. When images are queued for scanning by the controller, it keeps a 'task count' of the queue size. Please see the [multiple scanners](/scanning/scanners) section for more details.
+
+***Important:*** Scanner auto-scaling is not supported when scanner is deployed with an OpenShift operator, as the operator will always change the number of pods to its configured value.
