@@ -58,6 +58,9 @@ Be sure to click Deploy to save the new rule.
 
 Finally, review the list of rules to make sure the new rule is in the order and priority desired. Rules are applied from top to bottom.
 
+#### Special Enforcement for Istio ServiceEntry Destinations
+Egress network policy enforcement functionality was added in version 5.1.0 for pods to ServiceEntry destinations declared with Istio. Typically, a ServiceEntry defines how an external service referred by DNS name is resolved to a destination IP. Prior to v5.1, NeuVector could not detect and enforce rules for connections to a ServiceEntry, so all connections were classified as External. With 5.1, rules can be enforced for specific ServiceEntry destinations. Implicit violations will be reported for newly visible traffic if allow rules don't exist. These rules can be learned and auto-created under Discover mode. To allow this traffic, you can put the group into discover mode or create a custom group with destination addresses (or DNS name) and add a new network rule to this destination to allow the traffic.
+
 ###Split Mode Network Protections
 Container Groups can have Process/File rules in a different mode than Network rules, as described [here](/policy/modes#split-policy-mode).
 
