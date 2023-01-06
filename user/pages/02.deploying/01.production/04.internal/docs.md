@@ -9,6 +9,8 @@ NeuVector includes default self-signed certificates for encryption for the Manag
 
 These certificates can be replaced by your own to further harden communication. For replacing certificates used by external access to NeuVector (i.e, browser to the Manager, or REST API to the Controller), please see [this section](/configuration/console/replacecert/). See below for replacing the certificates used in internal communication between NeuVector containers.
 
+CAUTION: Replacing certificates should only be performed during initial deployment of NeuVector. Replacing on a running cluster (even with rolling upgrade) will result in an unstable state where NeuVector pods are unable to communicate with each other due to a mismatch in certificates.
+
 #### Replacing Certificates Used in Internal Communications of NeuVector
 To replace the internal encryption files ca.cert, cert.key, cert.pem, first delete the included files, then generate new files and the kubernetes secret.
 
@@ -19,7 +21,7 @@ openssl req -x509 -sha256 -new -nodes -key ca.key -days 3650 -out ca.cert
 openssl genrsa -out cert.key 2048
 openssl req -new -key cert.key -sha256 -out cert.csr -config ca.cfg
 openssl req -in cert.csr -noout -text
-openssl x509 -req -sha256 -in cert.csr -CA ca.cert -CAkey ca.key -CAcreateserial -out cert.pem -days 365 -extfile ca.cfg
+openssl x509 -req -sha256 -in cert.csr -CA ca.cert -CAkey ca.key -CAcreateserial -out cert.pem -days 3650 -extfile ca.cfg
     // for sample ca.cfg see below, or see https://open-docs.neuvector.com/configuration/console/replacecert
 openssl x509 -in cert.pem -text
 kubectl create secret generic internal-cert -n neuvector --from-file=cert.key --from-file=cert.pem --from-file=ca.cert
