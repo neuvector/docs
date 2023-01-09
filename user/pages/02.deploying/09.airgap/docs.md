@@ -50,7 +50,7 @@ for i in $(cat neuvector/images/list.txt); do
 done
 ```
 
-Fantastic we should have a directory that looks like:
+Fantastic, we should have a directory that looks like:
 
 ```bash
 [root@flux ~]# ls -lR neuvector
@@ -80,7 +80,7 @@ Compressing is fairly simple. We will use `tar` with the ZST format for maximum 
 tar -I zstd -vcf neuvector_airgap.zst neuvector
 ```
 
-Now simple move the 400M `neuvector_airgap.zst` to your network.
+Now simply move the 400M `neuvector_airgap.zst` to your network.
 
 ### Uncompress and Load
 
@@ -90,7 +90,7 @@ All we need to do now is uncompress with a similar command. The following will o
 tar -I zstd -vxf neuvector_airgap.zst
 ```
 
-Loading the images into a registry is going to require the understanding of your internal network. For this doc let's use "registry.awesome.sauce" as the DNS name. Loading the images is fairly simple again with `skopeo`. Please make sure it is installed on the "inside" machine. You will probably need to authenticate with `skopeo login` for it to work.
+Loading the images into a registry is going to require an understanding of your internal network. For this doc let's use "registry.awesome.sauce" as the DNS name. Loading the images is fairly simple again with `skopeo`. Please make sure it is installed on the "inside" machine. You will probably need to authenticate with `skopeo login` for it to work.
 
 ```bash
 # skopeo load
