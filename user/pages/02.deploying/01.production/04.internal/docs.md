@@ -9,10 +9,10 @@ NeuVector includes default self-signed certificates for encryption for the Manag
 
 These certificates can be replaced by your own to further harden communication. For replacing certificates used by external access to NeuVector (i.e, browser to the Manager, or REST API to the Controller), please see [this section](/configuration/console/replacecert/). See below for replacing the certificates used in internal communication between NeuVector containers.
 
-CAUTION: Replacing certificates is recommended to be performed during initial deployment of NeuVector. Replacing on a running cluster (even with rolling upgrade) may result in an unstable state where NeuVector pods are unable to communicate with each other due to a mismatch in certificates. If this occurs, waiting a few minutes for the NeuVector communication to stabilize should result in a stable cluster.
+WARNING: Replacing certificates is recommended to be performed only during initial deployment of NeuVector. Replacing on a running cluster (even with rolling upgrade) may result in an unstable state where NeuVector pods are unable to communicate with each other due to a mismatch in certificates, and DATA LOSS may occur.
 
 #### Replacing Certificates Used in Internal Communications of NeuVector
-To replace the internal encryption files ca.cert, cert.key, cert.pem, first delete the included files, then generate new files and the kubernetes secret.
+To replace the internal encryption files ca.cert, cert.key, cert.pem, first create the new ca.cfg file (see sample below). Then delete the relevant file, kubernetes secret, then generate new files and secret.
 
 ```
 kubectl delete secret internal-cert -n neuvector
@@ -72,4 +72,13 @@ extendedKeyUsage = serverAuth
 subjectAltName = @alt_names
 [alt_names]
 DNS.1 = *
+```
+
+Sample patch commands for controller (change namespace to cattle-neuvector-system if needed, and modify for use on enforcer, scanner):
+```
+NAMESPACE=neuvector
+
+kubectl patch deployment -n ${NAMESPACE} neuvector-controller-pod --type='json' -p='[{"op": "add", "path": "/spec/template/spec/volumes/-", "value": {"name": "internal-cert", "secret": {"defaultMode": 420, "secretName": "internal-cert"}} } ]'
+
+kubectl patch deployment -n ${NAMESPACE} neuvector-controller-pod --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/volumeMounts", "value": [{"mountPath": "/etc/neuvector/certs/internal/cert.key", "name": "internal-cert", "readOnly": true, "subPath": "cert.key"}, {"mountPath": "/etc/neuvector/certs/internal/cert.pem", "name": "internal-cert", "readOnly": true, "subPath": "cert.pem"}, {"mountPath": "/etc/neuvector/certs/internal/ca.cert", "name": "internal-cert", "readOnly": true, "subPath": "ca.cert"} ] } ]'
 ```
