@@ -6,6 +6,22 @@ taxonomy:
 
 ### Release Notes for 5.x (Open Source Version)
 
+#### 5.1.1 February, 2023
+
+##### Enhancements
++ Add “package” as information to the syslog-event for a detected vulnerability.
+
+##### Bug Fixes
++ Empty group deletion errors "Object not found"
++ Traffic within the same container alerting/blocking
++ Unexpected implicit violations for istio egress traffic with allow rule in place
++ When upgrading from NeuVector 4.x release, incorrect pod group membership causes unexpected policy violation
++ OIDC authenticatio failed with ADFS when extra encoding characters appear in the request
++ Various UI bugs fixed
+
+##### Other
++ Helm chart updated to enable replacement of certificate for internal communications
+
 #### 5.1.0 December, 2022
 
 ##### Enhancements
