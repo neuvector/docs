@@ -16,7 +16,7 @@ taxonomy:
 + Traffic within the same container alerting/blocking
 + Unexpected implicit violations for istio egress traffic with allow rule in place
 + When upgrading from NeuVector 4.x release, incorrect pod group membership causes unexpected policy violation
-+ OIDC authenticatio failed with ADFS when extra encoding characters appear in the request
++ OIDC authentication failed with ADFS when extra encoding characters appear in the request
 + Various UI bugs fixed
 
 ##### Other
