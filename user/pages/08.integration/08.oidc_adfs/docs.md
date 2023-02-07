@@ -9,16 +9,16 @@ taxonomy:
 From AD FS Management, click on "Application Groups" and then click on "Add Application Group..."
 ![adfs](adfs1.png)
 
-Given a name, select "Server application accessing a web API" and then click Next
+Enter a name, select "Server application accessing a web API" and then click Next
 ![adfs](adfs2.png)
 
-Given Redirect URI from NeuVector Settings > OpenID Connect Setting page and then click Next
+Enter Redirect URI from NeuVector Settings > OpenID Connect Setting page and then click Next
 ![adfs](adfs3.png)
 
 Enable "Generate a shared secret" checkbox and then click Next
 ![adfs](adfs4.png)
 
-Given the Identifier created in previous step and then click Next
+Enter the Identifier created in previous step and then click Next
 ![adfs](adfs5.png)
 
 ![adfs](adfs6.png)
@@ -39,7 +39,7 @@ Double click on Web API and then click Issuance Transform Rules tab
 Click Add Rule... and select "Send LDAP Attributes as Claims" and then click Next
 ![adfs](adfs12.png)
 
-Given a Claim rule name, choose Active Directory as the Attribute store and provide the mapping of LDAP attributes to outgoing claim types as below
+Enter a Claim rule name, choose Active Directory as the Attribute store and provide the mapping of LDAP attributes to outgoing claim types as below
 + Token-Groups – Unqualified Names -> groups
 + User-Principal-Name -> preferred_username
 + E-Mail-Address -> email
