@@ -398,7 +398,7 @@ spec:
   - port: 18301
     protocol: "UDP"
     name: "cluster-udp-18301"
-  clusterIP: None
+  clusterIP: None-
   selector:
     app: neuvector-controller-pod
 
@@ -1308,7 +1308,7 @@ spec:
 
 ---
 
-apiVersion: v1
+apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: neuvector-route-webui
