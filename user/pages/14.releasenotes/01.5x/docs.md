@@ -17,6 +17,7 @@ taxonomy:
 + Unexpected implicit violations for istio egress traffic with allow rule in place
 + When upgrading from NeuVector 4.x release, incorrect pod group membership causes unexpected policy violation
 + OIDC authentication failed with ADFS when extra encoding characters appear in the request
++ High memory usage by dp creating and deleting pods
 + Various UI bugs fixed
 
 ##### Other
