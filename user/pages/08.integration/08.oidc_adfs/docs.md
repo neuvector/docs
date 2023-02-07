@@ -49,7 +49,7 @@ Enter a Claim rule name, choose Active Directory as the Attribute store and prov
 
 #### NeuVector Setup
 
-+ Identity Provider Issuer: 'https://<adfs-fqdn>/adfs'
++ Identity Provider Issuer: https://&lt;adfs-fqdn&gt;/adfs
 + Client ID: It is a "Client Identifier" showing in "Server application" dialog in "Add Application Group Wizard"
 + Client Secret: It is a Secret showing in "Configure Application Credentials" dialog in "Add Application Group Wizard"
 + Group Claim: groups
