@@ -12,6 +12,8 @@ NeuVector has built-in detection of suspicious file system activity. Sensitive f
 #### Zero-drift File Protection
 This is the default mode for process and file protections. Zero-drift automatically allows only processes which originate from the parent process that is in the original container image, and does not allow file updates or new files to be installed. When in Discover or Monitor mode, zero-drift will alert on any suspicious process or file activity. In Protect mode, it will block such activity. Zero-drift does not require file activity to be added to an allow-list. Disabling zero-drift for a group will cause the process and file rules listed for the group to take effect instead.
 
+NOTE: The process/file rules listed for each group are always applied, even when zero-drift is enabled. This offers a way to add allow/deny exceptions to the base zero-drift protections. Keep in mind that if a group starts in Discover mode, process/file rules can be automatically added to the list, and should be reviewed and edited before moving to Monitor/Protect modes.
+
 The ability to enable/disable zero-drift mode is in the console in Policy -> Groups. Multiple groups can be selected to toggle this setting for all selected groups.
 
 #### Basic File Protections
