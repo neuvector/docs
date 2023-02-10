@@ -7,6 +7,7 @@ taxonomy:
 #### System Requirements
 * Minimum 1GB of memory for controller, scanner, manager or all-in-one container; 1GB for enforcer.
 * Shared CPU core for standard workloads, dedicated CPU (one or more) for enforcer for higher network throughput in Protect mode, or controller for high volume (10K+) image scanning.
+* For configuration backup/HA, a RWX PVC of 1Gi or more. See [Backups and Persistent Data section](/deploying/production#backups-and-persistent-data) for more details.
 * Registry image scanning is performed by the scanner and managed by the controller and the image is pulled by the scanner and expanded in memory. If expanded image sizes larger than 500MB are expected, consider increasing the scanner memory to 1.5GB or more to provide capacity and headroom for the scanner.
 * Recommended browser: Chrome for better performance
 
