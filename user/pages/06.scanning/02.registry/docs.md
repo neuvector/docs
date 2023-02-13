@@ -65,7 +65,7 @@ Notes:
 Please go to Settings -> Configuration to configure proxy settings for registry scanning.
 
 
-#### Native Docker registry (and Harbor)
+#### Native Docker registry (alo Quay and Harbor)
 ##### Add Native Docker registry
 + Choose Docker registry as type
 + Give unique name to the registry
@@ -84,6 +84,13 @@ Adding public docker registry for scanning without username/password and 2 repos
 
 Adding public docker registry for scanning with username/password, wildcard repository, scan layers enabled, and periodic scan enabled.
 ![docker4](4-dockerpub-wild.png)
+
+Note for Quay: 
++ Enter the top-level URL for your Quay registry; do not enter any directories to the path. 
++ You will need to generate an encrypted password in your Quay server/account, and use these credentials here.  Then, pass filter(s) as described above.
+
+![4 1-quay](https://user-images.githubusercontent.com/13239496/218163999-9b281bd9-d049-49f6-85cd-395d7c20c481.png)
+
 
 ##### Start scanning the Docker registry
 + Select registry to be scanned
