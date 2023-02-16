@@ -18,6 +18,7 @@ taxonomy:
 + When upgrading from NeuVector 4.x release, incorrect pod group membership causes unexpected policy violation
 + OIDC authentication failed with ADFS when extra encoding characters appear in the request
 + High memory usage by dp creating and deleting pods
++ Update alpine to remediate several CVEs including Manager: CVE-2022-37454, CVE-2022-42919, CVE-2022-45061, CVE-2021-46848; Enforcer: CVE-2022-43551, CVE-2022-43552
 + Various UI bugs fixed
 
 ##### Other
@@ -54,6 +55,14 @@ taxonomy:
 ##### Bug Fixes
 + Reduce controller memory consumption from unnecessary cis benchmark data created during rolling updates. This issue does not occur on new deployments.
 + Remove license from configuration screen (no longer required).
+
+#### 5.0.6 February, 2023
+
+##### Bug Fixes
++ High memory usage in dpMsgConnection	
++ High memory usage on dp process in enforcer if there are many learned policy rules with unmanaged workload (memory leak)
++ tcpdump is unable to start successfully when sniffering a traffic on container
++ Update alpine to remediate several CVEs including Manager: CVE-2022-37454, CVE-2022-42919, CVE-2022-45061, CVE-2021-46848; Enforcer: CVE-2022-43551, CVE-2022-43552
 
 
 #### 5.0.5 November, 2022
