@@ -185,8 +185,7 @@ For more details: [https://kubernetes.io/docs/tasks/run-application/configure-pd
 ### Deploy Without Privileged Mode
 On some systems, deployment without using privileged mode is supported. These systems must support seccom capabilities and setting the apparmor profile.
 
-See the section on [Docker deployment](/deploying/docker) for sample compose files or contact support@neuvector.com for assistance.
-
+See the section on [Docker deployment](/deploying/docker) for sample compose files.
 
 ### Multi-site, Multi-Cluster Architecture
 For enterprises with multiple locations and where a separate NeuVector cluster can be deployed for each location, the following is a proposed reference architecture. Each cluster has its own set of controllers and is separately managed.
