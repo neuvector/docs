@@ -56,6 +56,11 @@ taxonomy:
 + Reduce controller memory consumption from unnecessary cis benchmark data created during rolling updates. This issue does not occur on new deployments.
 + Remove license from configuration screen (no longer required).
 
+#### 5.0.6-s1 March, 2023
+
+##### Bug Fixes
++ Update alpine packages to remediate CVEs in curl including CVE-2023-23914, CVE-2023-23915, and CVE-2023-23916
+
 #### 5.0.6 February, 2023
 
 ##### Bug Fixes
