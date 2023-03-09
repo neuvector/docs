@@ -26,7 +26,7 @@ If you haven’t done so, pull the images from the NeuVector Docker Hub.
 <li>Leave the imagePullSecrets empty</li></p>
 
 ####Best Practices, Tips, Q&A for Deploying and Managing NeuVector
-Download and review this [Deployment Best Practices document](NV_Onboarding_1.2.pdf) for tips such as performance and sizing, best practices, and frequently asked questions about deployments.
+Download and review this [Deployment Best Practices document](NV_Onboarding_5.0.pdf) for tips such as performance and sizing, best practices, and frequently asked questions about deployments.
 
 ### Deployment Using Helm or Operators
 Automated deployment using Helm can be found at [https://github.com/neuvector/neuvector-helm](https://github.com/neuvector/neuvector-helm). 
