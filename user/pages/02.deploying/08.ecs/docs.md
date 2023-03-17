@@ -1,10 +1,10 @@
 ---
-title: AWS ECS
+title: Amazon ECS
 taxonomy:
     category: docs
 ---
 
-### Important: Deployment on AWS ECS is No Longer Supported
+### Important: Deployment on Amazon ECS is No Longer Supported
 
 The reference section below is not being maintained. However, it may provide some assistance in understanding how to deploy the Allinone on ECS.
 
@@ -12,12 +12,15 @@ The reference section below is not being maintained. However, it may provide som
 This is an example of how to deploy NeuVector using ECS.
 NOTE: Please see the Kubernetes examples for EKS.
 
-1) Prepare several AWS ECS instances which have the Docker engine and ECS agent containers built-in. Pick one node for the management console. Then define Security Group rules that allow inbound TCP port 8443 (NeuVector’s default management console port) for access by your client browser.
+1) Prepare several Amazon ECS instances which have the Docker engine and ECS agent containers built-in. Pick one node for the management console. Then define Security Group rules that allow inbound TCP port 8443 (NeuVector’s default management console port) for access by your client browser.
 
 2) Define a Security Group that allows TCP and UDP ports on 18300, 18301, 18400, 18401 . This is used by NeuVector enforcers to talk to the Controllers/Allinone. Apply this Security Group to all the ECS instances that will be deploying the NeuVector enforcers and controllers/allinone.
 
 3) Set an attribute on the nodes that you want to deploy NeuVector allinone or controller container. For example, if you want to run NeuVector in a controller HA mode, the recommendation is to pick at least 3 nodes then add the attribute to all of the 3 nodes.
-This is how to add attributes to your ECS instances:Select the instance, then pick “View/Edit Attributes” from the Actions drop down menu.
+
+This is how to add attributes to your ECS instances:
+
+Select the instance, then pick “View/Edit Attributes” from the Actions drop down menu.
 
 ![Attributes](1viewattributes.png)
 
@@ -306,7 +309,18 @@ Sample Enforcer json file:
 }
 ```
 ### Live Updating NeuVector
-You can do a live update of the NeuVector containers in ECS without interrupting services. NeuVector’s services can be easily updated or upgraded without interrupting any running services. To do that in AWS ECS:
-1. If you have multiple controllers or Allinones deployed as a cluster, ignore this step. If there is only a single Allinone/controller in the system, find a new ECS instance and deploy a 2nd Allinone/controller container on it (follow the NeuVector allinone/controller ECS deployment steps). After deployed, in the NeuVector management console, you will see this new controller up and running (under Resources > Controllers). This is required so that all stateful data is replicated between controllers.2. In ECS Services, reset and delete the old Allinone/controller service. Pull the updated NeuVector images manually or trigger AWS ECS to pull new versions of Allinone/controller containers from Dockerhub or your private registry.3. Create a new revision of the Allinone/Controller task, update the “CLUSTER_JOIN_ADDR” to the 2nd Allinone/controller’s private node IP address. 
+You can do a live update of the NeuVector containers in ECS without interrupting services. NeuVector’s services can be easily updated or upgraded without interrupting any running services. To do that in Amazon ECS:
 
-4. Create a new service to deploy this new task (follow the same steps to deploy on ECS). After completed, the new version of the Allinone/controller should be up and running. From the NeuVector management console, all the logs and policies should still be there. Optionally, you can bring down the 2nd Allinone/Controller container now since there should be a Allinone/Controller now started on the original node.5. From ECS Services, shutdown and update the Enforcers. Manually or auto-trigger the pulling of new Enforcer images. Then restart or update the Enforcer on all nodes. From the NeuVector console, you will see all Enforcers are up to date.6. If you are using the separate Manager container instead of the Allinone (which already has the manager in it), simply shutdown and remove the old manager container. Then pull the new manager version, and deploy it, pointing the CLUSTER_JOIN_ADDR to the IP of the controller.All NeuVector containers are now updated live. All policies, logs, and configurations are unaffected. The live graph view will be regenerated automatically as soon as there is new live traffic flowing between containers.
+1. If you have multiple controllers or Allinones deployed as a cluster, ignore this step. If there is only a single Allinone/controller in the system, find a new ECS instance and deploy a 2nd Allinone/controller container on it (follow the NeuVector allinone/controller ECS deployment steps). After deployed, in the NeuVector management console, you will see this new controller up and running (under Resources > Controllers). This is required so that all stateful data is replicated between controllers.
+
+2. In ECS Services, reset and delete the old Allinone/controller service. Pull the updated NeuVector images manually or trigger AWS ECS to pull new versions of Allinone/controller containers from Dockerhub or your private registry.
+
+3. Create a new revision of the Allinone/Controller task, update the “CLUSTER_JOIN_ADDR” to the 2nd Allinone/controller’s private node IP address. 
+
+4. Create a new service to deploy this new task (follow the same steps to deploy on ECS). After completed, the new version of the Allinone/controller should be up and running. From the NeuVector management console, all the logs and policies should still be there. Optionally, you can bring down the 2nd Allinone/Controller container now since there should be a Allinone/Controller now started on the original node.
+
+5. From ECS Services, shutdown and update the Enforcers. Manually or auto-trigger the pulling of new Enforcer images. Then restart or update the Enforcer on all nodes. From the NeuVector console, you will see all Enforcers are up to date.
+
+6. If you are using the separate Manager container instead of the Allinone (which already has the manager in it), simply shutdown and remove the old manager container. Then pull the new manager version, and deploy it, pointing the CLUSTER_JOIN_ADDR to the IP of the controller.
+
+All NeuVector containers are now updated live. All policies, logs, and configurations are unaffected. The live graph view will be regenerated automatically as soon as there is new live traffic flowing between containers.
