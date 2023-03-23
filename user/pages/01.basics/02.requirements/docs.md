@@ -24,6 +24,7 @@ AWS Bottlerocket Note: Must change path of the containerd socket specific to Bot
 
 #### Not Supported
 * CoreOS is not supported for CVE scanning, as there is no CVE feed published by the maintainers.
+* GKE Autopilot.
 * AWS ECS is no longer supported.
 * Docker on Mac
 * Docker on Windows
