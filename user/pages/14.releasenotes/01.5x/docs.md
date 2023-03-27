@@ -6,6 +6,30 @@ taxonomy:
 
 ### Release Notes for 5.x (Open Source Version)
 
+#### 5.1.2 March 2023 
+
+##### Enhancements 
+
++ Support virtual host based address group and policy matching network protections. This enables a use case where two different FQDN addresses are resolved to the same IP address, but different rules for each FQDN should be enforced. A new custom group with ‘address=vh:xxx.yyy’ can be created using the ‘vh:’ indicator to enable this protection. A network rule can then use the custom group as the ‘From’ source based on the virtual hostname (instead of resolved IP address) to enforce different rules for virtual hosts. 
++ Compliance containers list to exclude exited containers. 
++ Enhance DLP rules to support simple wildcard in the pattern. 
++ Add support for cri-o 1.26+ and OpenShift 4.11+.
++ Make gravatar optional.
++ Display cluster namespace resource in console / UI. 
++ Display source severity/classification (e.g. Red Hat, Ubuntu...) along with NVD severity score in console. 
++ Don’t allow SSO/RBAC disabling for Rancher and OpenShift if user is authenticated through SSO. 
++ Add auto-scan enablement and deletion of unused groups aging to configMap. 
++ Include IP address for external source/destination in csv/pdf for implicit deny violations 
++ Various performance and scalability optimizations for controller and enforcer CPU and memory usage. 
+ 
+##### Bug Fixes 
++ Fix application slowness on GKE Container Optimized OS (COS) nodes when in Protect mode.  
++ SUSE Linux (SLES) 15.4 CVE not matching in scanner. With this fix, if the severity is provided in the feed, the vulnerability will be added to the database, even if the NVD record is missing. It is possible that the report includes vulnerabilities without CVE scores. 
+
+##### Other 
++ Enhance Admission Control CRD options in helm https://github.com/neuvector/neuvector-helm/pull/237. 
++ Add new enforcer environment variables to helm chart.
+
 #### 5.1.1 February, 2023
 
 ##### Enhancements

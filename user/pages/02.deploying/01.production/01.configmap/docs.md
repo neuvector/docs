@@ -323,6 +323,11 @@ data:
       Max_Pods: 3
     # Optional. true or false or empty string(false)
     No_Telemetry_Report: false
+    Scan_Config: 
+      # Optional. true or false or empty string(false) 
+      Auto_Scan: false 
+    # Optional. default value is 24. unit is hour and range is between 0 and 168 
+    Unused_Group_Aging: 24
   userinitcfg.yaml: |
     # Optional. true or false or empty string(false)
     always_reload: false

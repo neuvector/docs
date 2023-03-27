@@ -18,10 +18,10 @@ The Groups screen also displays a 'Scorable' icon in the upper right, and a lear
 
 The Groups screen is also where the CRD yaml file for 'security policy as code' can be imported and exported. Select one or more groups and click on the Export Group policy button to download the yaml file. See the [CRD](/policy/usingcrd) section for more details on how to use CRDs. Important: Each selected group AND any linked groups through network rules will be exported (i.e. the group and any other group it connects to through the whitelist network rules).
 
-<strong>Auto Deletion of Unused Groups</strong>
+#### Auto Deletion of Unused Groups
 Learned groups (not reserved or custom groups) can be automatically deleted by NeuVector if there are no members (containers) in the group. The time period for this is configurable in Settings -> Configuration.
 
-<strong>Host Protection - the 'Nodes' Group</strong>
+#### Host Protection - the 'Nodes' Group
 
 NeuVector automatically creates a group called 'nodes' which represents each node (host) in the cluster. NeuVector provides automated basic monitoring of hosts for suspicious processes (such as port scans, reverse shells etc.) and privilege escalations. In addition, NeuVector will learn the process behavior of each node while it is in Discover mode to whitelist those processes, similar to how it is done with container processes.  The 'local' (learned) process rule list is a combination of all processes from all nodes in the cluster while in Discover mode.
 
@@ -34,7 +34,7 @@ To enable host protection with process profile rules, select the 'nodes' group a
 Note: Network connection violations of rules shown in the Network Rules for Nodes are never blocked, even in Protect mode. Only process violations are blocked in Protect mode on nodes.
 
 
-<strong>Custom Groups</strong>
+#### Custom Groups
 
 Groups can be manually added by entering the criteria for the group. Note: Custom created groups don't have a Protection mode. This is because they may contain containers from different underlying groups, each of which may be in a different mode, causing confusion about the behavior.
 
@@ -50,7 +50,7 @@ Groups can be created by:
 + **Labels**
 > Select containers by their labels. Examples: com.docker.compose.project=wordpress, location@us-west
 + **Addresses**
-> Create a group by DNS name or IP address ranges. Examples: address=www.google.com, address=10.1.0.1, address=10.1.0.0/24, address=10.1.0.1-10.1.0.25. DNS name can be any name resolvable. Address criteria do not accept the != operator 
+> Create a group by DNS name or IP address ranges. Examples: address=www.google.com, address=10.1.0.1, address=10.1.0.0/24, address=10.1.0.1-10.1.0.25. DNS name can be any name resolvable. Address criteria do not accept the != operator. See below for special virtual host 'vh' address groups.
 
 A group can be created with mixed criteria types, except the 'address' type, which cannot be used together with other criteria. Mixed criteria enforces an ‘AND’ operation between the criteria, for example label service_type=data AND image=mysql. Multiple entries for one or criteria are treated as OR, for example address=google.com OR address=yahoo.com. Note: To assist in analyzing ingress/egress connections, a list of ingress and egress IPs can be downloaded from the Dashboard -> Ingress/Egress details section as an Exposure Report.
 
@@ -63,6 +63,10 @@ Wildcards '*' can be used in criteria, for example 'address=*.google.com'. For m
 Note: Special characters used after an equals '=' in criteria may not match properly. For example the dot '.' In 'policy=public.*' will not match properly, and regex match should be used instead, like 'policy~public.*'
 
 After saving a new group, NeuVector will display the members in that group. Rules can then be created using these groups.
+
+##### Virtual Host ('vh') Based Network Policy 
+
+Custom groups can support virtual host based address groups. This enables a use case where two different FQDN addresses are resolved to the same IP address, but different rules for each FQDN should be enforced. A new custom group with ‘address=vh:xxx.yyy’ can be created using the ‘vh:’ indicator to enable this protection. A network rule can then use the custom group as the ‘From’ source based on the virtual hostname (instead of resolved IP address) to enforce different rules for virtual hosts. 
 
 ### Custom Group Examples
 

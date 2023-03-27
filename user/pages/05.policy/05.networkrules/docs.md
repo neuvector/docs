@@ -75,6 +75,10 @@ A switch is available to disable this feature. Disabling it tells NeuVector not 
 #### Special Enforcement for Istio ServiceEntry Destinations
 Egress network policy enforcement functionality was added in version 5.1.0 for pods to ServiceEntry destinations declared with Istio. Typically, a ServiceEntry defines how an external service referred by DNS name is resolved to a destination IP. Prior to v5.1, NeuVector could not detect and enforce rules for connections to a ServiceEntry, so all connections were classified as External. With 5.1, rules can be enforced for specific ServiceEntry destinations. Implicit violations will be reported for newly visible traffic if allow rules don't exist. These rules can be learned and auto-created under Discover mode. To allow this traffic, you can put the group into discover mode or create a custom group with destination addresses (or DNS name) and add a new network rule to this destination to allow the traffic.
 
+#### Virtual Host Based Network Policy 
+
+Custom groups can support virtual host based address groups. This enables a use case where two different FQDN addresses are resolved to the same IP address, but different rules for each FQDN should be enforced. A new custom group with ‘address=vh:xxx.yyy’ can be created using the ‘vh:’ indicator to enable this protection. A network rule can then use the custom group as the ‘From’ source based on the virtual hostname (instead of resolved IP address) to enforce different rules for virtual hosts. 
+
 ###Split Mode Network Protections
 Container Groups can have Process/File rules in a different mode than Network rules, as described [here](/policy/modes#split-policy-mode).
 
