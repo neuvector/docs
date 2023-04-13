@@ -141,7 +141,49 @@ Image, imageScanned, cveHighCount, cveMediumCount, Image compliance violations, 
 #### Creating Custom Criteria Rules
 Users can create a customized criterion to be used to allow or block deployments based on common objects found in the image yaml (scanned upon deployment). Select the object to be used, for example annotationsKey and the matching value, for example neuvector to create the criterion. It is also recommended to use additional criteria to further target the rule, such as namespace, PSP/PSA, CVE conditions etc.
 
-![admission](custom_admission.png)### Admission Control Modes
+![admission](custom_admission.png)
+
+#### Criteria Explanations 
+Criteria with a disk icon require that the image be scanned (see registry scanning), and criteria with a file icon will scan the deployment yaml. If both icons are listed, then matching will be for either (OR). If a criterion requires an image scan, but the image is NOT scanned, that part of the rule will be ignored (ie rule is bypassed, or if deployment yaml is also listed, then only the deployment yaml will be used to match). To prevent non-scanned images from bypassing rules, see the Image Scanned criterion below. 
+
++ Add customized criterion. Select the object from the drop down. All custom criteria support exists and does not exist operators. For ones that allow values, additional operators and the value can be entered. Values can be static, separated by comma’s, and include wildcards. 
++ Allow Privilege Escalation. If the container allows privilege escalations, it can be blocked by setting Deny as the action. 
++ Count of High Severity CVE. This takes the results of an image (registry) scan and matches on the number of High severity (CVSS scores of 7 or higher). Additional operator can be added to restrict to CVEs reported a certain number of days prior, giving time for remediation for recent CVEs. 
++ Count of High Severity CVE with fix. This takes the results of an image (registry) scan and matches on High severity (CVSS scores of 7 or higher), AND if there is a fix available for the CVE. Select this if only planning to block deployments of high CVEs if a fix should have been applied. Additional operator can be added to restrict to CVEs reported a certain number of days prior, giving time for remediation for recent CVEs. 
++ Count of Medium Severity CVE. This takes the results of an image (registry) scan and matches on the number of Medium severity (CVSS scores of between 4 and 6). Additional operator can be added to restrict to CVEs reported a certain number of days prior, giving time for remediation for recent CVEs. 
++ CVE names. This matches on specific CVE names (e.g. CVE-2023-23914, 2023-23914, 23914, or unique text) where multiple are separated by comma’s. 
++ CVE score. Configure both the minimum score as well as the number of CVEs matching or exceeding the minimum CVSS score. 
++ Environment variables with secrets. If the deployment yaml or image scan result contains (or does not contain) any environment variables with secrets. See the criteria for secrets matching below. 
++ Environment variables. Use this to require or exclude certain environment variables in the deployment yaml or image scan. 
++ Image. Matching on specific image names, typically combined with other criteria for the rule. 
++ Image compliance violations. Matches if the image (registry) scan results in any compliance violations. See [compliance](/scanning/scanning/compliance#managing-compliance-and-cis-benchmarks) for details on compliance checks. 
++ Image without OS information. Matches if the image (registry) scan results in the inability to retrieve OS information. 
++ Image registry. Matches on specific image registry names. Typically used to restrict deployments from certain registries or require deployments only from certain approved registries. Often used with other criteria such as namespaces. 
++ Image scanned. Require that an image be scanned. Often used to make sure all images are scanned to ensure that scan based criteria such as high CVEs can be applied to deployments. 
++ Labels. Require that one or more labels be present in the deployment yaml or image scan results. 
++ Modules. Requires or excludes certain modules (packages, libraries) from being present in the image as the result of the image (registry) scan. 
++ Mount volumes. Typically used to prevent certain volumes from being mounted. 
++ Namespace. Allow or restrict deployments for certain namespace(s). Used independently but often combined with other criteria to limit the rule matching to namespace. 
++ PSP Best Practice. Equivalent rules for PSP (note: PSP is completely removed from kubernetes 1.25+, however this NeuVector equivalent may still used in 1.25+). Includes Run as privileged, Run as root, Share host's PID namespaces, Share host's IPC namespaces, Share host's Network, Allow Privilege Escalation. 
++ Resource Limit Configuration (RLC). Requires resource limits to be configured for CPU Limit/Request, Memory Limit/Request, and can require operator to be > or <= a configured resource value. 
++ Run as privileged. Typically used to limit or block deployments of privileged containers. 
++ Run as root. Typically used to limit or block deployments of containers run as root.. 
++ Service Account Bound High Risk Role. Can match on multiple criteria which could respresent a high risk service account role, including listing secrets, performing any operations on workloads, modification of RBAC resources, creation of workload resources, and allowing exec into a container. 
++ Share host’s IPC namespaces. Matches on IPC namespaces. 
++ Share host’s Network. Allow or disallow deployments to share the host’s network. 
++ + Share host’s PID namespaces . Matches on PID namespaces. 
++ User. Allow or disallow defined [users bound by kubernetes](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#referring-to-subjects) at run-time, visible in the userInfo field. Note: The yaml (upload) auditing function will not be able to check this because it is bound at run-time. 
++ User groups. Allow or disallow defined [user groups bound by kubernetes](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#referring-to-subjects) at run-time, visible in the userInfo field.  Note: The yaml (upload) auditing function will not be able to check this because it is bound at run-time. 
++ Violates PSA policy. Matches if the deployment violates either a Restricted or Baseline PSA [Pod Security Standard](https://kubernetes.io/docs/concepts/security/pod-security-standards/) (equivalent to PSA definitions in kubernetes 1.25+) 
+ 
+#### Secrets detection 
+Detection of secrets, for example in environment variables is matched used the following regex: 
+``` 
+Rule{Description: "Password.in.YML", 
+Expression: `(?i)(password|passwd|api_token)\S{0,32}\s*:\s*(?-i)([0-9a-zA-Z\/+]{16,40}\b)`, ExprFName: `.*\.ya?ml`, Tags: []string{share.SecretProgram, "yaml", "yml"}, 
+Suggestion: msgReferVender}, 
+``` 
+A list of types of secrets detected can be found [here](/scanning/scanning/compliance#secrets-auditing) ### Admission Control Modes
 There are two modes NeuVector supports - Monitor and Protect.+ Monitor: there is an alert message in the event log if a decision is denied. In this case, the cluster apiserver is allowed to create a resource successfully. Note: even if the rule action is Deny, in Monitor mode this will only alert.
 + Protect: this is an inline protection mode. Once a decision is denied, the cluster resource will not be able to be created successfully, and an event will be logged.
 
