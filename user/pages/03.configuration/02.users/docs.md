@@ -58,3 +58,14 @@ The following example provides some possible mappings. Demo_admin can read/view 
 ![MappingExamples](group_role_map_examples.png)
 
 <strong>Important</strong>: If the user is in multiple groups, the role will be 'first matched' in the order listed and group's role assigned. Please adjust the order of configuration for proper behavior by dragging and dropping the mappings to the appropriate order in the list.
+
+#### Multi-Cluster FedAdmin and Admin Roles for Primary and Remote Management
+When a cluster is [promoted](/navigation/multicluster) to be a Primary cluster, the admin becomes a FedAdmin automatically. The FedAdmin can perform operations on the primary such as generate a federation token for connecting a remote cluster as well as creating federated security rules such as network, process, file, and admission control rules.
+
+Multi-cluster management roles are as follows:
++ On any cluster, a local admin or a Rancher SSO admin can promote the cluster to become a primary.
++ Ldap/SSO/SAML/OIDC users with admin roles are not able to promote a cluster to primary.
++ Only the FedAdmin can generate the token required to join a remote cluster to the primary.
++ Any admin, including ldap/sso/saml/oidc users can join a remote cluster to the primary if they have the token.
++ Only the FedAdmin can create a new user as a FedAdmin (or FedReader) or assign the FedAdmin (or FedReader) role to an existing user (including ldap/sso/saml/oidc users).
+
