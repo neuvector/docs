@@ -16,7 +16,7 @@ There MUST be network connectivity between the controllers in each cluster on th
 
 ### Configuring the Primary and Remote Clusters
 
-Log into the console for the cluster which will be the Primary cluster. In the upper right drop down menu, select Multiple Clusters and then Promote to configure the Primary. Note: Only local users & Rancher users who have admin permission can promote a cluster to become the primary cluster.
+Log into the console for the cluster which will be the Primary cluster. In the upper right drop down menu, select Multiple Clusters and then Promote to configure the Primary. Note: Only local users & Rancher users who have admin permission can promote a cluster to become the primary cluster. Currently, SSO/LDAP/OIDC users with admin role are not allowed to promote a cluster to primary.
 ![MasterConfig](master1.png)
 
 Enter the public IP and port of the fed-master service. You can find this by running
