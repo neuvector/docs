@@ -18,7 +18,7 @@ There are many automation features in NeuVector to support the entire CI/CD work
 #### REST API
 The NeuVector solution can be managed using the REST API. Below are common examples of automation using the REST API. The REST API yaml doc is best viewed in the Swagger 2.0 viewer. The REST API documentation is below in a yaml file which is best viewed in a reader such as swagger.io.
 
-Latest update can be found [here](https://raw.githubusercontent.com/neuvector/neuvector/main/controller/api/apis.yaml). Also in the NeuVector GitHub source code [repo](https://github.com/neuvector/neuvector/blob/main/controller/api/apis.yaml).
+Latest update can be found [here](https://raw.githubusercontent.com/neuvector/neuvector/main/controller/api/apis.yaml). Also in the NeuVector GitHub source code [repo](https://github.com/neuvector/neuvector/blob/main/controller/api/apis.yaml).  The apis.yaml from the main truck can include unreleased features.  It is recommended to download the appropriate released version source code and extract the apis.yaml from the controller/api folder.
 
 <strong>Important</strong> - If you are making REST API calls, please be sure make a DELETE call against /v1/auth when done. There is a maximum of 32 concurrent sessions for each user. If this is exceeded, an authentication failure will occur.
 
