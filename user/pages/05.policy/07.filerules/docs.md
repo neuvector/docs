@@ -90,6 +90,6 @@ If other special mitigations, responses, or alerts are desired for File System V
 ![FileResponse](file-response1.png)
 
 ###Split Mode File Protections
-Container Groups can have Process/File rules in a different mode than Network rules, as described [here](/policy/modes#split-policy-mode).
+Container Groups can have Process/File rules in a different mode than Network rules, as described [here](/policy/modes#network-service-policy-mode).
 
 

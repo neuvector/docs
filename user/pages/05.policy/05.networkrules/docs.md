@@ -80,7 +80,7 @@ Egress network policy enforcement functionality was added in version 5.1.0 for p
 Custom groups can support virtual host based address groups. This enables a use case where two different FQDN addresses are resolved to the same IP address, but different rules for each FQDN should be enforced. A new custom group with ‘address=vh:xxx.yyy’ can be created using the ‘vh:’ indicator to enable this protection. A network rule can then use the custom group as the ‘From’ source based on the virtual hostname (instead of resolved IP address) to enforce different rules for virtual hosts. 
 
 ###Split Mode Network Protections
-Container Groups can have Process/File rules in a different mode than Network rules, as described [here](/policy/modes#split-policy-mode).
+Container Groups can have Process/File rules in a different mode than Network rules, as described [here](/policy/modes#network-service-policy-mode).
 
 ###Built-In Network Threat Detection
 NeuVector automatically detects certain network attacks, regardless of protection mode. In Discover and Monitor mode, these threats will be alerted and can be found in Notifications -> Security Events. In Protect mode, these will alerted as well as blocked. Response rules can be created based on threat detection as well.

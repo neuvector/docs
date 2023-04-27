@@ -89,4 +89,4 @@ In addition the following detections are enabled:
 Suspicious processes are alerted when in Discover or Monitor mode, and blocked when in Protect mode. Detection applies to containers as well as hosts, with the exception of 'sshd' which is not considered suspicious on hosts. Processes listed above can be added to the Allow List for containers (Groups) including hosts if it should be allowed.
 
 ###Split Mode Process/File Protections
-Container Groups can have Process/File rules in a different mode than Network rules, as described [here](/policy/modes#split-policy-mode).
+Container Groups can have Process/File rules in a different mode than Network rules, as described [here](/policy/modes#network-service-policy-mode).
