@@ -193,7 +193,20 @@ Rules can be Allow (whitelist) or Deny (blacklist) rules. Rules are evaluated in
 
 There are two pre-configured rules which should be allowed to enable Kubernetes system container and NeuVector deployments.
 
-Admission control rules apply to all resources which create pods (e.g. deployments, daemonsets, replicasets etc)
+Admission control rules apply to all resources which create pods (e.g. deployments, daemonsets, replicasets etc).
+
+For admission control rules, the matching order is:
+
+1. Default allow rules (e.g. system namespaces)
+2. Federated allow rules (if these exist)
+3. Federated deny rules (if these exist)
+4. CRD applied allow rules (if these exist)
+5. CRD applied deny rules (if these exist)
+6. User-defined allow rules
+7. User-defined deny rules
+8. Allow the request if the request doesn't match any rule's criteria above
+
+In each of the matching stages(1~7), the rule order doesn't matter. As long as the request matches one rule's criteria, the action (allow or deny) is taken and the request is allowed or denied.
 
 ### Federated Scan Results in Admission Control Rules
 The primary (master) cluster can scan a registry/repo designated as a federated registry. The scan results from these registries will be synchronized to all managed (remote) clusters. This enables display of scan results in the managed cluster console as well as use of the results in admission control rules of the managed cluster. Registries only need to be scanned once instead of by each cluster, reducing CPU/memory and network bandwidth usage. See the [multi-cluster](/navigation/multicluster/) section for more details.
