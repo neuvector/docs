@@ -6,6 +6,50 @@ taxonomy:
 
 ### Release Notes for 5.x (Open Source Version)
 
+#### 5.1.3 May 2023 
+
+##### Enhancements 
+
++ Add new vulnerability feed for scanning Microsoft .NET framework.
++ Enforcer stats are disabled by default in Prometheus exporter to improve scalability.
++ Usability improvement: Using scanner to scan single image and print the result (see example below).
++ Add imagePullPolicy check in admission control rules criteria.
++ Show warning message when CRD schema is out of date.
+
+##### Bug Fixes
+
++ Network Activity screen does not render or incorrectly renders.
++ Empty group auto-removal takes 2 hours to delete instead of 1 hour according to schedule.
++ Compliance profile doesn’t show in UI console.
++ Advanced Filter in Security Events Missing "Error" Level.
++ Saved password with special character fails on future authentication attempt.
++ Multiple clusters page does not render properly when requests are high.
++ Registry detail (bottom) pane not updating.
+
+
+##### Scanner Sample Output
+```
+Image: https://registry.hub.docker.comlibrary/alpine:3.4
+Base OS: alpine:3.4.6
+TOTAL: 6, HIGH: 1, MEDIUM: 5, LOW: 0, UNKNOWN: 0
+┌─────────┬───────────────┬──────────┬───────────┬───────────────┬────────────┐
+│ PACKAGE │ VULNERABILITY │ SEVERITY │ VERSION   │ FIXED VERSION │ PUBLISHED  │
+├─────────┼───────────────┼──────────┼───────────┼───────────────┼────────────┤
+│ openssl │ CVE-2018-0732 │ High     │ 1.0.2n-r0 │ 1.0.2o-r1     │ 2018-06-12 │
+│         ├───────────────┼──────────┤           ├───────────────┼────────────┤
+│         │ CVE-2018-0733 │ Medium   │           │ 1.0.2o-r0     │ 2018-03-27 │
+│         ├───────────────┤          │           ├───────────────┼────────────┤
+│         │ CVE-2018-0734 │          │           │ 1.0.2q-r0     │ 2018-10-30 │
+│         ├───────────────┤          │           ├───────────────┼────────────┤
+│         │ CVE-2018-0737 │          │           │ 1.0.2o-r2     │ 2018-04-16 │
+│         ├───────────────┤          │           ├───────────────┼────────────┤
+│         │ CVE-2018-0739 │          │           │ 1.0.2o-r0     │ 2018-03-27 │
+│         ├───────────────┤          │           ├───────────────┼────────────┤
+│         │ CVE-2018-5407 │          │           │ 1.0.2q-r0     │ 2018-11-15 │
+└─────────┴───────────────┴──────────┴───────────┴───────────────┴────────────┘
+```
+
+
 #### 5.1.2 March 2023 
 
 ##### Enhancements 
