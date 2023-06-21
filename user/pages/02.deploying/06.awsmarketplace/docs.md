@@ -28,7 +28,13 @@ To be able to aggregate the node counts from multiple clusters in order to take 
 #### Enabling PAYG Billing for Existing NeuVector Clusters
 
 There are several options to enable PAYG billing on existing NeuVector clusters. 
-- Option 1: The existing cluster must be on a supported PAYG platform. Backup the NeuVector configuration of the existing cluster, remove the NeuVector deployment, then deploy NeuVector through the AWS marketplace. After successful deployment, import the backup configuration. Note: It is recommended that the existing cluster be running version NeuVector 5.2.0 or later before the backup and removal.
+- Option 1: The existing cluster must be on a supported PAYG platform. Backup the NeuVector configuration of the existing cluster, remove the NeuVector deployment, then deploy NeuVector through the AWS marketplace. After successful deployment, import the backup configuration. Note: It is recommended that the existing cluster be running version NeuVector 5.2.0 or later before the backup and removal. For Helm based deployments, this is a sample Helm upgrade command (replacing account ID, IAM role name, previous helm version values file etc):
+```
+helm upgrade -n neuvector neuvector  oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/suse/neuvector-csp-billing-adapter-llc/core --version 2.4.30002023052201 --create-namespace \
+--set awsbilling.accountNumber=$AWS_ACCT_ID,awsbilling.roleName=$IAM_ROLE_NAME \
+--set awsbilling.enabled=true,containerd.enabled=true 
+-f values-x.y.z.yaml
+```
 - Option 2: Add the existing cluster as a federated remote cluster to a (existing or newly deployed) primary cluster which already has PAYG billing deployed on it. In this case, the existing cluster can be on any platform supported by NeuVector.
 
 #### Enabling PAYG Billing for Rancher, OpenShift, Tanzu, or other NeuVector supported clusters
@@ -54,7 +60,7 @@ kubectl set image  cronjob/neuvector-updater-pod neuvector-updater-pod=docker.io
 ```
 
 ### Obtaining Support
-Once PAYG billing is enabled for a cluster or multiple clusters, customers are eligible for support through the [SUSE Support Center](https://scc.suse.com/) (SCC) service. This is a web-based service for creating, viewing, and managing support requests. 
+Once PAYG billing is enabled for a cluster or multiple clusters, customers are eligible for support through the [SUSE Support Center](https://scc.suse.com/) (SCC) service. This is a web-based service for creating, viewing, and managing support requests. The actual link for submitting your support bundle as described below can be found [here](https://scc.suse.com/cloudsupport).
 
 The SCC portal will require you to upload a Support Configuration bundle in order to verify your eligibility as well as provide cluster information required to start investigations. To download the support config, please go to Settings -> Configuration at the bottom of the page for the cluster in question. For multi-cluster configurations, only the Primary cluster's support config is required, even if the support inquiry is for a downstream remote cluster. If you do not have access to the Primary cluster, the remote cluster's support config is acceptable.
 
