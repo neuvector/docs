@@ -55,6 +55,8 @@ To use docker commands:
 docker exec scanner scanner -v -d /etc/neuvector/db/
 ```
 
+###Querying the CVE Database for Specific CVE Existence
+An online service is provided for NeuVector Prime (paid subscription) customers to be able to query the CVE database to determine if a specific CVE exists in the current database version. Other CVE database queries are also available from this service. Please contact your SUSE account representative to access this paid service.
 
 ###CVE Database Sources
 
