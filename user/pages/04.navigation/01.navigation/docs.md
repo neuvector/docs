@@ -72,7 +72,7 @@ The data in the map may take a few seconds after network activity to be displaye
 See the explanation of the Legend icons at the bottom of this page.
 
 #### Assets
-Assets displays information about Nodes, Containers, NeuVector Controllers and NeuVector Enforcers.
+Assets displays information about Platforms, Nodes, Containers, Registries, Sigstore Verifiers (used in Admission Control rules), and System Components (NeuVector Controllers, Scanners, and Enforcers).
 
 NeuVector includes an end-to-end vulnerability management platform which can be integrated into your automated CI/CD process. Scan registries, images, and running containers and host nodes for vulnerabilities. Results for individual registries, nodes, and containers can be found here, while combined results and advanced reporting can be found in the Security Risks menu.
 

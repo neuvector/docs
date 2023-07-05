@@ -160,6 +160,8 @@ Criteria with a disk icon require that the image be scanned (see registry scanni
 + Image without OS information. Matches if the image (registry) scan results in the inability to retrieve OS information. 
 + Image registry. Matches on specific image registry names. Typically used to restrict deployments from certain registries or require deployments only from certain approved registries. Often used with other criteria such as namespaces. 
 + Image scanned. Require that an image be scanned. Often used to make sure all images are scanned to ensure that scan based criteria such as high CVEs can be applied to deployments. 
++ Image signed. Require that an image be signed through the integration of Sigstore/Cosign. Image verifiers can be configured in Assets -> Sigstore Verifiers.
++ Image Sigstore Verifiers. Require that an image be signed by a specific Sigstore root-of-trust name, as configured in Assets -> Sigstore Verifiers.
 + Labels. Require that one or more labels be present in the deployment yaml or image scan results. 
 + Modules. Requires or excludes certain modules (packages, libraries) from being present in the image as the result of the image (registry) scan. 
 + Mount volumes. Typically used to prevent certain volumes from being mounted. 
@@ -210,6 +212,22 @@ In each of the matching stages(1~7), the rule order doesn't matter. As long as t
 
 ### Federated Scan Results in Admission Control Rules
 The primary (master) cluster can scan a registry/repo designated as a federated registry. The scan results from these registries will be synchronized to all managed (remote) clusters. This enables display of scan results in the managed cluster console as well as use of the results in admission control rules of the managed cluster. Registries only need to be scanned once instead of by each cluster, reducing CPU/memory and network bandwidth usage. See the [multi-cluster](/navigation/multicluster/) section for more details.
+
+### Configuring Sigstore/Cosign Verifiers for Requiring Image Signing
+To require image signing in admission control rules, first configure a public or private Sigstore Root of Trust Name in the Assets menu.
+![sigstore](1configure-public-root-of-trust.png)
+![sigstore](2configure-private-root-of-trust.png)
+
+Then, add one or more Verifiers to the Root of Trust, selecting and configuring either a key pair or keyless verification.
+![sigstore](3add-keypair-verifier-for-public-root-of-trust.png)
+![sigstore](4add-keyless-verifier-for-public-root-of-trust.png)
+
+The Root of Trust Name and Verifier can now be used in an admission control rule.
+![sigstore](5admission_rule_signature.png)
+
+The Sigstore verifier(s) required for an image can be viewed in the scan results page for the image in Assets -> Registries by selecting the image and viewing the results in the upper right section of the popup results.
+![sigstore](6show_verifiers_scanresults.png)
+
 
 ### Troubleshooting
 
