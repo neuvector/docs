@@ -20,7 +20,7 @@ The NeuVector solution can be managed using the REST API. Below are common examp
 
 Latest update can be found [here](https://raw.githubusercontent.com/neuvector/neuvector/main/controller/api/apis.yaml). Also in the NeuVector GitHub source code [repo](https://github.com/neuvector/neuvector/blob/main/controller/api/apis.yaml).  The apis.yaml from the main truck can include unreleased features.  It is recommended to download the appropriate released version source code and extract the apis.yaml from the controller/api folder.
 
-<strong>Important</strong> - If you are making REST API calls, please be sure make a DELETE call against /v1/auth when done. There is a maximum of 32 concurrent sessions for each user. If this is exceeded, an authentication failure will occur.
+<strong>Important</strong> - If you are making REST API calls with username/password, please be sure make a DELETE call against /v1/auth when done. There is a maximum of 32 concurrent sessions for each user. If this is exceeded, an authentication failure will occur.
 
 NeuVector also support Response Rules to automate common responses to security events or vulnerabilities detected. Please see the section Security Policy -> Response Rules for more details.
 
@@ -44,6 +44,15 @@ spec:
 ```
 Note: type: NodePort can also be used instead of LoadBalancer.
 Note: If using type LoadBalancer, set the _controllerIP_ in the examples below to the external IP or URL for the loadbalancer.
+
+#### Authentication for REST API 
+The REST API supports two types of authentication: username/password and token. Both can be configured in Settings -> Users, API Keys & Roles, and be associated with default or custom roles to limit access privileges. The examples below show username/password based authentication where a token is created first, then used in subsequent REST API calls. If using a token, it can be used directly in each REST API call. Note: username based connections have a limited number of concurrent sessions, so it is important to delete the username token as shown below when finished. Token based authentication does not have a limit, but expire according to the time limit selected when created.
+
+For token-based authentication, see the following screen shots and example call. Be sure to copy the secret and token once created, as there is no way to retrieve this after the screen in closed.
+![token](5_2_api_key.png)
+![token](5_2_api_created.png)
+![token](5_2_api_key_header.png)
+
 
 #### Trigger Vulnerability Scanning from a script
 NeuVector can be triggered automatically to scan an image for vulnerabilities. This can be done by configuring a registry/repository to be monitored, using the NeuVector Jenkins plug-in, or using the REST API. Please see the section on Scanning & Compliance for more detail.
