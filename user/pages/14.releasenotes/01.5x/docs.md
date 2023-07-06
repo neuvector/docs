@@ -6,6 +6,59 @@ taxonomy:
 
 ### Release Notes for 5.x (Open Source Version)
 
+#### 5.2.0 July 2023 
+
+##### Enhancements 
+
++ Support tokens for NeuVector API access. See Settings -> User, API Keys... to create a new API key. Keys can be set to default or custom roles.
++ Support AWS Marketplace PAYG billing for NeuVector monthly support subscriptions. Users can subscribe to NeuVector by SUSE support, billed monthly to their AWS account based on previous month's average node count usage. Details [here](https://open-docs.neuvector.com/deploying/awsmarketplace).
++ Support image signing for admission controls. Users can require NeuVector to verify that images are signed by specific parties before they can be deployed into the production environment, through an integration with Sigstore/Cosign. See Assets -> Sigstore Verifiers for creating new signature assets. Rules can then be created with criteria Image Signing and/or Image Sigstore Verifiers.
++ Enable each admission control rule to have its own mode of Monitor or Protect. A Deny action in Monitor mode will alert, and a Deny action in Protect mode will block. Allow actions are unaffected.
++ Add a new regex operator in Policy > Admission Control > Add Rule for Users and User Groups to support regex. Support operators "matches ANY regex in" and "matches NONE regex in".
++ Add support for admission control criteria such as resource limits. A new criteria is added for Resource Limits, and additional criteria are supported through the Custom Criteria settings.
++ Support invoking NeuVector scanner from Harbor registries through the [pluggable scanner](https://github.com/goharbor/pluggable-scanner-spec) interface. This requires configuration of the connection to the controller (exposed API). The Harbor adapter calls controller endpoint to trigger a scan, which can scan automatically on push. Interrogation services can be used for periodic scans. Scan results from Federation Primary controllers ARE propagated to remote clusters.  NOTE: There is an issue with the HTTPS based adapter endpoint error: please ignore Test Connection error, it does work even though an error is shown (skip certificate validation).
++ Searchable SaaS service for CVE lookups. Search the latest NeuVector CVE database to see if a specific CVE exists in the database. This service is available for NeuVector Prime (paid support subscription) customers. Contact support through your SCC portal for access.
++ Allow user to disable network protection but keep WAF/DLP functioning. Configure Network Policy Enablement in Settings -> Configuration.
++ Use less privileged services accounts as required for each NeuVector component. A variable “leastPrivilege” is introduced. The default is false. NOTE: Using the current helm chart with this variable on a release prior to 5.2.0 will not function properly.
++ Bind to non-default service account to meet CIS 1.5 5.1.5 recommendation.
++ Enable administrator to configure user default Session Time out in Settings -> Users, API Keys & Roles.
++ Customizable login banner and customizable UI header text for regulated and government deployments. Requirements for configuration can be found [here](https://open-docs.neuvector.com/configuration/customui).
++ SYSLOG support for TLS encrypted transport. Select TCP/TLS in Settings -> Configuration for SYSLOG.
++ Enable deployment of the NeuVector monitor helm chart from Rancher Manager.
++ Remove upper limit for top level domain in URL validator for registry scanning.
++ Scan golang dependencies, including run-time scans.
++ Support Debian 12 (Bookworm) vulnerability scan.
++ Add CSV export for Registry / Details to export CVEs for all images in configured registry in Assets -> Registries for a selected registry.
++ Allow NeuVector to set several ADFS certificates in parallel in x.509 certificate field.
++ Add and display the comment field for Response Rules.
++ Specify what NeuVector considers to be system containers through environment variable. For example, for Rancher and default namespaces: NV_SYSTEM_GROUPS=*cattle-system;default
++ Add support for Kubernetes 1.27 and OpenShift 4.12
+
+##### Bug Fixes
++ Reduce repeating logs in enforcer/controller logs.
++ Multiple clusters page does not render.
++ Empty group auto-removal takes 2 hours to delete instead of 1 hour according to schedule.
++ Manually allowed network rule not getting applied and resulting in violation for pause image.
++ Blocking SSL connections even if a network rule permits the traffic under certain initial conditions.
++ Security events warning even with allowed network rules due to policy update issue in synchronization.
++ Network Activities wrongly associating custom group traffic to external.
++ Default service account token of the namespace mounted in each pod is too highly privileged.
++ Despite defining the network rules, violations getting logged under security events (false positives) when the container has stopped due to out of memory (OOM) error.
++ Allow user to disable/enable detection and protection against unmanaged container in cluster. This can be set through the Manager CLI:
+```
+set system detect_unmanaged_wl status -h
+Usage: cli set system detect_unmanaged_wl status [OPTIONS] {true|false}
+
+  Enable/disable detect unmanaged container
+```
+
+##### Other
++ Add "leastPrivilege" setting in Helm chart. Add helm option for New_Service_Profile_Baseline. A new Helm chart (core) version is published for 5.2.
++ Enable AWS Marketplace (billing adapter) integration settings in Helm chart.
++ Update configmap to support new features (multiple ADFS certificates, zero drift, New_Service_Profile_Baseline, SYSLOG TLS, user timeout)
++ Update supported Kubernetes versions to 1.19+, and OpenShift 4.6+ (1.19+ with CRI-O)
+
+
 #### 5.1.3 May 2023 
 
 ##### Enhancements 
