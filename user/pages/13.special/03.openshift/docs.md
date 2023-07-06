@@ -102,51 +102,12 @@ neuvector-binding-rbac /neuvector-binding-rbac                     neuvector/def
 neuvector-binding-rbac /neuvector-binding-admission                neuvector/default
 ```
 
-8. Add support for Admission Control (OpenShift 3.9-3.11; not required for 4.2+)
-
-    8-1. Edit the master config
-```
-vi /etc/origin/master/master-config.yaml
-```
-    8-2. Add MutatingAdmissionWebhook and ValidatingAdmissionWebhook
-<pre>
-<code>
-admissionConfig:
-  pluginConfig:
-    MutatingAdmissionWebhook:
-      configuration:
-        kind: DefaultAdmissionConfig
-        apiVersion: v1
-        disable: false
-    ValidatingAdmissionWebhook:
-      configuration:
-        kind: DefaultAdmissionConfig
-        apiVersion: v1
-        disable: false
-</code></pre>
-    8-3. Restart the Openshift api and controllers services
-This is different for different versions. For example 3.10+
-```
-master-restart api
-master-restart controllers
-```
-Or
-```
-/usr/local/bin/master-restart api controllers
-```
-
-    8-4. Run the following command to check if admissionregistration.k8s.io/v1beta1 is enabled
-```
-$ oc api-versions | grep admissionregistration
-admissionregistration.k8s.io/v1beta1
-```
-
-9. Add a nvallinone label on one of the master or worker nodes where the allinone will be deployed
+8. Add a nvallinone label on one of the master or worker nodes where the allinone will be deployed
 ```
 oc label nodes <nodename> nvallinone=true
 ```
 
-10. Create the neuvector services and pods based on the sample yaml files below
+9. Create the neuvector services and pods based on the sample yaml files below
 ```
 oc create -f <compose file>
 ```

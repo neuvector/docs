@@ -35,6 +35,9 @@ taxonomy:
 * NO_DEFAULT_ADMIN 
 > (Optional) When enabled does not create an 'admin' user in the local cluster. This is used for Rancher SSO integration as the default. If not enabled, persistently warn the user and record events to change the default admin password if it is not changed from default.
 
+* NV_SYSTEM_GROUPS
+> (Optional) Specify what groups or namespaces that NeuVector considers to be 'system containers.' For example, for Rancher-based apps and the default namespace, NV_SYSTEM_GROUPS=*cattle-system;default. System containers (which also include NeuVector and Kubernetes system containers) operate only in Monitor mode (alert only) even if the group is set to Protect mode. Separate the list of system containers to add by a semi-colon.
+
 
 ##### Manager
 * CTRL_SERVER_IP

@@ -38,6 +38,8 @@ data:
       password_expire_after_days: 0
       enable_password_history: false
       password_keep_history_count: 0
+      # Optional. value between 30 -- 3600  default 300
+      session_timeout: 300
   roleinitcfg.yaml: |
     # Optional. true or false or empty string(false)
     always_reload: false
@@ -213,6 +215,12 @@ data:
       MIIC8DCCAdigAwIBAgIQSMNDFv5HI7RPgF0uHW8YJDANBgkqhkiG9w0BAQsFADA0MTIwMAYDVQQD
       ...
       -----END CERTIFICATE-----
+    x509_cert_extra:
+      - |
+        -----BEGIN CERTIFICATE-----
+        MIIC8DCCAdigAwIBAgIQSMNDFv5HI7RPgF0uHW8YJDANBgkqhkiG9w0BAQsFADA0MTIwMAYDVQQD
+        ...
+        -----END CERTIFICATE-----
     # Optional. empty or string(group filter info)
     GroupClaim:  
     # Optional. true or false or empty string(false)
@@ -262,10 +270,18 @@ data:
     always_reload: false
     # Optional. Choose between  Discover or Monitor or Protect or empty string(Discover)
     New_Service_Policy_Mode: Discover
+    # Optional. zero-drift or basic or empty string(zero-drift)
+    New_Service_Profile_Baseline: zero-drift
     # Optional. input valid ipv4 address or empty string
     Syslog_ip: 1.2.3.4
-    # Optional. input 17 or 6 here for upd or tcp or empty string(17)
+    # Optional. input 17, 6 or 66 here for udp, tcp, tcp+tls or empty string(17)
     Syslog_IP_Proto: 17
+    # Optional. it is required when Syslog_IP_Proto is 66 only
+    Syslog_Server_Cert: |
+      -----BEGIN CERTIFICATE-----
+      MIIC8DCCAdigAwIBAgIQSMNDFv5HI7RPgF0uHW8YJDANBgkqhkiG9w0BAQsFADA0MTIwMAYDVQQD
+      ...
+      -----END CERTIFICATE-----
     # Optional. empty string(514)
     Syslog_Port: 514
     # Optional. chose between Alert/Critical/Error/Warning/Notice/Info/Debug or empty string(Info)
@@ -323,10 +339,10 @@ data:
       Max_Pods: 3
     # Optional. true or false or empty string(false)
     No_Telemetry_Report: false
-    Scan_Config: 
-      # Optional. true or false or empty string(false) 
-      Auto_Scan: false 
-    # Optional. default value is 24. unit is hour and range is between 0 and 168 
+    Scan_Config:
+      # Optional. true or false or empty string(false)
+      Auto_Scan: false
+    # Optional. default value is 24. unit is hour and range is between 0 and 168
     Unused_Group_Aging: 24
   userinitcfg.yaml: |
     # Optional. true or false or empty string(false)

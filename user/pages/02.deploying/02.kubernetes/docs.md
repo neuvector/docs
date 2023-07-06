@@ -20,9 +20,9 @@ There is a separate section for OpenShift instructions, and Docker EE on Kuberne
 
 ####NeuVector Images on Docker Hub
 <p>The images are on the NeuVector Docker Hub registry. Use the appropriate version tag for the manager, controller, enforcer, and leave the version as 'latest' for scanner and updater. For example:
-<li>neuvector/manager:5.1.0</li>
-<li>neuvector/controller:5.1.0</li>
-<li>neuvector/enforcer:5.1.0</li>
+<li>neuvector/manager:5.2.0</li>
+<li>neuvector/controller:5.2.0</li>
+<li>neuvector/enforcer:5.2.0</li>
 <li>neuvector/scanner:latest</li>
 <li>neuvector/updater:latest</li></p>
 <p>Please be sure to update the image references in appropriate yaml files.</p>
@@ -131,7 +131,10 @@ roleRef:
   name: neuvector-binding-psp
 subjects:
 - kind: ServiceAccount
-  name: default
+  name: controller
+  namespace: neuvector
+- kind: ServiceAccount
+  name: enforcer
   namespace: neuvector</code></pre>
   </div><!-- End .wrap-content -->    
   </div><!-- End .accordion-content -->
@@ -150,46 +153,61 @@ kubectl create -f nv_psp.yaml</code></pre>
 Create the custom resources (CRD) for NeuVector security rules. For Kubernetes 1.19+:
 <pre>
 <code>
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/waf-crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/dlp-crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/admission-crd-k8s-1.19.yaml</code></pre>
-&nbsp;
-For Kubernetes 1.18 and earlier:
-<pre>
-<code>
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/crd-k8s-1.16.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/waf-crd-k8s-1.16.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/dlp-crd-k8s-1.16.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/admission-crd-k8s-1.16.yaml</code></pre>
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/waf-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/dlp-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/admission-crd-k8s-1.19.yaml</code></pre>
 
 &nbsp;
 </li>
-<li>Add read permission to access the kubernetes API. RBAC is supported in kubernetes 1.8+ officially. Admission control is supported in kubernetes 1.9+.
+<li>Add service accounts and read permission to access the kubernetes API. RBAC is supported in kubernetes 1.8+ officially. Admission control is supported in kubernetes 1.9+. IMPORTANT: The standard NeuVector 5.2+ deployment uses least-privileged service accounts instead of the default. See below if upgrading to 5.2+ from a version prior to 5.2.
+<pre>
+<code>kubectl create sa controller -n neuvector
+kubectl create sa enforcer -n neuvector
+kubectl create sa basic -n neuvector
+kubectl create sa updater -n neuvector
+</code</pre>
+
 <pre>
 <code>kubectl create clusterrole neuvector-binding-app --verb=get,list,watch,update --resource=nodes,pods,services,namespaces
 kubectl create clusterrole neuvector-binding-rbac --verb=get,list,watch --resource=rolebindings.rbac.authorization.k8s.io,roles.rbac.authorization.k8s.io,clusterrolebindings.rbac.authorization.k8s.io,clusterroles.rbac.authorization.k8s.io
-kubectl create clusterrolebinding neuvector-binding-app --clusterrole=neuvector-binding-app --serviceaccount=neuvector:default
-kubectl create clusterrolebinding neuvector-binding-rbac --clusterrole=neuvector-binding-rbac --serviceaccount=neuvector:default
+kubectl create clusterrolebinding neuvector-binding-app --clusterrole=neuvector-binding-app --serviceaccount=neuvector:controller
+kubectl create clusterrolebinding neuvector-binding-rbac --clusterrole=neuvector-binding-rbac --serviceaccount=neuvector:controller
 kubectl create clusterrole neuvector-binding-admission --verb=get,list,watch,create,update,delete --resource=validatingwebhookconfigurations,mutatingwebhookconfigurations
-kubectl create clusterrolebinding neuvector-binding-admission --clusterrole=neuvector-binding-admission --serviceaccount=neuvector:default
+kubectl create clusterrolebinding neuvector-binding-admission --clusterrole=neuvector-binding-admission --serviceaccount=neuvector:controller
 kubectl create clusterrole neuvector-binding-customresourcedefinition --verb=watch,create,get,update --resource=customresourcedefinitions
-kubectl create clusterrolebinding  neuvector-binding-customresourcedefinition --clusterrole=neuvector-binding-customresourcedefinition --serviceaccount=neuvector:default
+kubectl create clusterrolebinding neuvector-binding-customresourcedefinition --clusterrole=neuvector-binding-customresourcedefinition --serviceaccount=neuvector:controller
 kubectl create clusterrole neuvector-binding-nvsecurityrules --verb=list,delete --resource=nvsecurityrules,nvclustersecurityrules
-kubectl create clusterrolebinding neuvector-binding-nvsecurityrules --clusterrole=neuvector-binding-nvsecurityrules --serviceaccount=neuvector:default
-kubectl create clusterrolebinding neuvector-binding-view --clusterrole=view --serviceaccount=neuvector:default
-kubectl create rolebinding neuvector-admin --clusterrole=admin --serviceaccount=neuvector:default -n neuvector
+kubectl create clusterrolebinding neuvector-binding-nvsecurityrules --clusterrole=neuvector-binding-nvsecurityrules --serviceaccount=neuvector:controller
+kubectl create clusterrolebinding neuvector-binding-view --clusterrole=view --serviceaccount=neuvector:controller
 kubectl create clusterrole neuvector-binding-nvwafsecurityrules --verb=list,delete --resource=nvwafsecurityrules
-kubectl create clusterrolebinding neuvector-binding-nvwafsecurityrules --clusterrole=neuvector-binding-nvwafsecurityrules --serviceaccount=neuvector:default
+kubectl create clusterrolebinding neuvector-binding-nvwafsecurityrules --clusterrole=neuvector-binding-nvwafsecurityrules --serviceaccount=neuvector:controller
 kubectl create clusterrole neuvector-binding-nvadmissioncontrolsecurityrules --verb=list,delete --resource=nvadmissioncontrolsecurityrules
-kubectl create clusterrolebinding neuvector-binding-nvadmissioncontrolsecurityrules --clusterrole=neuvector-binding-nvadmissioncontrolsecurityrules --serviceaccount=neuvector:default
+kubectl create clusterrolebinding neuvector-binding-nvadmissioncontrolsecurityrules --clusterrole=neuvector-binding-nvadmissioncontrolsecurityrules --serviceaccount=neuvector:controller
 kubectl create clusterrole neuvector-binding-nvdlpsecurityrules --verb=list,delete --resource=nvdlpsecurityrules
-kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --clusterrole=neuvector-binding-nvdlpsecurityrules --serviceaccount=neuvector:default</code>
+kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --clusterrole=neuvector-binding-nvdlpsecurityrules --serviceaccount=neuvector:controller
+kubectl create role neuvector-binding-scanner --verb=get,patch,update,watch --resource=deployments -n neuvector
+kubectl create rolebinding neuvector-binding-scanner --role=neuvector-binding-scanner --serviceaccount=neuvector:updater --serviceaccount=neuvector:controller -n neuvector
+kubectl create clusterrole neuvector-binding-csp-usages --verb=get,create,update,delete --resource=cspadapterusagerecords
+kubectl create clusterrolebinding neuvector-binding-csp-usages --clusterrole=neuvector-binding-csp-usages --serviceaccount=neuvector:controller</code>
 </pre>
-NOTE: If upgrading NeuVector from a previous install, you may need to delete the old binding as follows:
+NOTE: If upgrading NeuVector from a previous install, you will need to delete the old binding before creating the new least-privileged bindings:
 <pre>
-<code>kubectl delete clusterrolebinding neuvector-binding
-kubectl delete clusterrole neuvector-binding</code>
+<code>kubectl delete clusterrolebinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules
+kubectl delete rolebinding neuvector-admin -n neuvector
+kubectl create clusterrolebinding neuvector-binding-app --clusterrole=neuvector-binding-app --serviceaccount=neuvector:controller
+kubectl create clusterrolebinding neuvector-binding-rbac --clusterrole=neuvector-binding-rbac --serviceaccount=neuvector:controller
+kubectl create clusterrolebinding neuvector-binding-admission --clusterrole=neuvector-binding-admission --serviceaccount=neuvector:controller
+kubectl create clusterrolebinding neuvector-binding-customresourcedefinition --clusterrole=neuvector-binding-customresourcedefinition --serviceaccount=neuvector:controller
+kubectl create clusterrolebinding neuvector-binding-nvsecurityrules --clusterrole=neuvector-binding-nvsecurityrules --serviceaccount=neuvector:controller
+kubectl create clusterrolebinding neuvector-binding-view --clusterrole=view --serviceaccount=neuvector:controller
+kubectl create clusterrolebinding neuvector-binding-nvwafsecurityrules --clusterrole=neuvector-binding-nvwafsecurityrules --serviceaccount=neuvector:controller
+kubectl create clusterrolebinding neuvector-binding-nvadmissioncontrolsecurityrules --clusterrole=neuvector-binding-nvadmissioncontrolsecurityrules --serviceaccount=neuvector:controller
+kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --clusterrole=neuvector-binding-nvdlpsecurityrules --serviceaccount=neuvector:controller
+kubectl create role neuvector-binding-scanner --verb=get,patch,update,watch --resource=deployments -n neuvector
+kubectl create rolebinding neuvector-binding-scanner --role=neuvector-binding-scanner --serviceaccount=neuvector:updater --serviceaccount=neuvector:controller -n neuvector
+kubectl create clusterrole neuvector-binding-csp-usages --verb=get,create,update,delete --resource=cspadapterusagerecords
+kubectl create clusterrolebinding neuvector-binding-csp-usages --clusterrole=neuvector-binding-csp-usages --serviceaccount=neuvector:controller</code>
 </pre>
 </li>
 <li>Run the following commands to check if the neuvector/default service account is added successfully.
@@ -273,16 +291,16 @@ kubectl create -f nv_master_worker.yaml</code></pre>
 <li>Create the primary NeuVector services and pods using the preset version commands or modify the sample yamls below. The preset versions invoke a LoadBalancer for the NeuVector Console. If using the sample yaml files below replace the image names and &lt;version> tags for the manager, controller and enforcer image references in the yaml file. Also make any other modifications required for your deployment environment (such as LoadBalancer/NodePort/Ingress for manager access etc).
 For general containerd runtime (non Rancher/K3s)
 <pre>
-<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/neuvector-containerd-k8s.yaml</code></pre>
-For 5.0.0 with Rancher on K3s containerd run-time:
+<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/neuvector-containerd-k8s.yaml</code></pre>
+For 5.2.0 with Rancher on K3s containerd run-time:
 <pre>
-<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/neuvector-rancher-containerd-k3s.yaml</code></pre>
-For 5.0.0 with docker run-time:
+<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/neuvector-rancher-containerd-k3s.yaml</code></pre>
+For 5.2.0 with docker run-time:
 <pre>
-<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/neuvector-docker-k8s.yaml</code></pre>
-For 5.0.0 with AWS Bottlerocket run-time:
+<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/neuvector-docker-k8s.yaml</code></pre>
+For 5.2.0 with AWS Bottlerocket run-time:
 <pre>
-<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/neuvector-aws-bottlerocket-k8s.yaml</code></pre>
+<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/neuvector-aws-bottlerocket-k8s.yaml</code></pre>
 Or, if modifying any of the above yaml or samples from below:
 <pre>
 <code>kubectl create -f neuvector.yaml</code></pre>
@@ -329,7 +347,7 @@ If you have created your own namespace instead of using “neuvector”, replace
 <!-- NOTE: Toggle Box #1 -->
 <li>
 	<input class="title-option" id="acc1" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc1"><span><i class="icon-code"></i>Kubernetes v1.9-1.25 with <strong>containerd</strong> Run-time</span></label>
+  <label class="title-panel" onClick="" for="acc1"><span><i class="icon-code"></i>Kubernetes v1.19-1.27 with <strong>containerd</strong> Run-time</span></label>
 
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
@@ -662,7 +680,7 @@ spec:
 <!-- NOTE: Toggle Box #2 -->
 <li>
 	<input class="title-option" id="acc2" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc2"><span><i class="icon-code"></i>Kubernetes v1.9-1.25 with <strong>docker</strong> Run-time</span></label>
+  <label class="title-panel" onClick="" for="acc2"><span><i class="icon-code"></i>Kubernetes v1.19-1.27 with <strong>docker</strong> Run-time</span></label>
 
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
@@ -995,7 +1013,7 @@ spec:
 <!-- NOTE: Toggle Box #2.5 -->
 <li>
 	<input class="title-option" id="acc25" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc25"><span><i class="icon-code"></i>Kubernetes v1.9-1.25 with <strong>Rancher K3s containerd</strong> Run-time</span></label>
+  <label class="title-panel" onClick="" for="acc25"><span><i class="icon-code"></i>Kubernetes v1.19-1.27 with <strong>Rancher K3s containerd</strong> Run-time</span></label>
 
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
@@ -1327,7 +1345,7 @@ spec:
 <!-- NOTE: Toggle Box #3 -->
 <li>
 	<input class="title-option" id="acc3" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc3"><span><i class="icon-code"></i>Kubernetes v1.9-1.25 with <strong>AWS BottleRocket containerd</strong> Run-time</span></label>
+  <label class="title-panel" onClick="" for="acc3"><span><i class="icon-code"></i>Kubernetes v1.19-1.27 with <strong>AWS BottleRocket containerd</strong> Run-time</span></label>
 
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">

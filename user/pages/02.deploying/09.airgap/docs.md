@@ -61,10 +61,10 @@ drwxr-xr-x. 2 root root   153 Jan  8 14:35 images
 
 neuvector/images:
 total 953920
--rw-r--r--. 1 root root 236693504 Jan  8 14:35 controller_5.1.0.tar
--rw-r--r--. 1 root root 226704384 Jan  8 14:35 enforcer_5.1.0.tar
+-rw-r--r--. 1 root root 236693504 Jan  8 14:35 controller_5.2.0.tar
+-rw-r--r--. 1 root root 226704384 Jan  8 14:35 enforcer_5.2.0.tar
 -rw-r--r--. 1 root root       176 Jan  8 14:34 list.txt
--rw-r--r--. 1 root root 331550208 Jan  8 14:35 manager_5.1.0.tar
+-rw-r--r--. 1 root root 331550208 Jan  8 14:35 manager_5.2.0.tar
 -rw-r--r--. 1 root root 169589760 Jan  8 14:35 scanner_latest.tar
 -rw-r--r--. 1 root root  12265472 Jan  8 14:35 updater_latest.tar
 ```
@@ -113,6 +113,6 @@ export REGISTRY=registry.awesome.sauce  # registry URL
 export NEU_URL=neuvector.awesome.sauce   # neuvector URL
 
 # helm all the things -- read all the options being set
-helm upgrade -i neuvector --namespace neuvector neuvector/core --create-namespace  --set imagePullSecrets=regsecret --set k3s.enabled=true --set k3s.runtimePath=/run/k3s/containerd/containerd.sock  --set manager.ingress.enabled=true --set controller.pvc.enabled=true --set controller.pvc.capacity=10Gi --set manager.svc.type=ClusterIP --set registry=$REGISTRY --set tag=5.1.0 --set controller.image.repository=neuvector/controller --set enforcer.image.repository=neuvector/enforcer --set manager.image.repository=neuvector/manager --set cve.updater.image.repository=neuvector/updater --set manager.ingress.host=$NEU_URL
+helm upgrade -i neuvector --namespace neuvector neuvector/core --create-namespace  --set imagePullSecrets=regsecret --set k3s.enabled=true --set k3s.runtimePath=/run/k3s/containerd/containerd.sock  --set manager.ingress.enabled=true --set controller.pvc.enabled=true --set controller.pvc.capacity=10Gi --set manager.svc.type=ClusterIP --set registry=$REGISTRY --set tag=5.2.0 --set controller.image.repository=neuvector/controller --set enforcer.image.repository=neuvector/enforcer --set manager.image.repository=neuvector/manager --set cve.updater.image.repository=neuvector/updater --set manager.ingress.host=$NEU_URL
 ```
 
