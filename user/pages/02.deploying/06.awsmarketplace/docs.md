@@ -48,12 +48,7 @@ For Rancher managed downstream clusters with SSO to NeuVector, these clusters ca
 
 A special billing interface is required to enable PAYG to your AWS account. This must be deployed, together with NeuVector from the AWS Marketplace listing for NeuVector. To deploy the billing adapter and NeuVector see the [deployment instructions](https://aws.amazon.com/marketplace/pp/prodview-u2ciiono2w3h2#pdp-usage) (requires AWS login).
 
-NOTE: The NeuVector scanner image is updated daily with a new CVE database on the NeuVector docker hub registry. It is recommended that the image path be changed to allow for automated daily updates by manually changing the image path to docker.io/scanner:latest for the helm install, or modified after initial deployment. For example, to set this during the initial deployment, add to the 'helm install' command:
-```
---set cve.scanner.image.registry=docker.io,cve.scanner.image.repository=neuvector/scanner,cve.scanner.image.tag=latest \
---set cve.updater.image.registry=docker.io,cve.updater.image.repository=neuvector/updater,cve.updater.image.tag=latest \
-```
-Or to set after successful initial deployment:
+NOTE: The NeuVector scanner image is updated daily with a new CVE database on the NeuVector docker hub registry. It is recommended that the image path be changed to allow for automated daily updates by modifying the scanner and updater image paths AFTER successful initial deployment. For example:
 ```
 kubectl set image  deploy/neuvector-scanner-pod neuvector-scanner-pod=docker.io/neuvector/scanner:latest
 kubectl set image  cronjob/neuvector-updater-pod neuvector-updater-pod=docker.io/neuvector/updater:latest

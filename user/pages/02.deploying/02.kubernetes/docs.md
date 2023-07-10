@@ -42,7 +42,7 @@ kubectl create sa controller -n neuvector
 kubectl create sa enforcer -n neuvector
 kubectl create sa basic -n neuvector
 kubectl create sa updater -n neuvector
-</code</pre>
+</code></pre>
 </li>
 <li>(<strong>Optional</strong>) Create the NeuVector Pod Security Admission (PSA) or Pod Security Policy (PSP).
  If you have enabled Pod Security Admission (aka Pod Security Standards) in Kubernetes 1.25+, or Pod Security Policies (prior to 1.25) in your Kubernetes cluster, add the following for NeuVector (for example, nv_psp.yaml). Note1: PSP is deprecated in Kubernetes 1.21 and will be totally removed in 1.25. Note2: The Manager and Scanner pods run without a uid. If your PSP has a rule `Run As User: Rule: MustRunAsNonRoot` then add the following into the sample yaml below (with appropriate value for ###):
