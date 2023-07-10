@@ -35,9 +35,14 @@ Note: If deploying from the Rancher Manager 2.6.5+ NeuVector chart, images are p
 
 ###Deploy NeuVector
 
-<ol><li>Create the NeuVector namespace
+<ol><li>Create the NeuVector namespace and the required service accounts
 <pre>
-<code>kubectl create namespace neuvector</code></pre>
+<code>kubectl create namespace neuvector
+kubectl create sa controller -n neuvector
+kubectl create sa enforcer -n neuvector
+kubectl create sa basic -n neuvector
+kubectl create sa updater -n neuvector
+</code</pre>
 </li>
 <li>(<strong>Optional</strong>) Create the NeuVector Pod Security Admission (PSA) or Pod Security Policy (PSP).
  If you have enabled Pod Security Admission (aka Pod Security Standards) in Kubernetes 1.25+, or Pod Security Policies (prior to 1.25) in your Kubernetes cluster, add the following for NeuVector (for example, nv_psp.yaml). Note1: PSP is deprecated in Kubernetes 1.21 and will be totally removed in 1.25. Note2: The Manager and Scanner pods run without a uid. If your PSP has a rule `Run As User: Rule: MustRunAsNonRoot` then add the following into the sample yaml below (with appropriate value for ###):
@@ -160,13 +165,7 @@ kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kube
 
 &nbsp;
 </li>
-<li>Add service accounts and read permission to access the kubernetes API. RBAC is supported in kubernetes 1.8+ officially. Admission control is supported in kubernetes 1.9+. IMPORTANT: The standard NeuVector 5.2+ deployment uses least-privileged service accounts instead of the default. See below if upgrading to 5.2+ from a version prior to 5.2.
-<pre>
-<code>kubectl create sa controller -n neuvector
-kubectl create sa enforcer -n neuvector
-kubectl create sa basic -n neuvector
-kubectl create sa updater -n neuvector
-</code</pre>
+<li>Add read permission to access the kubernetes API. IMPORTANT: The standard NeuVector 5.2+ deployment uses least-privileged service accounts instead of the default. See below if upgrading to 5.2+ from a version prior to 5.2.
 
 <pre>
 <code>kubectl create clusterrole neuvector-binding-app --verb=get,list,watch,update --resource=nodes,pods,services,namespaces
@@ -212,21 +211,30 @@ kubectl create clusterrolebinding neuvector-binding-csp-usages --clusterrole=neu
 </li>
 <li>Run the following commands to check if the neuvector/default service account is added successfully.
 <pre>
-<code>kubectl get clusterrolebinding  | grep neuvector
-kubectl get rolebinding -n neuvector | grep neuvector</code>
+<code>kubectl get ClusterRoleBinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-csp-usages -o wide</code>
 </pre>
 Sample output:
 <pre>
-<code>neuvector-binding-admission                            28d
-neuvector-binding-app                                  28d
-neuvector-binding-customresourcedefinition             28d
-neuvector-binding-nvsecurityrules                      28d
-neuvector-binding-rbac                                 28d
-neuvector-binding-view                                 28d
-neuvector-binding-nvadmissioncontrolsecurityrules      28d
-neuvector-binding-nvwafsecurityrules                   28d
-neuvector-binding-nvdlpsecurityrules                   28d
-neuvector-admin                                        28d</code>
+<code>NAME                                                ROLE                                                            AGE   USERS   GROUPS   SERVICEACCOUNTS
+neuvector-binding-app                               ClusterRole/neuvector-binding-app                               56d                    neuvector/controller
+neuvector-binding-rbac                              ClusterRole/neuvector-binding-rbac                              34d                    neuvector/controller
+neuvector-binding-admission                         ClusterRole/neuvector-binding-admission                         72d                    neuvector/controller
+neuvector-binding-customresourcedefinition          ClusterRole/neuvector-binding-customresourcedefinition          72d                    neuvector/controller
+neuvector-binding-nvsecurityrules                   ClusterRole/neuvector-binding-nvsecurityrules                   72d                    neuvector/controller
+neuvector-binding-view                              ClusterRole/view                                                72d                    neuvector/controller
+neuvector-binding-nvwafsecurityrules                ClusterRole/neuvector-binding-nvwafsecurityrules                72d                    neuvector/controller
+neuvector-binding-nvadmissioncontrolsecurityrules   ClusterRole/neuvector-binding-nvadmissioncontrolsecurityrules   72d                    neuvector/controller
+neuvector-binding-nvdlpsecurityrules                ClusterRole/neuvector-binding-nvdlpsecurityrules                72d                    neuvector/controller
+neuvector-binding-csp-usages                        ClusterRole/neuvector-binding-csp-usages                        24d                    neuvector/controller</code>
+</pre>
+And this command:
+<pre>
+<code>kubectl get RoleBinding neuvector-binding-scanner -n neuvector -o wide</code>
+</pre>
+Sample output:
+<pre><code>NAME                        ROLE                             AGE   USERS   GROUPS   SERVICEACCOUNTS
+neuvector-binding-scanner   Role/neuvector-binding-scanner   70d                    neuvector/updater, neuvector/controller
+</code>
 </pre>
 </li>
 <li>(<strong>Optional</strong>) Create the Federation Master and/or Remote Multi-Cluster Management Services. If you plan to use the multi-cluster management functions in NeuVector, one cluster must have the Federation Master service deployed, and each remote cluster must have the Federation Worker service. For flexibility, you may choose to deploy both Master and Worker services on each cluster so any cluster can be a master or remote.

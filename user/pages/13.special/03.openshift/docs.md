@@ -36,7 +36,7 @@ oc new-project neuvector
 
 3. Push NeuVector images to OpenShift docker registry. IMPORTANT! The docker login below is for the docker-registry (not to be confused with the oc login above), and requires the user/authentication token in the command.
 
-Note: For OpenShift 4.2+, change docker-registry.default.svc below to image-registry.openshift-image-registry.svc in the commands below.
+Note: For OpenShift 4.6+, change docker-registry.default.svc below to image-registry.openshift-image-registry.svc in the commands below.
 ```
 docker login -u <user_name> -p `oc whoami -t` docker-registry.default.svc:5000
 docker tag docker.io/neuvector/allinone:<version> docker-registry.default.svc:5000/neuvector/allinone
@@ -119,8 +119,8 @@ If you have created your own namespace instead of using “neuvector”:
 Note1: If you are using the Allinone container for testing NeuVector, deploy only one Allinone for your cluster. Multiple Manager instances are not supported on Kubernetes. To test high availability for the Controller refer to the Deploying in Production section.
 
 
-<strong>Sample Config File for OpenShift 3.9-3.11, 4.2+</strong>
-Note: For 4.2+, see the section Deploying NeuVector / OpenShift for yaml file changes required for the CRI-O run-time and for changing the default registry.
+<strong>Sample Config File for OpenShift 3.9-3.11, 4.6+</strong>
+Note: For 4.6+, see the section Deploying NeuVector / OpenShift for yaml file changes required for the CRI-O run-time and for changing the default registry.
 ```
 apiVersion: v1
 kind: Service

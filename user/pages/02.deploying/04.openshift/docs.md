@@ -80,14 +80,21 @@ Note: Please see the section Updating the CVE Database below for recommendations
 oc login -u system:admin
 ```
 
-5) Grant Service Account Access to the Privileged SCC
+5) Create Service Accounts and Grant Access to the Privileged SCC
 ```
-oc -n neuvector adm policy add-scc-to-user privileged -z default
+oc create sa controller -n neuvector
+oc create sa enforcer -n neuvector
+oc create sa basic -n neuvector
+oc create sa updater -n neuvector
+oc -n neuvector adm policy add-scc-to-user privileged -z controller -z enforcer
 ```
+
 The following info will be added in the Privileged SCC
 users:
 ```
-- system:serviceaccount:neuvector:default
+- system:serviceaccount:neuvector:controller
+- system:serviceaccount:neuvector:enforcer
+
 ```
 In OpenShift 4.6+ use the following to check:
 ```
@@ -107,14 +114,7 @@ oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernete
 ```
 &nbsp;
 
-7) Add service accounts and read permission to access the kubernetes API and OpenShift RBACs. Admission control is supported in OpenShift 3.9+. IMPORTANT: The standard NeuVector 5.2+ deployment uses least-privileged service accounts instead of the default. See below if upgrading to 5.2+ from a version prior to 5.2.
-```
-oc create sa controller -n neuvector
-oc create sa enforcer -n neuvector
-oc create sa basic -n neuvector
-oc create sa updater -n neuvector
-oc -n neuvector adm policy add-scc-to-user privileged -z controller -z enforcer
-```
+7) Add read permission to access the kubernetes API and OpenShift RBACs. IMPORTANT: The standard NeuVector 5.2+ deployment uses least-privileged service accounts instead of the default. See below if upgrading to 5.2+ from a version prior to 5.2.
 
 ```
 oc create clusterrole neuvector-binding-app --verb=get,list,watch,update --resource=nodes,pods,services,namespaces
@@ -138,16 +138,10 @@ oc create role neuvector-binding-scanner --verb=get,patch,update,watch --resourc
 oc adm policy add-role-to-user neuvector-binding-scanner system:serviceaccount:neuvector:updater system:serviceaccount:neuvector:controller -n neuvector --role-namespace neuvector
 oc create clusterrole neuvector-binding-csp-usages --verb=get,create,update,delete --resource=cspadapterusagerecords
 oc adm policy add-cluster-role-to-user neuvector-binding-csp-usages system:serviceaccount:neuvector:controller
-
 oc create clusterrole neuvector-binding-co --verb=get,list --resource=clusteroperators
 oc adm policy add-cluster-role-to-user neuvector-binding-co system:serviceaccount:neuvector:enforcer system:serviceaccount:neuvector:controller
 ```
 
-For OpenShift 4.x, also add the following for platform detection:
-```
-oc create clusterrole neuvector-binding-co --verb=get,list --resource=clusteroperators
-oc adm policy add-cluster-role-to-user neuvector-binding-co system:serviceaccount:neuvector:enforcer system:serviceaccount:neuvector:controller
-```
 
 NOTE: If upgrading from a previous NeuVector deployment (prior to 5.2), you will need to delete the old bindings, then create new ones:
 ```
@@ -171,20 +165,32 @@ oc adm policy add-cluster-role-to-user neuvector-binding-co system:serviceaccoun
 
 8) Run the following command to check if the neuvector/default service account is added successfully
 ```
-oc get ClusterRoleBinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view -o wide
+oc get ClusterRoleBinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-csp-usages neuvector-binding-co -o wide
 ```
 Sample output:
 ```
-NAME                                         ROLE                                          USERS     GROUPS    SERVICE ACCOUNTS    SUBJECTS
-neuvector-binding-app                        /neuvector-binding-app                                            neuvector/default
-neuvector-binding-rbac                       /neuvector-binding-rbac                                           neuvector/default
-neuvector-binding-admission                  /neuvector-binding-admission                                      neuvector/default
-neuvector-binding-customresourcedefinition   /neuvector-binding-customresourcedefinition                       neuvector/default
-neuvector-binding-nvsecurityrules            /neuvector-binding-nvsecurityrules                                neuvector/default
-neuvector-binding-nvwafsecurityrules         /neuvector-binding-nvwafsecurityrules                             neuvector/default
-neuvector-binding-nvadmissioncontrolsecurityrules /neuvector-binding-nvadmissioncontrolsecurityrules           neuvector/default
-neuvector-binding-nvdlpsecurityrules         /neuvector-binding-nvdlpsecurityrules                             neuvector/default
-neuvector-binding-view                       /neuvector-binding-view                                           neuvector/default
+NAME                                                ROLE                                                            AGE   USERS   GROUPS   SERVICEACCOUNTS
+neuvector-binding-app                               ClusterRole/neuvector-binding-app                               56d                    neuvector/controller
+neuvector-binding-rbac                              ClusterRole/neuvector-binding-rbac                              34d                    neuvector/controller
+neuvector-binding-admission                         ClusterRole/neuvector-binding-admission                         72d                    neuvector/controller
+neuvector-binding-customresourcedefinition          ClusterRole/neuvector-binding-customresourcedefinition          72d                    neuvector/controller
+neuvector-binding-nvsecurityrules                   ClusterRole/neuvector-binding-nvsecurityrules                   72d                    neuvector/controller
+neuvector-binding-view                              ClusterRole/view                                                72d                    neuvector/controller
+neuvector-binding-nvwafsecurityrules                ClusterRole/neuvector-binding-nvwafsecurityrules                72d                    neuvector/controller
+neuvector-binding-nvadmissioncontrolsecurityrules   ClusterRole/neuvector-binding-nvadmissioncontrolsecurityrules   72d                    neuvector/controller
+neuvector-binding-nvdlpsecurityrules                ClusterRole/neuvector-binding-nvdlpsecurityrules                72d                    neuvector/controller
+neuvector-binding-csp-usages                        ClusterRole/neuvector-binding-csp-usages                        24d                    neuvector/controller
+neuvector-binding-co                                ClusterRole/neuvector-binding-co                                72d                    neuvector/enforcer, neuvector/controller
+```
+
+And this command:
+```
+oc get RoleBinding neuvector-binding-scanner -n neuvector -o wide
+```
+Sample output:
+```
+NAME                        ROLE                             AGE   USERS   GROUPS   SERVICEACCOUNTS
+neuvector-binding-scanner   Role/neuvector-binding-scanner   70d                    neuvector/updater, neuvector/controller
 ```
 
 9) (<strong>Optional</strong>) Create the Federation Master and/or Remote Multi-Cluster Management Services. If you plan to use the multi-cluster management functions in NeuVector, one cluster must have the Federation Master service deployed, and each remote cluster must have the Federation Worker service. For flexibility, you may choose to deploy both Master and Worker services on each cluster so any cluster can be a master or remote.

@@ -294,8 +294,8 @@ kubectl delete -f https://raw.githubusercontent.com/neuvector/manifests/main/kub
 ```
 4. Create new crd schema for Kubernetes 1.19+
 ```
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/waf-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/waf-crd-k8s-1.19.yaml
 ```
 5. Create a new neuvector-binding-nvwafsecurityrules clusterrole and clusterrolebinding
 ```

@@ -342,7 +342,9 @@ neuvector-scanner-pod-87474dcff-s8vgt       1/1     Running   0          114s   
 + Support for deployment on ECS is no longer provided. The allinone should still be able to be deployed on ECS, however, the documentation of the steps and settings is no longer supported.
 
 
-### Upgrading from NeuVector 4.x to 5.x
+### Upgrading from NeuVector 4.x to 5.x (prior to 5.2.x)
+
+NOTE: The instructions below apply to upgrades to 5.0.x and 5.1.x. For 5.2.x, service accounts and bindings have changed, and should be [reviewed](https://open-docs.neuvector.com/deploying/kubernetes#deploy-neuvector) to plan upgrades.
 
 For Helm users, update to NeuVector Helm chart 2.0.0 or later. If updating an Operator or Helm install on OpenShift, see note below.
 
