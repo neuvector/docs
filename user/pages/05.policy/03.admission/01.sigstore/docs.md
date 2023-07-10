@@ -1,5 +1,5 @@
 ---
-title: Sigstore/Cosign Signature Verifiers
+title: Sigstore Cosign Signature Verifiers
 taxonomy:
     category: docs
 ---
