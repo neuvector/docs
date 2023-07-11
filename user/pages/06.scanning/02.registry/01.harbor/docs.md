@@ -56,7 +56,7 @@ spec:
         - name: regsecret
       containers:
         - name: neuvector-scanner-pod
-          image: 10.1.127.3:5000/neuvector/scanner:jenkins-nv-build-updater-2106
+          image: neuvector/scanner:latest
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
@@ -105,8 +105,7 @@ spec:
         - name: regsecret
       containers:
         - name: neuvector-registry-adapter-pod
-          image: 10.1.127.3:5000/neuvector/registry-adapter:latest
-          #image: nvpublic/ra:latest
+          image: neuvector/registry-adapter:latest
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
