@@ -102,7 +102,7 @@ In OpenShift 4.6+ use the following to check:
 ```
 ```
 NAME                              ROLE                                          AGE     USERS   GROUPS   SERVICEACCOUNTS
-system:openshift:scc:privileged   ClusterRole/system:openshift:scc:privileged   9m22s                    neuvector/default
+system:openshift:scc:privileged   ClusterRole/system:openshift:scc:privileged   9m22s                    neuvector/controller, neuvector/enforcer
 ```
 
 6) Create the custom resources (CRD) for NeuVector security rules. For OpenShift 4.6+ (Kubernetes 1.19+):
@@ -163,7 +163,7 @@ oc adm policy add-cluster-role-to-user neuvector-binding-csp-usages system:servi
 oc adm policy add-cluster-role-to-user neuvector-binding-co system:serviceaccount:neuvector:enforcer system:serviceaccount:neuvector:controller
 ```
 
-8) Run the following command to check if the neuvector/default service account is added successfully
+8) Run the following command to check if the neuvector/controller, neuvector/enforcer and neuvector/updater service accounts are added successfully.
 ```
 oc get ClusterRoleBinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-csp-usages neuvector-binding-co -o wide
 ```
@@ -317,7 +317,8 @@ Also change the volumes from docker.sock to:
 
   <div class="wrap-content">
 <pre><code>
-# neuvector yaml version for NeuVector 5.x.x on CRI-O
+
+# neuvector yaml version for NeuVector 5.2.x on CRI-O
 apiVersion: v1
 kind: Service
 metadata:
@@ -384,7 +385,7 @@ spec:
   - port: 18301
     protocol: "UDP"
     name: "cluster-udp-18301"
-  clusterIP: None-
+  clusterIP: None
   selector:
     app: neuvector-controller-pod
 
@@ -421,10 +422,11 @@ spec:
       labels:
         app: neuvector-manager-pod
     spec:
+      serviceAccountName: basic
+      serviceAccount: basic
       containers:
         - name: neuvector-manager-pod
-          # 4.6+, change docker-registry.default.svc below to image-registry.openshift-image-registry.svc
-          image: docker-registry.default.svc:5000/neuvector/manager:&#60;version&#62;
+          image: image-registry.openshift-image-registry.svc:5000/neuvector/manager:<version>
           env:
             - name: CTRL_SERVER_IP
               value: neuvector-svc-controller.neuvector
@@ -465,10 +467,11 @@ spec:
                   values:
                   - neuvector-controller-pod
               topologyKey: "kubernetes.io/hostname"
+      serviceAccountName: controller
+      serviceAccount: controller
       containers:
         - name: neuvector-controller-pod
-          # 4.6+, change docker-registry.default.svc below to image-registry.openshift-image-registry.svc
-          image: docker-registry.default.svc:5000/neuvector/controller:&#60;version&#62;
+          image: image-registry.openshift-image-registry.svc:5000/neuvector/controller:<version>
           securityContext:
             privileged: true
           readinessProbe:
@@ -554,10 +557,11 @@ spec:
         - effect: NoSchedule
           key: node-role.kubernetes.io/control-plane
       hostPID: true
+      serviceAccountName: enforcer
+      serviceAccount: enforcer
       containers:
         - name: neuvector-enforcer-pod
-          # 4.6+, change docker-registry.default.svc below to image-registry.openshift-image-registry.svc
-          image: docker-registry.default.svc:5000/neuvector/enforcer:&#60;version&#62;
+          image: image-registry.openshift-image-registry.svc:5000/neuvector/enforcer:<version>
           securityContext:
             privileged: true
           env:
@@ -622,9 +626,11 @@ spec:
       labels:
         app: neuvector-scanner-pod
     spec:
+      serviceAccountName: basic
+      serviceAccount: basic
       containers:
         - name: neuvector-scanner-pod
-          image: docker-registry.default.svc:5000/neuvector/scanner
+          image: image-registry.openshift-image-registry.svc:5000/neuvector/scanner:<version>
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
@@ -647,9 +653,11 @@ spec:
           labels:
             app: neuvector-updater-pod
         spec:
+          serviceAccountName: updater
+          serviceAccount: updater
           containers:
           - name: neuvector-updater-pod
-            image: docker-registry.default.svc:5000/neuvector/updater
+            image: image-registry.openshift-image-registry.svc:5000/neuvector/updater:<version>
             imagePullPolicy: Always
             command:
             - /bin/sh

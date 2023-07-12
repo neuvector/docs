@@ -209,7 +209,7 @@ kubectl create clusterrole neuvector-binding-csp-usages --verb=get,create,update
 kubectl create clusterrolebinding neuvector-binding-csp-usages --clusterrole=neuvector-binding-csp-usages --serviceaccount=neuvector:controller</code>
 </pre>
 </li>
-<li>Run the following commands to check if the neuvector/default service account is added successfully.
+<li>Run the following commands to check if the neuvector/controller and neuvector/updater service accounts are added successfully.
 <pre>
 <code>kubectl get ClusterRoleBinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-csp-usages -o wide</code>
 </pre>
@@ -449,15 +449,18 @@ spec:
       labels:
         app: neuvector-manager-pod
     spec:
+      serviceAccountName: basic
+      serviceAccount: basic
       containers:
         - name: neuvector-manager-pod
-          image: neuvector/manager:&#60;version&#62;
+          image: neuvector/manager:5.2.0
           env:
             - name: CTRL_SERVER_IP
               value: neuvector-svc-controller.neuvector
       restartPolicy: Always
 
 ---
+
 
 apiVersion: apps/v1
 kind: Deployment
@@ -492,9 +495,11 @@ spec:
                   values:
                   - neuvector-controller-pod
               topologyKey: "kubernetes.io/hostname"
+      serviceAccountName: controller
+      serviceAccount: controller
       containers:
         - name: neuvector-controller-pod
-          image: neuvector/controller:&#60;version&#62;
+          image: neuvector/controller:5.2.0
           securityContext:
             privileged: true
           readinessProbe:
@@ -580,9 +585,11 @@ spec:
         - effect: NoSchedule
           key: node-role.kubernetes.io/control-plane
       hostPID: true
+      serviceAccountName: enforcer
+      serviceAccount: enforcer
       containers:
         - name: neuvector-enforcer-pod
-          image: neuvector/enforcer:&#60;version&#62;
+          image: neuvector/enforcer:5.2.0
           securityContext:
             privileged: true
           env:
@@ -647,9 +654,11 @@ spec:
       labels:
         app: neuvector-scanner-pod
     spec:
+      serviceAccountName: basic
+      serviceAccount: basic
       containers:
         - name: neuvector-scanner-pod
-          image: neuvector/scanner
+          image: neuvector/scanner:latest
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
@@ -672,9 +681,11 @@ spec:
           labels:
             app: neuvector-updater-pod
         spec:
+          serviceAccountName: updater
+          serviceAccount: updater
           containers:
           - name: neuvector-updater-pod
-            image: neuvector/updater
+            image: neuvector/updater:latest
             imagePullPolicy: Always
             command:
             - /bin/sh
@@ -695,7 +706,6 @@ spec:
   <div class="wrap-content">
 <pre>
 <code>
-# neuvector yaml version for 5.x.x on docker runtime
 apiVersion: v1
 kind: Service
 metadata:
@@ -783,9 +793,11 @@ spec:
       labels:
         app: neuvector-manager-pod
     spec:
+      serviceAccountName: basic
+      serviceAccount: basic
       containers:
         - name: neuvector-manager-pod
-          image: neuvector/manager:&#60;version&#62;
+          image: neuvector/manager:5.2.0
           env:
             - name: CTRL_SERVER_IP
               value: neuvector-svc-controller.neuvector
@@ -826,9 +838,11 @@ spec:
                   values:
                   - neuvector-controller-pod
               topologyKey: "kubernetes.io/hostname"
+      serviceAccountName: controller
+      serviceAccount: controller
       containers:
         - name: neuvector-controller-pod
-          image: neuvector/controller:&#60;version&#62;
+          image: neuvector/controller:5.2.0
           securityContext:
             privileged: true
           readinessProbe:
@@ -854,7 +868,7 @@ spec:
               name: nv-share
               readOnly: false
             - mountPath: /var/run/docker.sock
-              name: docker-sock
+              name: runtime-sock
               readOnly: true
             - mountPath: /host/proc
               name: proc-vol
@@ -871,7 +885,7 @@ spec:
         - name: nv-share
           hostPath:
             path: /var/neuvector
-        - name: docker-sock
+        - name: runtime-sock
           hostPath:
             path: /var/run/docker.sock
         - name: proc-vol
@@ -914,9 +928,11 @@ spec:
         - effect: NoSchedule
           key: node-role.kubernetes.io/control-plane
       hostPID: true
+      serviceAccountName: enforcer
+      serviceAccount: enforcer
       containers:
         - name: neuvector-enforcer-pod
-          image: neuvector/enforcer:&#60;version&#62;
+          image: neuvector/enforcer:5.2.0
           securityContext:
             privileged: true
           env:
@@ -935,7 +951,7 @@ spec:
               name: modules-vol
               readOnly: true
             - mountPath: /var/run/docker.sock
-              name: docker-sock
+              name: runtime-sock
               readOnly: true
             - mountPath: /host/proc
               name: proc-vol
@@ -949,7 +965,7 @@ spec:
         - name: modules-vol
           hostPath:
             path: /lib/modules
-        - name: docker-sock
+        - name: runtime-sock
           hostPath:
             path: /var/run/docker.sock
         - name: proc-vol
@@ -981,9 +997,11 @@ spec:
       labels:
         app: neuvector-scanner-pod
     spec:
+      serviceAccountName: basic
+      serviceAccount: basic
       containers:
         - name: neuvector-scanner-pod
-          image: neuvector/scanner
+          image: neuvector/scanner:latest
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
@@ -1006,9 +1024,11 @@ spec:
           labels:
             app: neuvector-updater-pod
         spec:
+          serviceAccountName: updater
+          serviceAccount: updater
           containers:
           - name: neuvector-updater-pod
-            image: neuvector/updater
+            image: neuvector/updater:latest
             imagePullPolicy: Always
             command:
             - /bin/sh
@@ -1115,9 +1135,11 @@ spec:
       labels:
         app: neuvector-manager-pod
     spec:
+      serviceAccountName: basic
+      serviceAccount: basic
       containers:
         - name: neuvector-manager-pod
-          image: neuvector/manager:&#60;version&#62;
+          image: neuvector/manager:5.2.0
           env:
             - name: CTRL_SERVER_IP
               value: neuvector-svc-controller.neuvector
@@ -1158,9 +1180,11 @@ spec:
                   values:
                   - neuvector-controller-pod
               topologyKey: "kubernetes.io/hostname"
+      serviceAccountName: controller
+      serviceAccount: controller
       containers:
         - name: neuvector-controller-pod
-          image: neuvector/controller:&#60;version&#62;
+          image: neuvector/controller:5.2.0
           securityContext:
             privileged: true
           readinessProbe:
@@ -1246,9 +1270,11 @@ spec:
         - effect: NoSchedule
           key: node-role.kubernetes.io/control-plane
       hostPID: true
+      serviceAccountName: enforcer
+      serviceAccount: enforcer
       containers:
         - name: neuvector-enforcer-pod
-          image: neuvector/enforcer:&#60;version&#62;
+          image: neuvector/enforcer:5.2.0
           securityContext:
             privileged: true
           env:
@@ -1313,9 +1339,11 @@ spec:
       labels:
         app: neuvector-scanner-pod
     spec:
+      serviceAccountName: basic
+      serviceAccount: basic
       containers:
         - name: neuvector-scanner-pod
-          image: neuvector/scanner
+          image: neuvector/scanner:latest
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
@@ -1338,9 +1366,11 @@ spec:
           labels:
             app: neuvector-updater-pod
         spec:
+          serviceAccountName: updater
+          serviceAccount: updater
           containers:
           - name: neuvector-updater-pod
-            image: neuvector/updater
+            image: neuvector/updater:latest
             imagePullPolicy: Always
             command:
             - /bin/sh
@@ -1448,9 +1478,11 @@ spec:
       labels:
         app: neuvector-manager-pod
     spec:
+      serviceAccountName: basic
+      serviceAccount: basic
       containers:
         - name: neuvector-manager-pod
-          image: neuvector/manager:&#60;version&#62;
+          image: neuvector/manager:5.2.0
           env:
             - name: CTRL_SERVER_IP
               value: neuvector-svc-controller.neuvector
@@ -1491,9 +1523,11 @@ spec:
                   values:
                   - neuvector-controller-pod
               topologyKey: "kubernetes.io/hostname"
+      serviceAccountName: controller
+      serviceAccount: controller
       containers:
         - name: neuvector-controller-pod
-          image: neuvector/controller:&#60;version&#62;
+          image: neuvector/controller:5.2.0
           securityContext:
             privileged: true
           readinessProbe:
@@ -1519,7 +1553,7 @@ spec:
               name: nv-share
               readOnly: false
             - mountPath: /run/containerd/containerd.sock
-              name: docker-sock
+              name: runtime-sock
               readOnly: true
             - mountPath: /host/proc
               name: proc-vol
@@ -1536,7 +1570,7 @@ spec:
         - name: nv-share
           hostPath:
             path: /var/neuvector
-        - name: docker-sock
+        - name: runtime-sock
           hostPath:
             path: /run/dockershim.sock
         - name: proc-vol
@@ -1579,9 +1613,11 @@ spec:
         - effect: NoSchedule
           key: node-role.kubernetes.io/control-plane
       hostPID: true
+      serviceAccountName: enforcer
+      serviceAccount: enforcer
       containers:
         - name: neuvector-enforcer-pod
-          image: neuvector/enforcer:&#60;version&#62;
+          image: neuvector/enforcer:5.2.0
           securityContext:
             privileged: true
           env:
@@ -1600,7 +1636,7 @@ spec:
               name: modules-vol
               readOnly: true
             - mountPath: /run/containerd/containerd.sock
-              name: docker-sock
+              name: runtime-sock
               readOnly: true
             - mountPath: /host/proc
               name: proc-vol
@@ -1614,7 +1650,7 @@ spec:
         - name: modules-vol
           hostPath:
             path: /lib/modules
-        - name: docker-sock
+        - name: runtime-sock
           hostPath:
             path: /run/dockershim.sock
         - name: proc-vol
@@ -1646,9 +1682,11 @@ spec:
       labels:
         app: neuvector-scanner-pod
     spec:
+      serviceAccountName: basic
+      serviceAccount: basic
       containers:
         - name: neuvector-scanner-pod
-          image: neuvector/scanner
+          image: neuvector/scanner:latest
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
@@ -1671,9 +1709,11 @@ spec:
           labels:
             app: neuvector-updater-pod
         spec:
+          serviceAccountName: updater
+          serviceAccount: updater
           containers:
           - name: neuvector-updater-pod
-            image: neuvector/updater
+            image: neuvector/updater:latest
             imagePullPolicy: Always
             command:
             - /bin/sh

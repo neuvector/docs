@@ -125,3 +125,20 @@ spec:
       restartPolicy: Always
 ```
 
+For OpenShift 4.6+, also add the route:
+```
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: neuvector-route-registry-adapter
+  namespace: neuvector
+spec:
+  to:
+    kind: Service
+    name: neuvector-service-registry-adapter
+  port:
+    targetPort: registry-adapter
+  tls:
+    termination: passthrough
+```
+
