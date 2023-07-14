@@ -180,6 +180,7 @@ Note1: If you are using the Allinone container for testing NeuVector, deploy onl
 
 <strong>Sample Config File for OpenShift 4.6+</strong>
 Note: For 4.6+, see the section Deploying NeuVector / OpenShift for yaml file changes required for the CRI-O run-time and for changing the default registry.
+```
 apiVersion: v1
 kind: Service
 metadata:

@@ -60,6 +60,10 @@ An online service is provided for NeuVector Prime (paid subscription) customers 
 
 ###CVE Database Sources
 
+The most up-to-date list of CVE database sources can be found [here](https://github.com/neuvector/vul-dbgen)
+
+Source include:
+
 
 | Source | URL | 
 | ------ | --------------------------------------------------- | 
@@ -81,6 +85,7 @@ An online service is provided for NeuVector Prime (paid subscription) customers 
 |python |https://github.com/pyupio/safety-db |
 |github maven|https://github.com/advisories?query=maven |
 |Microsoft mariner |https://github.com/microsoft/CBL-MarinerVulnerabilityData |
+| .NET |https://github.com/advisories, https://www.cvedetails.com/vulnerability-list/vendor_id-26/ |
 
 Note: NVD is a superset of CVE https://cve.mitre.org/about/cve_and_nvd_relationship.html
 
