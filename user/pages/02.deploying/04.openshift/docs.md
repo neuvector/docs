@@ -209,7 +209,7 @@ neuvector-binding-scanner   Role/neuvector-binding-scanner   70d                
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
   <div class="wrap-content">
-```
+<pre><code>
 apiVersion: v1
 kind: Service
 metadata:
@@ -238,8 +238,7 @@ spec:
     protocol: TCP
   type: NodePort
   selector:
-    app: neuvector-controller-pod
-```
+    app: neuvector-controller-pod</code></pre>
   </div><!-- End .wrap-content -->    
   </div><!-- End .accordion-content -->
   </li>
