@@ -62,7 +62,7 @@ An online service is provided for NeuVector Prime (paid subscription) customers 
 
 The most up-to-date list of CVE database sources can be found [here](https://github.com/neuvector/vul-dbgen)
 
-Source include:
+Sources include:
 
 
 | Source | URL | 

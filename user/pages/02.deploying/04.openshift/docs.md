@@ -203,6 +203,7 @@ neuvector-binding-scanner   Role/neuvector-binding-scanner   70d                
   <ul class="dopt-accordion fixed-height arrow-tri">  
 
 <!-- NOTE: Toggle Box #0.9 -->
+<li>
 	<input class="title-option" id="acc090" name="accordion-1" type="checkbox" />
   <label class="title-panel" onClick="" for="acc090"><span><i class="icon-code"></i>View Multi-Cluster Management Services</span></label>
   <!-- NOTE: Toggle box content animation option -->
