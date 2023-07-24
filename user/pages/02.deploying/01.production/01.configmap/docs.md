@@ -300,6 +300,8 @@ data:
     #
     # Optional. true or false or empty string(false)
     Auth_By_Platform: false
+    single_cve_per_syslog: false
+    syslog_cve_in_layers: false
     # Optional
     Webhooks:
       - name: myslack
