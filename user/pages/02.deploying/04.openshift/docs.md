@@ -203,12 +203,13 @@ neuvector-binding-scanner   Role/neuvector-binding-scanner   70d                
   <ul class="dopt-accordion fixed-height arrow-tri">  
 
 <!-- NOTE: Toggle Box #0.9 -->
+<li>
 	<input class="title-option" id="acc090" name="accordion-1" type="checkbox" />
   <label class="title-panel" onClick="" for="acc090"><span><i class="icon-code"></i>View Multi-Cluster Management Services</span></label>
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
   <div class="wrap-content">
-```
+<pre><code>
 apiVersion: v1
 kind: Service
 metadata:
@@ -237,8 +238,7 @@ spec:
     protocol: TCP
   type: NodePort
   selector:
-    app: neuvector-controller-pod
-```
+    app: neuvector-controller-pod</code></pre>
   </div><!-- End .wrap-content -->    
   </div><!-- End .accordion-content -->
   </li>
@@ -426,7 +426,7 @@ spec:
       serviceAccount: basic
       containers:
         - name: neuvector-manager-pod
-          image: image-registry.openshift-image-registry.svc:5000/neuvector/manager:<version>
+          image: image-registry.openshift-image-registry.svc:5000/neuvector/manager:&#60;version&#62;
           env:
             - name: CTRL_SERVER_IP
               value: neuvector-svc-controller.neuvector
@@ -471,7 +471,7 @@ spec:
       serviceAccount: controller
       containers:
         - name: neuvector-controller-pod
-          image: image-registry.openshift-image-registry.svc:5000/neuvector/controller:<version>
+          image: image-registry.openshift-image-registry.svc:5000/neuvector/controller:&#60;version&#62;
           securityContext:
             privileged: true
           readinessProbe:
@@ -561,7 +561,7 @@ spec:
       serviceAccount: enforcer
       containers:
         - name: neuvector-enforcer-pod
-          image: image-registry.openshift-image-registry.svc:5000/neuvector/enforcer:<version>
+          image: image-registry.openshift-image-registry.svc:5000/neuvector/enforcer:&#60;version&#62;
           securityContext:
             privileged: true
           env:
@@ -630,7 +630,7 @@ spec:
       serviceAccount: basic
       containers:
         - name: neuvector-scanner-pod
-          image: image-registry.openshift-image-registry.svc:5000/neuvector/scanner:<version>
+          image: image-registry.openshift-image-registry.svc:5000/neuvector/scanner:latest
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
@@ -657,7 +657,7 @@ spec:
           serviceAccount: updater
           containers:
           - name: neuvector-updater-pod
-            image: image-registry.openshift-image-registry.svc:5000/neuvector/updater:<version>
+            image: image-registry.openshift-image-registry.svc:5000/neuvector/updater:latest
             imagePullPolicy: Always
             command:
             - /bin/sh

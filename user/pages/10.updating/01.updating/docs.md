@@ -116,9 +116,11 @@ spec:
       app: neuvector-controller-pod
 ```
 
-### Upgrading from NeuVector 4.x to 5.x
+### Upgrading from NeuVector 4.x to 5.1.x
 
-For Helm users, update to NeuVector Helm chart 2.0.0 or later. If updating an Operator or Helm install on OpenShift, see note below.
+Upgrade first to a 5.1.x release such as 5.1.3, then see the [Kubernetes deployment section](/deploying/kubernetes) for updating to 5.2.x+ for important changes to services accounts and bindings.
+
+For Helm users, update to NeuVector Helm chart 2.0.0 or later (prior to NeuVector 5.2.0). If updating an Operator or Helm install on OpenShift, see note below.
 
 1. Delete old neuvector-binding-customresourcedefinition clusterrole
 ```
@@ -137,10 +139,10 @@ kubectl delete -f https://raw.githubusercontent.com/neuvector/manifests/main/kub
 
 4. Create new crd schema for Kubernetes 1.19+
 ```
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/waf-crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/dlp-crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/admission-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/waf-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/dlp-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/admission-crd-k8s-1.19.yaml
 ```
 
 5. Create a new DLP, WAP, Admission clusterrole and clusterrolebinding
@@ -155,9 +157,9 @@ kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --cluster
 
 6. Update image names and paths for pulling NeuVector images from Docker hub (docker.io).
 The images are on the NeuVector Docker Hub registry. Use the appropriate version tag for the manager, controller, enforcer, and leave the version as 'latest' for scanner and updater. For example:
-+ neuvector/manager:5.2.0
-+ neuvector/controller:5.2.0
-+ neuvector/enforcer:5.2.0
++ neuvector/manager:5.1.3
++ neuvector/controller:5.1.3
++ neuvector/enforcer:5.1.3
 + neuvector/scanner:latest
 + neuvector/updater:latest
 

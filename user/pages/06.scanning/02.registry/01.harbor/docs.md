@@ -12,7 +12,7 @@ NOTE: There is an issue with the HTTPS based adapter endpoint error: please igno
 The 5.2 Helm chart contains options to deploy the [registry adapter](https://github.com/neuvector/neuvector-helm/blob/master/charts/core/templates/registry-adapter.yaml) for Harbor. It can also be pulled manually from the neuvector/registry-adapter repo on Docker Hub. Options also include setting the Harbor registry request protocol and the basic authentication secret name.
 
 After deployment of the adapter, it is necessary to configure this in Harbor.
-![Harbor](5_2_adapter configuration.png)
+![Harbor](5_2_adapter_configuration.png)
 
 The adapter endpoint must be entered, and the adapter connects to the controller, which is typically exposed as a service externally so the adapter can connect to it. In addition, authentication credentials for a valid NeuVector user must be entered.
 

@@ -149,6 +149,23 @@ If you have created your own namespace instead of using “neuvector”:
 apiVersion: v1
 kind: Service
 metadata:
+  name: neuvector-svc-crd-webhook
+  namespace: neuvector
+spec:
+  ports:
+  - port: 443
+    targetPort: 30443
+    protocol: TCP
+    name: crd-webhook
+  type: ClusterIP
+  selector:
+    app: neuvector-allinone-pod
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
   name: neuvector-svc-admission-webhook
   namespace: neuvector
 spec:
@@ -204,80 +221,6 @@ spec:
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: neuvector-enforcer-pod
-  namespace: neuvector
-spec:
-  selector:
-    matchLabels:
-      app: neuvector-enforcer-pod
-  updateStrategy:
-    type: RollingUpdate
-  template:
-    metadata:
-      labels:
-        app: neuvector-enforcer-pod
-    spec:
-      tolerations:
-        - effect: NoSchedule
-          key: node-role.kubernetes.io/master
-        - effect: NoSchedule
-          key: node-role.kubernetes.io/control-plane
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                - key: "nvallinone"
-                  operator: NotIn
-                  values: ["true"]
-      hostPID: true
-      containers:
-        - name: neuvector-enforcer-pod
-          image: neuvector/enforcer:<version>
-          securityContext:
-            privileged: true
-          env:
-            - name: CLUSTER_JOIN_ADDR
-              value: neuvector-svc-allinone.neuvector
-            - name: CLUSTER_ADVERTISED_ADDR
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
-            - name: CLUSTER_BIND_ADDR
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
-          volumeMounts:
-            - mountPath: /lib/modules
-              name: modules-vol
-              readOnly: true
-            - mountPath: /var/run/docker.sock
-              name: docker-sock
-              readOnly: true
-            - mountPath: /host/proc
-              name: proc-vol
-              readOnly: true
-            - mountPath: /host/cgroup
-              name: cgroup-vol
-              readOnly: true
-      terminationGracePeriodSeconds: 1200
-      restartPolicy: Always
-      volumes:
-        - name: modules-vol
-          hostPath:
-            path: /lib/modules
-        - name: docker-sock
-          hostPath:
-            path: /var/run/docker.sock
-        - name: proc-vol
-          hostPath:
-            path: /proc
-        - name: cgroup-vol
-          hostPath:
-            path: /sys/fs/cgroup
-apiVersion: apps/v1
-kind: DaemonSet
-metadata:
   name: neuvector-allinone-pod
   namespace: neuvector
 spec:
@@ -295,9 +238,11 @@ spec:
         app: neuvector-allinone-pod
     spec:
       hostPID: true
+      serviceAccountName: controller
+      serviceAccount: controller
       containers:
         - name: neuvector-allinone-pod
-          image: neuvector/allinone:<version>
+          image: neuvector/allinone:5.2.0
           securityContext:
             privileged: true
           readinessProbe:
@@ -325,8 +270,8 @@ spec:
             - mountPath: /var/neuvector
               name: nv-share
               readOnly: false
-            - mountPath: /var/run/docker.sock
-              name: docker-sock
+            - mountPath: /run/containerd/containerd.sock
+              name: runtime-sock
               readOnly: true
             - mountPath: /host/proc
               name: proc-vol
@@ -337,7 +282,7 @@ spec:
             - mountPath: /etc/config
               name: config-volume
               readOnly: true
-      terminationGracePeriodSeconds: 300
+      terminationGracePeriodSeconds: 1200
       nodeSelector:
         nvallinone: "true"
       restartPolicy: Always
@@ -348,9 +293,9 @@ spec:
         - name: nv-share
           hostPath:
             path: /var/neuvector
-        - name: docker-sock
+        - name: runtime-sock
           hostPath:
-            path: /var/run/docker.sock
+            path: /run/containerd/containerd.sock
         - name: proc-vol
           hostPath:
             path: /proc
@@ -358,9 +303,93 @@ spec:
           hostPath:
             path: /sys/fs/cgroup
         - name: config-volume
-          configMap:
-            name: neuvector-init
-            optional: true
+          projected:
+            sources:
+              - configMap:
+                  name: neuvector-init
+                  optional: true
+              - secret:
+                  name: neuvector-init
+                  optional: true
+
+---
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: neuvector-enforcer-pod
+  namespace: neuvector
+spec:
+  selector:
+    matchLabels:
+      app: neuvector-enforcer-pod
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: neuvector-enforcer-pod
+    spec:
+      tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/control-plane
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: "nvallinone"
+                  operator: NotIn
+                  values: ["true"]
+      hostPID: true
+      serviceAccountName: enforcer
+      serviceAccount: enforcer
+      containers:
+        - name: neuvector-enforcer-pod
+          image: neuvector/enforcer:5.2.0
+          securityContext:
+            privileged: true
+          env:
+            - name: CLUSTER_JOIN_ADDR
+              value: neuvector-svc-allinone.neuvector
+            - name: CLUSTER_ADVERTISED_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: CLUSTER_BIND_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          volumeMounts:
+            - mountPath: /lib/modules
+              name: modules-vol
+              readOnly: true
+            - mountPath: /run/containerd/containerd.sock
+              name: runtime-sock
+              readOnly: true
+            - mountPath: /host/proc
+              name: proc-vol
+              readOnly: true
+            - mountPath: /host/cgroup
+              name: cgroup-vol
+              readOnly: true
+      terminationGracePeriodSeconds: 1200
+      restartPolicy: Always
+      volumes:
+        - name: modules-vol
+          hostPath:
+            path: /lib/modules
+        - name: runtime-sock
+          hostPath:
+            path: /run/containerd/containerd.sock
+        - name: proc-vol
+          hostPath:
+            path: /proc
+        - name: cgroup-vol
+          hostPath:
+            path: /sys/fs/cgroup
 
 ---
 
@@ -384,9 +413,11 @@ spec:
       labels:
         app: neuvector-scanner-pod
     spec:
+      serviceAccountName: basic
+      serviceAccount: basic
       containers:
         - name: neuvector-scanner-pod
-          image: neuvector/scanner
+          image: neuvector/scanner:latest
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
@@ -409,9 +440,11 @@ spec:
           labels:
             app: neuvector-updater-pod
         spec:
+          serviceAccountName: updater
+          serviceAccount: updater
           containers:
           - name: neuvector-updater-pod
-            image: neuvector/updater
+            image: neuvector/updater:latest
             imagePullPolicy: Always
             command:
             - /bin/sh

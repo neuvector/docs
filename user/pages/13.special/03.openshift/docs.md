@@ -184,38 +184,6 @@ Note: For 4.6+, see the section Deploying NeuVector / OpenShift for yaml file ch
 apiVersion: v1
 kind: Service
 metadata:
-  name: neuvector-service-controller-fed-master
-  namespace: neuvector
-spec:
-  ports:
-  - port: 11443
-    name: fed
-    protocol: TCP
-  type: NodePort
-  selector:
-    app: neuvector-controller-pod
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: neuvector-service-controller-fed-worker
-  namespace: neuvector
-spec:
-  ports:
-  - port: 10443
-    name: fed
-    protocol: TCP
-  type: NodePort
-  selector:
-    app: neuvector-controller-pod
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
   name: neuvector-svc-crd-webhook
   namespace: neuvector
 spec:
@@ -226,7 +194,7 @@ spec:
     name: crd-webhook
   type: ClusterIP
   selector:
-    app: neuvector-controller-pod
+    app: neuvector-allinone-pod
 
 ---
 
@@ -247,7 +215,7 @@ spec:
 
 ---
 
-apiVersion: route.openshift.io/v1
+apiVersion: v1
 kind: Service
 metadata:
   name: neuvector-service-webui
@@ -285,7 +253,7 @@ spec:
 
 ---
 
-apiVersion: v1
+apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: neuvector-route-webui
@@ -307,6 +275,9 @@ metadata:
   name: neuvector-allinone-pod
   namespace: neuvector
 spec:
+  selector:
+    matchLabels:
+      app: neuvector-allinone-pod
   minReadySeconds: 60
   updateStrategy:
     type: RollingUpdate
@@ -318,9 +289,11 @@ spec:
         app: neuvector-allinone-pod
     spec:
       hostPID: true
+      serviceAccountName: controller
+      serviceAccount: controller
       containers:
         - name: neuvector-allinone-pod
-          image: docker-registry.default.svc:5000/neuvector/allinone
+          image: image-registry.openshift-image-registry.svc:5000/neuvector/allinone:<version>
           securityContext:
             privileged: true
           readinessProbe:
@@ -348,8 +321,8 @@ spec:
             - mountPath: /var/neuvector
               name: nv-share
               readOnly: false
-            - mountPath: /var/run/docker.sock
-              name: docker-sock
+            - mountPath: /var/run/crio/crio.sock
+              name: runtime-sock
               readOnly: true
             - mountPath: /host/proc
               name: proc-vol
@@ -371,9 +344,9 @@ spec:
         - name: nv-share
           hostPath:
             path: /var/neuvector
-        - name: docker-sock
+        - name: runtime-sock
           hostPath:
-            path: /var/run/docker.sock
+            path: /var/run/crio/crio.sock
         - name: proc-vol
           hostPath:
             path: /proc
@@ -381,9 +354,14 @@ spec:
           hostPath:
             path: /sys/fs/cgroup
         - name: config-volume
-          configMap:
-            name: neuvector-init
-            optional: true
+          projected:
+            sources:
+              - configMap:
+                  name: neuvector-init
+                  optional: true
+              - secret:
+                  name: neuvector-init
+                  optional: true
 
 ---
 
@@ -393,6 +371,9 @@ metadata:
   name: neuvector-enforcer-pod
   namespace: neuvector
 spec:
+  selector:
+    matchLabels:
+      app: neuvector-enforcer-pod
   updateStrategy:
     type: RollingUpdate
   template:
@@ -414,9 +395,11 @@ spec:
                   operator: NotIn
                   values: ["true"]
       hostPID: true
+      serviceAccountName: enforcer
+      serviceAccount: enforcer
       containers:
         - name: neuvector-enforcer-pod
-          image: docker-registry.default.svc:5000/neuvector/enforcer
+          image: image-registry.openshift-image-registry.svc:5000/neuvector/enforcer:<version>
           securityContext:
             privileged: true
           env:
@@ -434,8 +417,8 @@ spec:
             - mountPath: /lib/modules
               name: modules-vol
               readOnly: true
-            - mountPath: /var/run/docker.sock
-              name: docker-sock
+            - mountPath: /var/run/crio/crio.sock
+              name: runtime-sock
               readOnly: true
             - mountPath: /host/proc
               name: proc-vol
@@ -443,21 +426,22 @@ spec:
             - mountPath: /host/cgroup
               name: cgroup-vol
               readOnly: true
-      terminationGracePeriodSeconds: 300
+      terminationGracePeriodSeconds: 1200
       restartPolicy: Always
       volumes:
         - name: modules-vol
           hostPath:
             path: /lib/modules
-        - name: docker-sock
+        - name: runtime-sock
           hostPath:
-            path: /var/run/docker.sock
+            path: /var/run/crio/crio.sock
         - name: proc-vol
           hostPath:
             path: /proc
         - name: cgroup-vol
           hostPath:
             path: /sys/fs/cgroup
+
 ---
 
 apiVersion: apps/v1
@@ -480,9 +464,11 @@ spec:
       labels:
         app: neuvector-scanner-pod
     spec:
+      serviceAccountName: basic
+      serviceAccount: basic
       containers:
         - name: neuvector-scanner-pod
-          image: docker-registry.default.svc:5000/neuvector/scanner
+          image: image-registry.openshift-image-registry.svc:5000/neuvector/scanner:latest
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
@@ -505,9 +491,11 @@ spec:
           labels:
             app: neuvector-updater-pod
         spec:
+          serviceAccountName: updater
+          serviceAccount: updater
           containers:
           - name: neuvector-updater-pod
-            image: docker-registry.default.svc:5000/neuvector/updater
+            image: image-registry.openshift-image-registry.svc:5000/neuvector/updater:latest
             imagePullPolicy: Always
             command:
             - /bin/sh

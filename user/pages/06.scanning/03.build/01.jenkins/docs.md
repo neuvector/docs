@@ -31,7 +31,7 @@ Select it and click `install without restart.'
 
 Deploy the NeuVector Controller and Scanner container if you haven't already done so on a host reachable by the Jenkins server. This can be on the same server as Jenkins if desired. Make a note of the IP address of the host where the Controller is running. Note: The default REST API port is 10443. This port must be exposed through the Allinone or Controller through a service in Kubernetes or a port map (e.g. - 10443:10443) in the Docker run or compose file.
 
-In addition, make sure there is a NeuVector scanner container deployed stand alone and configured to connect to the Controller (if Controller is being used).
+In addition, make sure there is a NeuVector scanner container deployed standalone and configured to connect to the Controller (if Controller is being used).
 
 There are two scenarios for image scanning, local and registry scanning.
 <ol>
@@ -56,11 +56,13 @@ For global registry configuration, follow the instructions above for local, then
 
 ![global-registry](registry_console.png)
 
-##### Stand Alone Scanner
+##### Standalone Scanner
 
-For the standalone scanner mode which enter the values which include the NeuVector Scanner Registry URL, NeuVector Scanner Image Repository, NeuVector Scanner Registry User, NeuVector Scanner Registry Password. Note: if performing a local scan, the registry URL, username, and password can be left blank.
+Running Jenkins scan in standalone mode is a lightweight way to scan image vulnerabilities in the pipeline. Scanner is dynamically invoked and no installaton of controller setup is required. This is especially useful when scaning an image before it is pushed to a registry. It also has no limit on how many scan tasks can run at the same time.
 
+In order to run vulnerability scan in standalone mode, the Jenkins plugin need pull the scanner image to the host where the agent is running, so you need enter NeuVector Scanner registry URL, image repository, and the credential if needed, in NeuVector plugin configuration page.
 
+The scan result can also be submitted to the controler and used in the admission control function. In this case, you do need a controller setup and specify how to connect to the controller in NeuVector plugin configuration page.
 
 #### Local Configuration for scanning a remote Docker Host
 
