@@ -47,13 +47,13 @@ If the primary active controller goes down, a new leader will automatically be e
 Take special precautions to make sure there is always one controller running and ready, especially during host OS or orchestration platform updates and reboots.
 
 ### <a name=“persist”>Backups and Persistent Data</a>
-Be sure to periodically export the configuration file from the console and save it as a backup.
+Be sure to periodically export the configuration file from the console and save it as a backup (NOTE: As of 5.2.0, Sigstore Verifier configurations are not exportable).
 
 If you run multiple controllers in an HA configuration, as long as one controller is always up, all data will be synchronized between controllers.
 
 If you wish to save logs such as violations, threats, vulnerabilities and events please enable the SYSLOG server in Settings.
 
-NeuVector supports persistent data for the NeuVector policy and configuration. This configures a real-time backup to mount a volume at /var/neuvector/ from the controller pod. The primary use case is when the persistent volume is mounted, the configuration and policy are stored during run-time to the persistent volume. In the case of total failure of the cluster, the configuration is automatically restored when the new cluster is created. Configuration and policy can also be manually restored or removed from the /var/neuvector/ volume.
+NeuVector supports persistent data for the NeuVector policy, Sigstore Verifiers, and configuration. This configures a real-time backup to mount a volume at /var/neuvector/ from the controller pod. The primary use case is when the persistent volume is mounted, the configuration and policy are stored during run-time to the persistent volume. In the case of total failure of the cluster, the configuration is automatically restored when the new cluster is created. Configuration and policy can also be manually restored or removed from the /var/neuvector/ volume.
 
 <strong>IMPORTANT</strong>: If a persistent volume is not mounted, NeuVector does NOT store the configuration or policy as persistent data. Be sure to backup the Controller configuration and policy before stopping the allinone or controller container. This can be done in Settings -> Configuration. Alternatively, the controller can be deployed in an HA configuration with 3 or 5 controllers running, in which case the policy will persist with other controllers while one is being updated.
 
