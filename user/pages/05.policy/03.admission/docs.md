@@ -151,7 +151,7 @@ If users are using the built-in image such as alpine or ubuntu from the docker r
 The above limitation could also apply on other type of docker registry servers if any.
 
 #### Creating Custom Criteria Rules
-Users can create a customized criterion to be used to allow or block deployments based on common objects found in the image yaml (scanned upon deployment). Select the object to be used, for example annotationsKey and the matching value, for example neuvector to create the criterion. It is also recommended to use additional criteria to further target the rule, such as namespace, PSP/PSA, CVE conditions etc.
+Users can create a customized criterion to be used to allow or block deployments based on common objects found in the image yaml (scanned upon deployment). Select the object to be used, for example imagePullSecrets and the matching value, for example exists. It is also recommended to use additional criteria to further target the rule, such as namespace, PSP/PSA, CVE conditions etc.
 
 ![admission](custom_admission.png)
 
