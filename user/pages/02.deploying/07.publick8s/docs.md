@@ -8,6 +8,7 @@ taxonomy:
 ### Deploy NeuVector on a Public Cloud Kubernetes Service
 
 Deploy NeuVector on any public cloud K8s service such as AWS EKS, Azure AKS, IBM Cloud K8s, Google Cloud, Alibaba Cloud or Oracle Cloud. 
+NeuVector has passed the Amazon EKS Anywhere Conformance and Validation Framework and, as such, is a validated solution and is available as an Add-on for EKS-Anywhere on Snowball Edge devices through the AWS Console.
 
 First, create your K8s cluster and confirm access with ‘kubectl get nodes’.
 
