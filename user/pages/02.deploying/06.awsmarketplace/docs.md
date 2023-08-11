@@ -25,9 +25,9 @@ Each cluster onto which you have deployed the PAYG billing adapter through the m
 #### Multi-cluster Usage Billing
 To be able to aggregate the node counts from multiple clusters in order to take advantage of volume discounts, the clusters must have been configured for Multi-cluster federation as described in the NeuVector [docs](https://open-docs.neuvector.com/navigation/multicluster). NeuVector on the Primary cluster MUST have been deployed through the AWS Marketplace, with the billing adapter installed in the primary cluster, in order to be able to report the primary and all downstream remote cluster node counts. Do not deploy NeuVector through the marketplace on downstream remote clusters. Use standard deployment methods (Helm, Operator, kubectl etc) described in the NeuVector [docs](https://open-docs.neuvector.com/deploying) on remote clusters.
 
-#### Enabling PAYG Billing for Existing NeuVector Clusters
+#### Enabling PAYG NeuVector Prime Billing for Existing NeuVector Clusters
 
-There are several options to enable PAYG billing on existing NeuVector clusters. 
+There are several options to enable NeuVector Prime billing on existing NeuVector clusters. 
 - Option 1: The existing cluster must be on a supported PAYG platform. Backup the NeuVector configuration of the existing cluster, remove the NeuVector deployment, then deploy NeuVector through the AWS marketplace. After successful deployment, import the backup configuration. Note: It is recommended that the existing cluster be running version NeuVector 5.2.0 or later before the backup and removal. For Helm based deployments, this is a sample Helm upgrade command (replacing account ID, IAM role name, previous helm version values file etc):
 ```
 helm upgrade -n neuvector neuvector  oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/suse/neuvector-csp-billing-adapter-llc/core --version 2.4.30002023052201 --create-namespace \
@@ -37,16 +37,56 @@ helm upgrade -n neuvector neuvector  oci://709825985650.dkr.ecr.us-east-1.amazon
 ```
 - Option 2: Add the existing cluster as a federated remote cluster to a (existing or newly deployed) primary cluster which already has PAYG billing deployed on it. In this case, the existing cluster can be on any platform supported by NeuVector.
 
-#### Enabling PAYG Billing for Rancher, OpenShift, Tanzu, or other NeuVector supported clusters
+#### Enabling PAYG NeuVector Prime Billing for Rancher, OpenShift, Tanzu, or other NeuVector supported clusters
 
 Although PAYG billing deployment is supported on a limited set of AWS platforms (only EKS at initial July release), billing for other supported NeuVector platforms can be accomplished using the multi-cluster federation configuration. As long as the primary cluster has the PAYG billing deployment of NeuVector, downstream clusters can be any supported NeuVector clusters such as Rancher, Kubernetes, OpenShift, or Tanzu. Downstream clusters can even be on-premise, or on other clouds as long as the remote cluster can be federated to the primary (with appropriate network access).
 
 For Rancher managed downstream clusters with SSO to NeuVector, these clusters can be federated to a non-Rancher primary cluster which is deployed through the AWS marketplace in order to benefit from consolidated multi-cluster billing.
 
 
-### Deploying NeuVector through the AWS Marketplace
+### Deploying NeuVector Prime through the AWS Marketplace
 
-A special billing interface is required to enable PAYG to your AWS account. This must be deployed, together with NeuVector from the AWS Marketplace listing for NeuVector. To deploy the billing adapter and NeuVector see the [deployment instructions](https://aws.amazon.com/marketplace/pp/prodview-u2ciiono2w3h2#pdp-usage) (requires AWS login).
+A special billing interface is required to enable PAYG to your AWS account. This must be deployed, together with NeuVector from the AWS Marketplace listing for NeuVector. To deploy the billing adapter and NeuVector see the [Usage instructions](https://aws.amazon.com/marketplace/pp/prodview-u2ciiono2w3h2#pdp-usage) (requires AWS login).
+
+The helm install command uses defaults in the values.yaml file. Important defaults to check are the manager service type (LoadBalancer) and container run-time (containerd - which is the typical default for EKS clusters). The default admin password is admin, which can also be changed (see below) before installation by using a configMap.
+
+#### Changing the Default Admin User Password
+It is important to change the admin user password from its default of admin:admin to a stronger password. This can be done after deployment upon initial login to the NeuVector console, or prior to deployment through enabling of a user ConfigMap setting file.
+
+To set the admin password prior to deployment:
+Create and edit the userinitcfg.yaml file, inserting the new admin password:
+```
+controller:
+  configmap:
+    data:
+      userinitcfg.yaml: |
+        Fullname: admin
+        Password: password
+        Role: admin
+```
+Add the following option to your helm install command from the [Usage instructions](https://aws.amazon.com/marketplace/pp/prodview-u2ciiono2w3h2#pdp-usage), which enables a configMap:
+```
+--set controller.configmap.enabled=true -f userinitcfg.yaml
+```
+Run the new helm install command and wait for the NeuVector containers, billing adapter container, and services to be created. Note: If you have already installed NeuVector, you can run a helm upgrade command with the previous settings, adding the configMap one to update your installation.
+
+#### Console Login through Load Balancer
+If the manager service type was set to Load Balancer during install, an external IP (URL) has been assigned for logging into the NeuVector console. Typically, this URL is accessible from the internet, but your organization may have placed additional restrictions on external access to your cluster. To see the load balancer, type:
+```
+kubectl get svc -n neuvector neuvector-service-webui
+```
+To get the full login url, type:
+```
+SERVICE_IP=$(kubectl get svc --namespace neuvector neuvector-service-webui -o jsonpath="{.status.loadBalancer.ingress[0].hostname}")
+echo https://$SERVICE_IP:8443
+```
+And you will see something like:
+```
+https://a2647ecdxx33498948a70eea84c5-18386345695.us-west-2.elb.amazonaws.com:8443
+```
+This is how you can access the NeuVector console from your browser on the default port 8443. Important: Be sure to change the admin password after initial login, if you have not already done so before deployment.
+
+Once logged in, you can begin to [navigate and configure NeuVector](https://open-docs.neuvector.com/navigation/navigation).
 
 NOTE: The NeuVector scanner image is updated daily with a new CVE database on the NeuVector docker hub registry. It is recommended that the image path be changed to allow for automated daily updates by modifying the scanner and updater image paths AFTER successful initial deployment. For example:
 ```
