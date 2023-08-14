@@ -5,7 +5,7 @@ taxonomy:
 ---
 
 ### Understanding How to Deploy NeuVector
-Deploy the NeuVector containers using Kubernetes, OpenShift, Rancher, Docker, or other platforms. Each type of NeuVector container has a unique purpose and may require special performance or node selection requirements for optimum operation.
+Deploy the NeuVector containers using Kubernetes, OpenShift, Rancher, Docker, or other platforms. Each type of NeuVector container has a unique purpose and may require special performance or node selection requirements for optimum operation. abc
 
 The NeuVector open source images are hosted on Docker Hub at /neuvector/{image name}. 
 
