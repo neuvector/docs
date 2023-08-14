@@ -4,11 +4,9 @@ taxonomy:
     category: docs
 ---
 
-***NOTE: NeuVector billing through the AWS Marketplace is scheduled to be available July 2023***
-
 ### Deploy NeuVector from AWS Marketplace Pay-As-You-Go Listing
 
-NeuVector supports monthly billing through your AWS account in a Pay-As-You-Go (PAYG) billing subscription for SUSE support of NeuVector.
+NeuVector Prime supports monthly billing through your AWS account in a Pay-As-You-Go (PAYG) billing subscription for SUSE support of NeuVector.
 
 Usage is billed monthly based on the average number of nodes protected by NeuVector during the month. Please see the [NeuVector marketplace listing](https://aws.amazon.com/marketplace/pp/prodview-u2ciiono2w3h2#pdp-overview) for specific pricing tiers and other information.
 
@@ -60,9 +58,10 @@ controller:
   configmap:
     data:
       userinitcfg.yaml: |
-        Fullname: admin
-        Password: password
-        Role: admin
+        users:
+        - Fullname: admin
+          Password: Password1234
+          Role: admin
 ```
 Add the following option to your helm install command from the [Usage instructions](https://aws.amazon.com/marketplace/pp/prodview-u2ciiono2w3h2#pdp-usage), which enables a configMap:
 ```
@@ -101,6 +100,3 @@ The SCC portal will require you to upload a Support Configuration bundle in orde
 
 ### Upgrading a NeuVector PAYG Cluster
 The AWS marketplace PAYG listing helm chart is tied to a specific billing adapter AND NeuVector version. These are updated periodically as new versions of the billing adapter or NeuVector are released. To update the NeuVector version to the latest version supported by the marketplace listing, use the Helm update command as normal. To update the NeuVector version to a more recent version than is specified in the marketplace listing, manually change the helm values for the images (registry, paths, version tags) to point to the desired version (e.g. docker.io, neuvector/controller:5.2.5).
-
-### Troubleshooting
-This section TBD
