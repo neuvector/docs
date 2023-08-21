@@ -46,28 +46,10 @@ For Rancher managed downstream clusters with SSO to NeuVector, these clusters ca
 
 A special billing interface is required to enable PAYG to your AWS account. This must be deployed, together with NeuVector from the AWS Marketplace listing for NeuVector. To deploy the billing adapter and NeuVector see the [Usage instructions](https://aws.amazon.com/marketplace/pp/prodview-u2ciiono2w3h2#pdp-usage) (requires AWS login).
 
-The helm install command uses defaults in the values.yaml file. Important defaults to check are the manager service type (LoadBalancer) and container run-time (containerd - which is the typical default for EKS clusters). The default admin password is admin, which can also be changed (see below) before installation by using a configMap.
+The helm install command uses defaults in the values.yaml file. Important defaults to check are the manager service type (LoadBalancer) and container run-time (containerd - which is the typical default for EKS clusters). The default admin username is disabled, and users are required to set a username and password through a secret prior to deployment.
 
-#### Changing the Default Admin User Password
-It is important to change the admin user password from its default of admin:admin to a stronger password. This can be done after deployment upon initial login to the NeuVector console, or prior to deployment through enabling of a user ConfigMap setting file.
-
-To set the admin password prior to deployment:
-Create and edit the userinitcfg.yaml file, inserting the new admin password:
-```
-controller:
-  configmap:
-    data:
-      userinitcfg.yaml: |
-        users:
-        - Fullname: admin
-          Password: Password1234
-          Role: admin
-```
-Add the following option to your helm install command from the [Usage instructions](https://aws.amazon.com/marketplace/pp/prodview-u2ciiono2w3h2#pdp-usage), which enables a configMap:
-```
---set controller.configmap.enabled=true -f userinitcfg.yaml
-```
-Run the new helm install command and wait for the NeuVector containers, billing adapter container, and services to be created. Note: If you have already installed NeuVector, you can run a helm upgrade command with the previous settings, adding the configMap one to update your installation.
+#### Setting the Admin Username and Password
+It is required to set the admin username and password as a Kubernetes secret prior to deployment. See the Usage instructions on the AWS marketplace listing for NeuVector for instructions.
 
 #### Console Login through Load Balancer
 If the manager service type was set to Load Balancer during install, an external IP (URL) has been assigned for logging into the NeuVector console. Typically, this URL is accessible from the internet, but your organization may have placed additional restrictions on external access to your cluster. To see the load balancer, type:
@@ -83,7 +65,7 @@ And you will see something like:
 ```
 https://a2647ecdxx33498948a70eea84c5-18386345695.us-west-2.elb.amazonaws.com:8443
 ```
-This is how you can access the NeuVector console from your browser on the default port 8443. Important: Be sure to change the admin password after initial login, if you have not already done so before deployment.
+This is how you can access the NeuVector console from your browser on the default port 8443.
 
 Once logged in, you can begin to [navigate and configure NeuVector](https://open-docs.neuvector.com/navigation/navigation).
 
