@@ -8,7 +8,7 @@ taxonomy:
 
 NeuVector Prime supports monthly billing through your AWS account in a Pay-As-You-Go (PAYG) billing subscription for SUSE support of NeuVector.
 
-Usage is billed monthly based on the average number of nodes protected by NeuVector during the month. Please see the [NeuVector marketplace listing](https://aws.amazon.com/marketplace/pp/prodview-u2ciiono2w3h2#pdp-overview) for specific pricing tiers and other information.
+Usage is billed monthly based on the average number of nodes protected by NeuVector during the month. Please see the [NeuVector marketplace listing](https://aws.amazon.com/marketplace/pp/prodview-u2ciiono2w3h2?sr=0-3&ref_=beagle&applicationId=AWSMPContessa) for specific pricing tiers and other information.
 
 NOTE: AWS Private Offers are available for NeuVector for special pricing situations in lieu of standard PAYG pricing.
 
