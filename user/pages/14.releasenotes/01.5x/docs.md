@@ -6,6 +6,23 @@ taxonomy:
 
 ### Release Notes for 5.x (Open Source Version)
 
+#### 5.2.1 August 2023
+##### Enhancements
++ Report layered scan results and additional CVE data in SYSLOG messages. This is enabled through a checkbox in Settings -> Configuration -> SYSLOG
++ Export NIST 800-53 mappings (to docker CIS benchmarks) in the exported csv compliance report
++ Support Proxy setting in image signature verification
++ Include image signature scan result in the downloaded CVE report
++ Support pod annotations for Admission Control Policies, available through the Custom criteria
++ Add Last Modified field to filter for vulnerabilities report printing, as well as Advanced Filter in Vulnerabilities view
+
+##### Bug fixes
++ Do not create default admin with default password in initial NeuVector deployment for AWS billing (CSP adapter) offering, requiring user to use a secret to create admin username and password
++ Fix .json file which increased size and crashed a kubernetes node
++ Improve SQL injection detection logic
++ When installing the helm crd chart first before installing the NeuVector core chart, service accounts are missing
++ Image scan I.4.1 compliance result is incorrect
++ Vulnerability advanced filter report showing images from all other namespace
+
 #### 5.2.0 July 2023 
 
 ##### Enhancements 
