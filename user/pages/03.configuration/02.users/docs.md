@@ -10,6 +10,8 @@ The Settings -> Users and Roles menu enables management of users as well as role
 #### Users
 Users can be configured directly in NeuVector or integrated through directories/SSO. To create a new user in NeuVector go to Settings -> Users & Roles and add the user. Select the role of the user from the predefined roles, or see below to create a custom role.
 
+The default password requirement is minimum 8 characters length, 1 uppercase letter, 1 lowercase letter, 1 numeric character. These and other requirements can be changed by an admin in Settings -> Users under Authentication and Security Policies.
+
 #### Namespace Restricted Users
 Users can be restricted to certain namespaces. First select the global role (use 'none' if no global role is desired), then click on the Advanced Settings.
 
