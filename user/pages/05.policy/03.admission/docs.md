@@ -392,7 +392,7 @@ If you see any content like "Error from server ...." or "... is forbidden", it m
 
 <strong>Test the Admission Control Connection Button</strong>
 
-In the NeuVector Console in Security Risks -> Admission Control, go to More Operations ->  Advanced Setting and click the "Test" button. NeuVector will modify service neuvector-svc-admission-webhook and see if our webhook server can receive the change notifification or if it fails.
+In the NeuVector Console in Policy -> Admission Control, go to More Operations ->  Advanced Setting and click the "Test" button. NeuVector will modify service neuvector-svc-admission-webhook and see if our webhook server can receive the change notifification or if it fails.
 
 1. Run 
 ```
