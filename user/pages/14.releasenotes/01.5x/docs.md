@@ -148,6 +148,11 @@ TOTAL: 6, HIGH: 1, MEDIUM: 5, LOW: 0, UNKNOWN: 0
 
 ##### Enhancements
 + Add “package” as information to the syslog-event for a detected vulnerability.
++ Add Enforcer environment variable ENF_NETPOLICY_PULL_INTERVAL - Value in seconds (recommended value 60) to reduce network traffic and resulting resource consumption by Enforcer due to policy updates/recalculations. (Note: this was an undocumented addition until August of 2023).
+```
+           - name: ENF_NETPOLICY_PULL_INTERVAL
+              value: "60"   <== regulate the pulling gap by 60 seconds
+```
 
 ##### Bug Fixes
 + Empty group deletion errors "Object not found"
