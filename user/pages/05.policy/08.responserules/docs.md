@@ -248,7 +248,7 @@ SSH.Version.1
 SSL.Heartbleed
 SSL.Cipher.Overflow
 SSL.Version.2or3
-SSL.TLS1.0
+SSL.TLS1.0or1.1
 HTTP.Negative.Body.Length
 HTTP.Request.Smuggling
 HTTP.Request.Slowloris
