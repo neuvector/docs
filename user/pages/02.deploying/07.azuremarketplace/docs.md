@@ -75,7 +75,7 @@ Once PAYG billing is enabled for a cluster or multiple clusters, customers are e
 The SCC portal will require you to upload a Support Configuration bundle in order to verify your eligibility as well as provide cluster information required to start investigations. To download the support config, please go to Settings -> Configuration at the bottom of the page for the cluster in question. For multi-cluster configurations, only the Primary cluster's support config is required, even if the support inquiry is for a downstream remote cluster. If you do not have access to the Primary cluster, the remote cluster's support config is acceptable.
 
 ### Upgrading a NeuVector PAYG Cluster
-The Azure marketplace PAYG listing helm chart (deployment module) is tied to a specific billing adapter AND NeuVector version. These are updated periodically as new versions of the billing adapter or NeuVector are released. 
+The Azure marketplace PAYG offer is tied to a billing adapter AND Neuvector version. These are updated periodically as new versions of the billing adapter or NeuVector are released. 
 
 The existing AKS cluster must be on a supported PAYG platform with its Neuvector configuration. To update the Neuvector version to the most recent version other than is specified in the marketplace listing, manually upgrade the change via the "az k8s-extension update" command. 
 
