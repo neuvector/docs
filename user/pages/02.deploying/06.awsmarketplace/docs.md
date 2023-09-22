@@ -49,7 +49,33 @@ A special billing interface is required to enable PAYG to your AWS account. This
 The helm install command uses defaults in the values.yaml file. Important defaults to check are the manager service type (LoadBalancer) and container run-time (containerd - which is the typical default for EKS clusters). The default admin username is disabled, and users are required to set a username and password through a secret prior to deployment.
 
 #### Setting the Admin Username and Password
-It is required to set the admin username and password as a Kubernetes secret prior to deployment. See the Usage instructions on the AWS marketplace listing for NeuVector for instructions.
+It is required to set the admin username and password as a Kubernetes secret prior to deployment. 
+
+```
+kubectl create secret generic neuvector-init --from-file=userinitcfg.yaml -n neuvector
+```
+
+**Note** The above step is mandatory, otherwise an admin user will not be created upon NeuVector deployment, making the NeuVector deployment unmanageable. 
+
+Sample userinitcfg.yaml content:
+```
+users:
+- Fullname: admin
+  Password: (ValidPassword)
+  Role: admin
+# 8 character(s) minimum,1 uppercase character(s),1 lowercase character(s), 1 number(s).
+```
+
+Sample helm install command:
+```
+helm install -n neuvector neuvector --create-namespace \
+oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/suse/neuvector-csp-billing-adapter-llc/core --version 2.6.1 \
+--set awsbilling.accountNumber=$AWS_ACCOUNT_ID \
+--set awsbilling.roleName=$ROLE_NAME \
+--set manager.svc.type=LoadBalancer
+```
+
+See the Usage instructions on the AWS marketplace listing for detailed NeuVector instructions.
 
 #### Console Login through Load Balancer
 If the manager service type was set to Load Balancer during install, an external IP (URL) has been assigned for logging into the NeuVector console. Typically, this URL is accessible from the internet, but your organization may have placed additional restrictions on external access to your cluster. To see the load balancer, type:
