@@ -57,7 +57,7 @@ echo https://$SERVICE_IP:8443
 ```
 And you will see something like:
 ```
-https://&lt;$SERVICE_IP>:8443
+https://<$SERVICE_IP>:8443
 ```
 This is how you can access the NeuVector console from your browser on the default port 8443.
 
@@ -75,4 +75,12 @@ Once PAYG billing is enabled for a cluster or multiple clusters, customers are e
 The SCC portal will require you to upload a Support Configuration bundle in order to verify your eligibility as well as provide cluster information required to start investigations. To download the support config, please go to Settings -> Configuration at the bottom of the page for the cluster in question. For multi-cluster configurations, only the Primary cluster's support config is required, even if the support inquiry is for a downstream remote cluster. If you do not have access to the Primary cluster, the remote cluster's support config is acceptable.
 
 ### Upgrading a NeuVector PAYG Cluster
-The Azure marketplace PAYG listing helm chart (deployment module) is tied to a specific billing adapter AND NeuVector version. These are updated periodically as new versions of the billing adapter or NeuVector are released. To update the NeuVector version to the latest version supported by the marketplace listing, see the marketplace listing instructions.
+The Azure marketplace PAYG listing helm chart (deployment module) is tied to a specific billing adapter AND NeuVector version. These are updated periodically as new versions of the billing adapter or NeuVector are released. 
+
+The existing AKS cluster must be on a supported PAYG platform with its Neuvector configuration. To update the Neuvector version to the most recent version other than is specified in the marketplace listing, manually upgrade the change via the "az k8s-extension update" command. 
+
+Execute the following command in Cluster Cloud Shell:
+
+```
+az k8s-extension update  --name <cluster extension resource name>   --cluster-name <cluster name> --resource-group <resource group> --cluster-type managedClusters --version <version to be upgraded>
+```
