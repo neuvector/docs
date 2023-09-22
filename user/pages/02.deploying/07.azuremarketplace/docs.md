@@ -43,7 +43,7 @@ For Rancher managed downstream clusters with SSO to NeuVector, these clusters ca
 A special billing interface is required to enable PAYG to your Azure account. This must be deployed, together with NeuVector from the Azure Marketplace listing for NeuVector. To deploy the billing adapter and NeuVector see the [Usage instructions](https://azuremarketplace.microsoft.com/en-us/home) (requires Azure login).
 
 #### Setting the Admin Password
-It is required to set the admin password as a Kubernetes secret prior to deployment. See the instructions on the Azure marketplace listing for NeuVector for instructions.
+It is required to set the admin password in the Azure create offer, "NeuVector Configuration" section. See the Usage instructions on the Azure marketplace listing for NeuVector for instructions.
 
 #### Console Login through Load Balancer
 If the manager service type was set to Load Balancer during install, an external IP (URL) has been assigned for logging into the NeuVector console. Typically, this URL is accessible from the internet, but your organization may have placed additional restrictions on external access to your cluster. To see the load balancer, type:
