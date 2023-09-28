@@ -7,6 +7,8 @@ taxonomy:
 ### Creating Custom Scripts for Compliance Checks
 Custom scripts can be run on containers and hosts for use in compliance checks and other assessments. The Custom Compliance check is a bash script that can be run on any container to validate a condition and report result in the container or node compliance section.
 
+NOTE: The ability to create custom scripts is disabled by default to protect against misuse. This can be enabled be setting the CUSTOM_CHECK_CONTROL [environment variable](/deploying/production/details#environment-variables) in the Controller and Enforcer. Values are "disable" (default, not allowed), "strict" (admin role only), or "loose" (admin, compliance, and runtime-policy roles).
+
 <strong>Caution!</strong> Custom scripts should be used with extreme caution. The custom script can run any executable in the container namespace with container privilege. Executables can be very destructive, such as rm, format, fdisk etc. This caution applies to hosts/nodes as well. Custom check scripts on hosts can be even more destructive if they can access the master node in the cluster.
 
 + A custom script is controlled by the run-time policy permission with namespaced RBAC; users should setup the Kubernetes user roles properly.

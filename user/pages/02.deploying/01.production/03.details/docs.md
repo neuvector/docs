@@ -19,6 +19,9 @@ taxonomy:
 * NV_PLATFORM_INFO
 > (Optional) Use value platform=Docker for Docker Swarm/EE deployments, or platform=Kubernetes:GKE for GKE (to run GKE CIS Benchmarks).
 
+* CUSTOM_CHECK_CONTROL
+> (Optional) Used to enable/disable ability to create custom compliance scripts in containers/hosts. Values are "disable" (default, not allowed), "strict" (admin role only), or "loose" (admin, compliance, and runtime-policy roles).
+
 ##### Controller
 * CTRL_PERSIST_CONFIG
 > (Optional) To backup configuration files and restore them from a persistent volume. Add this to the yaml to enable; remove to disable.
