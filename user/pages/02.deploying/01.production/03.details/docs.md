@@ -66,7 +66,13 @@ taxonomy:
 > (Optional) Set the value to "1" to disable the process and file monitors. No learning processes, no profile modes, no process/file (package) incidents, and no file activity monitor will be performed. This will reduce CPU/memory resource usage and file operations.
 
 * ENF_NETPOLICY_PULL_INTERVAL
-> (Optional) Value in seconds (recommended value 60) to reduce network traffic and resource consumption by Enforcer due to policy updates/recalculations, in clusters with high node counts or workloads. Default is zero, meaning no delay in updating Enforcer policy. 
+> (Optional) Value in seconds (recommended value 60) to reduce network traffic and resource consumption by Enforcer due to policy updates/recalculations, in clusters with high node counts or workloads. Default is zero, meaning no delay in updating Enforcer policy.
+
+* THRT_SSL_TLS_1DOT0
+> (Optional) Set the value to “1” to enable the detection for TLS Version 1.0 (Deprecated).
+
+* THRT_SSL_TLS_1DOT1
+> (Optional) Set the value to “1” to enable the detection for TLS Version 1.1 (Deprecated).
 
 
 ### Open Ports
