@@ -94,7 +94,7 @@ NeuVector includes the following detections for threats:
 + Detect HTTP negative content-length buffer overflow
 + Detect MySQL access deny
 + Detect SSH version 1, 2 or 3
-+ Detect SSL TLS v1.0, v1.1
++ Detect SSL TLS v1.0, v1.1 (requires environment variable to enable)
 + DNS buffer overflow attack
 + DNS flood DDOS attack
 + DNS null type attack
