@@ -11,8 +11,6 @@ NeuVector uses a declarative policy which consist of rules which govern allowed 
 
 Network rules specify ALLOWED or DENIED behavior for your applications. These rules determine what connections are normal behavior for your services as well as what are violations. You can delete automatically ‘learned’ rules as well as add new rules to your policy.
 
-NOTE: ICMP is by default allowed by NeuVector, to allow monitoring and other apps to function. It must be explicitly denied if desired.
-
 <Strong>IMPORTANT</Strong>  Network rules are enforced in the order that they appear in the list, from top to bottom. To re-order the rules, select the rule you want to move, then you will see a 'Move to' box appear at the top, and you can move the selected rule to the position before or after a specified rule.
 
 <Strong>IMPORTANT</strong>  If you edit (add, delete, change) rules, your changes are NOT applied until you click the Save button at the top. If you exit this page without deploying your changes, they will be lost.
