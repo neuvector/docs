@@ -4,7 +4,73 @@ taxonomy:
     category: docs
 ---
 
-### Release Notes for 5.x (Open Source Version)
+### Release Notes for 5.x
+
+#### 5.2.2 October 2023
+
+##### Security Advisory for CVE-2023-32188
++ Remediate CVE-2023-32188 “JWT token compromise can allow malicious actions including Remote Code Execution (RCE)” by auto-generating certificate used for signing JWT token upon deployment and upgrade, and auto-generating Manager/RESTful API certificate during Helm based deployments.
+  - Certificate for JWT-signing is created automatically by controller with validity of 90days and rotated automatically.
+  - Auto-generation of Manager, REST API, and registry adapter certificate requires using Helm-based install using NeuVector helm version 2.6.3 or later. 
+  - Built-in certificate is still used for yaml based deployments if not replaced during deployment; however, it is recommended to replace these (see next line).
+  - Manual [replacement of certificate](/configuration/console/replacecert) is still supported and recommended for previous releases or yaml based deployments. See the NeuVector GitHub security advisory [here](https://github.com/neuvector/neuvector/security/advisories/GHSA-622h-h2p8-743x) for a description.
+  - Use of user-supplied certificates is still supported as before for both Helm and yaml based deployments.
++ Add additional controls on custom compliance scripts. By default, custom script are now not allowed to be added, unless the environment variable CUSTOM_CHECK_CONTROL is added to Controller and Enforcer. Values are "disable" (default, not allowed), "strict" (admin role only), or "loose" (admin, compliance, and runtime-policy roles).
++ Prevent LDAP injection - username field is escaped.
+
+
+##### Enhancements
++ Add additional scan data to CVE results sent by SYSLOG for layered scans
++ Support NVD API 2.0 for scan CVE database
++ Provide container image build date in Assets -> Container details
++ Adjust sorting for Network rules: disable sorting in Network rules view but enable sorting of network rules in Group view.
++ Enable/disable TLS 1.0 and TLS 1.1 detection/alerting with environment variables to Enforcer THRT_SSL_TLS_1DOT0, THRT_SSL_TLS_1DOT1. Disabled by default.
++ Add environment variable AUTO_PROFILE_COLLECT for Controller and Enforcer to assist in capturing memory usage when investigating memory pressure events. Set value = 1 to enable.
++ Configuration assessments against Admission Control should show all violations with one scan.
++ Add more options for CVE report criteria in Response Rules. Example 1 - "cve-high-with-fix:X" means: When # of (high vulnerability that have been fixed) >= X, trigger the response rule. Example 2 - "cve-high-with-fix:X/Y" means: When # of (high vulnerability that were reported Y days ago & have been fixed) >= X, trigger the response rule.
+
+##### Bug Fixes
++ Export of group policy does not return any actual YAML contents
++ Improve pruning of namespaces with dedicated function
++ NeuVector namespace user cannot see assets-->namespaces
++ Skip handling the CRD CREATE/UPDATE requests if the CR's namespace is already deleted
++ Provide workaround for part of CRD groups which cannot be pruned successfully after namespaces are deleted:
+```
+kubectl create -f neuvector-prune-orphan-crd-groups.yaml
+kubectl delete -f neuvector-prune-orphan-crd-groups.yaml
+```
+```
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: neuvector-prune-orphan-crd-groups
+webhooks:
+- admissionReviewVersions:
+  - v1beta1
+  clientConfig:
+    service:
+      name: neuvector-svc-prune-orphan-crd-groups-dummy
+      namespace: neuvector
+      path: /v1/neuvector-support/neuvector-prune-orphan-crd-groups
+      port: 65432
+  failurePolicy: Ignore
+  matchPolicy: Exact
+  name: neuvector-prune-orphan-crd-groups.neuvector.svc
+  namespaceSelector: {}
+  objectSelector: {}
+  rules:
+  - apiGroups:
+    - 'neuvector-support'
+    apiVersions:
+    - v1
+    operations:
+    - DELETE
+    resources:
+    - nvdummy
+    scope: '*'
+  sideEffects: NoneOnDryRun
+  timeoutSeconds: 3
+```
 
 #### 5.2.1 August 2023
 ##### Enhancements
