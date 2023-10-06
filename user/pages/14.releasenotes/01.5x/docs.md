@@ -39,7 +39,7 @@ taxonomy:
 kubectl create -f neuvector-prune-orphan-crd-groups.yaml
 kubectl delete -f neuvector-prune-orphan-crd-groups.yaml
 ```
-```
+<pre><code>
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
@@ -70,7 +70,7 @@ webhooks:
     scope: '*'
   sideEffects: NoneOnDryRun
   timeoutSeconds: 3
-```
+<code><pre>
 
 #### 5.2.1 August 2023
 ##### Enhancements
