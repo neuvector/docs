@@ -34,43 +34,7 @@ taxonomy:
 + Improve pruning of namespaces with dedicated function
 + NeuVector namespace user cannot see assets-->namespaces
 + Skip handling the CRD CREATE/UPDATE requests if the CR's namespace is already deleted
-+ Provide workaround for part of CRD groups which cannot be pruned successfully after namespaces are deleted:
-```
-kubectl create -f neuvector-prune-orphan-crd-groups.yaml
-kubectl delete -f neuvector-prune-orphan-crd-groups.yaml
-```
-<pre><code>
-apiVersion: admissionregistration.k8s.io/v1
-kind: ValidatingWebhookConfiguration
-metadata:
-  name: neuvector-prune-orphan-crd-groups
-webhooks:
-- admissionReviewVersions:
-  - v1beta1
-  clientConfig:
-    service:
-      name: neuvector-svc-prune-orphan-crd-groups-dummy
-      namespace: neuvector
-      path: /v1/neuvector-support/neuvector-prune-orphan-crd-groups
-      port: 65432
-  failurePolicy: Ignore
-  matchPolicy: Exact
-  name: neuvector-prune-orphan-crd-groups.neuvector.svc
-  namespaceSelector: {}
-  objectSelector: {}
-  rules:
-  - apiGroups:
-    - 'neuvector-support'
-    apiVersions:
-    - v1
-    operations:
-    - DELETE
-    resources:
-    - nvdummy
-    scope: '*'
-  sideEffects: NoneOnDryRun
-  timeoutSeconds: 3
-<code><pre>
++ Provide workaround for part of CRD groups which cannot be pruned successfully after namespaces are deleted.
 
 #### 5.2.1 August 2023
 ##### Enhancements
