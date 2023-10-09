@@ -30,9 +30,10 @@ AWS Bottlerocket Note: Must change path of the containerd socket specific to Bot
 #### Not Supported
 * CoreOS is not supported for CVE scanning, as there is no CVE feed published by the maintainers.
 * GKE Autopilot.
-* AWS ECS is no longer supported.
+* AWS ECS is no longer supported. (NOTE: No functionality has been actively removed for operating NeuVector on ECS deployments. However, testing on ECS is no longer being perfromed by SUSE. While protecting ECS worlloads with Neuvector likely will operate as expected, issues will not be investigated.)
 * Docker on Mac
 * Docker on Windows
+* ARM architectire is not currently supported, but being worked on for future releases.
 * Rkt (container linux) from CoreOS
 * AppArmor on K3S / SLES environments. Certain configurations may conflict with NeuVector and cause scanner errors; AppArmor should be disabled when deploying NeuVector.
 * IPv6 is not supported
