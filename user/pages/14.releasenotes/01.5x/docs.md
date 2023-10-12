@@ -6,6 +6,11 @@ taxonomy:
 
 ### Release Notes for 5.x
 
+#### 5.2.2-s1 October 2023
+
+#####Security Update
++ Update packages to remediate CVEs including High CVE-2023-38545 and CVE-2023-43804.
+
 #### 5.2.2 October 2023
 
 ##### Security Advisory for CVE-2023-32188
