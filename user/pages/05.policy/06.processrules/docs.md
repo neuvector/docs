@@ -22,6 +22,8 @@ Zero-drift can be disabled, switching to Basic process protection. Basic protect
 Process baseline information will be learned and recorded when the service Group is in Discover (learning) mode. When in Monitor or Protect mode, if a process that has not been seen before is newly started, or an old process is started by a different user than before, the event will be detected and alerted as a suspicious process in Monitor mode or alerted and blocked in Protect mode. Users can modify the learned profile to allow or deny (whitelist or blacklist) processes manually if needed.
 Note that in addition to baseline processes, NeuVector has built-in detection of common suspicious processes such as nmap, reverse shell etc. These will be detected and alerted/blocked unless explicitly white listed for each container service.
 
+***Important:*** Kubernetes liveness probes are automatically allowed, and added to the learned process rules even in Monitor/Protect mode.
+
 ####Process Rules for Nodes
 The special reserved group 'nodes' can be configured to enforce process profile rules on each node (host) in the cluster. Select the group 'nodes' and review the process rules, editing if required. Then switch the protection mode to Monitor or Protect. The 'local' (learned) process rule list is a combination of all processes from all nodes in the cluster while in Discover mode.
 
