@@ -8,6 +8,8 @@ taxonomy:
 
 There are two types of Process/File protections in NeuVector. One is Zero-drift, where allowed process and file activity are automatically determined based on the container image, and second is a behavioral learning based. Each can be customized (rules added manually) if desired.
 
+NOTE: There is a limitation when running on systems with the AUFS file system, whereby a race condition can be experienced and the process rules are not enforced for blocking (Protect mode). However, these violations are still reported in the security event logs.
+
 #### Zero-drift Process Protection
 This is the default mode for process and file protections. Zero-drift automatically allows only processes which originate from the parent process that is in the original container image, and does not allow file updates or new files to be installed. When in Discover or Monitor mode, zero-drift will alert on any suspicious process or file activity. In Protect mode, it will block such activity. Zero-drift does not require processes to be learned or added to an allow-list. Disabling zero-drift for a group will cause the process and file rules listed for the group to take effect instead.
 
