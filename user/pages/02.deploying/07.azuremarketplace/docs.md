@@ -63,12 +63,6 @@ This is how you can access the NeuVector console from your browser on the defaul
 
 Once logged in, you can begin to [navigate and configure NeuVector](https://open-docs.neuvector.com/navigation/navigation).
 
-NOTE: The NeuVector scanner image is updated daily with a new CVE database on the NeuVector docker hub registry. It is recommended that the image path be changed to allow for automated daily updates by modifying the scanner and updater image paths AFTER successful initial deployment. For example:
-```
-kubectl set image  deploy/neuvector-scanner-pod neuvector-scanner-pod=docker.io/neuvector/scanner:latest
-kubectl set image  cronjob/neuvector-updater-pod neuvector-updater-pod=docker.io/neuvector/updater:latest
-```
-
 ### Obtaining Support
 Once PAYG billing is enabled for a cluster or multiple clusters, customers are eligible for support through the [SUSE Support Center](https://scc.suse.com/) (SCC) service. This is a web-based service for creating, viewing, and managing support requests. The actual link for submitting your support bundle as described below can be found [here](https://scc.suse.com/cloudsupport).
 
