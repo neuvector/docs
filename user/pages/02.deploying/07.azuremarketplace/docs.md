@@ -6,11 +6,14 @@ taxonomy:
 
 ### Deploy NeuVector from Azure Marketplace Pay-As-You-Go Listing
 
-NOTE: Azure Marketplace Billing is Expected to Be Available in November, 2023
-
 NeuVector Prime supports monthly billing through your Azure account in a Pay-As-You-Go (PAYG) billing subscription for SUSE support of NeuVector.
 
-Usage is billed monthly based on the average number of nodes protected by NeuVector during the month. Please see the [NeuVector marketplace listing](https://azuremarketplace.microsoft.com/en-us/home) for specific pricing tiers and other information.
+Usage is billed monthly based on the average number of nodes protected by NeuVector during the month. Please see the Azure Marketplace listing for your appropriate region for specific pricing tiers and other information.
+
+- [NeuVector Prime with 24x7 Support (non-EU and non-UK only)](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/suse.neuvector-prime-llc?tab=Overview)
+- [NeuVector Prime with 24x7 Support (EU and UK only)](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/suseirelandltd1692213356027.neuvector-prime-ltd?tab=Overview)
+
+Additional Usage Instructions can be found [here](https://suse-enceladus.github.io/marketplace-docs/neuvector-prime/azure/).
 
 NOTE: Azure Private Offers are available for NeuVector for special pricing situations in lieu of standard PAYG pricing.
 
@@ -40,7 +43,7 @@ For Rancher managed downstream clusters with SSO to NeuVector, these clusters ca
 
 ### Deploying NeuVector Prime through the Azure Marketplace
 
-A special billing interface is required to enable PAYG to your Azure account. This must be deployed, together with NeuVector from the Azure Marketplace listing for NeuVector. To deploy the billing adapter and NeuVector see the [Usage instructions](https://azuremarketplace.microsoft.com/en-us/home) (requires Azure login).
+A special billing interface is required to enable PAYG to your Azure account. This must be deployed, together with NeuVector from the Azure Marketplace listing for NeuVector. To deploy the billing adapter and NeuVector see the [Usage instructions](https://suse-enceladus.github.io/marketplace-docs/neuvector-prime/azure/).
 
 #### Setting the Admin Password
 It is required to set the admin password in the Azure create offer, "NeuVector Configuration" section. See the Usage instructions on the Azure marketplace listing for NeuVector for instructions.

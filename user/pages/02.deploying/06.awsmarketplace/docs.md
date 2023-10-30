@@ -8,7 +8,10 @@ taxonomy:
 
 NeuVector Prime supports monthly billing through your AWS account in a Pay-As-You-Go (PAYG) billing subscription for SUSE support of NeuVector.
 
-Usage is billed monthly based on the average number of nodes protected by NeuVector during the month. Please see the [NeuVector marketplace listing](https://aws.amazon.com/marketplace/pp/prodview-u2ciiono2w3h2?sr=0-3&ref_=beagle&applicationId=AWSMPContessa) for specific pricing tiers and other information.
+Usage is billed monthly based on the average number of nodes protected by NeuVector during the month. Please see the NeuVector marketplace listing for your region for specific pricing tiers and other information.
+
+- [NeuVector Prime with 24x7 Support (non-EU and non-UK only)](https://aws.amazon.com/marketplace/pp/prodview-u2ciiono2w3h2?sr=0-3&ref_=beagle&applicationId=AWSMPContessa)
+- [NeuVector Prime with 24x7 Support (EU and UK only)](https://aws.amazon.com/marketplace/pp/prodview-xkfyjdvvkuohs)
 
 NOTE: AWS Private Offers are available for NeuVector for special pricing situations in lieu of standard PAYG pricing.
 
@@ -44,7 +47,7 @@ For Rancher managed downstream clusters with SSO to NeuVector, these clusters ca
 
 ### Deploying NeuVector Prime through the AWS Marketplace
 
-A special billing interface is required to enable PAYG to your AWS account. This must be deployed, together with NeuVector from the AWS Marketplace listing for NeuVector. To deploy the billing adapter and NeuVector see the [Usage instructions](https://aws.amazon.com/marketplace/pp/prodview-u2ciiono2w3h2#pdp-usage) (requires AWS login).
+A special billing interface is required to enable PAYG to your AWS account. This must be deployed, together with NeuVector from the AWS Marketplace listing for NeuVector. To deploy the billing adapter and NeuVector see the Usage instructions for your region in the marketplace listing above.
 
 The helm install command uses defaults in the values.yaml file. Important defaults to check are the manager service type (LoadBalancer) and container run-time (containerd - which is the typical default for EKS clusters). The default admin username is disabled, and users are required to set a username and password through a secret prior to deployment.
 
