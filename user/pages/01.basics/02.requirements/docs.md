@@ -18,7 +18,8 @@ taxonomy:
 
 #### Supported Platforms
 * Officially supported linux distributions, SUSE Linux, Ubuntu, CentOS/Red Hat (Including all RHEL version e.g. 6/7/8), Debian, Rancher OS, CoreOS, AWS 'Bottlerocket'(see Note below) and Photon.
-* Officially supported container management systems, Kubernetes 1.19+, native docker, docker swarm, docker UCP/DataCenter, docker Cloud, SUSE Rancher (RKE, RKE2, K3s etc), Google GKE/Kubernetes, Amazon EKS, Microsoft Azure AKS, VMware Photon, RedHat OpenShift 4.6+ (3.x to 4.12 supported prior to NeuVector 5.2.x), IBM IKS, SUSE CaaS, Mirantis Kubernetes Engine, Nutanix Kubernetes Engine.
+* CoreOS is supported (November 2023) for CVE scanning through RHEL mapping table provided by RedHat. Once an official feed is published by RedHat for CoreOS it will be supported.
+* Officially supported Kubernetes and Docker compliant container management systems. The following platforms are tested with every release of NeuVector: Kubernetes 1.19+, SUSE Rancher (RKE, RKE2, K3s etc), RedHat OpenShift 4.6+ (3.x to 4.12 supported prior to NeuVector 5.2.x), Google GKE, Amazon EKS, Microsoft Azure AKS, IBM IKS, native docker, docker swarm. The following Kubernetes and docker compliant platforms are supported and have been verified to work with NeuVector: VMware Photon and Tanzu, SUSE CaaS, Oracle OKE, Mirantis Kubernetes Engine, Nutanix Kubernetes Engine, docker UCP/DataCenter, docker Cloud.
 * Docker run-time version: 1.9.0 and up; Docker API version: 1.21, CE and EE.
 * Containerd and CRI-O run-times (requires changes to volume paths in sample yamls). See changes required for Containerd in the Kubernetes deployment section and CRI-O in the OpenShift deployment section.
 * NeuVector is compatible with most commercially supported CNI's. Officially tested and supported are openshift ovs (subnet/multitenant), calico, flannel, cilium, antrea and public clouds (gke, aks, iks, eks).
@@ -28,7 +29,6 @@ taxonomy:
 AWS Bottlerocket Note: Must change path of the containerd socket specific to Bottleneck. Please see Kubernetes deployment section for details.
 
 #### Not Supported
-* CoreOS is not supported for CVE scanning, as there is no CVE feed published by the maintainers.
 * GKE Autopilot.
 * AWS ECS is no longer supported. (NOTE: No functionality has been actively removed for operating NeuVector on ECS deployments. However, testing on ECS is no longer being perfromed by SUSE. While protecting ECS worlloads with Neuvector likely will operate as expected, issues will not be investigated.)
 * Docker on Mac
