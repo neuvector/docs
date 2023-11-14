@@ -65,6 +65,12 @@ The following scanner environment variables can be used in the docker run comman
 - CLUSTER_JOIN_ADDR (optional), CLUSTER_JOIN_PORT (optional) - to send results to controller for use in Admission control rules (Kubernetes deployed controller).
 - CLUSTER_ADVERTISED_ADDR (optional) - if scanner is on different host than controller, to send results for use in Admission control rules (Kubernetes deployed controller).
 
+####Host Scanning in Standalone Mode
+Use the following command to scan the host. Note: Requires privileged mode.
+```
+docker run --rm --privileged  --pid=host neuvector/scanner -n
+```
+
 #### Manual Deployment of Multiple Scanners on Kubernetes
 To manually deploy scanners as part of an existing Kubernetes deployment, create a new role binding:
 
