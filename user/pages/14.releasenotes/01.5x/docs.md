@@ -6,6 +6,11 @@ taxonomy:
 
 ### Release Notes for 5.x
 
+#### 5.2.4 November 2023
+
+#####Bug Fixes
++ Azure AKS ValidatingWebhookConfiguration changes and error logging.
+
 #### 5.2.3 November 2023
 
 #####Enhancements
@@ -17,7 +22,7 @@ docker run --rm --privileged  --pid=host neuvector/scanner -n
 
 #####Bug Fixes
 + Scan on a node fails due to deadlocked docker cp / grpc issue.
-+ Azure AKS ValidatingWebhookConfiguration changes and error logging.
+
 
 #### 5.2.2-s1 October 2023
 
