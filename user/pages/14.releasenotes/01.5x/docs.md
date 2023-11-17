@@ -5,6 +5,7 @@ taxonomy:
 ---
 
 ### Release Notes for 5.x
+Note: To receive email notifications of new releases, please subscribe to this SUSE mailing list: https://lists.suse.com/mailman/listinfo/neuvector-updates
 
 #### 5.2.4 November 2023
 
