@@ -5,10 +5,10 @@ taxonomy:
 ---
 
 
-###Setting Up ADFS and NeuVector Integration
+### Setting Up ADFS and NeuVector Integration
 This section describes the setup steps in ADFS first, then in the NeuVector console.
 
-####ADFS Setup
+#### ADFS Setup
 
 1.From AD FS Management, right click on “Relying Party Trusts” and select “Add Relying Party Trust…”.
 
@@ -62,16 +62,33 @@ This section describes the setup steps in ADFS first, then in the NeuVector cons
 
 ![adfsSetup](adfs12-13.png)
 
-  
-####NeuVector Setup
+14.ADFS SamlResponseSignature needs to be either MessageOnly or MessageAndAssertion.  Use Get-AdfsRelyingPartyTrust command to verify or update it, for example:
+
+```
+Set-AdfsRelyingPartyTrust -TargetName NeuVector -SamlResponseSignature MessageAndAssertion
+```
+
+![adfsTroubleshooting](nv_adfs2.png)
+
+15.(Optional) To enable SAML Single Logout (SLO), in the properties of NeuVector in Relying Party Trusts, add a new SAML SLO endpoint and fill the same SAML Redirect URI but with `samlslo` suffix.
+
+![sloUrl](slo1.png)
+
+
+
+#### NeuVector Setup
 
 1.Identify Provider Single Sign-On URL
 + View Endpoints from AD FS Management > Service and use “SAML 2.0/WS-Federation” endpoint URL.
 + Example: https://&lt;adfs-fqdn>/adfs/ls
 
+Note: Make sure you use exactly the same protocol, e.g., https.  Otherwise SAML authentication will fail.
+
 2.Identity Provider Issuer
 + Right click on AD FS from AD FS Management console and select “Edit Federation Service Properties…”; use the “Federation Service identifier”.
 + Example: http://&lt;adfs-fqdn>/adfs/services/trust
+
+Note: Make sure you use exactly the same protocol, e.g., http.  Otherwise SAML authentication will fail.
 
 3.X.509 Certificate
 + From AD FS Management, select Service > Certificate, right click on Token-signing certificate and choose “View Certificate…”
@@ -79,27 +96,75 @@ This section describes the setup steps in ADFS first, then in the NeuVector cons
 + Save it as a Base-64 encoded x.509 (.CER) file
 + Copy and paste the contents of the file into the X.509 Certificate field
 
-4.Group claim
+4.(Optional) To enable SAML Single Logout (SLO), first generate a signing key pair.
+
+```
+openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt
+```
+
+Then, enable `SAML Single Logout` on NeuVector console and fill below fields
+- Identity Provider Single Logout URL
+  - The same endpoint of Provider Single Sign-On URL, e.g., `https://<adfs-fqdn>/adfs/ls`
+- Single Logout Signing Certificate
+  - The tls.crt you just generated
+- Single Logout Signing Key
+  - The tls.key you just generated
+
+Note: The signing key will not be retrivable via console anymore.  Make sure you keep a backup if you want to access it later.
+
+![sloNVSettings](slo2.png)
+
+5.Group claim
 + Enter the Outgoing claim name for the groups
 + Example: groups
 
-5.Default role
+6.Default role
 + Recommended to be “None” unless you want to allow any authenticated user a default role.
 
-6.Role map
+7.Role map
 + Set the group names of the users for the appropriate role.  (See screenshot example below.)
 
 ![NVadfsSetup](nv_adfs1.png)
 
+
 #### Mapping Groups to Roles and Namespaces
 Please see the [Users and Roles](/configuration/users#mapping-groups-to-roles-and-namespaces) section for how to map groups to preset and custom roles as well as namespaces in NeuVector.
 
- 
-###Troubleshooting
-1.ADFS SamlResponseSignature needs to be either MessageOnly or MessageAndAssertion.  Use Get-AdfsRelyingPartyTrust command to verify or update it.
 
-![adfsTroubleshooting](nv_adfs2.png)
+### Troubleshooting
 
+Sometimes, a misconfigured SAML integration won't provide useful information for troubleshooting on NeuVector console.  This is designed as such so we provide less information to an unauthorized user.
 
- 
+![Troubleshoot](troubleshoot1.png)
 
+However, when unexpected authentication error happens, you can still check NeuVector container's logs to see what happened. 
+
+For example, on Kubernetes, you can use `kubectl logs`
+
+```
+# kubectl logs -l app=neuvector-controller-pod
+...
+2023-11-29T05:18:14.497|ERRO|CTL|rest.handlerAuthLoginServer: User login failed - error=error validating response: missing Assertion element server=saml1
+```
+
+Here we list some common configuration errors and their error messages:
+
+#### Missing Assertion element
+
+```
+2023-11-29T05:18:14.497|ERRO|CTL|rest.handlerAuthLoginServer: User login failed - error=error validating response: missing Assertion element server=saml1
+```
+
+This happens when SAML SSO response that IdP generates doesn't include assertion section in their SAML response.  This implies IdP rejects the login request.  When this happens, make sure that the content of SSO URL and Issuer fields are consistent with what IdP provides.  (The protocol, e.g., http and https should match too.)
+
+#### No signature
+
+```
+2023-11-03T19:18:45.811|ERRO|CTL|rest.handlerAuthLoginServer: User login failed - error=no signature server=saml1
+```
+
+This happens when SAML SSO/SLO response doesn't come with a signature field in message body.  On some version of ADFS, signature is only included in assertion section by default, which NeuVector doesn't expect.  You can make SAML response include signature in message as well by running this command.
+
+```
+Set-AdfsRelyingPartyTrust -TargetName NeuVector -SamlResponseSignature MessageAndAssertion
+```
