@@ -70,10 +70,21 @@ Set-AdfsRelyingPartyTrust -TargetName NeuVector -SamlResponseSignature MessageAn
 
 ![adfsTroubleshooting](nv_adfs2.png)
 
-15.(Optional) To enable SAML Single Logout (SLO), in the properties of NeuVector in Relying Party Trusts, add a new SAML SLO endpoint and fill the same SAML Redirect URI but with `samlslo` suffix.
+15.(Optional) To enable SAML Single Logout (SLO), in the properties of NeuVector in Relying Party Trusts, select endpoints tab.  Then add a new SAML SLO endpoint and fill the same SAML Redirect URI but with `samlslo` suffix.
 
 ![sloUrl](slo1.png)
 
+After that, generate a signing key pair using below command.
+
+```
+openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt
+```
+
+Then, click signature tab and add the certificate you just generated.
+
+![sloUrl](slo3.png)
+
+The certificate and key will be used later in the following steps.
 
 
 #### NeuVector Setup
@@ -96,13 +107,7 @@ Note: Make sure you use exactly the same protocol, e.g., http.  Otherwise SAML a
 + Save it as a Base-64 encoded x.509 (.CER) file
 + Copy and paste the contents of the file into the X.509 Certificate field
 
-4.(Optional) To enable SAML Single Logout (SLO), first generate a signing key pair.
-
-```
-openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt
-```
-
-Then, enable `SAML Single Logout` on NeuVector console and fill below fields
+4.(Optional) To enable SAML Single Logout (SLO), first generate a signing key pair following the steps in ADFS setup section. Then, enable `SAML Single Logout` on NeuVector console and fill below fields
 - Identity Provider Single Logout URL
   - The same endpoint of Provider Single Sign-On URL, e.g., `https://<adfs-fqdn>/adfs/ls`
 - Single Logout Signing Certificate
