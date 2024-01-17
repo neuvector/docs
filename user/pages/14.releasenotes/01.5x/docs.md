@@ -7,6 +7,11 @@ taxonomy:
 ### Release Notes for 5.x
 Note: To receive email notifications of new releases, please subscribe to this SUSE mailing list: https://lists.suse.com/mailman/listinfo/neuvector-updates
 
+#### 5.2.4-s1 January 2023
+
+##### Security Patch Release
++ Remediates CVE-2023-6129 in openssl, and CVE-2023-46219, CVE-2023-46218 in curl.
+
 #### 5.2.4 November 2023
 
 #####Bug Fixes
