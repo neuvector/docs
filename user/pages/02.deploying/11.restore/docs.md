@@ -23,6 +23,6 @@ Manual backup and restore of configuration should be planned only as a last reso
 1. Use Helm with a ConfigMap for initial deployment and configuration.
 2. Use CRDs for defining policy such as network/process, admission control, and other rules.
 3. Run multiple controllers (minimum 3) to auto-sync configuration between running pods, and ensure they run on different hosts.
-4. Configure persistent storage (as part of step 1 to recover from any cluster wide failures where all controllers stop running.
+4. Configure persistent storage (as part of step 1) to recover from any cluster wide failures where all controllers stop running.
 5. Regularly backup configuration to timestamped backup files.
 6. Restore a cluster's NeuVector configuration from a backup file as a last resort, applying any CRDs after restoration that were new or changed since the previous backup.
