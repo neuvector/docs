@@ -1,20 +1,41 @@
-# NeuVector Docs
+# Website
 
-NeuVector documentation is written in Markdown language and uses [Grav](https://getgrav.org/) to manage the content. 
-A viewable version of these docs can be see at https://open-docs.neuvector.com
+This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
-# License
+### Installation
 
-Copyright © 2021-2024 [NeuVector Inc](https://neuvector.com). All Rights Reserved
+```
+$ yarn
+```
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+### Local Development
 
-[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+```
+$ yarn start
+```
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+
+### Build
+
+```
+$ yarn build
+```
+
+This command generates static content into the `build` directory and can be served using any static contents hosting service.
+
+### Deployment
+
+Using SSH:
+
+```
+$ USE_SSH=true yarn deploy
+```
+
+Not using SSH:
+
+```
+$ GIT_USER=<Your GitHub username> yarn deploy
+```
+
+If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
