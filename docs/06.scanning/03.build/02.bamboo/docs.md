@@ -13,13 +13,16 @@ Deploy the NeuVector Allinone or Controller container if you haven't already don
 In addition, make sure there is a NeuVector scanner container deployed and configured to connect to the Allinone or Controller. In 4.0 and later, the neuvector/scanner container must be deployed separate from the allinone or controller.
 
 #### Configure Global Settings
+
 Configure settings for the NeuVector Controller/Allinone including the NeuVector authentication as well as the registry authentication.
 ![global-image](bamboo_nv_global_config.png)
 
 #### Configure the Repository and Build Policy
+
 Create a task and enter the repository and tag to scan as well as the build policy to fail the build if vulnerabilities are detected. Enable layered scanning if the results should contain an analysis of vulnerabilities for each layer in the image.
 ![local-image](bamboo_nv_local_config_2.png)
 
 #### Review Results
+
 Review the results in the scan logs, including the scan summary, reason for failing if appropriate, and details for each CVE detected.
 ![fail-image](bamboo_set_criteria_to_fail_3.png)

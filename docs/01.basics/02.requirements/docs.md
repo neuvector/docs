@@ -17,6 +17,7 @@ taxonomy:
 * Recommended browser: Chrome for better performance
 
 #### Supported Platforms
+
 * Officially supported linux distributions, SUSE Linux, Ubuntu, CentOS/Red Hat (Including all RHEL version e.g. 6/7/8), Debian, Rancher OS, CoreOS, AWS 'Bottlerocket'(see Note below) and Photon.
 * CoreOS is supported (November 2023) for CVE scanning through RHEL mapping table provided by RedHat. Once an official feed is published by RedHat for CoreOS it will be supported.
 * Officially supported Kubernetes and Docker compliant container management systems. The following platforms are tested with every release of NeuVector: Kubernetes 1.19+, SUSE Rancher (RKE, RKE2, K3s etc), RedHat OpenShift 4.6+ (3.x to 4.12 supported prior to NeuVector 5.2.x), Google GKE, Amazon EKS, Microsoft Azure AKS, IBM IKS, native docker, docker swarm. The following Kubernetes and docker compliant platforms are supported and have been verified to work with NeuVector: VMware Photon and Tanzu, SUSE CaaS, Oracle OKE, Mirantis Kubernetes Engine, Nutanix Kubernetes Engine, docker UCP/DataCenter, docker Cloud.
@@ -29,6 +30,7 @@ taxonomy:
 AWS Bottlerocket Note: Must change path of the containerd socket specific to Bottleneck. Please see Kubernetes deployment section for details.
 
 #### Not Supported
+
 * GKE Autopilot.
 * AWS ECS is no longer supported. (NOTE: No functionality has been actively removed for operating NeuVector on ECS deployments. However, testing on ECS is no longer being perfromed by SUSE. While protecting ECS worlloads with Neuvector likely will operate as expected, issues will not be investigated.)
 * Docker on Mac
@@ -43,16 +45,21 @@ AWS Bottlerocket Note: Must change path of the containerd socket specific to Bot
 * Nested container host in a container tools used for simple testing. For example, deployment of a Kubernetes cluster using 'kind' https://kind.sigs.k8s.io/docs/user/configuration/.
 
 Note 1: PKS is field tested and requires enabling privileged containers to the plan/tile, and changing the yaml hostPath as follows for Allinone, Controller, Enforcer:
-<pre>
-<code>      hostPath:
-            path: /var/vcap/sys/run/docker/docker.sock</code>
-</pre>
 
-Note 2: NeuVector supports running on linux-based VMs on Mac/Windows using Vagrant, VirtualBox, VMware or other virtualized environments.
+```yaml
+            hostPath:
+            path: /var/vcap/sys/run/docker/docker.sock
+```
+
+:::note
+NeuVector supports running on linux-based VMs on Mac/Windows using Vagrant, VirtualBox, VMware or other virtualized environments.
+:::
 
 ##### Minikube 
+
 Please make the following changes to the Allinone deployment yaml.
-```
+
+```yaml
 apiVersion: apps/v1 <<-- required for k8s 1.19
 kind: DaemonSet
 metadata:
@@ -78,7 +85,9 @@ spec:
 ```
 
 #### Performance and Scaling
+
 As always, performance planning for NeuVector containers will depend on several factors, including:
+
 + (Controller & Scanner) Number and size of images in registry to be scanned (by Scanner) initially
 + (Enforcer) Services mode (Discover, Monitor, Protect), where Protect mode runs as an inline firewall 
 + (Enforcer) Type of network connections for workloads in Protect mode
@@ -92,6 +101,7 @@ For performance tuning of the Controller and Scanner for registry scanning, see 
 For additional advice on performance and sizing, see the [Onboarding/Best Practices section](/deploying/production?target=_blank#best-practices-tips-qa-for-deploying-and-managing-neuvector).
 
 ##### Throughput
+
 As the chart below shows, basic throughput benchmark tests showed a maximum throughput of 1.3 Gbps PER NODE on a small public cloud instance with 4 CPU cores. For example, a 10 node cluster would then be able to handle a maximum of 13 Gbps of throughput for the entire cluster for services in Protect mode. 
 
 ![Throughput](throughput.png)
@@ -99,6 +109,7 @@ As the chart below shows, basic throughput benchmark tests showed a maximum thro
 This throughput would be projected to scale up as dedicated a CPU is assigned to the Enforcer, or the CPU speed changes, and/or additional memory is allocated. Again, the scaling will be dependent on the type of network/application traffic of the workloads.
 
 ##### Latency 
+
 Latency is another performance metric which depends on the type of network connections. Similar to throughput, latency is not affected in Monitor mode, only for services in Protect (inline firewall) mode. Small packets or simple/fast services will generate a higher latency by NeuVector as a percentage, while larger packets or services requiring complex processing will show a lower percentage of added latency by the NeuVector enforcer.
 
 The table below shows the average latency of 2-10% benchmarked using the Redis benchmark tool. The Redis Benchmark uses fairly small packets, so the the latency with larger packets would expected to be lower.
@@ -116,7 +127,3 @@ The table below shows the average latency of 2-10% benchmarked using the Redis b
 
 
 The benchmark above shows average TPS of Protect mode versus Monitor mode, and the latency added for Protect mode for several tests in the benchmark. The main way to lower the actual latency (microseconds) in Protect mode is to run on a system with a faster CPU. You can find more details on this open source Redis benchmark tool at https://redis.io/topics/benchmarks.
-
-
-
-

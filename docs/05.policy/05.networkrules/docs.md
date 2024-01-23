@@ -5,6 +5,7 @@ taxonomy:
 ---
 
 ### Policy: Network Rules
+
 NeuVector automatically creates Network Rules from your running applications in Discover mode. You can also manually add them in any mode, Discover, Monitor, or Protect. Rules can be added or edited from the CLI or REST API.
 
 NeuVector uses a declarative policy which consist of rules which govern allowed and denied application layer connections. NeuVector analyzes and protects based on not only IP address and port, but by determining the actual network behavior based on application protocols. This enables NeuVector to automatically protect any new application containers regardless of IP address and port.
@@ -73,13 +74,15 @@ This improvement created some unexpected issues in some setup. If the above line
 A switch is available to disable this feature. Disabling it tells NeuVector not to identify that the connection is from "external" using X-FORWARDED-FOR headers. By default this is enabled, and the X-FORWARDED-FOR header is used in policy enforcement. To disable it, go to Settings -> Configuration, and disable the "X-Forwarded-For based policy match" setting.
 
 #### Special Enforcement for Istio ServiceEntry Destinations
+
 Egress network policy enforcement functionality was added in version 5.1.0 for pods to ServiceEntry destinations declared with Istio. Typically, a ServiceEntry defines how an external service referred by DNS name is resolved to a destination IP. Prior to v5.1, NeuVector could not detect and enforce rules for connections to a ServiceEntry, so all connections were classified as External. With 5.1, rules can be enforced for specific ServiceEntry destinations. Implicit violations will be reported for newly visible traffic if allow rules don't exist. These rules can be learned and auto-created under Discover mode. To allow this traffic, you can put the group into discover mode or create a custom group with destination addresses (or DNS name) and add a new network rule to this destination to allow the traffic.
 
 #### Virtual Host Based Network Policy 
 
 Custom groups can support virtual host based address groups. This enables a use case where two different FQDN addresses are resolved to the same IP address, but different rules for each FQDN should be enforced. A new custom group with ‘address=vh:xxx.yyy’ can be created using the ‘vh:’ indicator to enable this protection. A network rule can then use the custom group as the ‘From’ source based on the virtual hostname (instead of resolved IP address) to enforce different rules for virtual hosts. 
 
-###Split Mode Network Protections
+### Split Mode Network Protections
+
 Container Groups can have Process/File rules in a different mode than Network rules, as described [here](/policy/modes#network-service-policy-mode).
 
 ###Built-In Network Threat Detection
@@ -113,5 +116,3 @@ NeuVector includes the following detections for threats:
 + TCP small window attack
 + TCP split handshake attack
 + TCP Small MSS attack
-
-

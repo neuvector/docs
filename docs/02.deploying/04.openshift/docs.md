@@ -5,13 +5,14 @@ taxonomy:
 ---
 
 ### Deploy Separate NeuVector Components with RedHat OpenShift
+
 NeuVector is compatible with standard ovs SDN plug-ins as well as others such as flannel, weave, or calico. The samples below assume a standard ovs plug-in is used. This also assumes a local docker registry will be used (see instructions at end for creating the secret for dynamically pulling from neuvector or Docker Hub).
 
 NeuVector supports Helm-based deployment with a [Helm chart](https://github.com/neuvector/neuvector-helm) at https://github.com/neuvector/neuvector-helm. The NeuVector Operator can also be used to deploy and is based on the Helm chart. To deploy the latest NeuVector container versions using an Operator, please use either the Red Hat Certified Operator from Operator Hub or the community operator, as detailed in the [Operator section](/deploying/production/operators).
 
 To deploy manually, first pull the appropriate NeuVector containers from the NeuVector registry into your local registry. Note: the scanner image should be pulled regularly for CVE database updates from NeuVector.
 
-####NeuVector Images on Docker Hub
+#### NeuVector Images on Docker Hub
 
 <p>The images are on the NeuVector Docker Hub registry. Use the appropriate version tag for the manager, controller, enforcer, and leave the version as 'latest' for scanner and updater. For example:
 <li>neuvector/manager:5.2.0</li>
@@ -25,9 +26,9 @@ To deploy manually, first pull the appropriate NeuVector containers from the Neu
 <li>Update image names/tags to the current version on Docker hub, as shown above</li>
 <li>Leave the imagePullSecrets empty</li></p>
 
-###Deploy on OpenShift
+### Deploy on OpenShift
 
-```
+```shell
 docker login docker.io
 docker pull docker.io/neuvector/manager:<version>
 docker pull docker.io/neuvector/controller:<version>
@@ -39,26 +40,35 @@ docker logout docker.io
 
 The sample file below will deploy one manager, 3 controllers, and 2 scanner pods. It will deploy an enforcer on every node as a daemonset, including on the master node (if schedulable). See the bottom section for specifying dedicated manager or controller nodes using node labels. Note: It is not recommended to deploy (scale) more than one manager behind a load balancer due to potential session state issues. If you plan to use a PersistentVolume claim to store the backup of NeuVector config files, please see the general Backup/Persistent Data section in the [Production Deployment](/deploying/production#backups-and-persistent-data) overview.
 
-
 Next, set the route and allow privileged NeuVector containers using the instructions below. By default, OpenShift does not allow privileged containers. Also, by default OpenShift does not schedule pods on the Master node. See the instructions at the end to enable/disable this.
 
-NOTE: Please see the Enterprise Integration section for details on integration with OpenShift Role Based Access Controls (RBACs). 
-
+:::note
+Please see the Enterprise Integration section for details on integration with OpenShift Role Based Access Controls (RBACs). 
+:::
 
 1) Login as a normal user
-```
+
+```shell
 oc login -u <user_name>
 ```
 
 2) Create a new project.
- Note: If the --node-selector argument is used when creating a project this will restrict pod placement such as for the NeuVector enforcer to specific nodes.
-```
+
+:::note
+If the --node-selector argument is used when creating a project this will restrict pod placement such as for the NeuVector enforcer to specific nodes.
+:::
+
+```shell
 oc new-project neuvector
 ```
 
 3) Push NeuVector images to OpenShift docker registry. 
- Note: For OpenShift 4.6+, change docker-registry.default.svc below to image-registry.openshift-image-registry.svc in the commands below
-```
+ 
+:::note
+For OpenShift 4.6+, change docker-registry.default.svc below to image-registry.openshift-image-registry.svc in the commands below
+:::
+
+```shell
 docker login -u <user_name> -p `oc whoami -t` docker-registry.default.svc:5000
 docker tag docker.io/neuvector/enforcer:<version> docker-registry.default.svc:5000/neuvector/enforcer:<version>
 docker tag docker.io/neuvector/controller:<version> docker-registry.default.svc:5000/neuvector/controller:<version>
@@ -73,15 +83,19 @@ docker push docker-registry.default.svc:5000/neuvector/updater
 docker logout docker-registry.default.svc:5000
 ```
 
-Note: Please see the section Updating the CVE Database below for recommendations for keeping the latest scanner image updated in your registry.
+:::note
+Please see the section Updating the CVE Database below for recommendations for keeping the latest scanner image updated in your registry.
+:::
 
 4) Login as system:admin account
-```
+
+```shell
 oc login -u system:admin
 ```
 
 5) Create Service Accounts and Grant Access to the Privileged SCC
-```
+
+```shell
 oc create sa controller -n neuvector
 oc create sa enforcer -n neuvector
 oc create sa basic -n neuvector
@@ -91,32 +105,35 @@ oc -n neuvector adm policy add-scc-to-user privileged -z controller -z enforcer
 
 The following info will be added in the Privileged SCC
 users:
-```
+
+```yaml
 - system:serviceaccount:neuvector:controller
 - system:serviceaccount:neuvector:enforcer
+```
 
-```
 In OpenShift 4.6+ use the following to check:
+
+```shell
+oc get rolebinding system:openshift:scc:privileged -n neuvector -o wide
 ```
-# oc get rolebinding system:openshift:scc:privileged -n neuvector -o wide
-```
-```
+
+```shell
 NAME                              ROLE                                          AGE     USERS   GROUPS   SERVICEACCOUNTS
 system:openshift:scc:privileged   ClusterRole/system:openshift:scc:privileged   9m22s                    neuvector/controller, neuvector/enforcer
 ```
 
 6) Create the custom resources (CRD) for NeuVector security rules. For OpenShift 4.6+ (Kubernetes 1.19+):
-```
+
+```shell
 oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/crd-k8s-1.19.yaml
 oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/waf-crd-k8s-1.19.yaml
 oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/dlp-crd-k8s-1.19.yaml
 oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/admission-crd-k8s-1.19.yaml
 ```
-&nbsp;
 
 7) Add read permission to access the kubernetes API and OpenShift RBACs. IMPORTANT: The standard NeuVector 5.2+ deployment uses least-privileged service accounts instead of the default. See below if upgrading to 5.2+ from a version prior to 5.2.
 
-```
+```shell
 oc create clusterrole neuvector-binding-app --verb=get,list,watch,update --resource=nodes,pods,services,namespaces
 oc create clusterrole neuvector-binding-rbac --verb=get,list,watch --resource=rolebindings.rbac.authorization.k8s.io,roles.rbac.authorization.k8s.io,clusterrolebindings.rbac.authorization.k8s.io,clusterroles.rbac.authorization.k8s.io,imagestreams.image.openshift.io
 oc adm policy add-cluster-role-to-user neuvector-binding-app system:serviceaccount:neuvector:controller
@@ -142,9 +159,10 @@ oc create clusterrole neuvector-binding-co --verb=get,list --resource=clusterope
 oc adm policy add-cluster-role-to-user neuvector-binding-co system:serviceaccount:neuvector:enforcer system:serviceaccount:neuvector:controller
 ```
 
+:::note
+If upgrading from a previous NeuVector deployment (prior to 5.2), you will need to delete the old bindings, then create new ones:
 
-NOTE: If upgrading from a previous NeuVector deployment (prior to 5.2), you will need to delete the old bindings, then create new ones:
-```
+```shell
 oc delete clusterrolebinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-co
 oc delete rolebinding neuvector-admin -n neuvector
 oc adm policy add-cluster-role-to-user neuvector-binding-app system:serviceaccount:neuvector:controller
@@ -162,13 +180,17 @@ oc create clusterrole neuvector-binding-csp-usages --verb=get,create,update,dele
 oc adm policy add-cluster-role-to-user neuvector-binding-csp-usages system:serviceaccount:neuvector:controller
 oc adm policy add-cluster-role-to-user neuvector-binding-co system:serviceaccount:neuvector:enforcer system:serviceaccount:neuvector:controller
 ```
+:::
 
 8) Run the following command to check if the neuvector/controller, neuvector/enforcer and neuvector/updater service accounts are added successfully.
-```
+
+```shell
 oc get ClusterRoleBinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-csp-usages neuvector-binding-co -o wide
 ```
+
 Sample output:
-```
+
+```shell
 NAME                                                ROLE                                                            AGE   USERS   GROUPS   SERVICEACCOUNTS
 neuvector-binding-app                               ClusterRole/neuvector-binding-app                               56d                    neuvector/controller
 neuvector-binding-rbac                              ClusterRole/neuvector-binding-rbac                              34d                    neuvector/controller
@@ -184,21 +206,20 @@ neuvector-binding-co                                ClusterRole/neuvector-bindin
 ```
 
 And this command:
-```
+
+```shell
 oc get RoleBinding neuvector-binding-scanner -n neuvector -o wide
 ```
+
 Sample output:
-```
+
+```shell
 NAME                        ROLE                             AGE   USERS   GROUPS   SERVICEACCOUNTS
 neuvector-binding-scanner   Role/neuvector-binding-scanner   70d                    neuvector/updater, neuvector/controller
 ```
 
 9) (<strong>Optional</strong>) Create the Federation Master and/or Remote Multi-Cluster Management Services. If you plan to use the multi-cluster management functions in NeuVector, one cluster must have the Federation Master service deployed, and each remote cluster must have the Federation Worker service. For flexibility, you may choose to deploy both Master and Worker services on each cluster so any cluster can be a master or remote.
-<html>
-<head>
-<link rel="stylesheet" href="/serverless/toggle-box.css" type="text/css" />
-</head>
-<body>
+
 <div id="full-wrapper">
   <ul class="dopt-accordion fixed-height arrow-tri">  
 
@@ -209,7 +230,8 @@ neuvector-binding-scanner   Role/neuvector-binding-scanner   70d                
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
   <div class="wrap-content">
-<pre><code>
+
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -238,29 +260,30 @@ spec:
     protocol: TCP
   type: NodePort
   selector:
-    app: neuvector-controller-pod</code></pre>
+    app: neuvector-controller-pod
+```
   </div>
   </div>
   </li>
 </div>
-&nbsp;
-</body>
-</html>
-&nbsp; 
+
 Then create the appropriate service(s):
-```
+
+```shell
 oc create -f nv_master_worker.yaml
 ```
 
 10) Create the neuvector services and pods based on the sample yamls below. Important! Replace the &lt;version> tags for the manager, controller and enforcer image references in the yaml file. Also make any other modifications required for your deployment environment.
-```
+
+```shell
 oc create -f <compose file>
 ```
 
 That's it! You should be able to connect to the NeuVector console and login with admin:admin, e.g. https://&lt;public-ip>:8443
 
 To see how to access the console for the neuvector-webui service:
-```
+
+```shell
 oc get services -n neuvector
 ```
 
@@ -271,25 +294,22 @@ If you have created your own namespace instead of using “neuvector”, replace
 The name of your default OpenShift registry might have changed from docker-registry to openshift-image-registry. You may need to change the image registry for the manager, controller, and enforcer in the sample yaml. Note: Type NodePort is used for the fed-master and fed-worker services instead of LoadBalancer. You may need to adjust for your deployment.
 
 If using the CRI-O run-time, see the CRI-O sample below for the change made to the volumeMounts for controller and enforcer pods:
-```
+
+```yaml
             - mountPath: /var/run/crio/crio.sock
               name: runtime-sock
               readOnly: true
 ```
+
 Also change the volumes from docker.sock to:
-```
+
+```yaml
        - name: runtime-sock
           hostPath:
             path: /var/run/crio/crio.sock
 ```
 
-<html>
-<head>
-<link rel="stylesheet" href="/deploying/kubernetes/toggle-box.css" type="text/css" />
-</head>
-<body>
 <div id="full-wrapper">
-
 
 <!-- NOTE: ENTER CONTENT FOR TOGGLE BOXES HERE -->
 
@@ -298,13 +318,6 @@ Also change the volumes from docker.sock to:
 
   <div class="myspacer">
 
-<!-- NOTE: Set styling for toggle boxes here (theme, arrow style, height, etc.) 
-    Examples for alternate themes, arrow styles:
-    <ul class="dopt-accordion green fixed-height arrow-tri"> 
-    <ul class="dopt-accordion modern-theme turqoisesh arrow-plus">
-    <ul class="dopt-accordion modern-theme cool-blue arrow-img">
-    <ul class="dopt-accordion fixed-height arrow-tri"> 
--->
   <ul class="dopt-accordion fixed-height arrow-tri">  
 
 <!-- NOTE: Toggle Box #1, change acc1 to acc2 in two places, leave name when copying more toggle boxes -->
@@ -316,8 +329,8 @@ Also change the volumes from docker.sock to:
   <div class="accordion-content animated animation5">
 
   <div class="wrap-content">
-<pre><code>
 
+```yaml
 # neuvector yaml version for NeuVector 5.2.x on CRI-O
 apiVersion: v1
 kind: Service
@@ -663,7 +676,8 @@ spec:
             - /bin/sh
             - -c
             - TOKEN=`cat /var/run/secrets/kubernetes.io/serviceaccount/token`; /usr/bin/curl -kv -X PATCH -H "Authorization:Bearer $TOKEN" -H "Content-Type:application/strategic-merge-patch+json" -d '{"spec":{"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"'`date +%Y-%m-%dT%H:%M:%S%z`'"}}}}}' 'https://kubernetes.default/apis/apps/v1/namespaces/neuvector/deployments/neuvector-scanner-pod'
-          restartPolicy: Never</code></pre>
+          restartPolicy: Never
+  ```
   </div>    
   </div>
   </li>
@@ -671,18 +685,16 @@ spec:
 <!-- Final closing at end of all accordion boxes -->
   </div><!-- .myspacer --> 
 </div><!-- #full-wrapper -->
-&nbsp;
-</body>
-</html>
-
 
 **Master Node Taints and Tolerations**
 All taint info must match to schedule Enforcers on nodes. To check the taint info on a node (e.g. Master):
-```
+
+```shell
 $ oc get node taintnodename -o yaml
 ```
 Sample output:
-```
+
+```yaml
 spec:
   taints:
   - effect: NoSchedule
@@ -694,7 +706,8 @@ spec:
 ```
 
 If there is additional taints as above, add these to the sample yaml tolerations section:
-```
+
+```yaml
 spec:
   template:
     spec:
@@ -709,17 +722,17 @@ spec:
           value: myvalue
 ```
 
-
 ### Using Node Labels for Manager and Controller Nodes
+
 To control which nodes the Manager and Controller are deployed on, label each node. Replace <nodename> with the appropriate node name.
 
-```
+```shell
 oc label nodes <nodename> nvcontroller=true
 ```
 
 Then add a nodeSelector to the yaml file for the Manager and Controller deployment sections. For example:
 
-```
+```yaml
           - mountPath: /host/cgroup
               name: cgroup-vol
               readOnly: true
@@ -730,7 +743,7 @@ Then add a nodeSelector to the yaml file for the Manager and Controller deployme
 
 To prevent the enforcer from being deployed on a controller node, if it is a dedicated management node (without application containers to be monitored), add a nodeAffinity to the Enforcer yaml section. For example:
 
-```
+```yaml
 app: neuvector-enforcer-pod
     spec:
       affinity:
@@ -745,10 +758,10 @@ app: neuvector-enforcer-pod
 ```
 
 ### Updating the CVE Database on OpenShift Deployments
+
 The latest scanner image always contains the most recent CVE database update from NeuVector. For this reason, a version tag is not recommended when pulling the image. However, updating the CVE database requires regular pulling of the latest scanner image so the updater cron job can redeploy the scanner(s).  The samples above assume NeuVector images are pulled, tagged and pushed to a local OpenShift registry. Deployment is then from this registry instead of directly from neuvector (or the legacy NeuVector registry on docker hub). 
 
 To regularly update the CVE database, we recommend a script/cron job be created to pull the latest NeuVector scanner image and perform the tagging and pushing steps to the local registry. This will ensure the CVE database is being updated regularly and images and containers are being scanned for new vulnerabilities.
-
 
 ### Rolling Updates
 
@@ -757,26 +770,28 @@ Orchestration tools such as Kubernetes, RedHat OpenShift, and Rancher support ro
 Before starting the rolling updates, please pull and tag the NeuVector containers the same way as in the beginning of this page. You can pull the latest without a version number, but to trigger the rolling update you’ll need to tag the image with a version.
 
 For example, for the controller (latest):
-```
+
+```shell
 docker pull neuvector/controller
 ```
 
 Then to tag/push, if latest version is 2.0.1, same as step 3 at the top of this page:
-```
+
+```shell
 docker login -u <user_name> -p `oc whoami -t` docker-registry.default.svc:5000
 docker tag neuvector/controller docker-registry.default.svc:5000/neuvector/controller:2.0.1
 docker push docker-registry.default.svc:5000/neuvector/controller:2.0.1
-etc...
 ```
 
 You can now update your yaml file with these new versions and ‘apply’, or use the ‘oc set image ...’ command to trigger the rolling update. Please see the Kubernetes rolling update samples in this Production section to how to launch and monitor rolling updates of the NeuVector containers.
 
 The provided sample deployment yamls already configure the rolling update policy. If you are updating via the NeuVector Helm chart, please pull the latest chart to properly configure new features such as admission control, and delete the old cluster role and cluster role binding for NeuVector.
 
-
 ### Enabling the REST API
+
 To enable the rest API, port 10443 must be configured as follows:
-```
+
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -796,20 +811,21 @@ spec:
 
 The following commands can be used to enable/disable the scheduling on the master node.
 
-```
+```shell
 oc adm manage-node nodename --schedulable
 ```
 
-```
+```shell
 oc adm manage-node nodename --schedulable=false
 ```
 
-
 ### OpenShift Deployment in Non-Privileged Mode
+
 The following instructions can be used to deploy NeuVector without using privileged mode containers. The controller and enforcer deployments should be changed, which is shown in the excerpted snippets below.
 
 Controller:
-```
+
+```yaml
 spec:
   template:
     metadata:
@@ -844,7 +860,8 @@ spec:
 ```
 
 Enforcer:
-```
+
+```yaml
 spec:
   template:
     metadata:
@@ -875,7 +892,8 @@ spec:
 ```
 
 The following sample is a complete deployment reference using the cri-o run-time. For other run-times please make the appropriate changes to the volumes/volume mounts for the crio.sock.
-```
+
+```yaml
 # neuvector yaml version for NeuVector 5.x.x on cri-o oc version 4.6+
 apiVersion: v1
 kind: Service

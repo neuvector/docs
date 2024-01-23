@@ -18,48 +18,57 @@ NeuVector supports Helm-based deployment with a Helm chart at [https://github.co
 
 There is a separate section for OpenShift instructions, and Docker EE on Kubernetes has some special steps described in the Docker section.
 
-####NeuVector Images on Docker Hub
-<p>The images are on the NeuVector Docker Hub registry. Use the appropriate version tag for the manager, controller, enforcer, and leave the version as 'latest' for scanner and updater. For example:
-<li>neuvector/manager:5.2.0</li>
-<li>neuvector/controller:5.2.0</li>
-<li>neuvector/enforcer:5.2.0</li>
-<li>neuvector/scanner:latest</li>
-<li>neuvector/updater:latest</li></p>
-<p>Please be sure to update the image references in appropriate yaml files.</p>
-<p>If deploying with the current NeuVector Helm chart (v1.8.9+), the following changes should be made to values.yml:
-<li>Update the registry to docker.io</li>
-<li>Update image names/tags to the current version on Docker hub, as shown above</li>
-<li>Leave the imagePullSecrets empty</li></p>
+#### NeuVector Images on Docker Hub
 
-Note: If deploying from the Rancher Manager 2.6.5+ NeuVector chart, images are pulled automatically from the Rancher NeuVector mirrored image repo, and deploys into the cattle-neuvector-system namespace.
+The images are on the NeuVector Docker Hub registry. Use the appropriate version tag for the manager, controller, enforcer, and leave the version as 'latest' for scanner and updater. For example:
 
-###Deploy NeuVector
++ neuvector/manager:5.2.0
++ neuvector/controller:5.2.0
++ neuvector/enforcer:5.2.0
++ neuvector/scanner:latest
++ neuvector/updater:latest
 
-<ol><li>Create the NeuVector namespace and the required service accounts
-<pre>
-<code>kubectl create namespace neuvector
+Please be sure to update the image references in appropriate yaml files.
+
+If deploying with the current NeuVector Helm chart (v1.8.9+), the following changes should be made to values.yml:
+
++ Update the registry to docker.io
++ Update image names/tags to the current version on Docker hub, as shown above
++ Leave the imagePullSecrets empty
+
+:::note 
+If deploying from the Rancher Manager 2.6.5+ NeuVector chart, images are pulled automatically from the Rancher NeuVector mirrored image repo, and deploys into the cattle-neuvector-system namespace.
+:::
+
+### Deploy NeuVector
+
+<ol>
+<li>
+Create the NeuVector namespace and the required service accounts:
+
+```shell
+kubectl create namespace neuvector
 kubectl create sa controller -n neuvector
 kubectl create sa enforcer -n neuvector
 kubectl create sa basic -n neuvector
 kubectl create sa updater -n neuvector
-</code></pre>
+```
 </li>
-<li>(<strong>Optional</strong>) Create the NeuVector Pod Security Admission (PSA) or Pod Security Policy (PSP).
+<li>
+(<strong>Optional</strong>) Create the NeuVector Pod Security Admission (PSA) or Pod Security Policy (PSP).
  If you have enabled Pod Security Admission (aka Pod Security Standards) in Kubernetes 1.25+, or Pod Security Policies (prior to 1.25) in your Kubernetes cluster, add the following for NeuVector (for example, nv_psp.yaml). Note1: PSP is deprecated in Kubernetes 1.21 and will be totally removed in 1.25. Note2: The Manager and Scanner pods run without a uid. If your PSP has a rule `Run As User: Rule: MustRunAsNonRoot` then add the following into the sample yaml below (with appropriate value for ###):
-<pre>
-<code>
+
+```yaml
 securityContext:
-    runAsUser: ###</code></pre>
+    runAsUser: ###
+```
+
 For PSA in Kubernetes 1.25+, label the NeuVector namespace with privileged profile for deploying on a PSA enabled cluster.
-<pre>
-<code>
-$ kubectl label  namespace neuvector "pod-security.kubernetes.io/enforce=privileged"
-</code></pre>
-<html>
-<head>
-<link rel="stylesheet" href="/serverless/toggle-box.css" type="text/css" />
-</head>
-<body>
+
+```shell
+kubectl label  namespace neuvector "pod-security.kubernetes.io/enforce=privileged"
+```
+
 <div id="full-wrapper">
   <ul class="dopt-accordion fixed-height arrow-tri">  
 
@@ -69,8 +78,8 @@ $ kubectl label  namespace neuvector "pod-security.kubernetes.io/enforce=privile
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
   <div class="wrap-content">
-<pre>
-<code>
+
+```yaml
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
@@ -140,35 +149,38 @@ subjects:
   namespace: neuvector
 - kind: ServiceAccount
   name: enforcer
-  namespace: neuvector</code></pre>
+  namespace: neuvector
+```
   </div>
   </div>
   </li>
 </div>
-&nbsp;
-</body>
-</html>
 
 Then create the PSP
-<pre>
-<code>
-kubectl create -f nv_psp.yaml</code></pre>
+
+```shell
+kubectl create -f nv_psp.yaml
+```
 </li>
 <li>
 Create the custom resources (CRD) for NeuVector security rules. For Kubernetes 1.19+:
-<pre>
-<code>
+
+```shell
 kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/crd-k8s-1.19.yaml
 kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/waf-crd-k8s-1.19.yaml
 kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/dlp-crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/admission-crd-k8s-1.19.yaml</code></pre>
-
-&nbsp;
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/admission-crd-k8s-1.19.yaml
+```
 </li>
-<li>Add read permission to access the kubernetes API. IMPORTANT: The standard NeuVector 5.2+ deployment uses least-privileged service accounts instead of the default. See below if upgrading to 5.2+ from a version prior to 5.2.
+<li>
+Add read permission to access the kubernetes API. 
 
-<pre>
-<code>kubectl create clusterrole neuvector-binding-app --verb=get,list,watch,update --resource=nodes,pods,services,namespaces
+:::important
+The standard NeuVector 5.2+ deployment uses least-privileged service accounts instead of the default. See below if upgrading to 5.2+ from a version prior to 5.2.
+:::
+
+```shell
+kubectl create clusterrole neuvector-binding-app --verb=get,list,watch,update --resource=nodes,pods,services,namespaces
 kubectl create clusterrole neuvector-binding-rbac --verb=get,list,watch --resource=rolebindings.rbac.authorization.k8s.io,roles.rbac.authorization.k8s.io,clusterrolebindings.rbac.authorization.k8s.io,clusterroles.rbac.authorization.k8s.io
 kubectl create clusterrolebinding neuvector-binding-app --clusterrole=neuvector-binding-app --serviceaccount=neuvector:controller
 kubectl create clusterrolebinding neuvector-binding-rbac --clusterrole=neuvector-binding-rbac --serviceaccount=neuvector:controller
@@ -188,11 +200,14 @@ kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --cluster
 kubectl create role neuvector-binding-scanner --verb=get,patch,update,watch --resource=deployments -n neuvector
 kubectl create rolebinding neuvector-binding-scanner --role=neuvector-binding-scanner --serviceaccount=neuvector:updater --serviceaccount=neuvector:controller -n neuvector
 kubectl create clusterrole neuvector-binding-csp-usages --verb=get,create,update,delete --resource=cspadapterusagerecords
-kubectl create clusterrolebinding neuvector-binding-csp-usages --clusterrole=neuvector-binding-csp-usages --serviceaccount=neuvector:controller</code>
-</pre>
-NOTE: If upgrading NeuVector from a previous install, you will need to delete the old binding before creating the new least-privileged bindings:
-<pre>
-<code>kubectl delete clusterrolebinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules
+kubectl create clusterrolebinding neuvector-binding-csp-usages --clusterrole=neuvector-binding-csp-usages --serviceaccount=neuvector:controller
+```
+
+:::note
+If upgrading NeuVector from a previous install, you will need to delete the old binding before creating the new least-privileged bindings:
+
+```shell
+kubectl delete clusterrolebinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules
 kubectl delete rolebinding neuvector-admin -n neuvector
 kubectl create clusterrolebinding neuvector-binding-app --clusterrole=neuvector-binding-app --serviceaccount=neuvector:controller
 kubectl create clusterrolebinding neuvector-binding-rbac --clusterrole=neuvector-binding-rbac --serviceaccount=neuvector:controller
@@ -206,16 +221,21 @@ kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --cluster
 kubectl create role neuvector-binding-scanner --verb=get,patch,update,watch --resource=deployments -n neuvector
 kubectl create rolebinding neuvector-binding-scanner --role=neuvector-binding-scanner --serviceaccount=neuvector:updater --serviceaccount=neuvector:controller -n neuvector
 kubectl create clusterrole neuvector-binding-csp-usages --verb=get,create,update,delete --resource=cspadapterusagerecords
-kubectl create clusterrolebinding neuvector-binding-csp-usages --clusterrole=neuvector-binding-csp-usages --serviceaccount=neuvector:controller</code>
-</pre>
+kubectl create clusterrolebinding neuvector-binding-csp-usages --clusterrole=neuvector-binding-csp-usages --serviceaccount=neuvector:controller
+```
+:::
 </li>
-<li>Run the following commands to check if the neuvector/controller and neuvector/updater service accounts are added successfully.
-<pre>
-<code>kubectl get ClusterRoleBinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-csp-usages -o wide</code>
-</pre>
+<li>
+Run the following commands to check if the neuvector/controller and neuvector/updater service accounts are added successfully.
+
+```shell
+kubectl get ClusterRoleBinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-csp-usages -o wide
+```
+
 Sample output:
-<pre>
-<code>NAME                                                ROLE                                                            AGE   USERS   GROUPS   SERVICEACCOUNTS
+
+```shell
+NAME                                                ROLE                                                            AGE   USERS   GROUPS   SERVICEACCOUNTS
 neuvector-binding-app                               ClusterRole/neuvector-binding-app                               56d                    neuvector/controller
 neuvector-binding-rbac                              ClusterRole/neuvector-binding-rbac                              34d                    neuvector/controller
 neuvector-binding-admission                         ClusterRole/neuvector-binding-admission                         72d                    neuvector/controller
@@ -225,24 +245,24 @@ neuvector-binding-view                              ClusterRole/view            
 neuvector-binding-nvwafsecurityrules                ClusterRole/neuvector-binding-nvwafsecurityrules                72d                    neuvector/controller
 neuvector-binding-nvadmissioncontrolsecurityrules   ClusterRole/neuvector-binding-nvadmissioncontrolsecurityrules   72d                    neuvector/controller
 neuvector-binding-nvdlpsecurityrules                ClusterRole/neuvector-binding-nvdlpsecurityrules                72d                    neuvector/controller
-neuvector-binding-csp-usages                        ClusterRole/neuvector-binding-csp-usages                        24d                    neuvector/controller</code>
-</pre>
+neuvector-binding-csp-usages                        ClusterRole/neuvector-binding-csp-usages                        24d                    neuvector/controller
+```
+
 And this command:
-<pre>
-<code>kubectl get RoleBinding neuvector-binding-scanner -n neuvector -o wide</code>
-</pre>
+
+```shell
+kubectl get RoleBinding neuvector-binding-scanner -n neuvector -o wide
+```
+
 Sample output:
-<pre><code>NAME                        ROLE                             AGE   USERS   GROUPS   SERVICEACCOUNTS
+
+```shell
+NAME                        ROLE                             AGE   USERS   GROUPS   SERVICEACCOUNTS
 neuvector-binding-scanner   Role/neuvector-binding-scanner   70d                    neuvector/updater, neuvector/controller
-</code>
-</pre>
+```
 </li>
 <li>(<strong>Optional</strong>) Create the Federation Master and/or Remote Multi-Cluster Management Services. If you plan to use the multi-cluster management functions in NeuVector, one cluster must have the Federation Master service deployed, and each remote cluster must have the Federation Worker service. For flexibility, you may choose to deploy both Master and Worker services on each cluster so any cluster can be a master or remote.
-<html>
-<head>
-<link rel="stylesheet" href="/serverless/toggle-box.css" type="text/css" />
-</head>
-<body>
+
 <div id="full-wrapper">
   <ul class="dopt-accordion fixed-height arrow-tri">  
 
@@ -252,8 +272,8 @@ neuvector-binding-scanner   Role/neuvector-binding-scanner   70d                
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
   <div class="wrap-content">
-<pre>
-<code>
+
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -282,59 +302,75 @@ spec:
     protocol: TCP
   type: LoadBalancer
   selector:
-    app: neuvector-controller-pod</code></pre>
+    app: neuvector-controller-pod
+```
   </div>   
   </div>
   </li>
 </div>
-&nbsp;
-</body>
-</html>
-&nbsp; 
+
 Then create the appropriate service(s):
-<pre>
-<code>
-kubectl create -f nv_master_worker.yaml</code></pre>
+
+```shell
+kubectl create -f nv_master_worker.yaml
+```
+
 </li>
-<li>Create the primary NeuVector services and pods using the preset version commands or modify the sample yamls below. The preset versions invoke a LoadBalancer for the NeuVector Console. If using the sample yaml files below replace the image names and &lt;version> tags for the manager, controller and enforcer image references in the yaml file. Also make any other modifications required for your deployment environment (such as LoadBalancer/NodePort/Ingress for manager access etc).
+<li>
+Create the primary NeuVector services and pods using the preset version commands or modify the sample yamls below. The preset versions invoke a LoadBalancer for the NeuVector Console. If using the sample yaml files below replace the image names and &lt;version> tags for the manager, controller and enforcer image references in the yaml file. Also make any other modifications required for your deployment environment (such as LoadBalancer/NodePort/Ingress for manager access etc).
 For general containerd runtime (non Rancher/K3s)
-<pre>
-<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/neuvector-containerd-k8s.yaml</code></pre>
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/neuvector-containerd-k8s.yaml
+```
+
 For 5.2.0 with Rancher on K3s containerd run-time:
-<pre>
-<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/neuvector-rancher-containerd-k3s.yaml</code></pre>
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/neuvector-rancher-containerd-k3s.yaml
+```
+
 For 5.2.0 with docker run-time:
-<pre>
-<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/neuvector-docker-k8s.yaml</code></pre>
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/neuvector-docker-k8s.yaml
+```
+
 For 5.2.0 with AWS Bottlerocket run-time:
-<pre>
-<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/neuvector-aws-bottlerocket-k8s.yaml</code></pre>
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/neuvector-aws-bottlerocket-k8s.yaml
+```
+
 Or, if modifying any of the above yaml or samples from below:
-<pre>
-<code>kubectl create -f neuvector.yaml</code></pre>
+
+```shell
+kubectl create -f neuvector.yaml
+```
+
 
 That's it! You should be able to connect to the NeuVector console and login with admin:admin, e.g. https://&lt;public-ip>:8443
 
+</li>
+</ol>
 
-</li></ol>
-NOTE: The nodeport service specified in the neuvector.yaml file will open a random port on all kubernetes nodes for the NeuVector management web console port. Alternatively, you can use a LoadBalancer or Ingress, using a public IP and default port 8443. For nodeport, be sure to open access through firewalls for that port, if needed. If you want to see which port is open on the host nodes, please do the following commands.
-```
+:::note
+The nodeport service specified in the neuvector.yaml file will open a random port on all kubernetes nodes for the NeuVector management web console port. Alternatively, you can use a LoadBalancer or Ingress, using a public IP and default port 8443. For nodeport, be sure to open access through firewalls for that port, if needed. If you want to see which port is open on the host nodes, please do the following commands:
+
+```shell
 kubectl get svc -n neuvector
 ```
+
 And you will see something like:
-```
+
+```shell
 NAME                          CLUSTER-IP      EXTERNAL-IP   PORT(S)                                          AGE
 neuvector-service-webui     10.100.195.99     <nodes>       8443:30257/TCP                                   15m
 ```
 
 If you have created your own namespace instead of using “neuvector”, replace all instances of “namespace: neuvector” and other namespace references with your namespace in the sample yaml files below.
+:::
 
-
-<html>
-<head>
-<link rel="stylesheet" href="/deploying/kubernetes/toggle-box.css" type="text/css" />
-</head>
-<body>
 <div id="full-wrapper">
 
 <!-- NOTE: ENTER CONTENT FOR TOGGLE BOXES HERE -->
@@ -343,13 +379,6 @@ If you have created your own namespace instead of using “neuvector”, replace
 <!-- seperator -->
   <div class="myspacer">
 
-<!-- NOTE: Set styling for toggle boxes here (theme, arrow style, height, etc.) 
-    Examples for alternate themes, arrow styles:
-    <ul class="dopt-accordion green fixed-height arrow-tri"> 
-    <ul class="dopt-accordion modern-theme turqoisesh arrow-plus">
-    <ul class="dopt-accordion modern-theme cool-blue arrow-img">
-    <ul class="dopt-accordion fixed-height arrow-tri"> 
--->
   <ul class="dopt-accordion fixed-height arrow-tri">  
 
 <!-- NOTE: Toggle Box #1 -->
@@ -360,8 +389,8 @@ If you have created your own namespace instead of using “neuvector”, replace
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
   <div class="wrap-content">
-<pre>
-<code>
+
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -460,7 +489,6 @@ spec:
       restartPolicy: Always
 
 ---
-
 
 apiVersion: apps/v1
 kind: Deployment
@@ -691,7 +719,9 @@ spec:
             - /bin/sh
             - -c
             - TOKEN=`cat /var/run/secrets/kubernetes.io/serviceaccount/token`; /usr/bin/curl -kv -X PATCH -H "Authorization:Bearer $TOKEN" -H "Content-Type:application/strategic-merge-patch+json" -d '{"spec":{"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"'`date +%Y-%m-%dT%H:%M:%S%z`'"}}}}}' 'https://kubernetes.default/apis/apps/v1/namespaces/neuvector/deployments/neuvector-scanner-pod'
-          restartPolicy: Never</code></pre>
+          restartPolicy: Never
+```
+
   </div><!-- End .wrap-content -->    
   </div><!-- End .accordion-content -->
   </li>
@@ -704,8 +734,8 @@ spec:
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
   <div class="wrap-content">
-<pre>
-<code>
+
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -1034,7 +1064,9 @@ spec:
             - /bin/sh
             - -c
             - TOKEN=`cat /var/run/secrets/kubernetes.io/serviceaccount/token`; /usr/bin/curl -kv -X PATCH -H "Authorization:Bearer $TOKEN" -H "Content-Type:application/strategic-merge-patch+json" -d '{"spec":{"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"'`date +%Y-%m-%dT%H:%M:%S%z`'"}}}}}' 'https://kubernetes.default/apis/apps/v1/namespaces/neuvector/deployments/neuvector-scanner-pod'
-          restartPolicy: Never</code></pre>
+          restartPolicy: Never
+```
+
   </div><!-- End .wrap-content -->    
   </div><!-- End .accordion-content -->
   </li>
@@ -1046,8 +1078,8 @@ spec:
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
   <div class="wrap-content">
-<pre>
-<code>
+
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -1376,7 +1408,9 @@ spec:
             - /bin/sh
             - -c
             - TOKEN=`cat /var/run/secrets/kubernetes.io/serviceaccount/token`; /usr/bin/curl -kv -X PATCH -H "Authorization:Bearer $TOKEN" -H "Content-Type:application/strategic-merge-patch+json" -d '{"spec":{"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"'`date +%Y-%m-%dT%H:%M:%S%z`'"}}}}}' 'https://kubernetes.default/apis/apps/v1/namespaces/neuvector/deployments/neuvector-scanner-pod'
-          restartPolicy: Never</code></pre>
+          restartPolicy: Never
+```
+
   </div><!-- End .wrap-content -->    
   </div><!-- End .accordion-content -->
   </li>
@@ -1388,8 +1422,8 @@ spec:
   <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
   <div class="wrap-content">
-<pre>
-<code>
+
+```yaml
 # neuvector yaml version for 5.x.x AWS Bottlerocket containerd
 apiVersion: v1
 kind: Service
@@ -1719,7 +1753,9 @@ spec:
             - /bin/sh
             - -c
             - TOKEN=`cat /var/run/secrets/kubernetes.io/serviceaccount/token`; /usr/bin/curl -kv -X PATCH -H "Authorization:Bearer $TOKEN" -H "Content-Type:application/strategic-merge-patch+json" -d '{"spec":{"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"'`date +%Y-%m-%dT%H:%M:%S%z`'"}}}}}' 'https://kubernetes.default/apis/apps/v1/namespaces/neuvector/deployments/neuvector-scanner-pod'
-          restartPolicy: Never</code></pre>
+          restartPolicy: Never
+```
+
   </div><!-- End .wrap-content -->    
   </div><!-- End .accordion-content -->
   </li>
@@ -1727,24 +1763,28 @@ spec:
 <!-- Final closing at end of all accordion boxes -->
   </div><!-- .myspacer --> 
 </div><!-- #full-wrapper -->
-</body>
-</html>
 
-####Containerd Run-time
+#### Containerd Run-time
+
 If using the containerd run-time instead of docker, the volumeMounts for controller and enforcer pods in the sample yamls change to:
-```
+
+```yaml
             - mountPath: /run/containerd/containerd.sock
               name: runtime-sock
               readOnly: true
 ```
+
 And the volumes change from docker.sock to:
-```
+
+```yaml
        - name: runtime-sock
           hostPath:
             path: /run/containerd/containerd.sock
 ```
+
 For SUSE K3s containerd deployments, change the volumes path to /k3s/:
-```
+
+```yaml
           volumeMounts:
             ...
             - mountPath: /run/containerd/containerd.sock
@@ -1758,8 +1798,10 @@ For SUSE K3s containerd deployments, change the volumes path to /k3s/:
             path: /run/k3s/containerd/containerd.sock
         ...
 ```
+
 Or for the AWS Bottlerocket OS with containerd:
-```
+
+```yaml
           volumeMounts:
             ...
             - mountPath: /run/containerd/containerd.sock
@@ -1774,21 +1816,26 @@ Or for the AWS Bottlerocket OS with containerd:
         ...
 ```
 
-
 <strong>PKS Change</strong>
-Note: PKS is field tested and requires enabling privileged containers to the plan/tile, and changing the yaml hostPath as follows for Allinone, Controller, Enforcer:
-<pre>
-<code>      hostPath:
-            path: /var/vcap/sys/run/docker/docker.sock</code>
-</pre>
+:::note
+PKS is field tested and requires enabling privileged containers to the plan/tile, and changing the yaml hostPath as follows for Allinone, Controller, Enforcer:
+
+```yaml
+      hostPath:
+            path: /var/vcap/sys/run/docker/docker.sock
+```
+:::
 
 **Master Node Taints and Tolerations**
 All taint info must match to schedule Enforcers on nodes. To check the taint info on a node (e.g. Master):
-```
+
+```shell
 $ kubectl get node taintnodename -o yaml
 ```
+
 Sample output:
-```
+
+```yaml
 spec:
   taints:
   - effect: NoSchedule
@@ -1800,7 +1847,8 @@ spec:
 ```
 
 If there is additional taints as above, add these to the sample yaml tolerations section:
-```
+
+```yaml
 spec:
   template:
     spec:
@@ -1815,17 +1863,17 @@ spec:
           value: myvalue
 ```
 
-
 ### Using Node Labels for Manager and Controller Nodes
+
 To control which nodes the Manager and Controller are deployed on, label each node. Replace nodename with the appropriate node name (‘kubectl get nodes’). Note: By default Kubernetes will not schedule pods on the master node. 
 
-```
+```shell
 kubectl label nodes nodename nvcontroller=true
 ```
 
 Then add a nodeSelector to the yaml file for the Manager and Controller deployment sections. For example:
 
-```
+```yaml
           - mountPath: /host/cgroup
               name: cgroup-vol
               readOnly: true
@@ -1836,7 +1884,7 @@ Then add a nodeSelector to the yaml file for the Manager and Controller deployme
 
 To prevent the enforcer from being deployed on a controller node, if it is a dedicated management node (without application containers to be monitored), add a nodeAffinity to the Enforcer yaml section. For example:
 
-```
+```yaml
 app: neuvector-enforcer-pod
     spec:
       affinity:
@@ -1856,43 +1904,49 @@ Orchestration tools such as Kubernetes, RedHat OpenShift, and Rancher support ro
 
 The provided sample deployment yamls already configure the rolling update policy. If you are updating via the NeuVector Helm chart, please pull the latest chart to properly configure new features such as admission control, and delete the old cluster role and cluster role binding for NeuVector. If you are updating via Kubernetes you can manually update to a new version with the sample commands below. 
 
-
 #### Sample Kubernetes Rolling Update 
 
 For upgrades which just need to update to a new image version, you can use this simple approach.
 
 If your Deployment or Daemonset is already running, you can change the yaml file to the new version, then apply the update:
-```
+
+```shell
 kubectl apply -f <yaml file>
 ```
 
 To update to a new version of NeuVector from the command line.
 
 For controller as Deployment (also do for manager)
-```
+
+```shell
 kubectl set image deployment/neuvector-controller-pod neuvector-controller-pod=neuvector/controller:2.4.1 -n neuvector
 ```
+
 For any container as a DaemonSet:
-```
+
+```shell
 kubectl set image -n neuvector ds/neuvector-enforcer-pod neuvector-enforcer-pod=neuvector/enforcer:2.4.1
 ```
 
 To check the status of the rolling update:
-```
+
+```shell
 kubectl rollout status -n neuvector ds/neuvector-enforcer-pod
 kubectl rollout status -n neuvector deployment/neuvector-controller-pod
 ```
 
 To rollback the update:
-```
+
+```shell
 kubectl rollout undo -n neuvector ds/neuvector-enforcer-pod
 kubectl rollout undo -n neuvector deployment/neuvector-controller-pod
 ```
 
 ### Expose REST API in Kubernetes
+
 To expose the REST API for access from outside of the Kubernetes cluster, here is a sample yaml file:
 
-```
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -1911,10 +1965,12 @@ spec:
 Please see the Automation section for more info on the REST API.
 
 ### Kubernetes Deployment in Non-Privileged Mode
+
 The following instructions can be used to deploy NeuVector without using privileged mode containers. The controller and enforcer deployments should be changed, which is shown in the excerpted snippets below.
 
 Controller (1.19+):
-```
+
+```yaml
 spec:
   template:
     metadata:
@@ -1939,7 +1995,8 @@ spec:
 ```
 
 Enforcer:
-```
+
+```yaml
 spec:
   template:
     metadata:
@@ -1962,7 +2019,8 @@ spec:
 ```
 
 The following sample is a complete deployment reference (Kubernetes 1.19+) using the containerd run-time. For docker or other run-times please see the required changes shown after it.
-```
+
+```yaml
 # neuvector yaml version for 5.x.x on containerd runtime
 apiVersion: v1
 kind: Service
@@ -2309,23 +2367,26 @@ spec:
           restartPolicy: Never
 ```
 
-
 <strong>Docker Run-time</strong>
 If using the docker run-time instead of containerd, the volumeMounts for controller and enforcer pods in the sample yamls change to:
-```
+
+```yaml
             - mountPath: /var/run/docker.sock
               name: docker-sock
               readOnly: true
 ```
+
 And the volumes change from runtime.sock to:
-```
+
+```yaml
        - name: docker-sock
           hostPath:
             path: /var/run/docker.sock
 ```
 
 Or for the AWS Bottlerocket OS with containerd:
-```
+
+```yaml
           volumeMounts:
             ...
             - mountPath: /run/containerd/containerd.sock
@@ -2340,10 +2401,13 @@ Or for the AWS Bottlerocket OS with containerd:
         ...
 ```
 
-
 <strong>PKS Change</strong>
-Note: PKS is field tested and requires enabling privileged containers to the plan/tile, and changing the yaml hostPath as follows for Allinone, Controller, Enforcer:
-<pre>
-<code>      hostPath:
-            path: /var/vcap/sys/run/docker/docker.sock</code>
-</pre>
+
+:::note
+PKS is field tested and requires enabling privileged containers to the plan/tile, and changing the yaml hostPath as follows for Allinone, Controller, Enforcer:
+
+```yaml
+      hostPath:
+            path: /var/vcap/sys/run/docker/docker.sock
+```
+:::

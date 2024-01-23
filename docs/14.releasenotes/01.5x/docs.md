@@ -5,39 +5,48 @@ taxonomy:
 ---
 
 ### Release Notes for 5.x
-Note: To receive email notifications of new releases, please subscribe to this SUSE mailing list: https://lists.suse.com/mailman/listinfo/neuvector-updates
+
+:::note
+To receive email notifications of new releases, please subscribe to this SUSE mailing list: https://lists.suse.com/mailman/listinfo/neuvector-updates
+:::
 
 #### 5.2.4-s1 January 2024
 
 ##### Security Patch Release
+
 + Remediates CVE-2023-6129 in openssl, and CVE-2023-46219, CVE-2023-46218 in curl.
 
 #### 5.2.4 November 2023
 
-#####Bug Fixes
+##### Bug Fixes
+
 + Azure AKS ValidatingWebhookConfiguration changes and error logging.
 
 #### 5.2.3 November 2023
 
-#####Enhancements
+##### Enhancements
+
 + Add support for NVD API 2.0 in Scanner.
 + Scan the container host in scanner standalone mode.
-```
+
+```shell
 docker run --rm --privileged  --pid=host neuvector/scanner -n
 ```
 
-#####Bug Fixes
-+ Scan on a node fails due to deadlocked docker cp / grpc issue.
+##### Bug Fixes
 
++ Scan on a node fails due to deadlocked docker cp / grpc issue.
 
 #### 5.2.2-s1 October 2023
 
-#####Security Update
+##### Security Update
+
 + Update packages to remediate CVEs including High CVE-2023-38545 and CVE-2023-43804.
 
 #### 5.2.2 October 2023
 
 ##### Security Advisory for CVE-2023-32188
+
 + Remediate CVE-2023-32188 “JWT token compromise can allow malicious actions including Remote Code Execution (RCE)” by auto-generating certificate used for signing JWT token upon deployment and upgrade, and auto-generating Manager/RESTful API certificate during Helm based deployments.
   - Certificate for JWT-signing is created automatically by controller with validity of 90days and rotated automatically.
   - Auto-generation of Manager, REST API, and registry adapter certificate requires using Helm-based install using NeuVector helm version 2.6.3 or later. 
@@ -47,8 +56,8 @@ docker run --rm --privileged  --pid=host neuvector/scanner -n
 + Add additional controls on custom compliance scripts. By default, custom script are now not allowed to be added, unless the environment variable CUSTOM_CHECK_CONTROL is added to Controller and Enforcer. Values are "disable" (default, not allowed), "strict" (admin role only), or "loose" (admin, compliance, and runtime-policy roles).
 + Prevent LDAP injection - username field is escaped.
 
-
 ##### Enhancements
+
 + Add additional scan data to CVE results sent by SYSLOG for layered scans
 + Support NVD API 2.0 for scan CVE database
 + Provide container image build date in Assets -> Container details
@@ -59,6 +68,7 @@ docker run --rm --privileged  --pid=host neuvector/scanner -n
 + Add more options for CVE report criteria in Response Rules. Example 1 - "cve-high-with-fix:X" means: When # of (high vulnerability that have been fixed) >= X, trigger the response rule. Example 2 - "cve-high-with-fix:X/Y" means: When # of (high vulnerability that were reported Y days ago & have been fixed) >= X, trigger the response rule.
 
 ##### Bug Fixes
+
 + Export of group policy does not return any actual YAML contents
 + Improve pruning of namespaces with dedicated function
 + NeuVector namespace user cannot see assets-->namespaces
@@ -66,7 +76,9 @@ docker run --rm --privileged  --pid=host neuvector/scanner -n
 + Provide workaround for part of CRD groups which cannot be pruned successfully after namespaces are deleted.
 
 #### 5.2.1 August 2023
+
 ##### Enhancements
+
 + Report layered scan results and additional CVE data in SYSLOG messages. This is enabled through a checkbox in Settings -> Configuration -> SYSLOG
 + Export NIST 800-53 mappings (to docker CIS benchmarks) in the exported csv compliance report
 + Support Proxy setting in image signature verification
@@ -75,6 +87,7 @@ docker run --rm --privileged  --pid=host neuvector/scanner -n
 + Add Last Modified field to filter for vulnerabilities report printing, as well as Advanced Filter in Vulnerabilities view
 
 ##### Bug fixes
+
 + Do not create default admin with default password in initial NeuVector deployment for AWS billing (CSP adapter) offering, requiring user to use a secret to create admin username and password
 + Fix .json file which increased size and crashed a kubernetes node
 + Improve SQL injection detection logic
@@ -111,6 +124,7 @@ docker run --rm --privileged  --pid=host neuvector/scanner -n
 + Add support for Kubernetes 1.27 and OpenShift 4.12
 
 ##### Bug Fixes
+
 + Reduce repeating logs in enforcer/controller logs.
 + Multiple clusters page does not render.
 + Empty group auto-removal takes 2 hours to delete instead of 1 hour according to schedule.
@@ -121,7 +135,8 @@ docker run --rm --privileged  --pid=host neuvector/scanner -n
 + Default service account token of the namespace mounted in each pod is too highly privileged.
 + Despite defining the network rules, violations getting logged under security events (false positives) when the container has stopped due to out of memory (OOM) error.
 + Allow user to disable/enable detection and protection against unmanaged container in cluster. This can be set through the Manager CLI:
-```
+
+```shell
 set system detect_unmanaged_wl status -h
 Usage: cli set system detect_unmanaged_wl status [OPTIONS] {true|false}
 
@@ -129,11 +144,11 @@ Usage: cli set system detect_unmanaged_wl status [OPTIONS] {true|false}
 ```
 
 ##### Other
+
 + Add "leastPrivilege" setting in Helm chart. Add helm option for New_Service_Profile_Baseline. A new Helm chart (core) version is published for 5.2.
 + Enable AWS Marketplace (billing adapter) integration settings in Helm chart.
 + Update configmap to support new features (multiple ADFS certificates, zero drift, New_Service_Profile_Baseline, SYSLOG TLS, user timeout)
 + Update supported Kubernetes versions to 1.19+, and OpenShift 4.6+ (1.19+ with CRI-O)
-
 
 #### 5.1.3 May 2023 
 
@@ -155,9 +170,9 @@ Usage: cli set system detect_unmanaged_wl status [OPTIONS] {true|false}
 + Multiple clusters page does not render properly when requests are high.
 + Registry detail (bottom) pane not updating.
 
-
 ##### Scanner Sample Output
-```
+
+```shell
 Image: https://registry.hub.docker.comlibrary/alpine:3.4
 Base OS: alpine:3.4.6
 TOTAL: 6, HIGH: 1, MEDIUM: 5, LOW: 0, UNKNOWN: 0
@@ -178,7 +193,6 @@ TOTAL: 6, HIGH: 1, MEDIUM: 5, LOW: 0, UNKNOWN: 0
 └─────────┴───────────────┴──────────┴───────────┴───────────────┴────────────┘
 ```
 
-
 #### 5.1.2 March 2023 
 
 ##### Enhancements 
@@ -196,24 +210,29 @@ TOTAL: 6, HIGH: 1, MEDIUM: 5, LOW: 0, UNKNOWN: 0
 + Various performance and scalability optimizations for controller and enforcer CPU and memory usage. 
  
 ##### Bug Fixes 
+
 + Fix application slowness on GKE Container Optimized OS (COS) nodes when in Protect mode.  
 + SUSE Linux (SLES) 15.4 CVE not matching in scanner. With this fix, if the severity is provided in the feed, the vulnerability will be added to the database, even if the NVD record is missing. It is possible that the report includes vulnerabilities without CVE scores. 
 
 ##### Other 
+
 + Enhance Admission Control CRD options in helm https://github.com/neuvector/neuvector-helm/pull/237. 
 + Add new enforcer environment variables to helm chart.
 
 #### 5.1.1 February, 2023
 
 ##### Enhancements
+
 + Add “package” as information to the syslog-event for a detected vulnerability.
 + Add Enforcer environment variable ENF_NETPOLICY_PULL_INTERVAL - Value in seconds (recommended value 60) to reduce network traffic and resulting resource consumption by Enforcer due to policy updates/recalculations. (Note: this was an undocumented addition until August of 2023).
-```
+
+```yaml
            - name: ENF_NETPOLICY_PULL_INTERVAL
-              value: "60"   <== regulate the pulling gap by 60 seconds
+             value: "60"   <== regulate the pulling gap by 60 seconds
 ```
 
 ##### Bug Fixes
+
 + Empty group deletion errors "Object not found"
 + Traffic within the same container alerting/blocking
 + Unexpected implicit violations for istio egress traffic with allow rule in place
@@ -224,11 +243,13 @@ TOTAL: 6, HIGH: 1, MEDIUM: 5, LOW: 0, UNKNOWN: 0
 + Various UI bugs fixed
 
 ##### Other
+
 + Helm chart updated to enable replacement of certificate for internal communications
 
 #### 5.1.0 December, 2022
 
 ##### Enhancements
+
 + Centralized, multi-cluster scanning (CVE) database. The primary (master) cluster can scan a registry/repo designated as a federated registry. The scan results from these registries will be synchronized to all managed (remote) clusters. This enables display of scan results in the managed cluster console as well as use of the results in admission control rules of the managed cluster. Registries only need to be scanned once instead of by each cluster, reducing CPU/memory and network bandwidth usage. 
 + Enhance admission control rules:
   - Custom criteria for admission control rules. Allow users to define resource criteria on all pod related fields and to be used in rules, for example item.metadata.annotationsKey contains 'neuvector', item.metadata.name='xyzzy' etc.
@@ -255,17 +276,20 @@ TOTAL: 6, HIGH: 1, MEDIUM: 5, LOW: 0, UNKNOWN: 0
 + (Addendum January 2023). Support for ServiceEntry based network policy with Istio. Egress network policy enforcement functionality was added in version 5.1.0 for pods to ServiceEntry destinations declared with Istio. Typically, a ServiceEntry defines how an external service referred by DNS name is resolved to a destination IP. Prior to v5.1, NeuVector could not detect and enforce rules for connections to a ServiceEntry, so all connections were classified as External. With 5.1, rules can be enforced for specific ServiceEntry destinations. IMPORTANT: If you are upgrading to v5.1 with an Istio based deployment, new rules must be created to allow these connections and avoid violation alerts. After upgrading, Implicit violations will get reported for newly visible traffic if allow rules don't exist. New traffic rules can be learned and auto-created under Discover mode. To allow this traffic, you can put the group into discover mode or create a custom group with addresses (or DNS name) and new network rule to this destination to allow the traffic. NOTE: There is a bug in 5.1.0 in the destination reported by the deny violations that do not represent the correct destination.  The bug reports both server_name and client_name are the same.  This issue will get addressed in an upcoming patch release.
 
 ##### Bug Fixes
+
 + Reduce controller memory consumption from unnecessary cis benchmark data created during rolling updates. This issue does not occur on new deployments.
 + Remove license from configuration screen (no longer required).
 
 #### 5.0.6-s1 March, 2023
 
 ##### Bug Fixes
+
 + Update alpine packages to remediate CVEs in curl including CVE-2023-23914, CVE-2023-23915, and CVE-2023-23916
 
 #### 5.0.6 February, 2023
 
 ##### Bug Fixes
+
 + High memory usage in dpMsgConnection	
 + High memory usage on dp process in enforcer if there are many learned policy rules with unmanaged workload (memory leak)
 + tcpdump is unable to start successfully when sniffering a traffic on container
@@ -275,6 +299,7 @@ TOTAL: 6, HIGH: 1, MEDIUM: 5, LOW: 0, UNKNOWN: 0
 #### 5.0.5 November, 2022
 
 ##### Bug Fixes
+
 + Upgrading to 5.0.x results in an error message about Manager, Controller, Enforcer running different versions.
 + Enforcers experiencing go routine panic resulting in dp kill.  WebUI does not reflect enforcer as online.
 + Unexpected Process.Profile.Violation incident in NV.Protect group on which command on coreos.
@@ -282,22 +307,28 @@ TOTAL: 6, HIGH: 1, MEDIUM: 5, LOW: 0, UNKNOWN: 0
 #### 5.0.4 October, 2022
 
 ##### Security updates
+
 + Update alpine to remove critical CVE-2022-40674 in the manager expat library, as well as other minor CVEs.
 
 ##### Enhancements
+
 + Add support for Antrea CNI
 
 ##### Bug Fixes
+
 + Fix unexpected process.profile.violation incident in the NV.Protect group.
 + When SSL is disabled on manager UI access, user password is printed to the manager log.
 
 #### 5.0.3 September, 2022
+
 ##### Enhancements
+
 + Do not display the EULA after successful restart from persistent volume.
 + Use the image filter in vulnerability profile setting to skip container scan results.
 + Support scanner in GitHub actions at https://github.com/neuvector/neuvector-image-scan-action.
 + Add Enforcer environment variables for disabling secrets scanning and running CIS benchmarks
-```
+
+```yaml
     env:
       - name: ENF_NO_SECRET_SCANS  (available after v4.4.4)
         value: "1"
@@ -306,22 +337,28 @@ TOTAL: 6, HIGH: 1, MEDIUM: 5, LOW: 0, UNKNOWN: 0
 ```
 
 ##### Bug Fixes
+
 + Enforcer unable to start occasionally.
 + Connection leak on multi-cluster federation environments.
 + Compliance page not loading some times in Security Risks -> Compliance 
 
 #### 5.0.2 July 2022
+
 ##### Enhancements
+
 + Rancher hardened and SELinux clusters are supported.
 
 ##### Bug Fixes
+
 + Agent process high cpu usage on k3s systems.
 + AD LDAP groups not working properly after upgrade to 5.0.
 + Enforcer keeps restating due to error=too many open files (rke2/cilium).
 + Support log is unable to download successfully.
 
 #### 5.0.1 June 2022
+
 ##### Enhancements
+
 + Support vulnerability scan of openSUSE Leap OS (in scanner image).
 + Scanner: implement wipe-out attributes during reconstructing image repo.
 + Verify NeuVector deployment and support for SELinux enabled hosts. See below for details on interim patching until helm chart is updated.
@@ -330,6 +367,7 @@ ingress.kubernetes.io/protocol: https to nginx.ingress.kubernetes.io/backend-pro
 + Current OpenShift Operator supports passthrough routes for api and federation services. Additional Helm Value parameters are added to support edge and re-encrypt route termination types. 
 
 ##### Bug Fixes
+
 + AKS cluster could add unexpected key in admission control webhook.
 + Enforcer is not becoming operational on k8s 1.24 cluster with 1.64 containerd runtime. Separately, enforcer sometimes fails to start.
 + Any admin-role user(local user or SSO) who promotes a cluster to fed master should be automatically promoted to fedAdmin role.
@@ -342,22 +380,24 @@ ingress.kubernetes.io/protocol: https to nginx.ingress.kubernetes.io/backend-pro
 + OKD 3.11 - Clusterrole error shows even if it exists.
 
 ##### CVE Remediations
+
 + High CVE-2022-29458 cve found on ncurses package in all images.
 + High CVE-2022-27778 and CVE-2022-27782 found on curl package in Updater image.
 
 ##### Details on SELinux Support
+
 NeuVector does not need any additional setting for SELinux enabled clusters to deploy and function. Tested deploying NeuVector on RHEL 8.5 based SELinux enabled RKE2 hardened cluster. Neuvector deployed successfully if PSP is enabled and patching Manager and Scanner deployment. The next chart release should fix the below issue.
 
 Attached example for enabling psp from Rancher chart and given below the commands for patching Manager and Scanner deployment. The user ID in the patch command can be any number.
 
-```
+```shell
 kubectl patch deploy -ncattle-neuvector-system neuvector-scanner-pod --patch '{"spec":{"template":{"spec":{"securityContext":{"runAsUser": 5400}}}}}'
 kubectl patch deploy -ncattle-neuvector-system neuvector-manager-pod --patch '{"spec":{"template":{"spec":{"securityContext":{"runAsUser": 5400}}}}}'
 ```
 
 Example for enabling PSP:
 
-```
+```shell
 [neuvector@localhost nv]$ getenforce
 Enforcing
 [neuvector@localhost nv]$ sestatus
@@ -386,9 +426,10 @@ neuvector-manager-pod-588488bb78-p6vf9      1/1     Running   0          111s   
 neuvector-scanner-pod-87474dcff-s8vgt       1/1     Running   0          114s    10.42.0.31   localhost.localdomain   <none>           <none>
 ```
 
-
 #### 5.0.0 General Availability (GA) Release May 2022
-#####Enhancements
+
+##### Enhancements
+
 + Automated Promotion of Group Modes. Promotes a Group’s protection Mode based on elapsed time and criteria. Does not apply to CRD created Groups. This features allows a new application to run in Discover for some time period, learning the behavior and NeuVector creating allow-list rules for Network and Process, then automatically moving to Monitor, then Protect mode. Discover to Monitor criterion: Elapsed time for learning all network and process activity of at least one live pod in the Group. Monitor to Protect criterion: There are no security events (network, process etc) for the timeframe set for the Group.
 + Support for Rancher 2.6.5 Apps and Marketplace chart. Deploys into cattle-neuvector-system namespace and enables SSO from Rancher to NeuVector. Note: Previous deployments from Rancher (e.g. Partner catalog charts, version 1.9.x and earlier), must be completely removed in order to update to the new chart.
 + Support scanning of SUSE Linux (SLE, SLES), and Microsoft Mariner
@@ -406,7 +447,8 @@ neuvector-scanner-pod-87474dcff-s8vgt       1/1     Running   0          114s   
 + Support clusterrolebindings or rolebindings with group info in IDP for Openshift.
 + Allow network rules and admission control rules to be promoted to a Federated rule.
 
-#####Bug Fixes
+##### Bug Fixes
+
 + Fix issue of worker federation role backup should restore into non-federated clusters.
 + Improve page loading times for large number of CVEs in Security Risks -> Vulnerabilities
 + Allow user to switch mode when they select all groups in Policy -> Groups menu. Warn if the Nodes group is also selected.
@@ -416,36 +458,42 @@ neuvector-scanner-pod-87474dcff-s8vgt       1/1     Running   0          114s   
 + Fix issue with support of openSUSE Leap 15.3 (k8s/crio).
 
 
-####Other Updates
+#### Other Updates
+
 + Helm chart update appVersion to 5.0.0 and chart version to 2.2.0
 + Removed serverless scanning feature/menu.
 + Removed support for Jfrog Xray scan result integration (Artifactory registry scan is still supported).
 + Support for deployment on ECS is no longer provided. The allinone should still be able to be deployed on ECS, however, the documentation of the steps and settings is no longer supported.
 
-
 ### Upgrading from NeuVector 4.x to 5.x (prior to 5.2.x)
 
-NOTE: The instructions below apply to upgrades to 5.0.x and 5.1.x. For 5.2.x, service accounts and bindings have changed, and should be [reviewed](https://open-docs.neuvector.com/deploying/kubernetes#deploy-neuvector) to plan upgrades.
+:::note
+The instructions below apply to upgrades to 5.0.x and 5.1.x. For 5.2.x, service accounts and bindings have changed, and should be [reviewed](https://open-docs.neuvector.com/deploying/kubernetes#deploy-neuvector) to plan upgrades.
+:::
 
 For Helm users, update to NeuVector Helm chart 2.0.0 or later. If updating an Operator or Helm install on OpenShift, see note below.
 
 1. Delete old neuvector-binding-customresourcedefinition clusterrole
-```
+
+```shell
 kubectl delete clusterrole neuvector-binding-customresourcedefinition
 ```
 
 2. Apply new update verb for neuvector-binding-customresourcedefinition clusterrole
-```
+
+```shell
 kubectl create clusterrole neuvector-binding-customresourcedefinition --verb=watch,create,get,update --resource=customresourcedefinitions
 ```
 
 3. Delete old crd schema for Kubernetes 1.19+
-```
+
+```shell
 kubectl delete -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/crd-k8s-1.19.yaml
 ```
 
 4. Create new crd schema for Kubernetes 1.19+
-```
+
+```shell
 kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/crd-k8s-1.19.yaml
 kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/waf-crd-k8s-1.19.yaml
 kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.0.0/dlp-crd-k8s-1.19.yaml
@@ -453,7 +501,8 @@ kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kube
 ```
 
 5. Create a new Admission, DLP and WAF clusterrole and clusterrolebinding
-```
+
+```shell
 kubectl create clusterrole neuvector-binding-nvwafsecurityrules --verb=list,delete --resource=nvwafsecurityrules
 kubectl create clusterrolebinding neuvector-binding-nvwafsecurityrules --clusterrole=neuvector-binding-nvwafsecurityrules --serviceaccount=neuvector:default
 kubectl create clusterrole neuvector-binding-nvadmissioncontrolsecurityrules --verb=list,delete --resource=nvadmissioncontrolsecurityrules
@@ -463,6 +512,7 @@ kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --cluster
 ```
 
 6. Update image names and paths for pulling NeuVector images from Docker hub (docker.io), e.g.
+
 + neuvector/manager:5.0.0
 + neuvector/controller:5.0.0
 + neuvector/enforcer:5.0.0
@@ -474,19 +524,24 @@ Optionally, remove any references to the NeuVector license and registry secret i
 **Note about SCC and Upgrading via Operator/Helm**
 
 Privileged SCC is added to the Service Account specified in the deployment yaml by Operator version 1.3.4 and above in new deployments. In the case of upgrading the NeuVector Operator from a previous version to 1.3.4 or Helm to 2.0.0, please delete Privileged SCC before upgrading.
-```
+
+```shell
 oc delete rolebinding -n neuvector system:openshift:scc:privileged
 ```
 
 #### Beta 1 version released April 2022
+
 + Feature complete, including Automated Promotion of Group Modes. Promotes a Group’s protection Mode based on elapsed time and criteria. Does not apply to CRD created Groups. This features allows a new application to run in Discover for some time period, learning the behavior and NeuVector creating allow-list rules for Network and Process, then automatically moving to Monitor, then Protect mode. Discover to Monitor criterion: Elapsed time for learning all network and process activity of at least one live pod in the Group. Monitor to Protect criterion: There are no security events (network, process etc) for the timeframe set for the Group.
 + Support for Rancher 2.6.5 Apps and Marketplace chart. Deploys into cattle-neuvector-system namespace and enables SSO from Rancher to NeuVector. Note: Previous deployments from Rancher (e.g. Partner catalog charts, version 1.9.x and earlier), must be completely removed in order to update to the new chart.
 + Tags for Enforcer, Manager, Controller: 5.0.0-b1 (e.g. neuvector/controller:5.0.0-b1)
 
+#### Preview.3 version released March 2022
 
-####Preview.3 version released March 2022
-***Important***: To update previous preview deployments for new CRD WAF, DLP and Admission control features, please update the CRD yaml and add new rbac/role bindings:
-```
+:::warning important
+
+To update previous preview deployments for new CRD WAF, DLP and Admission control features, please update the CRD yaml and add new rbac/role bindings:
+
+```shell
 kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/latest/crd-k8s-1.19.yaml
 kubectl create clusterrole neuvector-binding-nvwafsecurityrules --verb=list,delete --resource=nvwafsecurityrules
 kubectl create clusterrolebinding neuvector-binding-nvwafsecurityrules --clusterrole=neuvector-binding-nvwafsecurityrules --serviceaccount=neuvector:default
@@ -495,7 +550,10 @@ kubectl create clusterrolebinding neuvector-binding-nvadmissioncontrolsecurityru
 kubectl create clusterrole neuvector-binding-nvdlpsecurityrules --verb=list,delete --resource=nvdlpsecurityrules
 kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --clusterrole=neuvector-binding-nvdlpsecurityrules --serviceaccount=neuvector:default
 ```
-#####Enhancements
+:::
+
+##### Enhancements
+
 + Support scanning of SUSE Linux (SLE, SLES), and Microsoft Mariner
 + Zero-drift process and file protection. This is the new default mode for process and file protections. Zero-drift automatically allows only processes which originate from the parent process that is in the original container image, and does not allow file updates or new files to be installed. When in Discover or Monitor mode, zero-drift will alert on any suspicious process or file activity. In Protect mode, it will block such activity. Zero-drift does not require processes to be learned or added to an allow-list. Disabling zero-drift for a group will cause the process and file rules listed for the group to take effect instead.
 + Split policy mode protection for network, process/file. There is now a global setting available in Settings -> Configuration to separately set the network protection mode for enforcement of network rules. Enabling this (default is disabled), causes all network rules to be in the protection mode selected (Discover, Monitor, Protect), while process/file rules remain in the protection mode for that Group, as displayed in the Policy -> Groups screen. In this way, network rules can be set to Protect (blocking), while process/file policy can be set to Monitor, or vice versa.
@@ -507,32 +565,33 @@ kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --cluster
 + Monitor required rbac's clusterrole/bindings and alert in events and UI if any are missing.
 + Support criteria of resource limitations in admission control rules.
 
+##### Bug Fixes
 
-#####Bug Fixes
 + Fix issue of worker federation role backup should restore into non-federated clusters.
 
-####Preview.2 version released Feb 2022
+#### Preview.2 version released Feb 2022
+
 + Minor file and license changes in source, no features added.
 
-####Support for deployment on AWS ECS Deprecated
+#### Support for deployment on AWS ECS Deprecated
+
 Support for deployment on ECS is no longer provided. The allinone should still be able to be deployed on ECS, however, the documentation of the steps and settings is no longer supported.
 
 #### 5.0 'Tech Preview' January 2022
+
 ##### Enhancements
+
 + First release of an unsupported, 'tech-preview' version of NeuVector 5.0 open source version.
 + Add support for OWASP Top-10, WAF-like rules for detecting network attacks in headers or body. Includes support for CRD definitions of signatures and application to appropriate Groups.
 + Removes Serverless scanning features.
 
 ##### Bug Fixes
+
 + TBD
 
 ##### Other
+
 + Helm chart v1.8.9 is published for 5.0.0 deployments. If using this with the preview version of 5.0.0 the following changes should be made to values.yml:
   - Update the registry to docker.io
   - Update image names/tags to the preview version on Docker hub
   - Leave the imagePullSecrets empty
-
-
-
-
-

@@ -7,6 +7,7 @@ taxonomy:
 ### Environment Variables
 
 ##### For Both Controller (Allinone) and Enforcer
+
 * CLUSTER_JOIN_ADDR
 > Set the variable to the host IP for the first controller; and set it to the master controller's host IP for other controllers and enforcers. It’s not necessary to set this IP for Kubernetes based deployments, just use the sample file.
 
@@ -26,6 +27,7 @@ taxonomy:
 > (Optional) Set value to 1 to enable collection of memory profile data to help investigate memory pressure issues.
 
 ##### Controller
+
 * CTRL_PERSIST_CONFIG
 > (Optional) To backup configuration files and restore them from a persistent volume. Add this to the yaml to enable; remove to disable.
 
@@ -42,6 +44,7 @@ taxonomy:
 > (Optional) When enabled does not create an 'admin' user in the local cluster. This is used for Rancher SSO integration as the default. If not enabled, persistently warn the user and record events to change the default admin password if it is not changed from default.
 
 ##### Manager
+
 * CTRL_SERVER_IP
 > (Optional for all-in-one) Controller REST server IP address. Default is ```127.0.0.1```. For all-in-one container, leave it as default. If the Manager is running separately, the Manager must specify this IP to connect to the controller.
 
@@ -55,6 +58,7 @@ taxonomy:
 > (Optional) Manager by default uses and HTTPS/SSL connection. Set the value to “off” to use HTTP.
 
 ##### Enforcer
+
 * CONTAINER_NET_TYPE
 > (Optional) To support special network plug-in set value to "macvlan”
 
@@ -88,4 +92,3 @@ taxonomy:
 * CTRL_SERVER_PORT - on controller. Default 10443.
 
 Please see the section [Deployment Preparation](/basics/installation/native) for a full description of the port communication requirements for the NeuVector containers.
-

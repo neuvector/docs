@@ -9,8 +9,12 @@ taxonomy:
 The reference section below is not being maintained. However, it may provide some assistance in understanding how to deploy the Allinone on ECS.
 
 ### Deploy on AWS Using ECS
+
 This is an example of how to deploy NeuVector using ECS.
-NOTE: Please see the Kubernetes examples for EKS.
+
+:::note
+Please see the Kubernetes examples for EKS.
+:::
 
 1) Prepare several Amazon ECS instances which have the Docker engine and ECS agent containers built-in. Pick one node for the management console. Then define Security Group rules that allow inbound TCP port 8443 (NeuVector’s default management console port) for access by your client browser.
 
@@ -31,13 +35,16 @@ Then add a new attribute. For example “allinone-node” with value “true”.
 4) Create the Allinone Task Definition. Create a new Task Definition for the Allinone container. You can use the ECS interface to manually create it or paste in the sample JSON file (see below for samples). Refer to section “1. Deploying NeuVector” of these docs for how to configure the Allinone.
 
 Enter the placement constraint. For example, if you used the attribute labeling above, then enter this in the constraint.
-```
+
+```json
 attribute:allinone-node=~true
 ```
 
 ![AllinoneTask](3taskdef.png)
 
-Note: If you examine the updated JSON file now you’ll see the placement constraint added to it.
+:::note
+If you examine the updated JSON file now you’ll see the placement constraint added to it.
+:::
 
 5) Create a new service for the Allinone task. Set the “Placement Templates” to “One Task Per Host” so that only one Allinone/Controller can run on any host. You will also see the constraint will be used “memberOf(attribute:allinone-node=~true) which requires the node to have that attribute.
 
@@ -48,7 +55,8 @@ Note: If you examine the updated JSON file now you’ll see the placement constr
 7) Create the Enforcer Task Definition. This is similar to the Allinone task. Configure manually through the ECS console or use the JSON sample below.
 
 For the Enforcer placement constraint you will require that the Enforcer must NOT be on the same node as the allinone.
-```
+
+```json
 attribute:allinone-node!~true
 ```
 
@@ -61,13 +69,14 @@ attribute:allinone-node!~true
 Deploy this service with desired number of enforcer nodes in “Number of tasks”. Very shortly all the enforcers will be up and running. From the NeuVector console you will be able to see all nodes being detected with enforcers.
 
 ### Sample ECS JSON Task Definitions
+
 You can use the following samples as starting points for configuring the task definitions for the NeuVector containers.
 
 Create a new task definition, then click Configure Via JSON at bottom. Before pasting in the json below, replace the IP address and image path (find REPLACE in samples). Typically, the IP address would be the Private IP address of the AWS Instance where the allinone will run. You can also specific a different family name than my-allinone/my-enforcer (at the bottom of json).
 
 Sample Allinone json file:
 
-```
+```json
 {
     "networkMode": "bridge",
     "taskRoleArn": null,
@@ -199,7 +208,7 @@ Sample Allinone json file:
 
 Sample Enforcer json file:
 
-```
+```json
 {
     "networkMode": "bridge",
     "taskRoleArn": null,
@@ -308,7 +317,9 @@ Sample Enforcer json file:
     "placementConstraints": []
 }
 ```
+
 ### Live Updating NeuVector
+
 You can do a live update of the NeuVector containers in ECS without interrupting services. NeuVector’s services can be easily updated or upgraded without interrupting any running services. To do that in Amazon ECS:
 
 1. If you have multiple controllers or Allinones deployed as a cluster, ignore this step. If there is only a single Allinone/controller in the system, find a new ECS instance and deploy a 2nd Allinone/controller container on it (follow the NeuVector allinone/controller ECS deployment steps). After deployed, in the NeuVector management console, you will see this new controller up and running (under Resources > Controllers). This is required so that all stateful data is replicated between controllers.

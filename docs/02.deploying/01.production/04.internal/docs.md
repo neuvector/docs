@@ -5,6 +5,7 @@ taxonomy:
 ---
 
 ### Internal Communication and Certificates
+
 NeuVector includes default self-signed certificates for encryption for the Manager (console/UI access), Controller (REST API, internal), Enforcer (internal), and Scanner (internal) communications.
 
 These certificates can be replaced by your own to further harden communication. For replacing certificates used by external access to NeuVector (i.e, browser to the Manager, or REST API to the Controller), please see [this section](/configuration/console/replacecert/). See below for replacing the certificates used in internal communication between NeuVector containers.
@@ -12,6 +13,7 @@ These certificates can be replaced by your own to further harden communication. 
 WARNING: Replacing certificates is recommended to be performed only during initial deployment of NeuVector. Replacing on a running cluster (even with rolling upgrade) may result in an unstable state where NeuVector pods are unable to communicate with each other due to a mismatch in certificates, and DATA LOSS may occur.
 
 #### Replacing Certificates Used in Internal Communications of NeuVector
+
 To replace the internal encryption files ca.cert, cert.key, cert.pem, first create the new ca.cfg file (see sample below). Then delete the relevant file, kubernetes secret, then generate new files and secret.
 
 ```bash
@@ -29,7 +31,7 @@ kubectl create secret generic internal-cert -n neuvector --from-file=cert.key --
 
 Then edit the Controller, Enforcer, and Scanner deployment yamls, adding:
 
-```bash
+```yaml
       containers:
         - name: neuvector-controller/enforcer/scanner-pod
           volumeMounts:
@@ -56,7 +58,7 @@ Then proceed to deploy NeuVector as before. You can also shell into the controll
 
 Sample ca.cfg file referenced above:
 
-```bash
+```shell
 [req]
 distinguished_name = req_distinguished_name
 x509_extensions = v3_req

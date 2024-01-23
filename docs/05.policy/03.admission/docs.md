@@ -11,6 +11,7 @@ With Admission Control integration with orchestration platforms such as Kubernet
 This feature is supported in Kubernetes 1.9+ and Openshift 3.9+. Before using the Admission Control function in NeuVector, while it's possible to setup admission control from `--admission-control` argument passed to the cluster apiserver, it's recommended to use dynamic admission control. Please see Kubernetes and Openshift sections below for configuration.
 
 #### Kubernetes
+
 The ValidatingAdmissionWebhook and MutatingAdmissionWebhook plugins are enabled by default.
 
 Check if admissionregistration.kubernetes.io/v1beta1 is enabled
@@ -20,6 +21,7 @@ admissionregistration.k8s.io/v1beta1
 ```
 
 #### Openshift
+
 The ValidatingAdmissionWebhook and MutatingAdmissionWebhook plugins are NOT enabled by default. Please see the examples in the OpenShift deployment sections for instructions on how to enable these. A restart of the OpenShift api and controllers services is required.
 
 Check if admissionregistration.kubernetes.io/v1beta1 is enabled
@@ -29,16 +31,20 @@ admissionregistration.k8s.io/v1beta1
 ```
 
 ### Enabling Admission Control (Webhook) in NeuVector
+
 The Admission Control feature is disabled by default. Please go to Policy -> Admission Control page to enable it in the NeuVector console.
 
 ![Enable](ac_enable.png)
 
 Once the Admission Control feature is enabled successfully, the following ValidatingWebhookConfiguration resource will be created automatically. To check it:
+
+```shell
+kubectl get ValidatingWebhookConfiguration neuvector-validating-admission-webhook
 ```
-$ kubectl get ValidatingWebhookConfiguration neuvector-validating-admission-webhook
-```
+
 Sample output:
-```
+
+```shell
 NAME                                     CREATED AT
 neuvector-validating-admission-webhook   2019-03-28T00:05:09Z
 ```
@@ -54,9 +60,11 @@ To test the Kubernetes connection for the client mode access, go to Advanced Set
 For special cases, the URL access method using the NodePort service may be required.
 
 ### Admission Control Events/Notifications
+
 All admission control events for allowed and denied events can be found in the Notifications -> Security Risks menu.
 
 ### Admission Control Criteria
+
 NeuVector supports many criteria for creating an Admission Control Rule. These include CVE High Count, CVE Names, image labels, imageScanned, namespace, user, runAsRoot, etc. There are two possible sources of criteria evaluation, Image Scans and Deployment Yaml file scans. If a criterion requires an image scan, the scan results from Registry Scanning will be used. If the image was not scanned, the admission control rule will not be applied. If a criterion requires scanning of the deployment yaml, it will be evaluated from the Kubernetes deployment. Some criteria will use the results  from either an image scan OR a deployment yaml scan.
 
 + CVE score is an example of a criterion requiring an image scan.
@@ -74,8 +82,9 @@ The matching logic for multiple criteria in one admission control rule is:
     - Apply 'and' for all negative matches("not contains any", "is not one of") until the first positive match;
     - After the first positive match, apply 'or'
 
-####Example with Matching a Pod Label
-```
+#### Example with Matching a Pod Label
+
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -88,11 +97,13 @@ spec:
       labels:
         app: iperfserver
  ```
+
 The rule to match would be:
 ![Admission](ac_label.png)
 
-####Example with Matching Environment Variables with Secrets
-```
+#### Example with Matching Environment Variables with Secrets
+
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -131,12 +142,12 @@ spec:
         nvallinone: "true"
       restartPolicy: Always
 ```
+
 The Matching rule would be:
 ![Admission](ac_environment.png)
 
-
-
 #### Criteria Related to Scan Results
+
 The following criteria are related to the results in NeuVector Assets > Registry scan page:
 
 Image, imageScanned, cveHighCount, cveMediumCount, Image compliance violations, cveNames and others.
@@ -151,11 +162,13 @@ If users are using the built-in image such as alpine or ubuntu from the docker r
 The above limitation could also apply on other type of docker registry servers if any.
 
 #### Creating Custom Criteria Rules
+
 Users can create a customized criterion to be used to allow or block deployments based on common objects found in the image yaml (scanned upon deployment). Select the object to be used, for example imagePullSecrets and the matching value, for example exists. It is also recommended to use additional criteria to further target the rule, such as namespace, PSP/PSA, CVE conditions etc.
 
 ![admission](custom_admission.png)
 
-#### Criteria Explanations 
+#### Criteria Explanations
+
 Criteria with a disk icon require that the image be scanned (see registry scanning), and criteria with a file icon will scan the deployment yaml. If both icons are listed, then matching will be for either (OR). If a criterion requires an image scan, but the image is NOT scanned, that part of the rule will be ignored (ie rule is bypassed, or if deployment yaml is also listed, then only the deployment yaml will be used to match). To prevent non-scanned images from bypassing rules, see the Image Scanned criterion below. 
 
 + Add customized criterion. Select the object from the drop down. All custom criteria support exists and does not exist operators. For ones that allow values, additional operators and the value can be entered. Values can be static, separated by comma’s, and include wildcards. 
@@ -190,17 +203,20 @@ Criteria with a disk icon require that the image be scanned (see registry scanni
 + User groups. Allow or disallow defined [user groups bound by kubernetes](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#referring-to-subjects) at run-time, visible in the userInfo field.  Note: The yaml (upload) auditing function will not be able to check this because it is bound at run-time. 
 + Violates PSA policy. Matches if the deployment violates either a Restricted or Baseline PSA [Pod Security Standard](https://kubernetes.io/docs/concepts/security/pod-security-standards/) (equivalent to PSA definitions in kubernetes 1.25+) 
  
-#### Secrets detection 
-Detection of secrets, for example in environment variables is matched used the following regex: 
-``` 
+#### Secrets detection
+
+Detection of secrets, for example in environment variables is matched used the following regex:
+
+``` shell
 Rule{Description: "Password.in.YML", 
 Expression: `(?i)(password|passwd|api_token)\S{0,32}\s*:\s*(?-i)([0-9a-zA-Z\/+]{16,40}\b)`, ExprFName: `.*\.ya?ml`, Tags: []string{share.SecretProgram, "yaml", "yml"}, 
 Suggestion: msgReferVender}, 
-``` 
+```
+
 A list of types of secrets detected can be found [here](/scanning/scanning/compliance#secrets-auditing) 
 
-
 ### Admission Control Modes
+
 There are two modes NeuVector supports - Monitor and Protect.
 + Monitor: there is an alert message in the event log if a decision is denied. In this case, the cluster apiserver is allowed to create a resource successfully. Note: even if the rule action is Deny, in Monitor mode this will only alert.
 + Protect: this is an inline protection mode. Once a decision is denied, the cluster resource will not be able to be created successfully, and an event will be logged.
@@ -227,35 +243,36 @@ For admission control rules, the matching order is:
 In each of the matching stages(1~7), the rule order doesn't matter. As long as the request matches one rule's criteria, the action (allow or deny) is taken and the request is allowed or denied.
 
 ### Federated Scan Results in Admission Control Rules
+
 The primary (master) cluster can scan a registry/repo designated as a federated registry. The scan results from these registries will be synchronized to all managed (remote) clusters. This enables display of scan results in the managed cluster console as well as use of the results in admission control rules of the managed cluster. Registries only need to be scanned once instead of by each cluster, reducing CPU/memory and network bandwidth usage. See the [multi-cluster](/navigation/multicluster/) section for more details.
 
 ### Configuring Sigstore/Cosign Verifiers for Requiring Image Signing
+
 Please see [this section](/policy/admission/sigstore) for configuring verifiers.
 
 ### Troubleshooting
 
 If experiencing errors and you have access to the master node you can inspect the kube-apiserver log to search for admission webhook events. Examples:
 
-
-```
+```shell
 W0406 13:16:49.012234 1 admission.go:236] Failed calling webhook, failing open neuvector- validating-admission-webhook.neuvector.svc: failed calling admission webhook "neuvector-validating- admission-webhook.neuvector.svc": Post https://neuvector-svc-admission- webhook.neuvector.svc:443/v1/validate/1554514310852084622-1554514310852085078?timeout=30s: dial tcp: lookup neuvector-svc-admission-webhook.neuvector.svc on 8.8.8.8:53: no such host
 ```
 
 The above log indicates that the cluster kube-apiserver is unable to send the request to the NeuVector webhook successfully because it fails to resolve the neuvector-svc-admission-webhook.neuvector.svc name.
 
-```
+```shell
 W0405 23:43:01.901346 1 admission.go:236] Failed calling webhook, failing open neuvector- validating-admission-webhook.neuvector.svc: failed calling admission webhook "neuvector-validating- admission-webhook.neuvector.svc": Post https://neuvector-svc-admission-webhook.neuvector.svc:443/v1/validate/1554500399933067744-1554500399933068005?timeout=30s: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
 ```
 
 The above log indicates that the cluster kube-apiserver is unable to send the request to the NeuVector webhook successfully because it resolves the neuvector-svc-admission-webhook.neuvector.svc name with the wrong IP address. It could also indicate a network connectivity or firewall issue between api-server and the controller nodes.
 
-```
+```shell
 W0406 01:14:48.200513 1 admission.go:236] Failed calling webhook, failing open neuvector- validating-admission-webhook.xyz.svc: failed calling admission webhook "neuvector-validating- admission-webhook.xyz.svc": Post https://neuvector-svc-admission- webhook.xyz.svc:443/v1/validate/1554500399933067744-1554500399933068005?timeout=30s: x509: certificate is valid for neuvector-svc-admission-webhook.neuvector.svc, not neuvector-svc-admission- webhook.xyz.svc
 ```
 
 The above log indicates that the cluster kube-apiserver can send the request to the NeuVector webhook successfully but the certificate in caBundle is wrong.
 
-```
+```shell
 W0404 23:27:15.270619 1 admission.go:236] Failed calling webhook, failing open neuvector- validating-admission-webhook.neuvector.svc: failed calling admission webhook "neuvector-validating- admission-webhook.neuvector.svc": Post https://neuvector-svc-admission- webhook.neuvector.svc:443/v1/validate/1554384671766437200-1554384671766437404?timeout=30s: service "neuvector-svc-admission-webhook" not found
 ```
 
@@ -267,11 +284,14 @@ First, check your Kubernetes or OpenShift version. Admission control is supporte
 For OpenShift, make sure you have edited the master-config.yaml to add the MutatingAdmissionWebhook configuration and restarted the master api-servers.
 
 <strong>Check the Clusterrole</strong>
-```
+
+```shell
 kubectl get clusterrole neuvector-binding-admission -o json
 ```
+
 Make sure the verbs include:
-```
+
+```json
                 "get",
                 "list",
                 "watch",
@@ -279,12 +299,16 @@ Make sure the verbs include:
                 "update",
                 "delete"
 ```
+
 Then check:
-```
+
+```shell
 kubectl get clusterrole neuvector-binding-app -o json
 ```
+
 Make sure the verbs include:
-```
+
+```json
    "get",
    "list",
    "watch",
@@ -294,25 +318,30 @@ Make sure the verbs include:
 If the above verbs are not listed, the Test button will fail.
 
 <strong>Check the Clusterrolebinding</strong>
-```
+
+```shell
 kubectl get clusterrolebinding neuvector-binding-admission -o json
 ```
+
 Make sure the ServiceAccount is set properly:
 
-```
-"subjects": \[
-        \{
+```json
+"subjects": [
+        {
             "kind": "ServiceAccount",
             "name": "default",
             "namespace": "neuvector"
 ```
 
 <strong>Check the Webhook Configuration</strong>
-```
+
+```shell
 kubectl get ValidatingWebhookConfiguration --as system:serviceaccount:neuvector:default -o yaml > nv_validation.txt
 ```
+
 The nv_validation.txt should have similar content to:
-```
+
+```yaml
 apiVersion: v1
 items:
 - apiVersion: admissionregistration.k8s.io/v1beta1
@@ -389,6 +418,7 @@ metadata:
   resourceVersion: ""
   selfLink: ""
 ```
+
 If you see any content like "Error from server ...." or "... is forbidden", it means the NV controller service account doesn't have access right for ValidatingWebhookConfiguration resource. In this case it usually means the neuvector-binding-admission clusterrole/clusterrolebinding has some issue. Deleting and recreating neuvector-binding-admission clusterrole/clusterrolebinding usually the fastest fix.
 
 <strong>Test the Admission Control Connection Button</strong>
@@ -396,11 +426,14 @@ If you see any content like "Error from server ...." or "... is forbidden", it m
 In the NeuVector Console in Policy -> Admission Control, go to More Operations ->  Advanced Setting and click the "Test" button. NeuVector will modify service neuvector-svc-admission-webhook and see if our webhook server can receive the change notifification or if it fails.
 
 1. Run 
-```
+
+```shell
 kubectl get svc neuvector-svc-admission-webhook -n neuvector -o yaml
 ```
+
 The output should look like:
-```
+
+```yaml
 apiVersion: v1
    kind: Service
    metadata:
@@ -427,15 +460,21 @@ apiVersion: v1
    status:
      loadBalancer: {}
 ```
+
 2. Now click admission control's advanced setting => "Test" button. Wait until it shows success or failure.
 NeuVector will modify the service neuvector-svc-admission-webhook's tag-neuvector-svc-admission-webhook label implicitly.
+
 3. Wait for controller internal operation. If the NeuVector webhook server receives update request from kube-apiserver about this service change, NeuVector will modify the service neuvector-svc-admission-webhook's echo-neuvector-svc-admission-webhook label to the same value as tag-neuvector-svc-admission-webhook label.
+
 4. Run
-```
+
+```shell
 kubectl get svc neuvector-svc-admission-webhook -n neuvector -o yaml
 ```
+
 The output should look like
-```
+
+```yaml
    apiVersion: v1
    kind: Service
    metadata:
@@ -462,9 +501,7 @@ The output should look like
    status:
      loadBalancer: {}
 ```
+
 5. After the test, if the value of label tag-neuvector-svc-admission-webhook doesn't change, it means the controller service fails to update neuvector-svc-admission-webhook service. Check if neuvector-binding-app clusterrole/clusterrolebinding are configured correctly.
+
 6. After the test, if the value of label tag-neuvector-svc-admission-webhook is changed but not the value of label echo-neuvector-svc-admission-webhook, it means the webhook server didn't receive the request from the kube-apiserver. The kub-apiserver's request can't reach the NeuVector webhook server. The cause of this could be network connectivity issues, firewalls blocking the request (on default port 443 in), the resolving of the wrong IP for the controller or others.
-
-
-
-

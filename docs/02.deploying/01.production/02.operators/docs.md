@@ -4,11 +4,12 @@ taxonomy:
     category: docs
 ---
 
-
 ### Operators
+
 Operators take human operational knowledge and encode it into software that is more easily shared with consumers. Operators are pieces of software that ease the operational complexity of running another piece of software. More technically, Operators are a method of packaging, deploying, and managing a Kubernetes application.
 
 ### NeuVector Operators
+
 The NeuVector Operator is based on the NeuVector Helm chart. The NeuVector RedHat OpenShift Operator runs in the OpenShift container platform to deploy and manage the NeuVector Security cluster components. The NeuVector Operator contains all necessary information to deploy NeuVector using Helm charts. You simply need to install the NeuVector operator from the OpenShift embedded Operator hub and create the NeuVector instance.
 
 To deploy the latest NeuVector container versions, please use either the [Red Hat Certified Operator](https://catalog.redhat.com/software/operators/search?q=neuvector) from Operator Hub or the [community operator](https://github.com/redhat-openshift-ecosystem/community-operators-prod/tree/main/operators/neuvector-community-operator). Documentation for the community operator can be found [here](https://github.com/neuvector/neuvector-operator).
@@ -16,18 +17,15 @@ To deploy the latest NeuVector container versions, please use either the [Red Ha
 **Note about SCC and Upgrading**
 
 Privileged SCC is added to the Service Account specified in the deployment yaml by Operator version 1.3.4 and above in new deployments. In the case of upgrading the NeuVector Operator from a previous version to 1.3.4, please delete Privileged SCC before upgrading.
-```
+
+```shell
 oc delete rolebinding -n neuvector system:openshift:scc:privileged
 ```
 
-**Important**: NeuVector Certified Operator versions are tied to NeuVector product versions, and each new version must go through a certification process with Red Hat before being published. Certified operator version 1.3.9 is tied to NeuVector version 5.2.0. Certified operator version 1.3.7 is tied to NeuVector version 5.1.0. Version 1.3.4 operator version is tied to NeuVector 5.0.0. If you wish to be able to change the version tags of the NeuVector containers deployed, please use the Community version.
+:::warning important
+NeuVector Certified Operator versions are tied to NeuVector product versions, and each new version must go through a certification process with Red Hat before being published. Certified operator version 1.3.9 is tied to NeuVector version 5.2.0. Certified operator version 1.3.7 is tied to NeuVector version 5.1.0. Version 1.3.4 operator version is tied to NeuVector 5.0.0. If you wish to be able to change the version tags of the NeuVector containers deployed, please use the Community version.
+:::
 
-
-<html>
-<head>
-<link rel="stylesheet" href="/deploying/production/operators/toggle-box.css" type="text/css" />
-</head>
-<body>
 <div id="full-wrapper">
   <ul class="dopt-accordion fixed-height arrow-tri">  
 <!-- NOTE: Toggle Box #1 -->
@@ -40,8 +38,9 @@ oc delete rolebinding -n neuvector system:openshift:scc:privileged
 <p><strong>Deploy Using the Red Hat Certified Operator from Operator Hub</strong>
 </p>
 
-<p>Important: NeuVector Operator versions are tied to NeuVector product versions, and each new product version must go through a certification process with Red Hat before being published.
-&nbsp;</p>
+:::warning important
+NeuVector Operator versions are tied to NeuVector product versions, and each new product version must go through a certification process with Red Hat before being published.
+:::
 
 <p><strong>Technical notes</strong>
 &nbsp;
@@ -290,10 +289,9 @@ spec:
   </div>   
   </div>
 </div>
-&nbsp;
-</body>
-</html>
-###Troubleshooting
+
+### Troubleshooting
+
 + Check the Operator deployment values in the deployed yaml file
 + Verify that security context constraint (SCC) for NeuVector in step 2 was successfully added
 + Review and check the NeuVector Helm chart values

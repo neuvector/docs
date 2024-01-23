@@ -15,7 +15,8 @@ The 'always_reload: true' setting can be added in any ConfigMap yaml to force re
 The latest ConfigMap can be found [here](https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/initcfg.yaml).
 
 The sample is also shown below. This contains all the settings available. Please remove the sections not needed and edit the sections needed. Note: If using configmap in a secret, see section below for formatting changes.
-```
+
+```yaml
 apiVersion: v1
 data:
   passwordprofileinitcfg.yaml: |
@@ -386,26 +387,34 @@ metadata:
 
 
 Then create the ConfigMap object:
-```
+
+```shell
 kubectl create -f initcfg.yaml
 ```
 
 ### Protect Sensitive Data Using a Secret
+
 If sensitive data is to be included in some sections of the configmap, a secret can be created for those sections with sensitive data.
 
 For example, create the configMap for NON-sensitive sections such as passwordProfile and role:
-```
+
+```shell
 kubectl create configmap neuvector-init --from-file=$HOME/init/passwordprofileinitcfg.yaml --from-file=$HOME/init/roleinitcfg.yaml -n neuvector
 ```
 
 Then create a secret for sections with sensitive data, such as:
-```
+
+```shell
 kubectl create secret generic neuvector-init --from-file=$HOME/init/eulainitcfg.yaml --from-file=$HOME/init/ldapinitcfg.yaml --from-file=$HOME/init/oidcinitcfg.yaml --from-file=$HOME/init/samlinitcfg.yaml --from-file=$HOME/init/sysinitcfg.yaml --from-file=$HOME/init/userinitcfg.yaml -n neuvector
 ```
-***Important!*** Remove the the pipe '|' character in each section, as shown below.
+
+:::warning important
+Remove the the pipe '|' character in each section, as shown below.
+:::
 
 Note the removal of the pipe character below if using configmap sections in a secret, enabled set to true, and uncomment out the section to be included in the secret.
-```
+
+```yaml
 secret:
     # NOTE: files defined here have preferrence over the ones defined in the configmap section
     enabled: true
@@ -432,7 +441,7 @@ After controller is deployed, all the configuration files from both configmap an
 Note that the secret is referred to in the standard Kubernetes and OpenShift Controller [deployment yaml files](/deploying/kubernetes#kubernetes-deployment-examples-for-neuvector) under Volumes.
 
 ### ConfigMaps and Persistent Storage
+
 Both the ConfigMaps and the [persistent storage](/deploying/production#backups-and-persistent-data) backup are only read when a new NeuVector cluster is deployed, or the cluster fails and is restarted. They are not used during rolling upgrades.
 
 The persistent storage configuration backup is read first, then the ConfigMaps are applied, so ConfigMap settings take precedence. All ConfigMap settings (e.g. updates) will also be saved into persistent storage.
-
