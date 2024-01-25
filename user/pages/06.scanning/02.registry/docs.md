@@ -58,6 +58,7 @@ Notes:
     - Enable periodic scan to scan periodically
     - Scan interval can set to be between 5 minutes to every 7 days.
     - Because many Admission Control checks rely on image scan result, enabling periodical scan helps make sure Admission Control has the up-to-date information of the images.
+    - Note that NeuVector will scan images in a regsistry that are new/changed from the previous scan. 
 + Rescan after CVE DB update
     - Enable this option to rescan all images after the vulnerability database is updated.
 
