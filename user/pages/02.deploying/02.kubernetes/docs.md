@@ -55,20 +55,7 @@ For PSA in Kubernetes 1.25+, label the NeuVector namespace with privileged profi
 <code>
 $ kubectl label  namespace neuvector "pod-security.kubernetes.io/enforce=privileged"
 </code></pre>
-<html>
-<head>
-<link rel="stylesheet" href="/serverless/toggle-box.css" type="text/css" />
-</head>
-<body>
-<div id="full-wrapper">
-  <ul class="dopt-accordion fixed-height arrow-tri">  
-
-<!-- NOTE: Toggle Box #1 -->
-	<input class="title-option" id="acc0" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc0"><span><i class="icon-code"></i>View Sample NeuVector PSP (1.24 and earlier)</span></label>
-  <!-- NOTE: Toggle box content animation option -->
-  <div class="accordion-content animated animation5">
-  <div class="wrap-content">
+Sample PSP (1.24 and earlier)
 <pre>
 <code>
 apiVersion: policy/v1beta1
@@ -141,13 +128,6 @@ subjects:
 - kind: ServiceAccount
   name: enforcer
   namespace: neuvector</code></pre>
-  </div><!-- End .wrap-content -->    
-  </div><!-- End .accordion-content -->
-  </li>
-</div>
-&nbsp;
-</body>
-</html>
 
 Then create the PSP
 <pre>
@@ -238,20 +218,8 @@ neuvector-binding-scanner   Role/neuvector-binding-scanner   70d                
 </pre>
 </li>
 <li>(<strong>Optional</strong>) Create the Federation Master and/or Remote Multi-Cluster Management Services. If you plan to use the multi-cluster management functions in NeuVector, one cluster must have the Federation Master service deployed, and each remote cluster must have the Federation Worker service. For flexibility, you may choose to deploy both Master and Worker services on each cluster so any cluster can be a master or remote.
-<html>
-<head>
-<link rel="stylesheet" href="/serverless/toggle-box.css" type="text/css" />
-</head>
-<body>
-<div id="full-wrapper">
-  <ul class="dopt-accordion fixed-height arrow-tri">  
-
-<!-- NOTE: Toggle Box #0.9 -->
-	<input class="title-option" id="acc090" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc090"><span><i class="icon-code"></i>View Multi-Cluster Management Services</span></label>
-  <!-- NOTE: Toggle box content animation option -->
-  <div class="accordion-content animated animation5">
-  <div class="wrap-content">
+&nbsp;
+Federated Cluster Management
 <pre>
 <code>
 apiVersion: v1
@@ -283,13 +251,6 @@ spec:
   type: LoadBalancer
   selector:
     app: neuvector-controller-pod</code></pre>
-  </div><!-- End .wrap-content -->    
-  </div><!-- End .accordion-content -->
-  </li>
-</div>
-&nbsp;
-</body>
-</html>
 &nbsp; 
 Then create the appropriate service(s):
 <pre>
