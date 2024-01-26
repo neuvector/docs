@@ -273,6 +273,8 @@ img {
 <li>Update the registry to docker.io</li>
 <li>Update image names/tags to the appropriate version on Docker hub, as shown above</li>
 <li>Leave the imagePullSecrets empty</li></p>
+<p><strong>NeuVector Images on Rancher Registry </strong></p>
+<p>NeuVector images are also mirrored to the Rancher registry for deployment from Rancher. Please see the <a href="/deploying/rancher">Rancher Deployment</a> section for more information. Please allow a few days after every release for the images to be mirrored to the Rancher Registry.</p>
 <p>If upgrading from NeuVector 4.x, please see these <a href="/releasenotes/5x#upgrading-from-neuvector-4x-to-5x">instructions.</a></p>
 <table style="border: none">	
 <tr>		
