@@ -5,6 +5,7 @@ taxonomy:
 ---
 
 ### NeuVector Automation
+
 There are many automation features in NeuVector to support the entire CI/CD workflow, including:
 + Jenkins plug-in to automated scanning during build
 + Registry scanning to automate repository monitoring
@@ -14,20 +15,23 @@ There are many automation features in NeuVector to support the entire CI/CD work
 + Response rules to automate responses to security events
 + REST API for building automation of any NeuVector function
 
-
 #### REST API
+
 The NeuVector solution can be managed using the REST API. Below are common examples of automation using the REST API. The REST API yaml doc is best viewed in the Swagger 2.0 viewer. The REST API documentation is below in a yaml file which is best viewed in a reader such as swagger.io.
 
 Latest update can be found [here](https://raw.githubusercontent.com/neuvector/neuvector/main/controller/api/apis.yaml). Also in the NeuVector GitHub source code [repo](https://github.com/neuvector/neuvector/blob/main/controller/api/apis.yaml).  The apis.yaml from the main truck can include unreleased features.  It is recommended to download the appropriate released version source code and extract the apis.yaml from the controller/api folder.
 
-<strong>Important</strong> - If you are making REST API calls with username/password, please be sure make a DELETE call against /v1/auth when done. There is a maximum of 32 concurrent sessions for each user. If this is exceeded, an authentication failure will occur.
+:::warning important
+If you are making REST API calls with username/password, please be sure make a DELETE call against /v1/auth when done. There is a maximum of 32 concurrent sessions for each user. If this is exceeded, an authentication failure will occur.
+:::
 
 NeuVector also support Response Rules to automate common responses to security events or vulnerabilities detected. Please see the section Security Policy -> Response Rules for more details.
 
 #### Expose REST API in Kubernetes
+
 To expose the REST API for access from outside of the Kubernetes cluster, enable port 10443.
 
-```
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -42,28 +46,36 @@ spec:
   selector:
     app: neuvector-controller-pod
 ```
-Note: type: NodePort can also be used instead of LoadBalancer.
-Note: If using type LoadBalancer, set the _controllerIP_ in the examples below to the external IP or URL for the loadbalancer.
+
+:::note
+`type: NodePort` can also be used instead of LoadBalancer.
+:::
+
+:::note
+If using type LoadBalancer, set the _controllerIP_ in the examples below to the external IP or URL for the loadbalancer.
+:::
 
 #### Authentication for REST API 
+
 The REST API supports two types of authentication: username/password and token. Both can be configured in Settings -> Users, API Keys & Roles, and be associated with default or custom roles to limit access privileges. The examples below show username/password based authentication where a token is created first, then used in subsequent REST API calls. If using a token, it can be used directly in each REST API call. Note: username based connections have a limited number of concurrent sessions, so it is important to delete the username token as shown below when finished. Token based authentication does not have a limit, but expire according to the time limit selected when created.
 
 For token-based authentication, see the following screen shots and example call. Be sure to copy the secret and token once created, as there is no way to retrieve this after the screen in closed.
+
 ![token](5_2_api_key.png)
+
 ![token](5_2_api_created.png)
+
 ![token](5_2_api_key_header.png)
 
-
 #### Trigger Vulnerability Scanning from a script
-NeuVector can be triggered automatically to scan an image for vulnerabilities. This can be done by configuring a registry/repository to be monitored, using the NeuVector Jenkins plug-in, or using the REST API. Please see the section on Scanning & Compliance for more detail.
 
+NeuVector can be triggered automatically to scan an image for vulnerabilities. This can be done by configuring a registry/repository to be monitored, using the NeuVector Jenkins plug-in, or using the REST API. Please see the section on Scanning & Compliance for more detail.
 
 The sample script below shows how to remotely pull the container, run it, and scan it. It can be triggered from a Jenkins task (remote shell) or any CI/CD tool. A JSON parser tool (jq) is also used.
 
 Be sure to enter the controller IP address in the script and change the container image name to the one you wish to scan. Also, update the username/password fields.
 
-
-```
+```bash
 _curCase_=`echo $0 | awk -F"." '{print $(NF-1)}' | awk -F"/" '{print $NF}'`
 _DESC_="able to scan ubuntu:16.04 image"
 _ERRCODE_=0
@@ -91,6 +103,7 @@ while [ `wc -c < scan_repository.json` = "0" ]; do
     sleep 5
     curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" -d '{"request": {"registry": "'$_registryURL_'", "username": "'$_registryUsername_'", "password": "'$_registryPassword_'", "repository": "'$_repository_'", "tag": "'$_tag_'"}}' "https://$_controllerIP_:$_controllerRESTAPIPort_/v1/scan/repository" > /dev/null 2>&1 > scan_repository.json
 done
+
 echo `date +%Y%m%d_%H%M%S` log out
 curl -k -X 'DELETE' -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" "https://$_controllerIP_:$_controllerRESTAPIPort_/v1/auth" > /dev/null 2>&1
 cat scan_repository.json | jq .
@@ -99,23 +112,34 @@ rm *.json
 echo `date +%Y%m%d_%H%M%S` [$_curCase_] $_DESC_: $_RESULT_-$_ERRCODE_
 ```
 
-Note: You may need to install jq ($sudo yum install jq)
+:::note
+You may need to install jq
+
+```bash
+sudo yum install jq
+```
+:::
 
 For Kubernetes based deployments you can set the Controller IP as follows:
-```
+
+```bash
 _podNAME_=`kubectl get pod -n neuvector -o wide | grep "allinone\|controller" | head -n 1 | awk '{print $1}'`
 _controllerIP_=`kubectl exec $_podNAME_ -n neuvector -- consul info | grep leader_addr | awk -F":| " '{print $3}'`
 ```
 
-Note: In a multiple controller deployment the requests must be sent to a single controller IP so multiple requests for status of long running image scans go to the controller performing the scan.
+:::note
+In a multiple controller deployment the requests must be sent to a single controller IP so multiple requests for status of long running image scans go to the controller performing the scan.
+:::
 
 For scanning locally instead of in a registry:
-```
+
+```shell
 curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" -d '{"request": {"tag": "3.4", "repository": "nvlab/alpine", "scan_layers": true}}' "https://$_controllerIP_:443/v1/scan/repository"
 ```
 
 Sample output:
-```
+
+```json
 {
   "report": {
     "image_id": "c7fc7faf8c28d48044763609508ebeebd912ad6141a722386b89d044b62e4d45",
@@ -169,11 +193,12 @@ Sample output:
 ```
 
 #### Create Policy Rules Automatically
+
 To create a new rule in the NeuVector policy controller, the groups for the FROM and TO fields must exist first. The following sample creates a new Group based on the container label nv-service-type=data, and another Group for label nv-service-type=website. A rule is then created to allow traffic from the wordpress container to the mysql container using only the mysql protocol.
 
 Be sure to update the username and password for access to the controller.
 
-```
+```bash
 #!/bin/sh
 TOKEN_JSON=$(curl -k -H "Content-Type: application/json" -d '{"password": {"username": "admin", "password": "admin"}}' "https://`docker inspect neuvector.allinone | jq -r '.[0].NetworkSettings.IPAddress'`:10443/v1/auth")
 _TOKEN_=`echo $TOKEN_JSON | jq -r '.token.token'`
@@ -186,41 +211,50 @@ curl -k -X "DELETE" -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKE
 If the Groups already exist in NeuVector then the new rule can be created, skipping the Group creation steps. This example also removes the authentication token at the end. Note that a Rule ID number can be specified and NeuVector executes rules in numerical order lowest to highest.
 
 #### Export/Import Configuration File
+
 Here are samples to backup the NeuVector configuration file automatically. You can select whether to export all configuration settings (policy, users, Settings etc), or only the policy.
 
-IMPORTANT! These samples are provided as examples only and are not officially supported unless a specific enterprise support agreement has been put in place.
+:::warning important
+These samples are provided as examples only and are not officially supported unless a specific enterprise support agreement has been put in place.
+:::
 
 To export all configuration:
-```
-./config.py export -u admin -w admin -s $_controllerIP_ -p $_controllerPort_ -f $_FILENAME_    // exporting the configuration with all settings
+
+```shell
+./config.py export -u admin -w admin -s $_controllerIP_ -p $_controllerPort_ -f $_FILENAME_ # exporting the configuration with all settings
 ```
 
 To export policy only:
-```
-./config.py export -u admin -w admin -s $_controllerIP_ -p $_controllerPort_ -f $_FILENAME_ --section policy  // exporting the configuration with policy only
+
+```shell
+./config.py export -u admin -w admin -s $_controllerIP_ -p $_controllerPort_ -f $_FILENAME_ --section policy # exporting the configuration with policy only
 ```
 
 To import the file:
-```
-./config.py import -u admin -w admin -s $_controllerIP_ -p $_controllerPort_ -f $_FILENAME_    // importing the configuration
+
+```shell
+./config.py import -u admin -w admin -s $_controllerIP_ -p $_controllerPort_ -f $_FILENAME_ # importing the configuration
 ```
 
 <strong>Sample python files</strong> Contains config.py, client.py, and multipart.py. Download sample files: [ImportExport](ImportExport.zip). Please put all three files in one folder to run above commands. You may need install some Python modules in order to run the script.
-```
+
+```bash
 sudo pip install requests six
 ```
 
-####Setting or Changing User Password
+#### Setting or Changing User Password
+
 Use the rest API calls for User management.
 
-```
-$ curl -s -k -H 'Content-Type: application/json' -H 'X-Auth-Token: c64125decb31e6d3125da45cba0f5025' https://127.0.0.1:10443/v1/user/admin -X PATCH -d '{"config":{"fullname":"admin","password":"admin","new_password":"NEWPASS"}}'
+```shell
+curl -s -k -H 'Content-Type: application/json' -H 'X-Auth-Token: c64125decb31e6d3125da45cba0f5025' https://127.0.0.1:10443/v1/user/admin -X PATCH -d '{"config":{"fullname":"admin","password":"admin","new_password":"NEWPASS"}}'
 ```
 
 #### Starting Packet Capture on a Container
+
 When a container exhibits suspicious behavior, start a packet capture.
 
-```
+```bash
 #!/bin/sh
 TOKEN_JSON=$(curl -k -H "Content-Type: application/json" -d '{"password": {"username": "admin", "password": "admin"}}' "https://`docker inspect neuvector.allinone | jq -r '.[0].NetworkSettings.IPAddress'`:10443/v1/auth")
 _TOKEN_=`echo $TOKEN_JSON | jq -r '.token.token'`
@@ -230,11 +264,11 @@ curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" -d '{"sn
 Don’t forget to stop the sniffer session after some time so it doesn’t run forever. Number of files to rotate has a maximum value of 50.
 
 #### Check and Accept the EULA (new deployments)
+
 Get the authentication TOKEN as above. Also replace the controller IP address with your as appropriate.
 
-
-```
-$ curl -s -k -H 'Content-Type: application/json' -H 'X-Auth-Token: $_TOKEN_' https://127.0.0.1:10443/v1/eula | jq .
+```shell
+curl -s -k -H 'Content-Type: application/json' -H 'X-Auth-Token: $_TOKEN_' https://127.0.0.1:10443/v1/eula | jq .
 {
   "eula": {
     "accepted":false
@@ -243,21 +277,22 @@ $ curl -s -k -H 'Content-Type: application/json' -H 'X-Auth-Token: $_TOKEN_' htt
 ```
 
 Accept EULA
-```
-$ curl -s -k -H 'Content-Type: application/json' -H 'X-Auth-Token: $_TOKEN_' -d '{"eula":{"accepted":true}}' https://127.0.0.1:10443/v1/eula
+
+```shell
+curl -s -k -H 'Content-Type: application/json' -H 'X-Auth-Token: $_TOKEN_' -d '{"eula":{"accepted":true}}' https://127.0.0.1:10443/v1/eula
 ```
 
 Then check the EULA again.
 
 #### Configure Registry Scanning 
 
-```
+```shell
 curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" -d '{"request": {"registry": "https://registry.connect.redhat.com", "username": "username", "password": "password", "tag": "latest", "repository": "neuvector/enforcer"}}' "https://controller:port/v1/scan/repository"
 ```
 
 #### Enable Packet Capture on All Pods in a Namespace
 
-```
+```bash
 #!/bin/bash
 #set -x
 
@@ -455,9 +490,10 @@ done
 ```
 
 #### Enable Disable Container Quarantine
+
 The API call to quarantine is via PATCH to /v1/workload/:id with the following body. The workload id is the container/pod id.
 
-```
+```json
 --data-raw '{
     "config": {
         "quarantine": true,
@@ -470,7 +506,8 @@ The API call to quarantine is via PATCH to /v1/workload/:id with the following b
 #### Enable Debugging Mode for NeuVector Support
 
 Set access token with your IP, user, password:
-```
+
+```shell
 _controllerIP_="<your_controller_ip>"
 _controllerRESTAPIPort_="10443"
 _neuvectorUsername_="admin"
@@ -478,60 +515,68 @@ _neuvectorPassword_="admin"
 ```
 
 Get the authentication token
-```
+
+```shell
 curl -k -H "Content-Type: application/json" -d '{"password": {"username": "'$_neuvectorUsername_'", "password": "'$_neuvectorPassword_'"}}' "https://$_controllerIP_:$_controllerRESTAPIPort_/v1/auth" > /dev/null 2>&1 > token.json
 _TOKEN_=`cat token.json | jq -r '.token.token'`
 ```
 
 Enable Debug Mode
-```
+
+```shell
 curl -X PATCH -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" -d '{"config": {"controller_debug": ["cpath", "conn"]}}' "https://$_controllerIP_:$_controllerRESTAPIPort_/v1/system/config"  > /dev/null 2>&1   > set_debug.json
 #debug options - cpath, conn, mutex, scan, cluster , all
 ```
 
 Disable Debug on all controllers in a cluster
-```
+
+```shell
 curl -X PATCH -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" -d '{"config": {"controller_debug": []}}' "https://$_controllerIP_:$_controllerRESTAPIPort_/v1/system/config"  > /dev/null 2>&1   > set_debug.json
 ```
 
 Check the controller debug status in a cluster
-```
+
+```shell
 curl  -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_"  "https://$_controllerIP_:$_controllerRESTAPIPort_/v1/system/config"  > /dev/null 2>&1   > system_setting.json
 
 cat system_setting.json | jq .config.controller_debug
 ```
 
 Logout 
+
 ```
 echo `date +%Y%m%d_%H%M%S` log out
 curl -k -X 'DELETE' -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" "https://$_controllerIP_:$_controllerRESTAPIPort_/v1/auth" > /dev/null 2>&1
 ```
 
-
 #### Report if a vulnerability is in the base image layers
+
 To identify CVE's in the base image when using REST API to scan images, the base image must be identified in the API call, as in the example below.
-```
+
+```shell
 curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" -d '{"request": {"registry": "https://registry.hub.docker.com/", "repository": "garricktam/debian", "tag": "latest", "scan_layers": false, "base_image": "2244...../nodejs:3.2......"}}' "https://$RESTURL/v1/scan/repository"
 {noformat}
 ```
 
 <strong>Limitations:</strong> If the image to be scanned is a remote image, with "registry" specified, the base image must also be a remote image, and the name must start with http or https.  If the image to be scanned is a local image, then the base image must also be a local image as well. 
+
 For example,
-```
+
+```json
 {"request": {"repository": "neuvector/manager", "tag": "4.0.2", "scan_layers": true, "base_image": "alpine:3.12.0"}}
 {"request": {"registry": "https://10.1.127.12:5000/", "repository": "neuvector/manager", "tag": "4.0.0", "scan_layers": true, "base_image": "https://registry.hub.docker.com/alpine:3.12.0"}}
 {"request": {"repository": "neuvector/manager", "tag": "4.0.2", "scan_layers": true, "base_image": "10.1.127.12:5000/neuvector/manager:4.0.2”}}
 ```
 
-
 #### Get the CVE Database Version and Date
 
-```
+```shell
 curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" "https://127.0.0.1:10443/v1/scan/scanner"
 ```
 
 Output:
-```
+
+```json
 {
 	"scanners": [
 		{
@@ -558,7 +603,8 @@ Generally, listing Federation members can use a GET to the following endpoint (s
 https://neuvector-svc-controller.neuvector:10443/v1/fed/member
 
 Selected Federation Management API's:
-```
+
+```bash
 _masterClusterIP_=$1
 _workerClusterIP_=$2
 # this is used if one of clusters is going to be kicked by master cluster

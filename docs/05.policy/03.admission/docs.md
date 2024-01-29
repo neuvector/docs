@@ -15,8 +15,9 @@ This feature is supported in Kubernetes 1.9+ and Openshift 3.9+. Before using th
 The ValidatingAdmissionWebhook and MutatingAdmissionWebhook plugins are enabled by default.
 
 Check if admissionregistration.kubernetes.io/v1beta1 is enabled
-```
-$ kubectl api-versions | grep admissionregistration
+
+```bash
+kubectl api-versions | grep admissionregistration
 admissionregistration.k8s.io/v1beta1
 ```
 
@@ -25,8 +26,9 @@ admissionregistration.k8s.io/v1beta1
 The ValidatingAdmissionWebhook and MutatingAdmissionWebhook plugins are NOT enabled by default. Please see the examples in the OpenShift deployment sections for instructions on how to enable these. A restart of the OpenShift api and controllers services is required.
 
 Check if admissionregistration.kubernetes.io/v1beta1 is enabled
-```
-$ oc api-versions | grep admissionregistration
+
+```bash
+oc api-versions | grep admissionregistration
 admissionregistration.k8s.io/v1beta1
 ```
 
@@ -77,6 +79,7 @@ After the criterion is selected, the possible Operators will be displayed. Click
 
 <strong>Using Multiple Criteria in a Single Rule</strong>
 The matching logic for multiple criteria in one admission control rule is:
+
 + For different criteria types within a single rule, apply 'and'
 + For multiple criteria of same type (e.g. multiple namespaces, registries, images), 
     - Apply 'and' for all negative matches("not contains any", "is not one of") until the first positive match;
@@ -99,6 +102,7 @@ spec:
  ```
 
 The rule to match would be:
+
 ![Admission](ac_label.png)
 
 #### Example with Matching Environment Variables with Secrets
@@ -207,7 +211,7 @@ Criteria with a disk icon require that the image be scanned (see registry scanni
 
 Detection of secrets, for example in environment variables is matched used the following regex:
 
-``` shell
+```shell
 Rule{Description: "Password.in.YML", 
 Expression: `(?i)(password|passwd|api_token)\S{0,32}\s*:\s*(?-i)([0-9a-zA-Z\/+]{16,40}\b)`, ExprFName: `.*\.ya?ml`, Tags: []string{share.SecretProgram, "yaml", "yml"}, 
 Suggestion: msgReferVender}, 

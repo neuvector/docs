@@ -5,9 +5,11 @@ taxonomy:
 ---
 
 ### NeuVector Integration into CI/CD Workflow
+
 NeuVector supports the entire CI/CD process and can be easily integrated into the workflow to provide security throughout the development and deployment process.
 
 #### Dev and Continuous Integration Workflow
+
 NeuVector can be integrated into the Dev and CI processes to automate vulnerability scanning. The use of the NeuVector Jenkins plug-in and Registry scanning functions enable image scanning during this phase.
 
 ![integration](ci_workflow.png)

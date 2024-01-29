@@ -5,6 +5,7 @@ taxonomy:
 ---
 
 ### Increase Scanner Scalability with Multiple Scanners
+
 To increase scanner performance and scalability, NeuVector supports deploying multiple scanner pods which can, in parallel, scan images in registries. The controller assigns scanning tasks to each available scanner pod. Scanner pods can be scaled up or down easily as needed using Kubernetes.
 
 Scanner pods should be deployed to separate nodes to spread the workload across different host resources. Remember that a scanner requires enough memory to pull and expand the image, so it should have available to it more than the largest image size to be scanned. If necessary, scanners can be placed on specific nodes or avoid placing multiple pods on one node using standard Kubernetes node labels, taints/tolerations, or node affinity configurations.
@@ -18,7 +19,9 @@ Please note that in initial releases the presence and status of multiple scanner
 Scan results from all scanners are shown in the Assets -> Registries menu. Additional scanner monitoring features will be added in future releases.
 
 #### Auto-scaling of Scanner Pods
+
 Scanner pods can be configured to auto-scale based on certain criteria. This will ensure that scanning jobs are handled quickly and efficiently, especially if there are thousands of images to be scanned or re-scanned. There are three possible settings: delayed, immediate,  and disabled. When images are queued for scanning by the controller, it keeps a 'task count' of the queue size. 
+
 + Delayed strategy:
   -  When lead controller continuously sees "task count" > 0 for > 90 seconds, a new scanner pod is started if maxScannerPods is not reached yet
   -  When lead controller continuously sees "task count" is 0 for > 180 seconds, it scales down one scanner pod if minScannerPods is not reached yet
@@ -28,17 +31,22 @@ Scanner pods can be configured to auto-scale based on certain criteria. This wil
 
 Scanner auto-scaling is configured in Settings -> Configuration. The minimumScannerPods setting sets the minimum scanner pods running at any time, while the maxScannerPods sets the maximum number of pods that the auto-scaling strategy can scale up to. NOTE: Setting a minimum value will not adjust the original scanner deployment replicaset value. The minimum value will be applied during the first scale up/down event.
 
-***Important:*** Scanner auto-scaling is not supported when scanner is deployed with an OpenShift operator, as the operator will always change the number of pods to its configured value.
+:::warning important
+Scanner auto-scaling is not supported when scanner is deployed with an OpenShift operator, as the operator will always change the number of pods to its configured value.
+:::
 
 #### Operations and Debugging
+
 Each scanner pod will query the registries to be scanned to pull down the complete list of available images and other data. Each scanner will then be assigned an image to pull and scan from the registry.
 
 To inspect the scanner behavior, logs from each scanner pod can be examined using
-```
+
+```shell
 kubectl logs <scanner-pod-name> -n neuvector
 ```
 
 ### Performance Planning
+
 Experiment with varying numbers of scanners on registries with a large number of images to observe the scan completion time behavior in your environment. 2-5 scanners as the replica setting should be sufficient for most cases.
 
 When a scan task is assigned to a scanner, it pulls the image from the registry (after querying the registry for the list of available images). The amount of time it takes to pull the image (download) typically consumes the most time. Multiple scanners can be pulling images from the same registry in parallel, so the performance may be limited by registry or network bandwidth.
@@ -48,11 +56,13 @@ Large images will take more time to pull as well as need to be expanded to scan 
 Multiple scanner pods can be deployed to the same host/node, but considerations should be made to ensure the host has enough memory, CPU, and network bandwidth for maximizing scanner performance.
 
 ### Standalone Scanner for Local Scanning
+
 NeuVector supports standalone scanner deployments for local image scanning (which does not require a Controller). In the sample docker run below, the local image will be scanned and the results stored at the /var/neuvector locally. For local scanning, the image must be able to be accessed through the mounted docker.sock, otherwise a registry can be specified.
 
-```
+```bash
 docker run --name neuvector.scanner --rm -e SCANNER_REPOSITORY=ubuntu -e SCANNER_TAG=16.04 -e SCANNER_ON_DEMAND=true -v /var/run/docker.sock:/var/run/docker.sock -v /var/neuvector:/var/neuvector  neuvector/scanner
 ```
+
 The following scanner environment variables can be used in the docker run command: 
 
 - SCANNER_REGISTRY= url of the registry (optional instead of local scan)
@@ -65,26 +75,35 @@ The following scanner environment variables can be used in the docker run comman
 - CLUSTER_JOIN_ADDR (optional), CLUSTER_JOIN_PORT (optional) - to send results to controller for use in Admission control rules (Kubernetes deployed controller).
 - CLUSTER_ADVERTISED_ADDR (optional) - if scanner is on different host than controller, to send results for use in Admission control rules (Kubernetes deployed controller).
 
-####Host Scanning in Standalone Mode
-Use the following command to scan the host. Note: Requires privileged mode.
-```
-docker run --rm --privileged  --pid=host neuvector/scanner -n
+#### Host Scanning in Standalone Mode
+
+Use the following command to scan the host. 
+
+:::note
+Requires privileged mode!
+:::
+
+```shell
+docker run --rm --privileged  --pid=host neuvector/scanner -n neuvector
 ```
 
 #### Manual Deployment of Multiple Scanners on Kubernetes
+
 To manually deploy scanners as part of an existing Kubernetes deployment, create a new role binding:
 
-```
+```shell
 kubectl create rolebinding neuvector-admin --clusterrole=admin --serviceaccount=neuvector:default -n neuvector
 ```
 
 Or for OpenShift
-```
+
+```shell
 oc adm policy add-role-to-user admin system:serviceaccount:neuvector:default -n neuvector
 ```
 
 Use the file below to deploy multiple scanners. Edit the replicas to increase or decrease the number of scanners running in parallel.
-```
+
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -128,7 +147,7 @@ spec:
 
 Next, create or update the CVE database updater cron job. This will update the CVE database nightly.
 
-```
+```yaml
 apiVersion: batch/v1
 kind: CronJob
 metadata:

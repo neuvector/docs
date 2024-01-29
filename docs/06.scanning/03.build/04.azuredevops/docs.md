@@ -21,6 +21,3 @@ In addition, make sure there is a NeuVector scanner container deployed and confi
 + External NeuVector controller instances are defined as service endpoints to decouple build pipeline definitions from connection parameters and credentials.
 
 An overview with sample screens can be found at https://marketplace.visualstudio.com/items?itemName=NeuVector.neuvector-vsts
-
-
-

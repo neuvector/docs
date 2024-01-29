@@ -43,7 +43,6 @@ To customize the page banner, follow these steps:
 - Base64 encode the footer content.
 - Save the encoded content to the environment variables `CUSTOM_PAGE_FOOTER_COLOR` and `CUSTOM_PAGE_FOOTER_CONTENT`.
 
-
 The environment variables (`CUSTOM_LOGIN_LOGO`, `CUSTOM_EULA_POLICY`, `CUSTOM_PAGE_HEADER_COLOR`, `CUSTOM_PAGE_HEADER_CONTENT`, `CUSTOM_PAGE_FOOTER_COLOR`, `CUSTOM_PAGE_FOOTER_CONTENT`) can be defined in the `values.yaml` file in the [helm chart](https://github.com/neuvector/neuvector-helm/blob/master/charts/core/values.yaml). The corresponding section in the `values.yaml` file where these variables can be defined is "manager.env.envs"
 
 #### 4. Example to customize the UI pages using helm chart
@@ -66,6 +65,7 @@ Follow these steps to customize the UI component:
    - `CUSTOM_PAGE_HEADER_CONTENT`: Specify the header text using a plain HTML or text, for example "```You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.```", remember to based64 encode it.
    - `CUSTOM_EULA_POLICY`: Customize the policy content using a plain HTML snippet or text and remember to base64 encode it.
    - `CUSTOM_LOGIN_LOGO`: Customize the logo with a 300x80 pixel svg file and base64 encode it
+
 ```yaml
 manager:
   # If false, manager will not be installed
@@ -255,4 +255,3 @@ Please note that the example is for demonstration purposes only. Make sure to ad
 ![Customized pages](ui-custom-1.png)
 ![Customized pages](ui-custom-2.png)
 ![Customized pages](ui-custom-3.png)
-

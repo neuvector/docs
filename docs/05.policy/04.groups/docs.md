@@ -19,6 +19,7 @@ The Groups screen also displays a 'Scorable' icon in the upper right, and a lear
 The Groups screen is also where the CRD yaml file for 'security policy as code' can be imported and exported. Select one or more groups and click on the Export Group policy button to download the yaml file. See the [CRD](/policy/usingcrd) section for more details on how to use CRDs. Important: Each selected group AND any linked groups through network rules will be exported (i.e. the group and any other group it connects to through the whitelist network rules).
 
 #### Auto Deletion of Unused Groups
+
 Learned groups (not reserved or custom groups) can be automatically deleted by NeuVector if there are no members (containers) in the group. The time period for this is configurable in Settings -> Configuration.
 
 #### Host Protection - the 'Nodes' Group
@@ -31,14 +32,16 @@ The nodes can then be put into the Monitor or Protect mode, where NeuVector will
 
 To enable host protection with process profile rules, select the 'nodes' group and review the learned processes on the node. Customize if needed by adding, deleting or editing process rules. Then switch the mode to Monitor or Protect.
 
-Note: Network connection violations of rules shown in the Network Rules for Nodes are never blocked, even in Protect mode. Only process violations are blocked in Protect mode on nodes.
-
+:::note
+Network connection violations of rules shown in the Network Rules for Nodes are never blocked, even in Protect mode. Only process violations are blocked in Protect mode on nodes.
+:::
 
 #### Custom Groups
 
 Groups can be manually added by entering the criteria for the group. Note: Custom created groups don't have a Protection mode. This is because they may contain containers from different underlying groups, each of which may be in a different mode, causing confusion about the behavior.
 
 Groups can be created by:
+
 + **Images**
 > Select containers by their image names. Examples: image=wordpress, image@redis
 + **Nodes**
@@ -60,7 +63,9 @@ It is not recommended to use address criteria to match internal IPs or subnets, 
 
 Wildcards '*' can be used in criteria, for example 'address=*.google.com'. For more flexible matching, use the tilde '~' to indicate a regex match is desired. For example to match labels 'policy~public.*-ext1' for the label policy.
 
-Note: Special characters used after an equals '=' in criteria may not match properly. For example the dot '.' In 'policy=public.*' will not match properly, and regex match should be used instead, like 'policy~public.*'
+:::note
+Special characters used after an equals '=' in criteria may not match properly. For example the dot '.' In 'policy=public.*' will not match properly, and regex match should be used instead, like 'policy~public.*'
+:::
 
 After saving a new group, NeuVector will display the members in that group. Rules can then be created using these groups.
 

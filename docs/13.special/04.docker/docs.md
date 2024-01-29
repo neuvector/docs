@@ -4,17 +4,17 @@ taxonomy:
     category: docs
 ---
 
-
 ### Mirantis Kubernetes Engine
+
 Deploy to Kubernetes using the [Kubernetes Allinone](/special/kubernetes) section. 
 
 ### Deploy to Swarm Cluster
+
 It’s simple to deploy NeuVector using a Swarm cluster. First, pull the NeuVector images using Docker UCP in the Images menu. You may need to add a version number to get the latest version on Docker Hub.
 
 Currently, Swarm/UCP does not support the seccomp capabilities (cap_add options) or deploying in ‘privileged mode’ so the NeuVector containers will need to be deployed from the command line using docker-compose or run. See the sample compose files for the allinone and enforcer below.
 
 The Docker UCP HRM service uses the default port 8443 which conflicts with the NeuVector console port. If using the default HRM port, then change the NeuVector port mapping, for example 9443:8443 for the allinone container in the examples below. After the NeuVector application is successfully deployed, login to the console on port 9443 of the allinone host.
-
 
 ### Deploy on Docker Swarm Using Privileged Mode
 
@@ -22,7 +22,7 @@ The following is an example of the docker-compose file to deploy the all-in-one 
 
 Deploy all-in-one using docker-compose (privileged mode):
 
-```
+```yaml
 allinone:
     pid: host
     image: neuvector/allinone:<version>
@@ -53,7 +53,7 @@ Add an enforcer container using docker-compose (privileged mode)
 
 This is an example of docker-compose file to join an enforcer into the cluster. Both greenfield and brownfield deployment are supported.
 
-```
+```yaml
 enforcer:
     pid: host
     image: neuvector/enforcer:<version>
@@ -72,14 +72,13 @@ enforcer:
         - /sys/fs/cgroup/:/host/cgroup/:ro
 ```
 
-
 The most important environment variable is **CLUSTER_JOIN_ADDR**. For enforcers, replace ```<controller_node_ip>``` with the controller's node IP address. Typically, **CLUSTER_JOIN_ADDR** in the controller/all-in-one's docker-compose file and enforcer's docker-compose file have the same value.
 
 From NeuVector 4.0+, a separate scanner container must be deployed to perform vulnerability scanning.
 
 Sample docker-compose for the Scanner:
 
-```
+```yaml
 Scanner:
    image: neuvector/scanner
    container_name: scanner
@@ -92,13 +91,13 @@ Scanner:
      - /var/run/docker.sock:/var/run/docker.sock:ro
 ```
 
-
 ### Deployment Without Using Privileged Mode
+
 For some platform configurations it is possible to deploy the NeuVector containers without requiring them to run in privileged mode. The configuration must support the ability to add capabilities and set the apparmour profile. Note that Docker DataCenter/UCP and Swarm currently do not support this, but it is still possible to deploy NeuVector manually using Compose or Run.
 
 Deploy allinone (NO privileged mode) with docker-compose
 
-```
+```yaml
 allinone:
     pid: host
     image: neuvector/allinone
@@ -131,7 +130,7 @@ allinone:
 
 Deploy enforcer (NO privileged mode) with docker-compose
 
-```
+```yaml
 enforcer:
     pid: host
     image: neuvector/enforcer

@@ -5,6 +5,7 @@ taxonomy:
 ---
 
 ### SAML IDP Configuration
+
 To configure NeuVector to use Okta SAML IDP server, first, configure the SAML IDP server on the Okta site.
 
 ![Okta](okta.png)
@@ -19,6 +20,7 @@ Configure SAML settings in NeuVector UI console.
 ![SAML](saml1.png)
 
 Use "View Setup Instructions" button as shown in the following screenshot to locate following information, and copy them into NeuVector's SAML page. 
+
 1. Identity Provider Single Sign-On URL
 2. Identity Provider Issuer
 3. X.509 Certificate
@@ -32,4 +34,5 @@ After the user is authenticated, the proper role can be derived with group-based
 2. Specify a list of groups respectively in Admin and Reader role map. The user's group attribute is piggybacked in the response after the user is authenticated. If the matched group is located, the corresponding role will be assigned to the user.
 
 #### Mapping Groups to Roles and Namespaces
+
 Please see the [Users and Roles](/configuration/users#mapping-groups-to-roles-and-namespaces) section for how to map groups to preset and custom roles as well as namespaces in NeuVector.

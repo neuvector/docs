@@ -5,6 +5,7 @@ taxonomy:
 ---
 
 ### Updating the NeuVector CVE Vulnerability Database
+
 The Scanner image/pod performs the scans with its internal CVE database. The scanner image is updated on the NeuVector Docker Hub registry with the latest CVE database frequently, as often as daily if there are updates. To update the CVE database used in scanning, simply pull and deploy the latest Scanner image. The latest database version number can be found listed [here](https://raw.githubusercontent.com/neuvector/manifests/main/versions/scanner).
 
 A container called the Updater performs the task of restarting the scanner pods in order to force a pull of the latest image, which will update the CVE database. To automatically check for updates and update the scanner, an updater cron job can be created.
@@ -19,12 +20,11 @@ This cron job is deployed by NeuVector automatically as part of the sample deplo
 
 The Updater is a container image which, when run, restarts the scanner deployment, forcing the pull of the latest Scanner image. The updater re-deploys all scanner pods by taking the deployment to zero and scaling it back up.
 
-
 The cron job sample neuvector-updater.yaml below for Kubernetes 1.8 and later runs the updater every day at midnight. The schedule can be adjusted as desired.
 
 Sample updater yaml:
 
-```
+```yaml
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -50,42 +50,51 @@ spec:
           restartPolicy: Never
 ```
 
-Note: If the allinone container was deployed instead of the controller, replace neuvector-svc-controller.neuvector with neuvector-svc-allinone.neuvector
+:::note
+If the allinone container was deployed instead of the controller, replace neuvector-svc-controller.neuvector with neuvector-svc-allinone.neuvector
+:::
 
 To run the cron job
-```
+
+```shell
 kubectl create -f neuvector-updater.yaml 
 ```
 
-
-###Docker Native Updates
-<strong>Important:</strong> Always use the :latest tag when pulling and running the scanner image to ensure the latest CVE database is deployed.
+### Docker Native Updates
+:::warning important
+Always use the :latest tag when pulling and running the scanner image to ensure the latest CVE database is deployed.
+:::
 
 For docker native:
 
-```
+```shell
 docker stop scanner
 docker rm <scanner id>
 docker pull neuvector/scanner:latest
 <docker run command from below>
 ```
 
-Note: 'docker rm -f \<scanner id\>' can also be used to force stop and removal of the running scanner.
+:::note
+`docker rm -f <scanner id>` can also be used to force stop and removal of the running scanner.
+:::
 
 For docker-compose
 
-```
+```shell
 docker-compose -f file.yaml down
 docker-compose -f file.yaml pull		// pre-pull the image before starting the scanner
 docker-compose -f file.yaml up -d
 ```
 
 Sample docker run
-```
+
+```bash
 docker run -td --name scanner -e CLUSTER_JOIN_ADDR=controller_node_ip -e CLUSTER_ADVERTISED_ADDR=node_ip -e SCANNER_DOCKER_URL=tcp://192.168.1.10:2376 -p 18402:18402 -v /var/run/docker.sock:/var/run/docker.sock:ro neuvector/scanner:latest
 ```
+
 And sample docker-compose
-```
+
+```yaml
 Scanner:
    image: neuvector/scanner:latest
    container_name: scanner
@@ -99,18 +108,19 @@ Scanner:
      - /var/run/docker.sock:/var/run/docker.sock:ro
 ```
 
-
-###CVE Database Version
+### CVE Database Version
 
 The CVE database version can be seen in the Console in the Vulnerabilities tab. You can also inspect the scanner container logs or updater image.
 
 To use the REST API to query the version:
-```
+
+```shell
 curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" "https://127.0.0.1:10443/v1/scan/scanner"
 ```
 
 Output:
-```
+
+```json
 {
 	"scanners": [
 		{
@@ -133,39 +143,41 @@ Output:
 
 Using kubectl:
 
-```
+```bash
 kubectl logs neuvector-scanner-pod-5687dcb6fd-2h4sj -n neuvector | grep version
 ```
 
 Sample output:
 
-```
+```shell
 2020-09-15T00:00:57.909|DEBU|SCN|memdb.ReadCveDb: New DB found - update=2020-09-14T10:37:56Z version=2.04
 2020-09-15T00:01:10.06 |DEBU|SCN|main.scannerRegister: - entries=47016 join=neuvector-svc-controller.neuvector:18400 version=2.040
 ```
 
 Or for docker:
 
-```
+```bash
 docker logs <scanner container id or name> | grep version
 ```
 
-```
+```shell
 2020-09-15T00:00:57.909|DEBU|SCN|memdb.ReadCveDb: New DB found - update=2020-09-14T10:37:56Z version=2.04
 2020-09-15T00:01:10.06 |DEBU|SCN|main.scannerRegister: - entries=47016 join=neuvector-svc-controller.neuvector:18400 version=2.040
 ```
 
-###Manual Updates on Kubernetes
+### Manual Updates on Kubernetes
+
 Below is an example for manually updating the CVE database on Kubernetes or OpenShift.
 
 Run the updater file below
-```
+
+```shell
 kubectl create -f neuvector-manual-updater.yaml
 ```
 
 Sample file
 
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -182,4 +194,3 @@ spec:
     - TOKEN=`cat /var/run/secrets/kubernetes.io/serviceaccount/token`; /usr/bin/curl -kv -X PATCH -H "Authorization:Bearer $TOKEN" -H "Content-Type:application/strategic-merge-patch+json" -d '{"spec":{"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"'`date +%Y-%m-%dT%H:%M:%S%z`'"}}}}}' 'https://kubernetes.default/apis/apps/v1/namespaces/neuvector/deployments/neuvector-scanner-pod'
   restartPolicy: Never
 ```
-

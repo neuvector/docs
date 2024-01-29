@@ -295,7 +295,6 @@ TOTAL: 6, HIGH: 1, MEDIUM: 5, LOW: 0, UNKNOWN: 0
 + tcpdump is unable to start successfully when sniffering a traffic on container
 + Update alpine to remediate several CVEs including Manager: CVE-2022-37454, CVE-2022-42919, CVE-2022-45061, CVE-2021-46848; Enforcer: CVE-2022-43551, CVE-2022-43552
 
-
 #### 5.0.5 November, 2022
 
 ##### Bug Fixes
@@ -456,7 +455,6 @@ neuvector-scanner-pod-87474dcff-s8vgt       1/1     Running   0          114s   
 + Enhance security of gRPC communications.
 + Fixed: unable to get correct workload privileged info in rke2 setup.
 + Fix issue with support of openSUSE Leap 15.3 (k8s/crio).
-
 
 #### Other Updates
 

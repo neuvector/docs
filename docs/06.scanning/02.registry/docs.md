@@ -4,19 +4,20 @@ taxonomy:
     category: docs
 ---
 
-
 Registry scanning requires that the NeuVector Allinone or Controller container be deployed on a host/node. Please see the [Installation/Deployment](/basics/installation) section for how to deploy the NeuVector containers. Configure registry scanning from the NeuVector console after logging in to the manager.
 
 In addition, make sure there is a NeuVector scanner container deployed and configured to connect to the Allinone or Controller. In 4.0 and later, the neuvector/scanner container must be deployed separate from the allinone or controller.
 
-Note: Registry image scanning is performed by the scanner and the image is pulled and expanded in memory. If expanded image sizes larger than 500MB are expected, consider increasing the scanner memory to 1.5GB or more to provide capacity and headroom for the scanner.
+:::note
+Registry image scanning is performed by the scanner and the image is pulled and expanded in memory. If expanded image sizes larger than 500MB are expected, consider increasing the scanner memory to 1.5GB or more to provide capacity and headroom for the scanner.
+:::
 
 To increase registry scanning performance and scalability, multiple scanner pods can be deployed on different nodes to distribute the scanning tasks across multiple scanners. See the section [Multiple Parallel Scanners](/scanning/scanners) for details.
 
 For multi-cluster (federated) environments, the primary (master) cluster can scan a registry/repo designated as a federated registry. The scan results from these registries will be synchronized to all managed (remote) clusters. This enables display of scan results in the managed cluster console as well as use of the results in admission control rules of the managed cluster. Registries only need to be scanned once instead of by each cluster, reducing CPU/memory and network bandwidth usage. See the [multi-cluster](/navigation/multicluster/) section for more details.
 
-
 ### Configure Registry Scanning
+
 To configure registries and repositories to be scanning, go to the Assets -> Registries menu in the NeuVector console. Add or edit registries to be scanned. Use the Filter to define repositories or subsets of images to be scanned. If your registry requires access through a proxy, this can be configured in Settings -> Configuration.
 
 ![Registry](registry-scan.png)
@@ -38,15 +39,18 @@ Scanning is supported for images on public and private docker registries that ar
 At least one repository filter is required (can't be left blank).
 
 #### Repository filter examples
+
 ![filters](1-filter-examples.png)
 
 Notes:
+
 1. To scan all image tags, add filter as &#42; or &#42;:&#42;. This works on all registry types except the public docker registry.
 2. Repository should be full name if organization is nil for public docker registry or add library before repository as given above.
 3. Create a virtual repository and add all local repository to it to scan all tags on a JFrog registry with the subdomain docker access method.
 4. Regular expressions can be used in a filter. For example alpine:3.[8|9].* will scan all 3.8.x and 3.9.x images and tags on docker hub.
 
 #### Registry scan options
+
 + Scan Layers:
     - Provides vulnerability scan result for every image layer separately
     - Provides information about commands executed, packages added in the layer
@@ -62,11 +66,13 @@ Notes:
     - Enable this option to rescan all images after the vulnerability database is updated.
 
 #### Configuring Proxy server for Registry 
+
 Please go to Settings -> Configuration to configure proxy settings for registry scanning.
 
-
 #### Native Docker registry (also Quay and Harbor)
+
 ##### Add Native Docker registry
+
 + Choose Docker registry as type
 + Give unique name to the registry
 + Type registry URL with port
@@ -91,32 +97,36 @@ Note for Quay:
 
 ![4 1-quay](https://user-images.githubusercontent.com/13239496/218163999-9b281bd9-d049-49f6-85cd-395d7c20c481.png)
 
-
 ##### Start scanning the Docker registry
+
 + Select registry to be scanned
 + Click start button to scan
 + Wait till status changes from scanning to idle 
     - Scanning time varies depending on the size of the repository
+
 ![scandocker](5-scandocker.png)
 
-
 ##### View the scan result
+
 + Click on an image from images pane to view the scan result for the image.
 + Access the scan result to find the vulnerability status of the image.
 + Click download button to download scan result of the image if needed
 + Move mouse in between CVE detail and images to get back to summary
 
 Showing images scanned for the selected registry
+
 ![scanned](6-imagescan.png)
 
 Example showing layer scan result of an image, which shows vulnerabilities of each layer, layer size and commands run on each layer. In addition, there is a Compliance tab which shows the compliance test results for the image.
+
 ![layered](image_scan_4.png)
 
-
 #### Amazon ECR Registry
+
 Ref:  https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html
 
 ##### Add Amazon ECR registry
+
 + Choose Amazon registry as type
 + Give unique name to the registry
 + Registry URL is automatically found with other information
@@ -135,9 +145,11 @@ Ref:  https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html
 ![aws](9-aws.png)
 
 #### Redhat registry
+
 Ref:  https://access.redhat.com/containers
 
 ##### Add Red Hat registry
+
 + Choose Redhat registry as type
 + Give unique name to the registry
 + Type registry URL https://registry.connect.redhat.com/
@@ -147,12 +159,13 @@ Ref:  https://access.redhat.com/containers
     - Repository can have wildcard with starting string
     - Example neuvector/all&#42;:2&#42;
     - &#42; to scan all image tags
+
 ![redhat](10-redhat.png)
  
-
 #### Openshift registry
 
 ##### Add OpenShift registry with username and password
+
 + Choose OpenShift registry as type
 + Give unique name to the registry
 + Type registry URL (obtain from the output of "oc get is" command in OpenShift network if it is different than default)
@@ -186,12 +199,12 @@ Ref:  https://access.redhat.com/containers
     - Example openshift/htt&#42;:&#42;
     - &#42; to scan all image tags
 + Enable auto scan to start the scan as soon image is updated on OpenShift image stream.
+
 ![openshift](1a_openshift_token.png)
 
 ##### Stability issues in Openshift 3.7 Registry
 
 In OpenShift 3.7, API calls to pull container image metadata or to download an image can fail randomly. It can also fail on random images in different scan runs. You may see incomplete image lists or scans may fail on some images when this happens. If this occurs, the repository can be rescanned.
-
 
 #### JFrog Artifactory
 
@@ -201,6 +214,7 @@ JFrog management page admin->HTTP Setting showing docker access method  - Reposi
 ![jfrog](12-jfrog.png)
 
 ##### Add JFrog Artifactory registry (Docker Access method – Repository Path)
+
 + Choose JFrog Artifactory as type
 + Give a unique name to the registry
     - Type the registry URL with port, for example http://10.1.7.122:8081/
@@ -213,11 +227,13 @@ JFrog management page admin->HTTP Setting showing docker access method  - Reposi
     - &#42; to scan all tags
 
 ##### Adding JFrog Artifactory registry (Docker Access method – subdomain)
+
 JFrog management page admin->HTTP Setting showing docker access method – Sub Domain
 
 ![artifactory](14-artifact.png)
 
 Add JFrog Artifactory registry (Docker Access method – subdomain)
+
 + Choose JFrog Artifactory as type
 + Give a unique name to the registry
 + Type the registry URL with port, for example http://10.1.7.122:8081/
@@ -230,17 +246,22 @@ Add JFrog Artifactory registry (Docker Access method – subdomain)
     - The wildcard must be preceded by the full name, path, or starting string
     - &#42; for scanning all tags from all subdomains
 
-Note: Create a virtual repository and add all local and remote repository to it. Specify this virtual repository in the filter section to scan all tags from local and remote remote repository.
+:::note
+Create a virtual repository and add all local and remote repository to it. Specify this virtual repository in the filter section to scan all tags from local and remote remote repository.
+:::
 
 Adding subdomain based JFrog registry to scan images from docker-local subdomain
+
 ![local](jfrog_sub_local.png)
 
 Adding subdomain based JFrog registry to scan all tags from all subdomains
+
 ![all](jfrog_all_subs.png)
 
 ##### Add JFrog Artifactory registry (Docker Access method – port)
 
 JFrog management page admin->HTTP Setting showing docker access method - Port 
+
 ![jfrogport](jfrogport1.png)
 
 JFrog management page admin->Local Repository->docker-local repository-> Advanced - showing repository URL and registry port 8181
@@ -281,7 +302,9 @@ Showing scanned result for docker-local registry
 ![jfrogport](jfrogport6.png)
 
 ##### Add SaaS JFrog Artifactory registry (Docker access method – Port)
+
 Choose JFrog Artifactory as type 
+
 + Give a unique name to the registry 
 + Type the registry URL, for example https://jfrogtraining-docker-nv-virtual.jfrog.io
 + Choose Port as JFrog Docker Access Method 
@@ -292,31 +315,34 @@ Choose JFrog Artifactory as type
 
 ![jfrogsaas](jfrog_saas.png)
 
-
 ##### Start Scanning a JFrog Artifactory Registry
+
 + Select registry to be scanned
 + Click start button to scan
 + Wait until status changes from scanning to idle
     - Scanning time varies depending on the size of the repository
 
-
 #### Google Container Registry
+
 Ref: 
 https://cloud.google.com/container-registry/docs/advanced-authentication
 https://cloud.google.com/container-registry/docs/advanced-authentication#json_key_file
 
 ##### Enable Cloud Resource Manager API for the project
+
 Google Cloud Platform->Choose Project->API and Services->Enable APIS and Services->Search “Cloud Resource Manager API”->Enable API
 https://console.cloud.google.com/apis/library?project=nvtest-219600&q=Cloud%20Resource%20Manager%20API   (change project name)
 ![gcp](17-gcp.png)
 
 ##### Create key for container service account
+
 Google Cloud Platform-->IAM-->Service Account-->account with container registry-->CreateKey(action)-->
 ![gcpiam](18-gcpiam.png)
 
 ##### Copy json file to client machine
 
 ##### Add Google Container Registry from the NeuVector GUI
+
 + Choose Google registry as type
 + Give unique name to the registry
 + Type registry URL. Sample https://gcr.io/ (this could also be us.gcr.io, eu.gcr.io etc)
@@ -328,22 +354,27 @@ Google Cloud Platform-->IAM-->Service Account-->account with container registry-
 ![gcpscan](19-gcpscan.png)
 
 ##### Start Scanning a Google Container Registry
+
 + Select registry to be scanned
 + Click start button to scan
 + Wait until status changes from scanning to idle
     - Scanning time varies depending on the size of the repository
 
 #### Azure Container Registry
+
 Ref: 
 https://azure.microsoft.com/en-us/services/container-registry/
 
 ##### Obtain Azure container username and password as shown below
+
 Azure container registry -> user-> access keys->password
 
 Showing azure portal username and password for container registry access
+
 ![azure](20-azure.png)
 
 ##### Add Azure Container Registry from the NeuVector GUI
+
 + Choose Azure registry as type
 + Give unique name to the registry
 + Type registry URL. Sample https://neuvector.azure.io (obtain from azure portal)
@@ -356,23 +387,28 @@ Showing azure portal username and password for container registry access
     - &#42; to scan all image tags
 
 Showing azure portal login server for Azure container registry 
+
 ![azure](21-azurereg.png)
 
 Adding Azure container registry to scan all tags
+
 ![azureadd](22-azureadd.png)
 
 ##### Start Scanning a Azure Container Registry
+
 + Select registry to be scanned
 + Click start button to scan
 + Wait until status changes from scanning to idle
     - Scanning time varies depending on the size of the repository
 
 #### Sonatype Nexus Docker registry
+
 Ref:
 https://help.sonatype.com/repomanager3/private-registry-for-docker
 https://hub.docker.com/r/sonatype/nexus3/
 
 ##### Add Sonatype Nexus Docker registry
+
 + Choose Sonatype Nexus as type
 + Give unique name to the registry
 + Type registry URL with port
@@ -384,19 +420,21 @@ https://hub.docker.com/r/sonatype/nexus3/
     - &#42; to scan all image tags
 
 Adding Sonatype Nexus docker registry with username/password and repository &#42;:&#42;  for scanning 
+
 ![sonatype](23-sonatype.png)
 
 ##### Start scanning Sonatype Nexus Docker registry
+
 + Select registry to be scanned
 + Click start button to scan
 + Wait till status changes from scanning to idle 
     - Scanning time varies depending on the size of the repository
 
-
 #### Gitlab Container Registry
 
 ##### Sample GitLab Environmnent Configurations
-```
+
+```bash
 sudo docker run --detach \
   --hostname gitlab \
   --env GITLAB_OMNIBUS_CONFIG="external_url 'http://10.1.7.73:9096'; gitlab_rails['lfs_enabled'] = true;" \
@@ -411,22 +449,26 @@ External_URL:  http://10.1.7.73:9096
 Registry_URL: https://10.1.7.73:9095
 ```
 
-
 ##### Obtain Gitlab private token as shown below
 
 + Navigate to the settings page from the icon located at the upper-righthand corner of the GitLab login page as illustrated below:
+
 ![gitlab](gitlabsettings.png)
 
 + Navigate to the Access_Tokens page as shown below from the User_Settings page: 
+
 ![gitlab](gitlabusersettings.png)
 
 + Fill in all applicable fields, and click “Create personal access token” when ready to generate the access token:
+
 ![gitlab](gitlabpersonaltoken_new.png)
 
 + Access token will no longer be available once the user has navigated away from the generated token page.  Therefore, it is highly recommended to make a copy of the access token prior to navigating or closing the following page:
+
 ![gitlab](gitlabaccesstoken.png)
 
 ##### Obtaining External and Registry URLs
+
 External-URL:   The external url is the API-Server's URL.  
 Registry-URL:  This can be obtained from the Container Registry page of the GitLab webconsole.  One way to get to this page is navigating from the GitLab’s webconsole from Projects > Your Projects > Administrator / … > Left-Pane (Container Registry) > Mouse-over (root/.../)
  
@@ -435,19 +477,25 @@ The following is a sample screen-capture of the page that reveals both the Exter
 ![gitlab](gitlabexternalurl.png)
 
 ##### Add Gitlab Registry from the NeuVector Console
+
 + Choose Gitlab as the registry type
 + Give unique name to the registry
 + Type registry URL with port
 + Provide username and password if required by the registry
 + Provide Gitlab external URL and the private token obtained from the last section
+
 ![gitlab](gitlabregistryscan.png)
 
-Note:  The Registry URL is used for pulling images into the NeuVector scanner-platform from GitLab to do registry scanning.  While the External URL is used for retrieving a list of images, registries, and metadata used by the registry scanning feature.
+:::note
+The Registry URL is used for pulling images into the NeuVector scanner-platform from GitLab to do registry scanning.  While the External URL is used for retrieving a list of images, registries, and metadata used by the registry scanning feature.
+:::
 
 #### IBM Cloud Container Registry 
+
 Ref:  https://www.ibm.com/cloud/container-registry
 
 ##### Add IBM Container registry
+
 + Choose IBM Cloud Container Registry as type
 + Give unique name to the registry
 + Type registry URL https://us.icr.io/
@@ -465,12 +513,15 @@ Ref:  https://www.ibm.com/cloud/container-registry
     - Example neuvector/all*:2*
     - * to scan all image tags
 + Enable other parameters if needed
+
 ![ibm](ibm-1.png)
 
-Note: The username for the registry authentication must be 'iamapikey'
+:::note
+The username for the registry authentication must be 'iamapikey'
+:::
 
 #### Harbor Registry
+
 Use the same instructions as for the Native Docker registry, choosing Docker as the registry.
 
 The filter field can not be left blank. Enter a repository filter, or add filter as &#42; to scan all repositories.
-

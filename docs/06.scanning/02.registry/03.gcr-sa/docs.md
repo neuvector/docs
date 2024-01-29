@@ -4,7 +4,10 @@ taxonomy:
     category: docs
 ---
 
-### Google GCR - Authentication/Scanning with GCP Service AccountsIt is a best practice to not depend on user attributed accounts for integrations.  GCP supports using a service account to access GCR.  Here are the steps to enable a service account for GCR and use it to trigger repository scans from NeuVector. 
+### Google GCR - Authentication/Scanning with GCP Service Accounts
+
+It is a best practice to not depend on user attributed accounts for integrations.  GCP supports using a service account to access GCR.  Here are the steps to enable a service account for GCR and use it to trigger repository scans from NeuVector. 
+
 Start in NeuVector, where one first sets up a new registry:
 
 ![GCR](gcr1.png)
@@ -49,8 +52,8 @@ As you have already concluded, JSON is the go-to here. Selecting “CREATE” wi
 
 Before you get too excited there’s one more thing to ensure. In order for the scanner in NeuVector to use the API to scan and protect your images, said API must be enabled in your GCP account. You can either enable it via the command line via
 
-```
-$ gcloud services enable artifactregistry.googleapis.com
+```shell
+gcloud services enable artifactregistry.googleapis.com
 ```
 
 Or you can use the GCP gui. Head to “API Library” and search for “Artifact Registry API” and ensure it is turned on for your project. See figure 7.
@@ -61,14 +64,12 @@ You should be set! See figure 8 below for a properly-configured registry using t
 
 ![GCR](gcr9.png)
 
-
-
 #### Obtain the Access Token Using the REST API
 
 The NeuVector REST API may be used to authenticate using the service account. The below example uses gcloud to obtain the access token.  The username is “oauth2accesstoken”.
 
-```
-$ gcloud auth print-access-token
+```shell
+gcloud auth print-access-token
 ya29.a0AfH6SMAvyZ2zkD3MZD_K8Lqr7qkIsRkGNqhAGthJ_A7lp8OGRe7xh5KmuQY-VJfqu83C9e1gi7A_m1InNm8QIoTGf9WHXnOeAr1gT_O6b6K667NUz1_YDunjdW09jt0XvcBGQaxjJ3c4aHlxdehBFiE_9PMk13JDt_T6f0_6vzS7
 ```
 
@@ -76,7 +77,7 @@ ya29.a0AfH6SMAvyZ2zkD3MZD_K8Lqr7qkIsRkGNqhAGthJ_A7lp8OGRe7xh5KmuQY-VJfqu83C9e1gi
 
 The below example script incorporates the access token to trigger GCR repository scan.
 
-```
+```shell
 _curCase_=`echo $0 | awk -F"." '{print $(NF-1)}' | awk -F"/" '{print $NF}'`
 _DESC_="able to scan ubuntu:16.04 image"
 _ERRCODE_=0
@@ -89,6 +90,7 @@ _controllerRESTAPIPort_="10443"
 _neuvectorUsername_="admin"
 _neuvectorPassword_="admin"
 _registryURL_="https://us.gcr.io/"
+
 # registry urls could also be gcr.io, eu.gcr.io, asia.gcr.io etc
 _registryUsername_="oauth2accesstoken"
 _registryPassword_=$(gcloud auth print-access-token)
@@ -105,10 +107,10 @@ while [ `wc -c < scan_repository.json` = "0" ]; do
     sleep 5
     curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" -d '{"request": {"registry": "'$_registryURL_'", "username": "'$_registryUsername_'", "password": "'$_registryPassword_'", "repository": "'$_repository_'", "tag": "'$_tag_'"}}' "https://$_controllerIP_:$_controllerRESTAPIPort_/v1/scan/repository" > /dev/null 2>&1 > scan_repository.json
 done
+
 echo `date +%Y%m%d_%H%M%S` log out
 curl -k -X 'DELETE' -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" "https://$_controllerIP_:$_controllerRESTAPIPort_/v1/auth" > /dev/null 2>&1
 cat scan_repository.json | jq .
-
 rm *.json
 echo `date +%Y%m%d_%H%M%S` [$_curCase_] $_DESC_: $_RESULT_-$_ERRCODE_
 ```

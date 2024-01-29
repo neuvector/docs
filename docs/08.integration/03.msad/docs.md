@@ -24,7 +24,10 @@ With the above User name and Base DN settings, NeuVector is able to bind with Wi
 ![ad_config](ad4.png)
 
 User name: It is required to use the sAMAccountName attribute ONLY to match. For example, in the screen below NeuVector is going to verify if the ituser(CN=ituser,OU=IT,DC=local,DC=nvtest,DC=com) user is able to login with NeuVector web console.
-Note: NeuVector doesn't use the values of cn, displayName, dn, givenName, name or userPrincipalName attributes etc to verify the test user.
+
+:::note
+NeuVector doesn't use the values of cn, displayName, dn, givenName, name or userPrincipalName attributes etc to verify the test user.
+:::
 
 ![ad_config](ad5.png)
 
@@ -40,4 +43,5 @@ Group member attribute: This is a member attribute for Windows Active Directory 
 If all the requirements are met above, the Windows Active Directory user should be able to login to the NeuVector web console successfully.
 
 #### Mapping Groups to Roles and Namespaces
+
 Please see the [Users and Roles](/configuration/users#mapping-groups-to-roles-and-namespaces) section for how to map groups to preset and custom roles as well as namespaces in NeuVector.

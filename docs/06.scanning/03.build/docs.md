@@ -15,11 +15,12 @@ Make sure there is a NeuVector scanner container deployed and properly configure
 You can download the plug-in from the Jenkins Plug-in Manager. Other plug-ins are accessible through the catalogs of the build tool, or on the [NeuVector github](https://github.com/neuvector) page. The Bamboo scanner is available at https://github.com/neuvector/bamboo-plugin/releases/tag/1.0.1.  The CircleCI ORB is available at https://github.com/neuvector/circleci-orb and through the CircleCI ORB catalog. 
 
 #### Local Build-Phase Scanning
+
 For local scanning, the NeuVector scanner will try to scan the image on a local host (or a host reachable by the remote host docker command).
 
 For Kubernetes or OpenShift-based local scanning, remove the commented-out section of the sample scanner deployment yaml file, shown in the [Deploying NeuVector](/deploying/kubernetes#deploy-using-kubernetes) sections. The commented out section looks like this:
 
-```
+```yaml
           env:
 # Commented out sections are required only for local build-phase scanning
 #            - name: SCANNER_DOCKER_URL
@@ -48,6 +49,7 @@ For Kubernetes or OpenShift-based local scanning, remove the commented-out secti
 For Docker-native local scanning, follow the instructions for Docker scanner deployments in the [Docker Production deployments](/deploying/docker#deploy-the-neuvector-scanner-container) section for the scanner. 
 
 #### Local Build-Phase Scanning - Scanner Only (No Controller Required)
+
 NeuVector supports standalone scanner deployments for local image scanning (which does not require a Controller). Certain plug-in's such as the CircleCI ORB have an option to dynamically deploy a scanner when a build job requires image scanning, then remove the scanner when the results are sent back through the ORB. These dynamic scanner deployments are automatically invoked through the plug-in if supported.
 
 Please see the [scanner section](/scanning/scanners) for more details on stand alone scanners.

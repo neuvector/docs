@@ -4,14 +4,15 @@ taxonomy:
     category: docs
 ---
 
-
 ### Deploy Using RedHat OpenShift
+
 NeuVector is compatible with standard ovs SDN plug-ins as well as others such as flannel, weave, or calico. The samples below assume a standard ovs plug-in is used. This also assumes a local docker registry will be used. The default yaml deployment deploys one allinone on a labeled node and enforcers on all others, including the master. 
 
 First, pull the appropriate NeuVector containers from the NeuVector registry into your local registry.
 
 For Docker Hub
-```
+
+```shell
 docker pull docker.io/neuvector/allinone:5.2.0
 docker pull docker.io/neuvector/enforcer:5.2.0
 docker pull docker.io/neuvector/scanner
@@ -20,24 +21,33 @@ docker pull docker.io/neuvector/updater
 
 Next, tag/push the containers, set the route and allow privileged NeuVector containers using the instructions below. By default, OpenShift does not allow privileged containers. Also, by default OpenShift does not schedule pods on the Master node. See the instructions at the end to enable/disable this.
 
-
-NOTE: Please see the Enterprise Integration section for details on integration with OpenShift Role Based Access Controls (RBACs). 
+:::note
+Please see the Enterprise Integration section for details on integration with OpenShift Role Based Access Controls (RBACs). 
+:::
 
 1. Login as a normal user
-```
+
+```shell
 oc login -u <user_name>
 ```
 
 2. Create a new project
-Note: If the --node-selector argument is used when creating a project this will restrict pod placement such as for the NeuVector enforcer to specific nodes.
-```
+
+:::note
+If the --node-selector argument is used when creating a project this will restrict pod placement such as for the NeuVector enforcer to specific nodes.
+:::
+
+```shell
 oc new-project neuvector
 ```
 
 3. Push NeuVector images to OpenShift docker registry. IMPORTANT! The docker login below is for the docker-registry (not to be confused with the oc login above), and requires the user/authentication token in the command.
 
-Note: For OpenShift 4.6+, change docker-registry.default.svc below to image-registry.openshift-image-registry.svc in the commands below.
-```
+:::note
+For OpenShift 4.6+, change docker-registry.default.svc below to image-registry.openshift-image-registry.svc in the commands below.
+:::
+
+```shell
 docker login -u <user_name> -p `oc whoami -t` docker-registry.default.svc:5000
 docker tag docker.io/neuvector/allinone:<version> docker-registry.default.svc:5000/neuvector/allinone
 docker tag docker.io/neuvector/enforcer:<version> docker-registry.default.svc:5000/neuvector/enforcer
@@ -51,35 +61,43 @@ docker logout docker-registry.default.svc:5000
 ```
 
 4. Login as system:admin account
-```
+
+```shell
 oc login -u system:admin
 ```
 
 5. Create Service Accounts and Grant Service Account Access to the Privileged SCC
-```
+
+```shell
 oc create sa controller -n neuvector
 oc create sa enforcer -n neuvector
 oc create sa basic -n neuvector
 oc create sa updater -n neuvector
 oc -n neuvector adm policy add-scc-to-user privileged -z controller -z enforcer
 ```
+
 The following info will be added in the Privileged SCC
 users:
-```
+
+```shell
 - system:serviceaccount:neuvector:controller
 - system:serviceaccount:neuvector:enforcer
 ```
+
 In OpenShift 4.6+ use the following to check:
+
+```shell
+oc get rolebinding system:openshift:scc:privileged -n neuvector -o wide
 ```
-# oc get rolebinding system:openshift:scc:privileged -n neuvector -o wide
-```
-```
+
+```shell
 NAME                              ROLE                                          AGE     USERS   GROUPS   SERVICEACCOUNTS
 system:openshift:scc:privileged   ClusterRole/system:openshift:scc:privileged   9m22s                    neuvector/controller, neuvector/enforcer
 ```
 
 Create the custom resources (CRD) for NeuVector security rules. For OpenShift 4.6+ (Kubernetes 1.19+):
-```
+
+```shell
 oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/crd-k8s-1.19.yaml
 oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/waf-crd-k8s-1.19.yaml
 oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/dlp-crd-k8s-1.19.yaml
@@ -87,7 +105,8 @@ oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernete
 ```
 
 6. Add read permission to access the kubernetes API and OpenShift RBACs. IMPORTANT: The standard NeuVector 5.2+ deployment uses least-privileged service accounts instead of the default. See below if upgrading to 5.2+ from a version prior to 5.2.
-```
+
+```shell
 oc create clusterrole neuvector-binding-app --verb=get,list,watch,update --resource=nodes,pods,services,namespaces
 oc create clusterrole neuvector-binding-rbac --verb=get,list,watch --resource=rolebindings.rbac.authorization.k8s.io,roles.rbac.authorization.k8s.io,clusterrolebindings.rbac.authorization.k8s.io,clusterroles.rbac.authorization.k8s.io,imagestreams.image.openshift.io
 oc adm policy add-cluster-role-to-user neuvector-binding-app system:serviceaccount:neuvector:controller
@@ -112,8 +131,12 @@ oc adm policy add-cluster-role-to-user neuvector-binding-csp-usages system:servi
 oc create clusterrole neuvector-binding-co --verb=get,list --resource=clusteroperators
 oc adm policy add-cluster-role-to-user neuvector-binding-co system:serviceaccount:neuvector:enforcer system:serviceaccount:neuvector:controller
 ```
-NOTE: If upgrading from a previous NeuVector deployment (prior to 5.2), you will need to delete the old bindings, then create new ones:
-```
+
+:::note
+If upgrading from a previous NeuVector deployment (prior to 5.2), you will need to delete the old bindings, then create new ones:
+:::
+
+```shell
 oc delete clusterrolebinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-co
 oc delete rolebinding neuvector-admin -n neuvector
 oc adm policy add-cluster-role-to-user neuvector-binding-app system:serviceaccount:neuvector:controller
@@ -133,11 +156,14 @@ oc adm policy add-cluster-role-to-user neuvector-binding-co system:serviceaccoun
 ```
 
 7. Run the following command to check if the neuvector/controller, neuvector/enforcer and neuvector/updater service accounts are added successfully.
-```
+
+```shell
 oc get ClusterRoleBinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-csp-usages neuvector-binding-co -o wide
 ```
+
 Sample output:
-```
+
+```shell
 NAME                                                ROLE                                                            AGE   USERS   GROUPS   SERVICEACCOUNTS
 neuvector-binding-app                               ClusterRole/neuvector-binding-app                               56d                    neuvector/controller
 neuvector-binding-rbac                              ClusterRole/neuvector-binding-rbac                              34d                    neuvector/controller
@@ -153,34 +179,46 @@ neuvector-binding-co                                ClusterRole/neuvector-bindin
 ```
 
 And this command:
-```
+
+```shell
 oc get RoleBinding neuvector-binding-scanner -n neuvector -o wide
 ```
+
 Sample output:
-```
+
+```shell
 NAME                        ROLE                             AGE   USERS   GROUPS   SERVICEACCOUNTS
 neuvector-binding-scanner   Role/neuvector-binding-scanner   70d                    neuvector/updater, neuvector/controller
 ```
+
 8. Add a nvallinone label on one of the master or worker nodes where the allinone will be deployed
-```
+
+```shell
 oc label nodes <nodename> nvallinone=true
 ```
 
 9. Create the neuvector services and pods based on the sample yaml files below
-```
+
+```shell
 oc create -f <compose file>
 ```
 
 If you have created your own namespace instead of using “neuvector”:
+
 1. Replace all instances of “namespace: neuvector” with your namespace.
 2. Search for all instances of ”neuvector-svc-allinone.neuvector” in the files below. Then replace the “neuvector” (after the .) with the namespace you use.
 
-Note1: If you are using the Allinone container for testing NeuVector, deploy only one Allinone for your cluster. Multiple Manager instances are not supported on Kubernetes. To test high availability for the Controller refer to the Deploying in Production section.
-
+:::note
+If you are using the Allinone container for testing NeuVector, deploy only one Allinone for your cluster. Multiple Manager instances are not supported on Kubernetes. To test high availability for the Controller refer to the Deploying in Production section.
+:::
 
 <strong>Sample Config File for OpenShift 4.6+</strong>
-Note: For 4.6+, see the section Deploying NeuVector / OpenShift for yaml file changes required for the CRI-O run-time and for changing the default registry.
-```
+
+:::note
+For 4.6+, see the section Deploying NeuVector / OpenShift for yaml file changes required for the CRI-O run-time and for changing the default registry.
+:::
+
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -505,12 +543,16 @@ spec:
 ```
 
 **Master Node Taints and Tolerations**
+
 All taint info must match to schedule Enforcers on nodes. To check the taint info on a node (e.g. Master):
+
+```shell
+oc get node taintnodename -o yaml
 ```
-$ oc get node taintnodename -o yaml
-```
+
 Sample output:
-```
+
+```yaml
 spec:
   taints:
   - effect: NoSchedule
@@ -522,7 +564,8 @@ spec:
 ```
 
 If there is additional taints as above, add these to the sample yaml tolerations section:
-```
+
+```yaml
 spec:
   template:
     spec:
@@ -537,15 +580,14 @@ spec:
           value: myvalue
 ```
 
-
 ### Enable/Disable Scheduling on the Master Node
 
 The following commands can be used to enable/disable the scheduling on the master node.
 
-```
+```shell
 oc adm manage-node nodename --schedulable
 ```
 
-```
+```shell
 oc adm manage-node nodename --schedulable=false
 ```

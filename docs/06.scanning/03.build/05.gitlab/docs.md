@@ -16,7 +16,7 @@ In addition, make sure there is a NeuVector scanner container deployed and confi
 
 Use the following script, configured for your NeuVector login credentials to trigger the vulnerability scans.
 
-```
+```yaml
 ########################
 # Scanning Job
 ########################

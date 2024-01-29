@@ -35,16 +35,21 @@ Below are sample screens displayed in the Splunk app.
 ### Setup and Configuration
 
 #### Getting the app
+
 ##### GitHub
+
 Download the latest app tarball (`neuvector_app.tar.gz`) from the [neuvector/neuvector-splunk-app repository](https://github.com/neuvector/neuvector-splunk-app).
 
 ##### Splunkbase
+
 Download the latest app tarball from [Splunkbase](https://splunkbase.splunk.com/app/).
 
 ##### Splunk Apps Browser
+
 In the Splunk UI, click on the Apps dropdown, click "Find More Apps", then search for NeuVector Splunk App.
 
 #### Installation and Setup
+
 Install the app by either uploading the tarball or following the Splunkbase prompts.  
 
 1. Configure syslog in NeuVector console
@@ -57,11 +62,12 @@ Go to Settings -> Configuration -> Syslog
   d. choose Info Level;  
   e. click SUBMIT to save the setting.  
 
-
 ![syslog](syslog-config.png)
 
 You can configure multiple clusters to send syslog to your splunk instance and your splunk instance will receive these syslogs in real time.
 
 #### FAQs
+
 ##### What user role is required?
+
 Any user role.

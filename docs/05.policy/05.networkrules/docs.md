@@ -12,9 +12,13 @@ NeuVector uses a declarative policy which consist of rules which govern allowed 
 
 Network rules specify ALLOWED or DENIED behavior for your applications. These rules determine what connections are normal behavior for your services as well as what are violations. You can delete automatically ‘learned’ rules as well as add new rules to your policy.
 
-<strong>IMPORTANT</strong>  Network rules are enforced in the order that they appear in the list, from top to bottom. To re-order the rules, select the rule you want to move, then you will see a 'Move to' box appear at the top, and you can move the selected rule to the position before or after a specified rule.
+:::warning important
+Network rules are enforced in the order that they appear in the list, from top to bottom. To re-order the rules, select the rule you want to move, then you will see a 'Move to' box appear at the top, and you can move the selected rule to the position before or after a specified rule.
+:::
 
-<strong>IMPORTANT</strong>  If you edit (add, delete, change) rules, your changes are NOT applied until you click the Save button at the top. If you exit this page without deploying your changes, they will be lost.
+:::warning important
+If you edit (add, delete, change) rules, your changes are NOT applied until you click the Save button at the top. If you exit this page without deploying your changes, they will be lost.
+:::
 
 <strong>Adding New Rules</strong>
 Add a rule using the ‘+’ either below another rule in the right column, or using the button in the lower right.
@@ -31,12 +35,16 @@ Add a rule using the ‘+’ either below another rule in the right column, or u
 + **Applications**
 > Enter applications for NeuVector to allow or deny. NeuVector understands deep application behavior and will analyze the payload to determine application protocols. Protocols include HTTP, HTTPS, SSL, SSH, DNS, DNCP, NTP, TFTP, ECHO, RTSP, SIP, MySQL, Redis, Zookeeper, Cassandra, MongoDB, PostgresSQL, Kafka, Couchbase, ActiveMQ, ElasticSearch, RabbitMQ, Radius, VoltDB, Consul, Syslog, Etcd, Spark, Apache, Nginx, Jetty, NodeJS, Oracle, MSSQL, Memcached and gRPC.
 
-Note: To select Any/All, leave this field blank
+:::note
+To select Any/All, leave this field blank
+:::
 
 + **Ports**
 > If there are specific ports to limit this rule to, enter them here. For ICMP traffic, enter icmp.
 
-Note: To select Any/All, leave this field blank
+:::note
+To select Any/All, leave this field blank
+:::
 
 + **Deny/Allow**
 > Indicate whether this rule is to Allow this type of connection, or Deny it. 
@@ -65,7 +73,9 @@ In a Kubernetes cluster, an application can be exposed to the outside of the clu
 
 In order to preserve the original source IP address, the user needs to add the following line to the exposed services, in the 'spec' section of the external facing load balancer or ingress controller. (Ref: https://kubernetes.io/docs/tutorials/services/source-ip/)
 
+```json
 "externalTrafficPolicy":"Local"
+```
 
 Many implementations of LoadBalancer services and Ingress controllers will add the X-FORWARDED-FOR line to the HTTP request header to communicate the real source IP to the backend applications. This product can recognize this set of HTTP headers, identify the original source IP and enforce the policy according to that.
 
@@ -85,7 +95,8 @@ Custom groups can support virtual host based address groups. This enables a use 
 
 Container Groups can have Process/File rules in a different mode than Network rules, as described [here](/policy/modes#network-service-policy-mode).
 
-###Built-In Network Threat Detection
+### Built-In Network Threat Detection
+
 NeuVector automatically detects certain network attacks, regardless of protection mode. In Discover and Monitor mode, these threats will be alerted and can be found in Notifications -> Security Events. In Protect mode, these will alerted as well as blocked. Response rules can be created based on threat detection as well.
 
 Note that customized network threat detection can be configured through the WAF rules section.

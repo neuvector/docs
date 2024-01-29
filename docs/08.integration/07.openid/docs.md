@@ -13,6 +13,7 @@ Locate the OpenID Connect Redirect URI on the top of the NeuVector OpenID Connec
 ![OpenID1](openid1.png)
 
 #### Microsoft Azure Configuration
+
 In Azure Active Directory > App registrations > Application name > Settings Page, locate Application ID string. This is used to set the Client ID in NeuVector. The Client secret can be located in Azure's Keys setting.
 
 ![OpenID3](openid3.png)
@@ -32,6 +33,7 @@ The group claim returned by Azure are identified by the "Object ID" instead of t
 <strong>Verify Permissions</strong>
 
 Make sure the following permissions have been set from Microsoft Graph
+
 1. email - View users' email address
 2. openid - Sign users in
 3. profile - View users' basic profile
@@ -63,6 +65,7 @@ For General Settings section:
 
 App. Integration Name: Name for this integration. Freely choose any name
 Grant Type (check):  
+
 + Authorization Code
 + Refresh Token
 + Resource Owner Password 
@@ -120,7 +123,6 @@ In your application integration page, navigate to “Assignments” tab and make
 
 ![assignments](okta13.png)
 
-
 #### NeuVector OpenID Connect Configuration
 
 Configure the proper Issuer URL, Client ID and Client secret in the page.
@@ -135,4 +137,5 @@ After the user is authenticated, the proper role can be derived with group-based
 The group can be mapped to the Admin role in NeuVector. Individual users can be 'promoted' to a Federated Admin role by logging in as a local cluster admin, selecting the user with Identify Provider 'OpenID', and editing their role in Settings -> Users/Roles.
 
 #### Mapping Groups to Roles and Namespaces
+
 Please see the [Users and Roles](/configuration/users#mapping-groups-to-roles-and-namespaces) section for how to map groups to preset and custom roles as well as namespaces in NeuVector.

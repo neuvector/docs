@@ -10,25 +10,23 @@ NeuVector requires and supports Kubernetes network plug-ins such as flannel, wea
 
 You can use Kubernetes to deploy the allinone and enforcer and make sure that all new nodes have an enforcer deployed. Sample files follow the commands below. There is a separate section for OpenShift instructions, and Docker EE on Kubernetes has some special steps described in the Docker section. For a more production ready deployment using multiple controllers, see the Production Deployment section.
 
-Note: This sample section does not include creating the NeuVector Customer Resource Definition (CRD). Please see Deploying NeuVector for the CRD samples.
+:::note
+This sample section does not include creating the NeuVector Customer Resource Definition (CRD). Please see Deploying NeuVector for the CRD samples.
+:::
 
+1. Create the NeuVector namespace and the required service accounts
 
-<ol>
-<li>
-Create the NeuVector namespace and the required service accounts
-<pre>
-<code>
+```shell	
 kubectl create namespace neuvector
 kubectl create sa controller -n neuvector
 kubectl create sa enforcer -n neuvector
 kubectl create sa basic -n neuvector
 kubectl create sa updater -n neuvector
-</code></pre>
-</li>
-<li>
-Add read permission to access the kubernetes API. IMPORTANT: The standard NeuVector 5.2+ deployment uses least-privileged service accounts instead of the default. See below if upgrading to 5.2+ from a version prior to 5.2.
-<pre>
-<code>
+```
+
+2. Add read permission to access the kubernetes API. IMPORTANT: The standard NeuVector 5.2+ deployment uses least-privileged service accounts instead of the default. See below if upgrading to 5.2+ from a version prior to 5.2.
+
+```shell
 kubectl create clusterrole neuvector-binding-app --verb=get,list,watch,update --resource=nodes,pods,services,namespaces
 kubectl create clusterrole neuvector-binding-rbac --verb=get,list,watch --resource=rolebindings.rbac.authorization.k8s.io,roles.rbac.authorization.k8s.io,clusterrolebindings.rbac.authorization.k8s.io,clusterroles.rbac.authorization.k8s.io
 kubectl create clusterrolebinding neuvector-binding-app --clusterrole=neuvector-binding-app --serviceaccount=neuvector:controller
@@ -50,24 +48,21 @@ kubectl create role neuvector-binding-scanner --verb=get,patch,update,watch --re
 kubectl create rolebinding neuvector-binding-scanner --role=neuvector-binding-scanner --serviceaccount=neuvector:updater --serviceaccount=neuvector:controller -n neuvector
 kubectl create clusterrole neuvector-binding-csp-usages --verb=get,create,update,delete --resource=cspadapterusagerecords
 kubectl create clusterrolebinding neuvector-binding-csp-usages --clusterrole=neuvector-binding-csp-usages --serviceaccount=neuvector:controller
-</code>
-</pre>
+```
 
 :::note
 If upgrading NeuVector from a previous install, you may need to delete the old binding as follows:
 
-<pre>
-<code>
+```shell
 kubectl delete clusterrolebinding neuvector-binding
 kubectl delete clusterrole neuvector-binding
-</code>
-</pre>
+```
 :::
 
 :::note
 If upgrading NeuVector from a previous install, you will need to delete the old binding before creating the new least-privileged bindings:
-<pre>
-<code>
+
+```shell
 kubectl delete clusterrolebinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules
 kubectl delete rolebinding neuvector-admin -n neuvector
 kubectl create clusterrolebinding neuvector-binding-app --clusterrole=neuvector-binding-app --serviceaccount=neuvector:controller
@@ -83,20 +78,18 @@ kubectl create role neuvector-binding-scanner --verb=get,patch,update,watch --re
 kubectl create rolebinding neuvector-binding-scanner --role=neuvector-binding-scanner --serviceaccount=neuvector:updater --serviceaccount=neuvector:controller -n neuvector
 kubectl create clusterrole neuvector-binding-csp-usages --verb=get,create,update,delete --resource=cspadapterusagerecords
 kubectl create clusterrolebinding neuvector-binding-csp-usages --clusterrole=neuvector-binding-csp-usages --serviceaccount=neuvector:controller
-</code>
-</pre>
+```
 :::
-</li>
-<li>
-Run the following commands to check if the neuvector/controller and neuvector/updater service accounts are added successfully.
-<pre>
-<code>
+
+3. Run the following commands to check if the neuvector/controller and neuvector/updater service accounts are added successfully.
+
+```shell
 kubectl get ClusterRoleBinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-csp-usages -o wide
-</code>
-</pre>
+```
+
 Sample output:
-<pre>
-<code>
+
+```shell
 NAME                                                ROLE                                                            AGE   USERS   GROUPS   SERVICEACCOUNTS
 neuvector-binding-app                               ClusterRole/neuvector-binding-app                               56d                    neuvector/controller
 neuvector-binding-rbac                              ClusterRole/neuvector-binding-rbac                              34d                    neuvector/controller
@@ -108,39 +101,32 @@ neuvector-binding-nvwafsecurityrules                ClusterRole/neuvector-bindin
 neuvector-binding-nvadmissioncontrolsecurityrules   ClusterRole/neuvector-binding-nvadmissioncontrolsecurityrules   72d                    neuvector/controller
 neuvector-binding-nvdlpsecurityrules                ClusterRole/neuvector-binding-nvdlpsecurityrules                72d                    neuvector/controller
 neuvector-binding-csp-usages                        ClusterRole/neuvector-binding-csp-usages                        24d                    neuvector/controller
-</code>
-</pre>
+```
+
 And this command:
-<pre>
-<code>
+
+```shell
 kubectl get RoleBinding neuvector-binding-scanner -n neuvector -o wide
-</code>
-</pre>
+```
+
 Sample output:
-<pre>
-<code>
+
+```shell
 NAME                        ROLE                             AGE   USERS   GROUPS   SERVICEACCOUNTS
 neuvector-binding-scanner   Role/neuvector-binding-scanner   70d                    neuvector/updater, neuvector/controller
-</code>
-</pre>
-</li>
-<li>
-Add a nvallinone label on one of the worker nodes where the allinone will be deployed (note: by default Kubernetes will not schedule pods on the master)
-<pre>
-<code>
+```
+
+4. Add a nvallinone label on one of the worker nodes where the allinone will be deployed (note: by default Kubernetes will not schedule pods on the master)
+
+```shell
 kubectl label nodes nodename nvallinone=true
-</code>
-</pre>
-</li>
-<li>
-Create the neuvector services and pods using the sample below
-<pre>
-<code>
+```
+
+5. Create the neuvector services and pods using the sample below
+
+```shell
 kubectl create -f neuvector.yaml
-</code>
-</pre>
-</li>
-</ol>
+```
 
 :::note
 The nodeport service specified in the neuvector.yaml file will open a random port on all kubernetes nodes for the NeuVector management web console port. If you want to see which port is open on the host nodes, please do the following commands.
@@ -193,6 +179,7 @@ PKS is field tested and requires enabling privileged containers to the plan/tile
 The sample file below deploys an Allinone (Manager, Controller, Enforcer) on one labeled nodeSelector and Enforcers on all others. It creates a webui service for the console using NodePort, but use LoadBalancer if your environment supports it. It also adds a toleration to schedule an Enforcer on the Master Node, which should be updated if other taints on the master exist. This deployment does NOT save configuration to a persistent data store. See Deploying in Production section for persistent data configuration.
 
 If you have created your own namespace instead of using “neuvector”:
+
 1. Replace all instances of “namespace: neuvector” with your namespace.
 2. Search for all instances of ”neuvector-svc-allinone.neuvector” in the files below. Then replace the “neuvector” (after the .) with the namespace you use.
 

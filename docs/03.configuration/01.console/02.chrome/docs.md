@@ -12,7 +12,8 @@ Under certain circumstances the Chrome browser will flat out refuse to accept a 
 
 Corrective steps can be taken to enable Chrome on accepting the self-signed certificate placed on macOS Keychain store.  This can be done by configuring the NeuVector’s certificate to be trusted using the Mac’s Keychain Access application.  This is with the assumption that the certificate does indeed exists in the macOS Keychain Access store.  We will first look at how to export a certificate from an existing NeuVector node from one system, and later can be imported into another system.   There are 2 ways to go about exporting the certificate which we will go over below.  They are, using the Chrome browser, and using the macOS Keychain Access application.
 
-####Certificate export using Chrome
+#### Certificate export using Chrome
+
 The screen capture below illustrates how to access the NeuVector certificate using Chrome.
  
 ![chrome](chrome2.png)
@@ -21,17 +22,19 @@ To export the certificate, drag and drop the certificate to a location of choice
 
 ![chrome](chrome3.png)
 
-####Certificate export using macOS Keychain-Access
+#### Certificate export using macOS Keychain-Access
+
 Launch the macOS Keychain Access application by simultaneously entering the keys ⌘ + F using a Mac keyboard, search for Keychain Access, and double click on the  application. 
 This launches the Keychain Access application.  Select the NeuVector certificate and choose Export “NeuVector” from the dropdown menu.  This will allow the export of the certificate to a location of choice.
  
 ![chrome](chrome4.png)
 
+#### Launching the macOS Keychain-Access Application
 
-####Launching the macOS Keychain-Access Application
-  There are two ways to launch the macOS Keychain Access Application.  This can be done by searching from the macOS, which has been described from the steps immediately above, or using the Chrome browser. 
+There are two ways to launch the macOS Keychain Access Application.  This can be done by searching from the macOS, which has been described from the steps immediately above, or using the Chrome browser. 
 
-####Launching Keychain-Access from the Chrome Browser
+#### Launching Keychain-Access from the Chrome Browser
+
 Settings > Advanced > Manage certificates 
  
 ![chrome](chrome5.png)
@@ -41,7 +44,8 @@ application as shown below.
          
 ![chrome](chrome6.png)
 
-####Certificate import into the macOS Keychain-Access Store
+#### Certificate import into the macOS Keychain-Access Store
+
 Launch the macOS Keychain Access application by simultaneously entering the keys ⌘ + F using a Mac keyboard, search for Keychain Access, and click on the application.  Then import the certificate by drag and dropping a NeuVector certificate (example:  nvcertificate.cer) into the Certificate right pane of the Keychain Access application.  Now that the certificate has been imported, it is not yet trusted.
 The following is an example showing  the default trust settings after a NeuVector’s certificate has been imported  into the Keychain Access application.
 
@@ -49,7 +53,8 @@ The following is an example showing  the default trust settings after a NeuVecto
 
 Notice that none of the parameters have been configured, and it is not trusted by default.  It needs to be configured to be trusted to allow the user to access the login page using the Chrome browser. 
 
-####Enabling trust for the NeuVector Certificate
+#### Enabling trust for the NeuVector Certificate
+
 The following steps details on how to enable trust for the NeuVector certificate in the Keychain Access store.
  
 ![chrome](chrome8.png)
@@ -69,5 +74,3 @@ This finalizes the trust configurations.  Next, clear all Chrome browser’s cac
 Below shows a screen capture that allows the user to proceed to the NeuVector login page after Proceed to … (Unsafe) link is clicked.
  
 ![chrome](chrome12.png)
-
-

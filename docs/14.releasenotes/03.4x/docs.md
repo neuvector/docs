@@ -253,7 +253,6 @@ For example,
 + Update ConfigMap to add group_claim in oidcinitcfg.yaml and samlinitcfg.yaml, and Xff_Enabled in sysinitcfg.yaml
 + API's yaml is updated for 4.2 in [Automation section](/automation/automation#cli-and-rest-api).
 
-
 ##### Bug Fixes
 
 + Enforcer is unable to join existing cluster, sometimes taking 10 minutes in cases where there are too many enforcers registered. This is when enforcers are terminated ungracefully but still registered for license checks, preventing other enforcers from joining when the license limit is reached.
@@ -394,7 +393,6 @@ To use an exported CRD with Kubernetes 1.19+, please remove the 'version: v1' fr
 1. HostPID - Controls whether the pod containers can share the host process ID namespace. Note that when paired with ptrace this can be used to escalate privileges outside of the container (ptrace is forbidden by default).
 2. HostIPC - Controls whether the pod containers can share the host IPC namespace.
 3. HostNetwork - Controls whether the pod may use the node network namespace. Doing so gives the pod access to the loopback device, services listening on localhost, and could be used to snoop on network activity of other pods on the same node.
-
 
 #### 4.0.1 November 2020
 

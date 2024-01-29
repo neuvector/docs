@@ -5,11 +5,13 @@ taxonomy:
 ---
 
 ### Policy: Response Rules
+
 Response Rules provide a flexible, customizable rule engine to automate responses to important security events. Triggers can include Security Events, Vulnerability Scan results, CIS Benchmarks, Admission Control events and general Events. Actions include container quarantine, webhooks, and suppression of alerts. 
 
 ![ResponseRules](response1.png)
 
 Creating a new Response Rule using the following:
+
 + Group. A rule will apply to a Group. Please see the section Run-Time Security Policy -> Groups for more details on Groups and how to create a new one if needed.
 + Category. This is the type of event, such as Security Event, or CVE vulnerability scan result.
 + Criteria. Specify one or more criteria. Each Category will have different criteria which can be applied. For example, by the event name, severity, or minimum number of high CVEs.
@@ -17,7 +19,9 @@ Creating a new Response Rule using the following:
 
 ![NewResponseRules](newrule1.png)
 
-<Strong>IMPORTANT</Strong>  All Response Rules are evaluated to determine if they match the condition/criteria. If there are multiple rule matches, each action(s) will be performed. This is different than the behavior of Network Rules, which are evaluated from top to bottom and only the first rule which matches will be executed.
+:::warning important
+All Response Rules are evaluated to determine if they match the condition/criteria. If there are multiple rule matches, each action(s) will be performed. This is different than the behavior of Network Rules, which are evaluated from top to bottom and only the first rule which matches will be executed.
+:::
 
 Additional events and actions will continue to be added by NeuVector in future releases.
 
@@ -30,25 +34,36 @@ Actions from multiple rules will be applied if an event matches multiple rules. 
 There are 6 default response rules included with NeuVector which are set to the status ‘disabled,’ one for each category. Users can either modify a default rule to match their requirements or create new ones. Be sure to enable any rules which should be applied.
 
 #### Response Rule Parameters Matrix
+
 ![matrix](resp1.png)
 
 #### Using Multiple Criteria in a Single Rule
+
 The matching logic for multiple criteria in one response rule is:
+
 + For different criteria types  (e.g. name:Network.Violation, name:Process.Profile.Violation) within a single rule, apply 'and'
 
-
 #### Actions
+
 + Quarantine – container is quarantined. Note that Quarantine means that all network traffic is blocked.  The container will remain and continue to run - just without any network connections.  Kubernetes will not start up a container to replace a quarantined container, as the api-server is still able to reach the container.
 + Webhook - a webhook log generated
 + suppress-log – log is suppressed - both syslog and webhook log
 
-Note1: Quarantine action is not applicable to rule triggered for Host events
+:::note
+Quarantine action is not applicable to rule triggered for Host events
+:::
 
-Note2: Action and Event parameters are mandatory; other parameters can be empty to match broader conditions.
+:::note
+Action and Event parameters are mandatory; other parameters can be empty to match broader conditions.
+:::
 
-Note3: Multiple rules can match for a single log, which can result in multiple actions taken.
+:::note
+Multiple rules can match for a single log, which can result in multiple actions taken.
+:::
 
-Note4: Each rule can have multiple actions.
+:::note
+Each rule can have multiple actions.
+:::
 
 #### Creating a response rule for security event logs
 
@@ -59,7 +74,6 @@ Note4: Each rule can have multiple actions.
 + Select actions to be applied Quarantine, Webhook or suppress log 
 + Enable status
 + The log levels or process names can be used as other matching criteria
-
 
 #### Sample rule to quarantine container and send webhook when package is updated in the nv.alpinepython.default container.
 
@@ -78,7 +92,6 @@ Note4: Each rule can have multiple actions.
 + Select actions to be applied - Quarantine, Webhook or suppress log 
 + Enable status
 + The log Level can be used as other matching criteria
-
 
 #### Sample events that can be chosen for a response rule
 
@@ -136,11 +149,12 @@ Check the box to unquarantine any containers which were quarantined by this rule
 ![option](resp10.png)
 
 #### Complete list of categoried criteria that can be configured for Response Rules 
+
 Note that some criteria require a value (e.g. cve-high:1, name:D.5.4, level:critical) delimited by a colon, while others are preset and will show in the drop down when you start typing a criteria.
 
 ##### Events
 
-```
+```shell
 Container.Start 
 Container.Stop
 Container.Remove
@@ -211,7 +225,7 @@ User.Password.Alert
 
 ##### Incidents (Security Event)
 
-```
+```shell
 Host.Privilege.Escalation
 Container.Privilege.Escalation
 Host.Suspicious.Process
@@ -228,10 +242,9 @@ Process.Profile.Violation // container
 Host.Process.Violation    // host
 ```
 
-
 ##### Threats (Security Event)
 
-```
+```shell
 TCP.SYN.Flood
 ICMP.Flood
 Source.IP.Session.Limit
@@ -265,13 +278,13 @@ K8S.externalIPs.MitM
 
 ##### Violations (Security Event)
 
-```
+```shell
 Network.Violation
 ```
 
 ##### Compliance
 
-```
+```shell
 Compliance.Container.Violation
 Compliance.ContainerFile.Violation
 Compliance.Host.Violation
@@ -283,7 +296,7 @@ Compliance.Test.Name   // D.[1-5].*
 
 ##### CVE-Report
 
-```
+```shell
 ContainerScanReport
 HostScanReport
 RegistryScanReport
@@ -294,7 +307,8 @@ cve-medium
 ```
 
 ##### Admission
-```
+
+```shell
 Admission.Control.Allowed   // for admission control
 Admission.Control.Violation // for admission control
 Admission.Control.Denied    // for admission control
@@ -302,9 +316,8 @@ Admission.Control.Denied    // for admission control
 
 ##### Dynamically Generated Criteria
 
-```
+```shell
 DLP
 WAF
 CustomCheckCompliance
 ```
-

@@ -110,7 +110,6 @@ Options:
   -h, --help  Show this message and exit.
 ```
 
-
 ### User
 
 ```shell
@@ -165,7 +164,6 @@ Options:
   -h, --help  Show this message and exit.
 ```
 
-
 ### Policy
 
 ```shell
@@ -203,7 +201,6 @@ Options:
   --label TEXT        container label.
   -h, --help          Show this message and exit.
 ```
-
 
 ```shell
 > delete group -h
@@ -476,7 +473,6 @@ Options:
   -h, --help  Show this message and exit.
 ```
 
-
 ### Show/Debug commands
 
 ```shell
@@ -705,10 +701,11 @@ Options:
   -h, --help  Show this message and exit.
 ```
 
-
 #### Packet Sniffer
 
-Note: Sniffer files are stored in the /var/neuvector/pcap directory in the Enforcer container. Make sure you map the volume to your guest machine directory or local system directory to be able to access the files. For example in the docker-compose file add ‘- /var/neuvector:/var/neuvector’ in volumes.
+:::note
+Sniffer files are stored in the /var/neuvector/pcap directory in the Enforcer container. Make sure you map the volume to your guest machine directory or local system directory to be able to access the files. For example in the docker-compose file add ‘- /var/neuvector:/var/neuvector’ in volumes.
+:::
 
 To start packet capture on a pod, you will need to know the containerID to pass into the ID_OR_NAME field. You can do this with `show container -c <container_name>`. then start the sniffer with `request sniffer start <container_id>`. For example,
 
@@ -745,7 +742,7 @@ Total sniffers: 2
 +--------------------------------------------------------------------------+---------+--------------+--------------+-------+-------------+
 ```
 
-:::important
+:::warning important
 If the duration is not set, you will need to find the sniffer ID in order to stop the sniffer.  To do this, `show sniffer -c <containerID>`.  Follow by `request sniffer stop <sniffer_ID>`.
 :::
 

@@ -72,10 +72,8 @@ kubectl label  namespace neuvector "pod-security.kubernetes.io/enforce=privilege
 <div id="full-wrapper">
   <ul class="dopt-accordion fixed-height arrow-tri">  
 
-<!-- NOTE: Toggle Box #1 -->
 	<input class="title-option" id="acc0" name="accordion-1" type="checkbox" />
   <label class="title-panel" onClick="" for="acc0"><span><i class="icon-code"></i>View Sample NeuVector PSP (1.24 and earlier)</span></label>
-  <!-- NOTE: Toggle box content animation option -->
   <div class="accordion-content animated animation5">
   <div class="wrap-content">
 
@@ -151,9 +149,9 @@ subjects:
   name: enforcer
   namespace: neuvector
 ```
-  </div>
-  </div>
-  </li>
+</div>
+</div>
+</li>
 </div>
 
 Then create the PSP
@@ -722,8 +720,8 @@ spec:
           restartPolicy: Never
 ```
 
-  </div><!-- End .wrap-content -->    
-  </div><!-- End .accordion-content -->
+  </div>  
+  </div>
   </li>
 
 <!-- NOTE: Toggle Box #2 -->
@@ -1067,8 +1065,8 @@ spec:
           restartPolicy: Never
 ```
 
-  </div><!-- End .wrap-content -->    
-  </div><!-- End .accordion-content -->
+  </div>
+  </div>
   </li>
 <!-- NOTE: Toggle Box #2.5 -->
 <li>
@@ -1411,8 +1409,8 @@ spec:
           restartPolicy: Never
 ```
 
-  </div><!-- End .wrap-content -->    
-  </div><!-- End .accordion-content -->
+  </div>   
+  </div>
   </li>
 <!-- NOTE: Toggle Box #3 -->
 <li>
@@ -1756,13 +1754,13 @@ spec:
           restartPolicy: Never
 ```
 
-  </div><!-- End .wrap-content -->    
-  </div><!-- End .accordion-content -->
+  </div>   
+  </div>
   </li>
 
 <!-- Final closing at end of all accordion boxes -->
-  </div><!-- .myspacer --> 
-</div><!-- #full-wrapper -->
+  </div>
+</div>
 
 #### Containerd Run-time
 

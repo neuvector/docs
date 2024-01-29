@@ -265,6 +265,7 @@ spec:
   </div>
   </div>
   </li>
+  </ul>
 </div>
 
 Then create the appropriate service(s):
@@ -681,10 +682,9 @@ spec:
   </div>    
   </div>
   </li>
-
-<!-- Final closing at end of all accordion boxes -->
-  </div><!-- .myspacer --> 
-</div><!-- #full-wrapper -->
+  </ul>
+  </div>
+</div>
 
 **Master Node Taints and Tolerations**
 All taint info must match to schedule Enforcers on nodes. To check the taint info on a node (e.g. Master):
@@ -724,7 +724,7 @@ spec:
 
 ### Using Node Labels for Manager and Controller Nodes
 
-To control which nodes the Manager and Controller are deployed on, label each node. Replace <nodename> with the appropriate node name.
+To control which nodes the Manager and Controller are deployed on, label each node. Replace `<nodename>` with the appropriate node name.
 
 ```shell
 oc label nodes <nodename> nvcontroller=true

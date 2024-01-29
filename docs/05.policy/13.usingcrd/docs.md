@@ -5,11 +5,15 @@ taxonomy:
 ---
 
 ### NeuVector CRD for Policy As Code
+
 NeuVector custom resource definitions (CRDs) can be used by various teams to automatically define security policies in the NeuVector container security platform. Developers, DevOps, DevSecOps, and Security teams can collaborate to automate security policies for new or updated applications deployed to production. CRDs can also be used to enforce global security policies across multiple Kubernetes clusters.
 
-Note: CRDs are supported in Kubernetes 1.11 and later. Deploying the NeuVector security rule CRD in earlier versions may not result in an error, but the CRD will not be processed.
+:::note
+CRDs are supported in Kubernetes 1.11 and later. Deploying the NeuVector security rule CRD in earlier versions may not result in an error, but the CRD will not be processed.
+:::
 
 CRD's can be used to support many use cases and workflows:
+
 + Define security policy during application development, to push into production.
 + Learn behavior using NeuVector and export the CRD for review before pushing into production.
 + Migrate security policies from staging to production clusters.
@@ -17,11 +21,13 @@ CRD's can be used to support many use cases and workflows:
 + Enforce global security policies (see examples for this at bottom).
 
 CRD's bring many benefits, including:
+
 + Define / declare the security policy, as code.
 + Version and track the security policies the same as application deployment manifests.
 + Define the allowed behavior of any application including network, file and process behavior.
 
-####Supported Resource Types
+#### Supported Resource Types
+
 NeuVector supports two kinds of custom resource definitions.  They are the NvSecurityRule and NvClusterSecurityRule.  The difference among the two comes down to the boundary set by the definition of the scope.  The  NvSecurityRule resource is scoped at the namespace level, whereas the NvClusterSecurityRule is scoped at the cluster level.  Either of the resource types can be configured in a yaml file and can be created during deployment, as shown in the deployment instructions and examples for NeuVector.
 
 The significance of the NvSecurityRule resource type with a scope of namespace lies in the enforcement of the configured domain of the target group, which must match the configured namespace in the NeuVector’s  CRD security policy.  This provides enforcement to prevent unwanted cross-namespace policy creation which affect a Target-Group policy rule.
@@ -33,7 +39,8 @@ As described in the Kubernetes and OpenShift deployment sections (Deploying NeuV
 
 Then NvSecurityRule and NvClusterSecurityRule should be created using the sample yaml in those sections. NeuVector CRDs can now be deployed.
 
-###Generating a Sample NeuVector CRD
+### Generating a Sample NeuVector CRD
+
 The simplest way to see how the yaml file format looks for a NeuVector CRD is to export it from the NeuVector Console. After you have tested your application while NeuVector is in Discover mode learning the network, file, and process behavior, you can export the learned policy.
 
 Go to the Policy -> Groups menu and click on Export Group Policy from the upper right.
@@ -42,11 +49,13 @@ Go to the Policy -> Groups menu and click on Export Group Policy from the upper 
 
 Then select the Groups that you wish to export, such as the three in the demo namespace above. Inspect the saved CRD yaml below to see how the NeuVector network, process, and file rules are expressed.
 
-NOTE: In addition to the selected group(s), all 'linked' groups will also be exported. A linked group is any other group that a selected group will connect to or from as allowed by a network rule.
+:::note
+In addition to the selected group(s), all 'linked' groups will also be exported. A linked group is any other group that a selected group will connect to or from as allowed by a network rule.
+:::
 
 Sample Exported CRD
 
-```
+```yaml
 apiVersion: v1
 items:
 - apiVersion: neuvector.com/v1
@@ -259,6 +268,7 @@ metadata: null
 ```
 
 For example:
+
 + This is a namespaced CRD, of NvSecurityRule
 + nginx-pod.demo can talk to node-pod.demo over HTTP, and allowed processes are listed
 + node-pod.demo can talk to redis-pod.demo using the Redis protocol
@@ -266,15 +276,20 @@ For example:
 + node-pod.demo is allowed to egress to google.com using SSL
 + Group names such as nv.node-pod.demo are referenced but not defined in the CRD, so are expected to already exist when deployed. See below for defining Groups.
 
-
 ### Policy Mode Configuration and Group Definition
+
 Policy mode configuration and Group definition is supported within the CRD configuration yaml file.  With policymode configured in the yaml configuration file, importing such file will set the target group to this value for the CRD import.  
 
-Important! The imported target policy mode is not allowed to be modified from the NeuVector console (Policy -> Groups). For example, once the mode is set to Monitor, it can only be changed through CRD modification, not through the console.
+:::warning important
+The imported target policy mode is not allowed to be modified from the NeuVector console (Policy -> Groups). For example, once the mode is set to Monitor, it can only be changed through CRD modification, not through the console.
+:::
 
-Note: The CRD import behavior ignores the PolicyMode of any 'linked' group, leaving the Policy mode unchanged if the linked group already exists. If the linked group does not exist it will be automatically created and set to the default New Services Mode in Settings -> Configuration.
+:::note
+The CRD import behavior ignores the PolicyMode of any 'linked' group, leaving the Policy mode unchanged if the linked group already exists. If the linked group does not exist it will be automatically created and set to the default New Services Mode in Settings -> Configuration.
+:::
 
-####Policy Mode Configuration Requirements
+#### Policy Mode Configuration Requirements
+
 + Mode only applies to the configured Target group
 + The target group configuration must have the format nv.SERVICE_NAME.DOMAIN. 
     - Example:  nv.xxx.yyy
@@ -285,7 +300,8 @@ Note: The CRD import behavior ignores the PolicyMode of any 'linked' group, leav
 + A configured key: domain must match the service domain suffix with the configured service key-value pair
 
 Policy Mode Configuration Yaml file Example
-```
+
+```yaml
   target:
       policymode: Protect
       selector:
@@ -393,7 +409,8 @@ Policy Mode Configuration Yaml file Example
     - recursive: true/false
 
 
-###RBAC Support with CRDs
+### RBAC Support with CRDs
+
 Utilizing Kubernetes existing RBAC model, NeuVector extends the CRD (Custom Resource Definition) to support RBAC by utilizing Kubernetes’s Rolebinding in association with the configured Namespace in the NeuVector  configured CRD rules when using the NvSecurityRule resource-type. This configured Namespace is then used to enforce the configured Target, which must reside in this namespace configured in the NeuVector security policy. When rolebinding a defined clusterrole, this can be used to bind to a Kubernetes User or Group. The two clusterrole resources types that NeuVector supports are NvSecurityRule and NvClusterSecurityRule.
 
 <strong>Rolebinding & Clusterolebinding with 2 Users in different Namespaces to a Clusterrole 
@@ -409,7 +426,8 @@ The key takeaway here is to illustrate that using Rolebinding, this will have Na
 
 1. Create a Clusterrole containing both NvSecurityRules and NvClusterSecurityRules resources. 
 Note: Notice that this clusterrole has 2 resources configured, nvsecurityrules and nvclustersecurityrules. Example (nvsecnvclustroles.yaml):
-```
+
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -436,8 +454,9 @@ rules:
 ```
 
 2. Create 2 test yaml-files. One for the NvSecurityRules, and the other for the NvClusterSecurityRules resource.
-Sample NvSecurityRules nvsecurity.yaml file:
-```
+Sample `NvSecurityRules` nvsecurity.yaml file:
+
+```yaml
 apiVersion: neuvector.com/v1
 kind:     NvSecurityRule
 metadata:
@@ -468,8 +487,10 @@ spec:
         action:  allow 
         name:    ingress
 ```
-```
-Sample NvClusterSecurityRules nvclustersecurity.yaml file
+
+Sample `NvClusterSecurityRules` nvclustersecurity.yaml file:
+
+```yaml
 apiVersion: neuvector.com/v1
 kind:     NvClusterSecurityRule
 metadata:
@@ -507,7 +528,8 @@ spec:
 If there is an attempt to import the test yaml file (nvclustersecurity.yaml ) however, this will be denied since the import CRD yaml file is defined with the resource NvClusterSecurityRules that has a Cluster-Scope, but user1 was Rolebind with a Namespace-Scope.  Namespace-scope has a lower privilege than Cluster-Scope.  Therefore, Kubernetes RBAC will deny such a request.
 
 Example Error Message:
-```
+
+```shell
 Error from server (Forbidden): error when creating "rbacnvclustnamespacengtargnvclustingress.yamltmp": nvclustersecurityrules.neuvector.com is forbidden: User "user1" cannot create resource "nvclustersecurityrules" in API group "neuvector.com" at the cluster scope
 ```
 
@@ -516,11 +538,13 @@ Next, we can switch the user-context to user2 with a broader scope privilege, cl
 Therefore, using user2 to import either yaml file (nvsecurity.yaml
 or nvclustersecurity.yaml) will be allowed, since this user’s Clusterrolebinding is not restricted to either resource NvSecurityRules (Namespace-Scope) or NvClusterSecurityRules (Cluster-Scope).
 
-###Expressing Network Rules (Ingress, Egress objects) in CRDs
+### Expressing Network Rules (Ingress, Egress objects) in CRDs
+
 Network rules expressed in CRDs have an Ingress and/or Egress object, which define the allowed incoming and outgoing connections (protocols, ports etc) to/from the workload (Group). Each network rule in NeuVector must have a unique name in a CRD. Note that in the console, network rules only have a unique ID number. 
 
 If the 'To' (destination) of the rule is a learned, discovered group, upon export NeuVector prepends the 'nv.' identifier to the name. For example "nv.redis-master.demo-ingress-0". For both discovered and custom groups, NeuVector also appends a unique name identifier, such as '-ingress-0' in the rule name 'nv.redis-master.demo-ingress-0. For CRD rule names, the 'nv.' identifier is NOT required, and is added to exported rules for clarity. For example:
-```
+
+```yaml
     ingress:
     - action: allow
       applications:
@@ -529,7 +553,8 @@ If the 'To' (destination) of the rule is a learned, discovered group, upon expor
 ```
 
 Custom, user created groups are not allowed to have the 'nv.' prefix. Only discovered/learned groups with the domain and service objects should have the prefix. For example:
-```
+
+```yaml
     - action: allow
       applications:
       - HTTP
@@ -548,8 +573,10 @@ Custom, user created groups are not allowed to have the 'nv.' prefix. Only disco
         name: nv.node-pod.demo
 ```
 
-###Customized Configurations for Deployed Applications
+### Customized Configurations for Deployed Applications
+
 With the use of a customized CRD yaml file, this enables you to customize network security rules, file access rules, and process security rules, all bundled into a single configuration file.  There are multiple benefits to allow these customizations.  
+
 + First, this allows the same rules to be applied on multiple Kubernetes environments, allowing synchronization among clusters. 
 + Second, this allows preemptive rules deployment prior to the applications coming online, which provides a proactive and effective security rules deployment workflow.  
 + Third, this allows the policymode to change from an evaluation one (such as Discover or Monitor), to one that protects the final staging environment.  
@@ -563,7 +590,8 @@ Once all the necessary tests and evaluations of such security rules are deemed c
 <strong>Examples of CRD configurations that perform these functions</strong>
 
 The following is a sample snippet of such configurations
-```
+
+```yaml
 apiVersion: neuvector.com/v1
 kind:     NvSecurityRule
 metadata:
@@ -607,15 +635,14 @@ spec:
 
 The above snippet is configured to enforce ssh access from the target group container nv.alpine.ns1 to the egress group nv.redhat.ns2.  In addition, the enforcement of file access and the process rules are defined and applied to the configured target container nv.alpine.ns1.  With this bundled configuration, we have allowed the defined network, file, and process security rules to act upon the configured target group.
 
+### Policy Groups and Rules Migration Support
 
-###Policy Groups and Rules Migration Support
 NeuVector supports the exporting of certain NeuVector group types from a Kubernetes cluster in a yaml file and importing into another Kubernetes cluster by utilizing native kubectl commands.  
 
 <strong>Migration Use Cases</strong>
 + Export tested CRD groups and security rules that are deemed “production ready” from a staging k8s cluster environment to a production k8s cluster environment.
 + Export learned security rules to be migrated from a staging k8s environment to a production k8s environment.
 + Allow the modification of the policymode of a configured Target group, for instance, such as Discover or Monitor mode in a staging environment, to Protect mode in a production environment.
-
 
 <strong>Supported Export Conditions</strong>
 + Target, Ingress, Egress, Self-learned
@@ -626,7 +653,8 @@ NeuVector supports the exporting of certain NeuVector group types from a Kuberne
 ![GroupExport](group_crd.png)
 
 <strong>Example of an exported group yaml file with the NvsecurityRule resource type</strong>
-```
+
+```yaml
   kind: NvSecurityRule
   metadata:
     name: nv.nginx-pod.neuvector
@@ -648,10 +676,12 @@ NeuVector supports the exporting of certain NeuVector group types from a Kuberne
         name: nv.nginx-pod.neuvector
       policymode: Discover
 ```
+
 + Exported groups without the defined criteria as domain=xx (Namespace) are exported with a Resource-Type NvClusterSecurityRule and a Namespace as default.  Examples of Exported groups without a Namespace are external, container, etc.
 
 <strong>Example of an exported group yaml file with the NvClusterSecurityRule resource type</strong>
-```
+
+```yaml
   kind: NvClusterSecurityRule
   metadata:
     name: egress
@@ -701,8 +731,9 @@ NeuVector supports the exporting of certain NeuVector group types from a Kuberne
   spec:
 ```
 
-Note: The CRD import behavior ignores the PolicyMode of any 'linked' group, leaving the Policy mode unchanged if the linked group already exists. If the linked group does not exist it will be automatically created and set to the default New Services Mode in Settings -> Configuration.
-
+:::note
+The CRD import behavior ignores the PolicyMode of any 'linked' group, leaving the Policy mode unchanged if the linked group already exists. If the linked group does not exist it will be automatically created and set to the default New Services Mode in Settings -> Configuration.
+:::
 
 <strong>Unsupported Export Group-Types</strong>
 + Federated 
@@ -713,7 +744,7 @@ Note: The CRD import behavior ignores the PolicyMode of any 'linked' group, leav
 + If the imported group exists in the destination system with different criteria or values, the import will be rejected.
 + If the imported group exists in the destination system with identical configurations, we will reuse the existing group with different type.
 
-###CRD Samples for Global Rules
+### CRD Samples for Global Rules
 
 The sample CRD below has two parts:
 
@@ -729,8 +760,7 @@ Overall since nv.alpine.defult is in protect mode, it will deny containers from 
 
 If you change the nv.alpine.defult policymode to monitor, then NeuVector will just log it when scp/ssh is invoked, or there are ssh connections from external or http to external. 
 
-
-```
+```yaml
 apiVersion: v1
 items:
 - apiVersion: neuvector.com/v1
@@ -801,11 +831,13 @@ metadata: null
 To allow, or whitelist a process such as a monitoring process to run, just add a process rule with action: allow for the process name, and add the path.  The path must be specified for allow rules but is optional for deny rules.
 
 ### Updating CRD Rules and Adding to Existing Groups
+
 Updating the CRD generated rules in NeuVector is as simple as updating the appropriate yaml file and applying the update:
-```
+
+```shell
 kubectl apply -f <crdrule.yaml>
 ```
 
 #### Dynamic criteria support for NvClusterSecurityRule  
-Multiple CRDs which change the criteria for existing custom group(s) are supported. This feature also allows the user to apply multiple CRDs at once, where the NeuVector behavior is to accept and queue the CRD so the immediate response to the user is always success.  During processing, any errors are reported into the console Notifications -> Events. 
 
+Multiple CRDs which change the criteria for existing custom group(s) are supported. This feature also allows the user to apply multiple CRDs at once, where the NeuVector behavior is to accept and queue the CRD so the immediate response to the user is always success.  During processing, any errors are reported into the console Notifications -> Events. 

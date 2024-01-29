@@ -16,8 +16,9 @@ The steps to generate the secret that will be consumed by NeuVector’s web cons
 
 1. Create a key and certificate
 
-##### PKCS8 
-```
+##### PKCS8
+
+```shell
 openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout tls.key -out tls.pem -config ca.cfg -extensions 'v3_req'
 Sample ca.cfg
 [req]
@@ -41,7 +42,7 @@ DNS.1 = *
 
 ##### PKCS1
 
-```
+```shell
 openssl genrsa -out tls.key 2048
 openssl req -x509 -nodes -days 730 -config openssl.cnf  -new -key tls.key -out tls.pem
 Sample openssl.cnf
@@ -66,13 +67,14 @@ DNS.1 = *
 
 2. Create the secret from the generated key and certificate files from above
 
-```
+```shell
 kubectl create secret generic https-cert -n neuvector --from-file=tls.key --from-file=tls.pem
 ```
 
 
 3. Edit the yaml directly for the manager and controller deployments to add the mounts
-```
+
+```yaml
 spec:
   template:
     spec:
@@ -92,8 +94,10 @@ spec:
           defaultMode: 420
           secretName: https-cert
 ```
+
 Or update with the helm chart with similar values.yaml
-```
+
+```yaml
 manager:
   certificate:
     secret: https-cert

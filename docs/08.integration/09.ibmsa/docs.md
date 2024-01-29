@@ -17,7 +17,6 @@ To generate the registration URL required, please log into the NeuVector console
 
 Then return to the IBM Security Advisor console, and under "Enter the NeuVector setup URL", type in https://\{NeuVector controller hostname/ip\}:\{port\} and paste what is copied in from the steps above. For the port, use the exposed NeuVector REST API port (default is 10443). For multi-cluster environments this is also the 'fed-worker' service which exposes this port.
 
-
 IBM Security Advisor will communicate with your NeuVector cluster controller thru the provided hostname or IP. Note: This may need to be exposed as a service for access from outside the Kubernetes cluster, similar to how the REST API is exposed as a service.
 
 #### Verifying the Connection

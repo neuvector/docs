@@ -4,24 +4,31 @@ taxonomy:
     category: docs
 ---
 
-###NeuVector Vulnerability (CVE) Database
+### NeuVector Vulnerability (CVE) Database
 
 The NeuVector vulnerability database is updated nightly with sources from popular container base images and package providers. These updates are automatically built into the updater container and published to the NeuVector private docker hub registry. The list of sources included is evaluated frequently to ensure the accuracy of scan results.
 
-Note1: You control when to update the CVE database in your deployment. Please see the section Updating the CVE Database for details on how to update.
+:::note
+You control when to update the CVE database in your deployment. Please see the section Updating the CVE Database for details on how to update.
+:::
 
-Note2: NeuVector is able scan distroless and PhotonOS based images.
+:::note
+NeuVector is able scan distroless and PhotonOS based images.
+:::
 
-###CVE Database Version
+### CVE Database Version
+
 The CVE database version and date can be seen in the console in the Platforms, Registries, Vulnerabilities tab in Containers/Nodes in Assets, and Risk Reports Scan Events.
 
 To use the REST API to query the version:
-```
+
+```shell
 curl -k -H "Content-Type: application/json" -H "X-Auth-Token: $_TOKEN_" "https://127.0.0.1:10443/v1/scan/scanner"
 ```
 
 Output:
-```
+
+```json
 {
 	"scanners": [
 		{
@@ -42,36 +49,40 @@ Output:
 }
 ```
 
-
 To query the NeuVector scanner for the database version:
 
-```
+```bash
 kubectl exec <scanner pod> -n neuvector -- scanner -v -d /etc/neuvector/db/
 ```
 
 To use docker commands:
 
-```
+```bash
 docker exec scanner scanner -v -d /etc/neuvector/db/
 ```
 
-###Querying the CVE Database for Specific CVE Existence
+### Querying the CVE Database for Specific CVE Existence
+
 An online service is provided for NeuVector Prime (paid subscription) customers to be able to query the CVE database to determine if a specific CVE exists in the current database version. Other CVE database queries are also available from this service. Please request access through your SUSE Support portal (SCC), SUSE Collective link, or contact your SUSE account representative to access this service.
 
-###CVE Database Sources
+### CVE Database Sources
 
 The most up-to-date list of CVE database sources can be found [here](https://github.com/neuvector/vul-dbgen)
 
 Sources include:
 
-####General CVE Feeds
+#### General CVE Feeds
+
 | Source | URL | 
 | ------ | --------------------------------------------------- | 
 |nvd and Mitre |https://nvd.nist.gov/feeds/json/cve/1.1 |
 
-Note: NVD is a superset of CVE https://cve.mitre.org/about/cve_and_nvd_relationship.html
+:::note
+NVD is a superset of CVE https://cve.mitre.org/about/cve_and_nvd_relationship.html
+:::
 
-####OS CVE Feeds
+#### OS CVE Feeds
+
 | Source | URL | 
 | ------ | --------------------------------------------------- | 
 |alpine |https://secdb.alpinelinux.org/ |
@@ -84,7 +95,7 @@ Note: NVD is a superset of CVE https://cve.mitre.org/about/cve_and_nvd_relations
 |SUSE linux |https://ftp.suse.com/pub/projects/security/oval/ |
 |ubuntu |https://launchpad.net/ubuntu-cve-tracker  |
 
-####Application Based Feeds
+#### Application Based Feeds
 
 | Source | URL | 
 | ------ | --------------------------------------------------- | 
@@ -101,14 +112,16 @@ Note: NVD is a superset of CVE https://cve.mitre.org/about/cve_and_nvd_relations
 |openssl |https://www.openssl.org/news/vulnerabilities.html  |
 |ruby |https://github.com/rubysec/ruby-advisory-db |
 
-###Scanner Accuracy
+### Scanner Accuracy
+
 NeuVector evaluates each source to determine how to most accurately scan for vulnerabilities. It is common for scan results from different vendors' scanners to return different results. This is because each vendor processes the sources differently.
 
 A higher number of vulnerabilities detected by one scanner is not necessarily better than another. This is because there can be false positives which return inaccurate vulnerability results.
 
 NeuVector supports both layered and non-layered (compacted) scan results for images. The layered scan shows vulnerabilities in each layer, while the non-layered shows only vulnerabilities at the surface.
 
-###Scanner Performance
+### Scanner Performance
+
 A number of factors determine scanner performance. For registry scanning, the number and size of images as well as if a layered scan is being performed will determine performance. For run-time scans, the collection of container data is distributed across all Enforcers, then scheduled by the Controller for database comparison.
 
 Multiple parallel scanners can be deployed to increase scan performance for a large number of images. The controller will schedule scan tasks across all scanners. Each scanner is a container which is deployed by a Kubernetes deployment/replicaset.
