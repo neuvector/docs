@@ -88,15 +88,61 @@ oc create sa basic -n neuvector
 oc create sa updater -n neuvector
 oc create sa scanner -n neuvector
 oc create sa registry-adapter -n neuvector
-oc -n neuvector adm policy add-scc-to-user privileged -z controller -z enforcer
+oc -n neuvector adm policy add-scc-to-user privileged -z enforcer
 ```
 
 The following info will be added in the Privileged SCC
 users:
 ```
-- system:serviceaccount:neuvector:controller
 - system:serviceaccount:neuvector:enforcer
 
+```
+Add a new neuvector-scc-controller scc for controller service account in Openshift, by creating a file with:
+```
+allowHostDirVolumePlugin: false
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: false
+allowPrivilegedContainer: false
+allowedCapabilities: null
+apiVersion: security.openshift.io/v1
+defaultAddCapabilities: null
+fsGroup:
+  type: RunAsAny
+groups: []
+kind: SecurityContextConstraints
+metadata:
+  name: neuvector-scc-controller
+priority: null
+readOnlyRootFilesystem: false
+requiredDropCapabilities:
+- ALL
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: RunAsAny
+supplementalGroups:
+  type: RunAsAny
+users: []
+volumes:
+- configMap
+- downwardAPI
+- emptyDir
+- persistentVolumeClaim
+- azureFile
+- projected
+- secret
+```
+Then apply
+```
+oc apply -f (filename)
+```
+
+Then run the following command to bind controller service account to neuvector-scc-controller scc
+```
+oc -n neuvector adm policy add-scc-to-user neuvector-scc-controller -z controller
 ```
 In OpenShift 4.6+ use the following to check:
 ```
@@ -104,7 +150,16 @@ In OpenShift 4.6+ use the following to check:
 ```
 ```
 NAME                              ROLE                                          AGE     USERS   GROUPS   SERVICEACCOUNTS
-system:openshift:scc:privileged   ClusterRole/system:openshift:scc:privileged   9m22s                    neuvector/controller, neuvector/enforcer
+system:openshift:scc:privileged   ClusterRole/system:openshift:scc:privileged   9m22s                    neuvector/enforcer
+```
+Run this command to check NeuVector service for Controller:
+```
+oc get rolebinding system:openshift:scc:neuvector-scc-controller n neuvector -o wide
+```
+The output will look like
+```
+NAME                                            ROLE                                                        AGE     USERS   GROUPS   SERVICEACCOUNTS
+System:openshift:scc:neuvector-scc-controller   ClusterRole/system:openshift:scc:neuvector-scc-controller   9m22s                    neuvector/controller
 ```
 
 6) Create the custom resources (CRD) for NeuVector security rules. For OpenShift 4.6+ (Kubernetes 1.19+):
@@ -129,14 +184,14 @@ oc create clusterrole neuvector-binding-admission --verb=get,list,watch,create,u
 oc adm policy add-cluster-role-to-user neuvector-binding-admission system:serviceaccount:neuvector:controller
 oc create clusterrole neuvector-binding-customresourcedefinition --verb=watch,create,get,update --resource=customresourcedefinitions
 oc adm policy add-cluster-role-to-user neuvector-binding-customresourcedefinition system:serviceaccount:neuvector:controller
-oc create clusterrole neuvector-binding-nvsecurityrules --verb=list,delete --resource=nvsecurityrules,nvclustersecurityrules
+oc create clusterrole neuvector-binding-nvsecurityrules --verb=get,list,delete --resource=nvsecurityrules,nvclustersecurityrules
+oc create clusterrole neuvector-binding-nvadmissioncontrolsecurityrules --verb=get,list,delete --resource=nvadmissioncontrolsecurityrules
+oc create clusterrole neuvector-binding-nvdlpsecurityrules --verb=get,list,delete --resource=nvdlpsecurityrules
+oc create clusterrole neuvector-binding-nvwafsecurityrules --verb=get,list,delete --resource=nvwafsecurityrules
 oc adm policy add-cluster-role-to-user neuvector-binding-nvsecurityrules system:serviceaccount:neuvector:controller
 oc adm policy add-cluster-role-to-user view system:serviceaccount:neuvector:controller --rolebinding-name=neuvector-binding-view
-oc create clusterrole neuvector-binding-nvwafsecurityrules --verb=list,delete --resource=nvwafsecurityrules
 oc adm policy add-cluster-role-to-user neuvector-binding-nvwafsecurityrules system:serviceaccount:neuvector:controller
-oc create clusterrole neuvector-binding-nvadmissioncontrolsecurityrules --verb=list,delete --resource=nvadmissioncontrolsecurityrules
 oc adm policy add-cluster-role-to-user neuvector-binding-nvadmissioncontrolsecurityrules system:serviceaccount:neuvector:controller
-oc create clusterrole neuvector-binding-nvdlpsecurityrules --verb=list,delete --resource=nvdlpsecurityrules
 oc adm policy add-cluster-role-to-user neuvector-binding-nvdlpsecurityrules system:serviceaccount:neuvector:controller
 oc create role neuvector-binding-scanner --verb=get,patch,update,watch --resource=deployments -n neuvector
 oc adm policy add-role-to-user neuvector-binding-scanner system:serviceaccount:neuvector:updater system:serviceaccount:neuvector:controller -n neuvector --role-namespace neuvector
@@ -151,12 +206,23 @@ oc create clusterrolebinding neuvector-binding-nvcomplianceprofiles --clusterrol
 oc create clusterrole neuvector-binding-nvvulnerabilityprofiles --verb=get,list,delete --resource=nvvulnerabilityprofiles
 oc create clusterrolebinding neuvector-binding-nvvulnerabilityprofiles --clusterrole=neuvector-binding-nvvulnerabilityprofiles --serviceaccount=neuvector:controller
 ```
+If upgrading to 5.3.0+ from 5.2.0+, run the following before running the above commands
+```
+oc delete clusterrole neuvector-binding-nvsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-nvwafsecurityrules
+```
 
-
-NOTE: If upgrading from a previous NeuVector deployment (prior to 5.2), you will need to delete the old bindings, then create new ones:
+If upgrading to 5.3.0+ from a versions prior to 5.2.0, you will need to delete the old bindings, then create new ones:
 ```
 oc delete clusterrolebinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-co
 oc delete rolebinding neuvector-admin -n neuvector
+oc create clusterrole neuvector-binding-app --verb=get,list,watch,update --resource=nodes,pods,services,namespaces
+oc create clusterrole neuvector-binding-rbac --verb=get,list,watch --resource=rolebindings.rbac.authorization.k8s.io,roles.rbac.authorization.k8s.io,clusterrolebindings.rbac.authorization.k8s.io,clusterroles.rbac.authorization.k8s.io,imagestreams.image.openshift.io
+oc create clusterrole neuvector-binding-admission --verb=get,list,watch,create,update,delete --resource=validatingwebhookconfigurations,mutatingwebhookconfigurations
+oc create clusterrole neuvector-binding-customresourcedefinition --verb=watch,create,get,update --resource=customresourcedefinitions
+oc create clusterrole neuvector-binding-nvsecurityrules --verb=get,list,delete --resource=nvsecurityrules,nvclustersecurityrules
+oc create clusterrole neuvector-binding-nvadmissioncontrolsecurityrules --verb=get,list,delete --resource=nvadmissioncontrolsecurityrules
+oc create clusterrole neuvector-binding-nvdlpsecurityrules --verb=get,list,delete --resource=nvdlpsecurityrules
+oc create clusterrole neuvector-binding-nvwafsecurityrules --verb=get,list,delete --resource=nvwafsecurityrules
 oc adm policy add-cluster-role-to-user neuvector-binding-app system:serviceaccount:neuvector:controller
 oc adm policy add-cluster-role-to-user neuvector-binding-rbac system:serviceaccount:neuvector:controller
 oc adm policy add-cluster-role-to-user neuvector-binding-admission system:serviceaccount:neuvector:controller
