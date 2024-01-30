@@ -5,11 +5,8 @@ taxonomy:
 ---
 
 
-### Mirantis Kubernetes Engine
-Deploy to Kubernetes using the [Kubernetes Allinone](/special/kubernetes) section. 
-
 ### Deploy to Swarm Cluster
-It’s simple to deploy NeuVector using a Swarm cluster. First, pull the NeuVector images using Docker UCP in the Images menu. You may need to add a version number to get the latest version on Docker Hub.
+To deploy NeuVector using a Swarm cluster, first pull the NeuVector images using Docker UCP in the Images menu. You may need to add a version number to get the latest version on Docker Hub.
 
 Currently, Swarm/UCP does not support the seccomp capabilities (cap_add options) or deploying in ‘privileged mode’ so the NeuVector containers will need to be deployed from the command line using docker-compose or run. See the sample compose files for the allinone and enforcer below.
 
