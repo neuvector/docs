@@ -20,9 +20,9 @@ There is a separate section for OpenShift instructions, and Docker EE on Kuberne
 
 ####NeuVector Images on Docker Hub
 <p>The images are on the NeuVector Docker Hub registry. Use the appropriate version tag for the manager, controller, enforcer, and leave the version as 'latest' for scanner and updater. For example:
-<li>neuvector/manager:5.2.0</li>
-<li>neuvector/controller:5.2.0</li>
-<li>neuvector/enforcer:5.2.0</li>
+<li>neuvector/manager:5.3.0</li>
+<li>neuvector/controller:5.3.0</li>
+<li>neuvector/enforcer:5.3.0</li>
 <li>neuvector/scanner:latest</li>
 <li>neuvector/updater:latest</li></p>
 <p>Please be sure to update the image references in appropriate yaml files.</p>
@@ -42,6 +42,8 @@ kubectl create sa controller -n neuvector
 kubectl create sa enforcer -n neuvector
 kubectl create sa basic -n neuvector
 kubectl create sa updater -n neuvector
+kubectl create sa scanner -n neuvector
+kubectl create sa registry-adapter -n neuvector
 </code></pre>
 </li>
 <li>(<strong>Optional</strong>) Create the NeuVector Pod Security Admission (PSA) or Pod Security Policy (PSP).
@@ -138,10 +140,12 @@ kubectl create -f nv_psp.yaml</code></pre>
 Create the custom resources (CRD) for NeuVector security rules. For Kubernetes 1.19+:
 <pre>
 <code>
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/waf-crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/dlp-crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/admission-crd-k8s-1.19.yaml</code></pre>
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.3.0/crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.3.0/waf-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.3.0/dlp-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.3.0/com-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.3.0/vul-crd-k8s-1.19.yaml
+kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.3.0/admission-crd-k8s-1.19.yaml</code></pre>
 
 &nbsp;
 </li>
@@ -168,7 +172,13 @@ kubectl create clusterrolebinding neuvector-binding-nvdlpsecurityrules --cluster
 kubectl create role neuvector-binding-scanner --verb=get,patch,update,watch --resource=deployments -n neuvector
 kubectl create rolebinding neuvector-binding-scanner --role=neuvector-binding-scanner --serviceaccount=neuvector:updater --serviceaccount=neuvector:controller -n neuvector
 kubectl create clusterrole neuvector-binding-csp-usages --verb=get,create,update,delete --resource=cspadapterusagerecords
-kubectl create clusterrolebinding neuvector-binding-csp-usages --clusterrole=neuvector-binding-csp-usages --serviceaccount=neuvector:controller</code>
+kubectl create clusterrolebinding neuvector-binding-csp-usages --clusterrole=neuvector-binding-csp-usages --serviceaccount=neuvector:controller
+kubectl create role neuvector-binding-secret --verb=get --resource=secrets -n neuvector
+kubectl create rolebinding neuvector-binding-secret --role=neuvector-binding-secret --serviceaccount=neuvector:controller -n neuvector
+kubectl create clusterrole neuvector-binding-nvcomplianceprofiles --verb=get,list,delete --resource=nvcomplianceprofiles
+kubectl create clusterrolebinding neuvector-binding-nvcomplianceprofiles --clusterrole=neuvector-binding-nvcomplianceprofiles --serviceaccount=neuvector:controller
+kubectl create clusterrole neuvector-binding-nvvulnerabilityprofiles --verb=get,list,delete --resource=nvvulnerabilityprofiles
+kubectl create clusterrolebinding neuvector-binding-nvvulnerabilityprofiles --clusterrole=neuvector-binding-nvvulnerabilityprofiles --serviceaccount=neuvector:controller</code>
 </pre>
 NOTE: If upgrading NeuVector from a previous install, you will need to delete the old binding before creating the new least-privileged bindings:
 <pre>

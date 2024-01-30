@@ -14,9 +14,9 @@ To deploy manually, first pull the appropriate NeuVector containers from the Neu
 ####NeuVector Images on Docker Hub
 
 <p>The images are on the NeuVector Docker Hub registry. Use the appropriate version tag for the manager, controller, enforcer, and leave the version as 'latest' for scanner and updater. For example:
-<li>neuvector/manager:5.2.0</li>
-<li>neuvector/controller:5.2.0</li>
-<li>neuvector/enforcer:5.2.0</li>
+<li>neuvector/manager:5.3.0</li>
+<li>neuvector/controller:5.3.0</li>
+<li>neuvector/enforcer:5.3.0</li>
 <li>neuvector/scanner:latest</li>
 <li>neuvector/updater:latest</li></p>
 <p>Please be sure to update the image references in appropriate yaml files.</p>
@@ -86,6 +86,8 @@ oc create sa controller -n neuvector
 oc create sa enforcer -n neuvector
 oc create sa basic -n neuvector
 oc create sa updater -n neuvector
+oc create sa scanner -n neuvector
+oc create sa registry-adapter -n neuvector
 oc -n neuvector adm policy add-scc-to-user privileged -z controller -z enforcer
 ```
 
@@ -107,10 +109,12 @@ system:openshift:scc:privileged   ClusterRole/system:openshift:scc:privileged   
 
 6) Create the custom resources (CRD) for NeuVector security rules. For OpenShift 4.6+ (Kubernetes 1.19+):
 ```
-oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/crd-k8s-1.19.yaml
-oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/waf-crd-k8s-1.19.yaml
-oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/dlp-crd-k8s-1.19.yaml
-oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/admission-crd-k8s-1.19.yaml
+oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.3.0/crd-k8s-1.19.yaml
+oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.3.0/waf-crd-k8s-1.19.yaml
+oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.3.0/dlp-crd-k8s-1.19.yaml
+oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.3.0/com-crd-k8s-1.19.yaml
+oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.3.0/vul-crd-k8s-1.19.yaml
+oc apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.3.0/admission-crd-k8s-1.19.yaml
 ```
 &nbsp;
 
@@ -140,6 +144,12 @@ oc create clusterrole neuvector-binding-csp-usages --verb=get,create,update,dele
 oc adm policy add-cluster-role-to-user neuvector-binding-csp-usages system:serviceaccount:neuvector:controller
 oc create clusterrole neuvector-binding-co --verb=get,list --resource=clusteroperators
 oc adm policy add-cluster-role-to-user neuvector-binding-co system:serviceaccount:neuvector:enforcer system:serviceaccount:neuvector:controller
+oc create role neuvector-binding-secret --verb=get --resource=secrets -n neuvector
+oc adm policy add-role-to-user neuvector-binding-secret system:serviceaccount:neuvector:controller -n neuvector --role-namespace neuvector
+oc create clusterrole neuvector-binding-nvcomplianceprofiles --verb=get,list,delete --resource=nvcomplianceprofiles
+oc create clusterrolebinding neuvector-binding-nvcomplianceprofiles --clusterrole=neuvector-binding-nvcomplianceprofiles --serviceaccount=neuvector:controller
+oc create clusterrole neuvector-binding-nvvulnerabilityprofiles --verb=get,list,delete --resource=nvvulnerabilityprofiles
+oc create clusterrolebinding neuvector-binding-nvvulnerabilityprofiles --clusterrole=neuvector-binding-nvvulnerabilityprofiles --serviceaccount=neuvector:controller
 ```
 
 

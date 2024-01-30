@@ -41,6 +41,9 @@ taxonomy:
 * NO_DEFAULT_ADMIN 
 > (Optional) When enabled does not create an 'admin' user in the local cluster. This is used for Rancher SSO integration as the default. If not enabled, persistently warn the user and record events to change the default admin password if it is not changed from default.
 
+* CTRL_EN_ICMP_POLICY
+> (Optional) When enabled (value=1) icmp traffic can be learned in discover mode, and policy can be generated. If there is no network policy in monitor or protect mode for the group, an implicit violation will be generated for icmp traffic.
+
 ##### Manager
 * CTRL_SERVER_IP
 > (Optional for all-in-one) Controller REST server IP address. Default is ```127.0.0.1```. For all-in-one container, leave it as default. If the Manager is running separately, the Manager must specify this IP to connect to the controller.
