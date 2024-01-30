@@ -250,19 +250,7 @@ If you have created your own namespace instead of using “neuvector”, replace
 
 The name of your default OpenShift registry might have changed from docker-registry to openshift-image-registry. You may need to change the image registry for the manager, controller, and enforcer in the sample yaml. Note: Type NodePort is used for the fed-master and fed-worker services instead of LoadBalancer. You may need to adjust for your deployment.
 
-If using the CRI-O run-time, see this [CRI-O sample](https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.3.0/neuvector-crio-oc.yaml) for the change made to the volumeMounts for controller and enforcer pods:
-```
-            - mountPath: /var/run/crio/crio.sock
-              name: runtime-sock
-              readOnly: true
-```
-Also change the volumes from docker.sock to:
-```
-       - name: runtime-sock
-          hostPath:
-            path: /var/run/crio/crio.sock
-```
-
+If using the CRI-O run-time, see this [CRI-O sample](https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.3.0/neuvector-crio-oc.yaml)
 
 
 **Master Node Taints and Tolerations**

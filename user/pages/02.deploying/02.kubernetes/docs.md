@@ -257,20 +257,10 @@ Then create the appropriate service(s):
 <code>
 kubectl create -f nv_master_worker.yaml</code></pre>
 </li>
-<li>Create the primary NeuVector services and pods using the preset version commands or modify the sample yamls below. The preset versions invoke a LoadBalancer for the NeuVector Console. If using the sample yaml files below replace the image names and &lt;version> tags for the manager, controller and enforcer image references in the yaml file. Also make any other modifications required for your deployment environment (such as LoadBalancer/NodePort/Ingress for manager access etc).
-For general containerd runtime (non Rancher/K3s)
+<li>Create the primary NeuVector services and pods using the preset version commands or modify the sample yaml below. The preset version invoke a LoadBalancer for the NeuVector Console. If using the sample yaml file below replace the image names and &lt;version> tags for the manager, controller and enforcer image references in the yaml file. Also make any other modifications required for your deployment environment (such as LoadBalancer/NodePort/Ingress for manager access etc).
 <pre>
-<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/neuvector-containerd-k8s.yaml</code></pre>
-For 5.2.0 with Rancher on K3s containerd run-time:
-<pre>
-<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/neuvector-rancher-containerd-k3s.yaml</code></pre>
-For 5.2.0 with docker run-time:
-<pre>
-<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/neuvector-docker-k8s.yaml</code></pre>
-For 5.2.0 with AWS Bottlerocket run-time:
-<pre>
-<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.2.0/neuvector-aws-bottlerocket-k8s.yaml</code></pre>
-Or, if modifying any of the above yaml or samples from below:
+<code>kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.3.0/neuvector-k8s.yaml</code></pre>
+Or, if modifying the above yaml:
 <pre>
 <code>kubectl create -f neuvector.yaml</code></pre>
 
