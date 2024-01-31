@@ -183,7 +183,7 @@ Follow these steps to customize the UI component:
         serviceAccount: basic
         containers:
           - name: neuvector-manager-pod
-            image: neuvector/manager:5.2.0
+            image: neuvector/manager:5.3.0
             env:
               - name: CUSTOM_PAGE_HEADER_COLOR
                 value: "#ff8c00"

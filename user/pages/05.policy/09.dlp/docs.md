@@ -279,27 +279,3 @@ Response rules based on DLP/WAF security events can be created in Policy ->Respo
 
 ![DLPResponse](dlp7_response.png)
 
-###Adding WAF CRD Support to Previous NeuVector Deployments
-1. Delete old neuvector-binding-customresourcedefinition clusterrole
-```
-kubectl delete clusterrole neuvector-binding-customresourcedefinition
-```
-2. Apply new update verb for neuvector-binding-customresourcedefinition clusterrole
-```
-kubectl create clusterrole neuvector-binding-customresourcedefinition --verb=watch,create,get,update --resource=customresourcedefinitions
-```
-3. Delete old crd schema for Kubernetes 1.19+
-```
-kubectl delete -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/crd-k8s-1.19.yaml
-```
-4. Create new crd schema for Kubernetes 1.19+
-```
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.3.0/crd-k8s-1.19.yaml
-kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kubernetes/5.3.0/waf-crd-k8s-1.19.yaml
-```
-5. Create a new neuvector-binding-nvwafsecurityrules clusterrole and clusterrolebinding
-```
-kubectl create clusterrole neuvector-binding-nvwafsecurityrules --verb=list,delete --resource=nvwafsecurityrules
-kubectl create clusterrolebinding neuvector-binding-nvwafsecurityrules --clusterrole=neuvector-binding-nvwafsecurityrules --serviceaccount=neuvector:default
-```
-

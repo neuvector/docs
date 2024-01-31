@@ -215,10 +215,6 @@ If upgrading to 5.3.0+ from a versions prior to 5.2.0, you will need to delete t
 ```
 oc delete clusterrolebinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-co
 oc delete rolebinding neuvector-admin -n neuvector
-oc create clusterrole neuvector-binding-app --verb=get,list,watch,update --resource=nodes,pods,services,namespaces
-oc create clusterrole neuvector-binding-rbac --verb=get,list,watch --resource=rolebindings.rbac.authorization.k8s.io,roles.rbac.authorization.k8s.io,clusterrolebindings.rbac.authorization.k8s.io,clusterroles.rbac.authorization.k8s.io,imagestreams.image.openshift.io
-oc create clusterrole neuvector-binding-admission --verb=get,list,watch,create,update,delete --resource=validatingwebhookconfigurations,mutatingwebhookconfigurations
-oc create clusterrole neuvector-binding-customresourcedefinition --verb=watch,create,get,update --resource=customresourcedefinitions
 oc create clusterrole neuvector-binding-nvsecurityrules --verb=get,list,delete --resource=nvsecurityrules,nvclustersecurityrules
 oc create clusterrole neuvector-binding-nvadmissioncontrolsecurityrules --verb=get,list,delete --resource=nvadmissioncontrolsecurityrules
 oc create clusterrole neuvector-binding-nvdlpsecurityrules --verb=get,list,delete --resource=nvdlpsecurityrules
@@ -459,42 +455,8 @@ oc adm manage-node nodename --schedulable=false
 
 
 ### OpenShift Deployment in Non-Privileged Mode
-The following instructions can be used to deploy NeuVector without using privileged mode containers. The controller and enforcer deployments should be changed, which is shown in the excerpted snippets below.
+The following instructions can be used to deploy NeuVector without using privileged mode containers. The controller is already in non-privileged mode and the enforcer deployment should be changed, which is shown in the excerpted snippets below.
 
-Controller:
-```
-spec:
-  template:
-    metadata:
-      ...
-      annotations:
-        container.apparmor.security.beta.kubernetes.io/neuvector-controller-pod: unconfined
-       # this line below is required to be added if k8s version is pre-v1.19
-       # container.seccomp.security.alpha.kubernetes.io/neuvector-controller-pod: unconfined
-    spec:
-	  # hostPID is required for controller if openshift version is pre-v4.5 but not for version 3.x
-      # hostPID: true
-      containers:
-        ...
-          securityContext:
-            # openshift
-            seLinuxOptions:
-              type: unconfined_t
-            # the following two lines are required for k8s v1.19+. pls comment out both lines if version is pre-1.19. Otherwise, a validating data error message will show
-            seccompProfile:
-              type: Unconfined
-            capabilities:
-              add:
-              - SYS_ADMIN
-              - NET_ADMIN
-              - SYS_PTRACE
-              - IPC_LOCK
-              - NET_RAW
-              - SYS_CHROOT
-              - MKNOD
-              - AUDIT_WRITE
-              - SETFCAP
-```
 
 Enforcer:
 ```
@@ -529,7 +491,6 @@ spec:
 
 The following sample is a complete deployment reference using the cri-o run-time. For other run-times please make the appropriate changes to the volumes/volume mounts for the crio.sock.
 ```
-# neuvector yaml version for NeuVector 5.x.x on cri-o oc version 4.6+
 apiVersion: v1
 kind: Service
 metadata:
@@ -633,10 +594,11 @@ spec:
       labels:
         app: neuvector-manager-pod
     spec:
+      serviceAccountName: basic
+      serviceAccount: basic
       containers:
         - name: neuvector-manager-pod
-          # 4.6+, change docker-registry.default.svc below to image-registry.openshift-image-registry.svc
-          image: docker-registry.default.svc:5000/neuvector/manager:<version>
+          image: image-registry.openshift-image-registry.svc:5000/neuvector/manager:<version>
           env:
             - name: CTRL_SERVER_IP
               value: neuvector-svc-controller.neuvector
@@ -664,10 +626,6 @@ spec:
     metadata:
       labels:
         app: neuvector-controller-pod
-      annotations:
-        container.apparmor.security.beta.kubernetes.io/neuvector-controller-pod: unconfined
-      # this line below is required to be added if k8s version is pre-v1.19
-      # container.seccomp.security.alpha.kubernetes.io/neuvector-controller-pod: unconfined
     spec:
       affinity:
         podAntiAffinity:
@@ -681,30 +639,13 @@ spec:
                   values:
                   - neuvector-controller-pod
               topologyKey: "kubernetes.io/hostname"
-      # hostPID is required for controller if openshift version is pre-v4.5
-      # hostPID: true
+      serviceAccountName: controller
+      serviceAccount: controller
       containers:
         - name: neuvector-controller-pod
-          # 4.6+, change docker-registry.default.svc below to image-registry.openshift-image-registry.svc
-          image: docker-registry.default.svc:5000/neuvector/controller:<version>
+          image: image-registry.openshift-image-registry.svc:5000/neuvector/controller:<version>
           securityContext:
-            # openshift
-            seLinuxOptions:
-              type: unconfined_t
-            # the following two lines are required for k8s v1.19+. pls comment out both lines if version is pre-1.19. Otherwise, a validating data error message will show
-            seccompProfile:
-              type: Unconfined
-            capabilities:
-              add:
-              - SYS_ADMIN
-              - NET_ADMIN
-              - SYS_PTRACE
-              - IPC_LOCK
-              - NET_RAW
-              - SYS_CHROOT
-              - MKNOD
-              - AUDIT_WRITE
-              - SETFCAP
+            runAsUser: 0
           readinessProbe:
             exec:
               command:
@@ -723,37 +664,21 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+            # - name: CTRL_PERSIST_CONFIG
+            #   value: "1"
           volumeMounts:
-            - mountPath: /var/neuvector
-              name: nv-share
-              readOnly: false
-            - mountPath: /var/run/crio/crio.sock
-              name: runtime-sock
-              readOnly: true
-            - mountPath: /host/proc
-              name: proc-vol
-              readOnly: true
-            - mountPath: /host/cgroup
-              name: cgroup-vol
-              readOnly: true
+            # - mountPath: /var/neuvector
+            #   name: nv-share
+            #   readOnly: false
             - mountPath: /etc/config
               name: config-volume
               readOnly: true
       terminationGracePeriodSeconds: 300
       restartPolicy: Always
       volumes:
-        - name: nv-share
-          hostPath:
-            path: /var/neuvector
-        - name: runtime-sock
-          hostPath:
-            path: /var/run/crio/crio.sock
-        - name: proc-vol
-          hostPath:
-            path: /proc
-        - name: cgroup-vol
-          hostPath:
-            path: /sys/fs/cgroup
+        # - name: nv-share
+        #   persistentVolumeClaim:
+        #     claimName: neuvector-data
         - name: config-volume
           projected:
             sources:
@@ -762,6 +687,9 @@ spec:
                   optional: true
               - secret:
                   name: neuvector-init
+                  optional: true
+              - secret:
+                  name: neuvector-secret
                   optional: true
 
 ---
@@ -782,9 +710,9 @@ spec:
       labels:
         app: neuvector-enforcer-pod
       annotations:
-        container.apparmor.security.beta.kubernetes.io/neuvector-controller-pod: unconfined
-      # this line below is required to be added if k8s version is pre-v1.19
-      # container.seccomp.security.alpha.kubernetes.io/neuvector-controller-pod: unconfined
+        container.apparmor.security.beta.kubernetes.io/neuvector-enforcer-pod: unconfined
+      # Add the following for pre-v1.19
+      # container.seccomp.security.alpha.kubernetes.io/neuvector-enforcer-pod: unconfined
     spec:
       tolerations:
         - effect: NoSchedule
@@ -792,10 +720,11 @@ spec:
         - effect: NoSchedule
           key: node-role.kubernetes.io/control-plane
       hostPID: true
+      serviceAccountName: enforcer
+      serviceAccount: enforcer
       containers:
         - name: neuvector-enforcer-pod
-          # 4.6+, change docker-registry.default.svc below to image-registry.openshift-image-registry.svc
-          image: docker-registry.default.svc:5000/neuvector/enforcer:<version>
+          image: image-registry.openshift-image-registry.svc:5000/neuvector/enforcer:<version>
           securityContext:
             # openshift
             seLinuxOptions:
@@ -829,30 +758,36 @@ spec:
             - mountPath: /lib/modules
               name: modules-vol
               readOnly: true
-            - mountPath: /var/run/crio/crio.sock
-              name: runtime-sock
-              readOnly: true
-            - mountPath: /host/proc
-              name: proc-vol
-              readOnly: true
-            - mountPath: /host/cgroup
-              name: cgroup-vol
-              readOnly: true
+            # - mountPath: /run/runtime.sock
+            #   name: runtime-sock
+            #   readOnly: true
+            # - mountPath: /host/proc
+            #   name: proc-vol
+            #   readOnly: true
+            # - mountPath: /host/cgroup
+            #   name: cgroup-vol
+            #   readOnly: true
+            - mountPath: /var/nv_debug
+              name: nv-debug
+              readOnly: false
       terminationGracePeriodSeconds: 1200
       restartPolicy: Always
       volumes:
         - name: modules-vol
           hostPath:
             path: /lib/modules
-        - name: runtime-sock
+        # - name: runtime-sock
+        #   hostPath:
+        #     path: /var/run/crio/crio.sock
+        # - name: proc-vol
+        #   hostPath:
+        #     path: /proc
+        # - name: cgroup-vol
+        #   hostPath:
+        #     path: /sys/fs/cgroup
+        - name: nv-debug
           hostPath:
-            path: /var/run/crio/crio.sock
-        - name: proc-vol
-          hostPath:
-            path: /proc
-        - name: cgroup-vol
-          hostPath:
-            path: /sys/fs/cgroup
+            path: /var/nv_debug
 
 ---
 
@@ -876,9 +811,11 @@ spec:
       labels:
         app: neuvector-scanner-pod
     spec:
+      serviceAccountName: scanner
+      serviceAccount: scanner
       containers:
         - name: neuvector-scanner-pod
-          image: docker-registry.default.svc:5000/neuvector/scanner
+          image: image-registry.openshift-image-registry.svc:5000/neuvector/scanner:<version>
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
@@ -901,9 +838,11 @@ spec:
           labels:
             app: neuvector-updater-pod
         spec:
+          serviceAccountName: updater
+          serviceAccount: updater
           containers:
           - name: neuvector-updater-pod
-            image: docker-registry.default.svc:5000/neuvector/updater
+            image: image-registry.openshift-image-registry.svc:5000/neuvector/updater:<version>
             imagePullPolicy: Always
             command:
             - /bin/sh

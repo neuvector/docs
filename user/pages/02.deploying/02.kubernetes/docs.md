@@ -497,32 +497,8 @@ spec:
 Please see the Automation section for more info on the REST API.
 
 ### Kubernetes Deployment in Non-Privileged Mode
-The following instructions can be used to deploy NeuVector without using privileged mode containers. The controller and enforcer deployments should be changed, which is shown in the excerpted snippets below.
+The following instructions can be used to deploy NeuVector without using privileged mode containers. The controller is already in non-privileged mode and enforcer deployment should be changed, which is shown in the excerpted snippets below.
 
-Controller (1.19+):
-```
-spec:
-  template:
-    metadata:
-      ...
-      annotations:
-        container.apparmor.security.beta.kubernetes.io/neuvector-controller-pod: unconfined
-        # the following line is required to be added if k8s version is pre-v1.19
-        # container.seccomp.security.alpha.kubernetes.io/neuvector-controller-pod: unconfined
-    spec:
-      containers:
-        ...
-          securityContext:
-            # the following two lines are required for k8s v1.19+. pls comment out both lines if version is pre-1.19. Otherwise, a validating data error message will show
-            seccompProfile:
-              type: Unconfined
-            capabilities:
-              add:
-              - SYS_ADMIN
-              - NET_ADMIN
-              - SYS_PTRACE
-              - IPC_LOCK
-```
 
 Enforcer:
 ```
@@ -547,9 +523,9 @@ spec:
               - IPC_LOCK
 ```
 
-The following sample is a complete deployment reference (Kubernetes 1.19+) using the containerd run-time. For docker or other run-times please see the required changes shown after it.
+The following sample is a complete deployment reference (Kubernetes 1.19+).
+
 ```
-# neuvector yaml version for 5.x.x on containerd runtime
 apiVersion: v1
 kind: Service
 metadata:
@@ -564,9 +540,7 @@ spec:
   type: ClusterIP
   selector:
     app: neuvector-controller-pod
-
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -581,9 +555,7 @@ spec:
   type: ClusterIP
   selector:
     app: neuvector-controller-pod
-
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -597,9 +569,7 @@ spec:
   type: LoadBalancer
   selector:
     app: neuvector-manager-pod
-
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -619,9 +589,7 @@ spec:
   clusterIP: None
   selector:
     app: neuvector-controller-pod
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -637,16 +605,16 @@ spec:
       labels:
         app: neuvector-manager-pod
     spec:
+      serviceAccountName: basic
+      serviceAccount: basic
       containers:
         - name: neuvector-manager-pod
-          image: neuvector/manager:<version>
+          image: neuvector/manager:5.3.0
           env:
             - name: CTRL_SERVER_IP
               value: neuvector-svc-controller.neuvector
       restartPolicy: Always
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -667,10 +635,6 @@ spec:
     metadata:
       labels:
         app: neuvector-controller-pod
-      annotations:
-        container.apparmor.security.beta.kubernetes.io/neuvector-controller-pod: unconfined
-      # Add the following for pre-v1.19
-      # container.seccomp.security.alpha.kubernetes.io/neuvector-controller-pod: unconfined
     spec:
       affinity:
         podAntiAffinity:
@@ -684,19 +648,13 @@ spec:
                   values:
                   - neuvector-controller-pod
               topologyKey: "kubernetes.io/hostname"
+      serviceAccountName: controller
+      serviceAccount: controller
       containers:
         - name: neuvector-controller-pod
-          image: neuvector/controller:<version>
+          image: neuvector/controller:5.3.0
           securityContext:
-            # the following two lines are required for k8s v1.19+. pls comment out both lines if version is pre-1.19. Otherwise, a validating data error message will show
-            seccompProfile:
-              type: Unconfined
-            capabilities:
-              add:
-              - SYS_ADMIN
-              - NET_ADMIN
-              - SYS_PTRACE
-              - IPC_LOCK
+            runAsUser: 0
           readinessProbe:
             exec:
               command:
@@ -715,37 +673,21 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+            # - name: CTRL_PERSIST_CONFIG
+            #   value: "1"
           volumeMounts:
-            - mountPath: /var/neuvector
-              name: nv-share
-              readOnly: false
-            - mountPath: /run/containerd/containerd.sock
-              name: runtime-sock
-              readOnly: true
-            - mountPath: /host/proc
-              name: proc-vol
-              readOnly: true
-            - mountPath: /host/cgroup
-              name: cgroup-vol
-              readOnly: true
+            # - mountPath: /var/neuvector
+            #   name: nv-share
+            #   readOnly: false
             - mountPath: /etc/config
               name: config-volume
               readOnly: true
       terminationGracePeriodSeconds: 300
       restartPolicy: Always
       volumes:
-        - name: nv-share
-          hostPath:
-            path: /var/neuvector
-        - name: runtime-sock
-          hostPath:
-            path: /run/containerd/containerd.sock
-        - name: proc-vol
-          hostPath:
-            path: /proc
-        - name: cgroup-vol
-          hostPath:
-            path: /sys/fs/cgroup
+        # - name: nv-share
+        #   persistentVolumeClaim:
+        #     claimName: neuvector-data
         - name: config-volume
           projected:
             sources:
@@ -755,9 +697,10 @@ spec:
               - secret:
                   name: neuvector-init
                   optional: true
-
+              - secret:
+                  name: neuvector-secret
+                  optional: true
 ---
-
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -784,9 +727,11 @@ spec:
         - effect: NoSchedule
           key: node-role.kubernetes.io/control-plane
       hostPID: true
+      serviceAccountName: enforcer
+      serviceAccount: enforcer
       containers:
         - name: neuvector-enforcer-pod
-          image: neuvector/enforcer:<version>
+          image: neuvector/enforcer:5.3.0
           securityContext:
             # the following two lines are required for k8s v1.19+. pls comment out both lines if version is pre-1.19. Otherwise, a validating data error message will show
             seccompProfile:
@@ -812,33 +757,42 @@ spec:
             - mountPath: /lib/modules
               name: modules-vol
               readOnly: true
-            - mountPath: /run/containerd/containerd.sock
-              name: runtime-sock
-              readOnly: true
-            - mountPath: /host/proc
-              name: proc-vol
-              readOnly: true
-            - mountPath: /host/cgroup
-              name: cgroup-vol
-              readOnly: true
+            # - mountPath: /run/runtime.sock
+            #   name: runtime-sock
+            #   readOnly: true
+            # - mountPath: /host/proc
+            #   name: proc-vol
+            #   readOnly: true
+            # - mountPath: /host/cgroup
+            #   name: cgroup-vol
+            #   readOnly: true
+            - mountPath: /var/nv_debug
+              name: nv-debug
+              readOnly: false
       terminationGracePeriodSeconds: 1200
       restartPolicy: Always
       volumes:
         - name: modules-vol
           hostPath:
             path: /lib/modules
-        - name: runtime-sock
+        # - name: runtime-sock
+        #   hostPath:
+        #     path: /var/run/docker.sock
+        #     path: /var/run/containerd/containerd.sock
+        #     path: /run/dockershim.sock
+        #     path: /run/k3s/containerd/containerd.sock
+        #     path: /var/run/crio/crio.sock
+        #     path: /var/vcap/sys/run/docker/docker.sock
+        # - name: proc-vol
+        #   hostPath:
+        #     path: /proc
+        # - name: cgroup-vol
+        #   hostPath:
+        #     path: /sys/fs/cgroup
+        - name: nv-debug
           hostPath:
-            path: /run/containerd/containerd.sock
-        - name: proc-vol
-          hostPath:
-            path: /proc
-        - name: cgroup-vol
-          hostPath:
-            path: /sys/fs/cgroup
-
+            path: /var/nv_debug
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -859,17 +813,17 @@ spec:
       labels:
         app: neuvector-scanner-pod
     spec:
+      serviceAccountName: scanner
+      serviceAccount: scanner
       containers:
         - name: neuvector-scanner-pod
-          image: neuvector/scanner
+          image: neuvector/scanner:latest
           imagePullPolicy: Always
           env:
             - name: CLUSTER_JOIN_ADDR
               value: neuvector-svc-controller.neuvector
       restartPolicy: Always
-
 ---
-
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -884,9 +838,11 @@ spec:
           labels:
             app: neuvector-updater-pod
         spec:
+          serviceAccountName: updater
+          serviceAccount: updater
           containers:
           - name: neuvector-updater-pod
-            image: neuvector/updater
+            image: neuvector/updater:latest
             imagePullPolicy: Always
             command:
             - /bin/sh
@@ -895,41 +851,3 @@ spec:
           restartPolicy: Never
 ```
 
-
-<strong>Docker Run-time</strong>
-If using the docker run-time instead of containerd, the volumeMounts for controller and enforcer pods in the sample yamls change to:
-```
-            - mountPath: /var/run/docker.sock
-              name: docker-sock
-              readOnly: true
-```
-And the volumes change from runtime.sock to:
-```
-       - name: docker-sock
-          hostPath:
-            path: /var/run/docker.sock
-```
-
-Or for the AWS Bottlerocket OS with containerd:
-```
-          volumeMounts:
-            ...
-            - mountPath: /run/containerd/containerd.sock
-              name: docker-sock
-              readOnly: true
-            ...
-      volumes:
-        ...
-        - name: docker-sock
-          hostPath:
-            path: /run/dockershim.sock
-        ...
-```
-
-
-<strong>PKS Change</strong>
-Note: PKS is field tested and requires enabling privileged containers to the plan/tile, and changing the yaml hostPath as follows for Allinone, Controller, Enforcer:
-<pre>
-<code>      hostPath:
-            path: /var/vcap/sys/run/docker/docker.sock</code>
-</pre>
