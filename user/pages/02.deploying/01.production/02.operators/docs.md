@@ -20,7 +20,7 @@ Privileged SCC is added to the Service Account specified in the deployment yaml 
 oc delete rolebinding -n neuvector system:openshift:scc:privileged
 ```
 
-**Important**: NeuVector Certified Operator versions are tied to NeuVector product versions, and each new version must go through a certification process with Red Hat before being published. Certified operator version 1.3.9 is tied to NeuVector version 5.2.0. Certified operator version 1.3.7 is tied to NeuVector version 5.1.0. Version 1.3.4 operator version is tied to NeuVector 5.0.0. If you wish to be able to change the version tags of the NeuVector containers deployed, please use the Community version.
+**Important**: NeuVector Certified Operator versions are tied to NeuVector product versions, and each new version must go through a certification process with Red Hat before being published. Certified operator version for 5.3.x is tied to helm version 2.7.2 and NeuVector app version 5.3.0. Certified operator version 1.3.9 is tied to NeuVector version 5.2.0. Certified operator version 1.3.7 is tied to NeuVector version 5.1.0. Version 1.3.4 operator version is tied to NeuVector 5.0.0. If you wish to be able to change the version tags of the NeuVector containers deployed, please use the Community version.
 
 
 <html>

@@ -7,6 +7,62 @@ taxonomy:
 ### Release Notes for 5.x
 Note: To receive email notifications of new releases, please subscribe to this SUSE mailing list: https://lists.suse.com/mailman/listinfo/neuvector-updates
 
+#### 5.3.0 February 2024
+
+#####Enhancements
++ Show external destination URLs (FQDN) in Dashboard (egress), PDF and CSV reports, as we well as in Network Activity screen and Security Events (violations) lists
++ In Discover mode, learn egresses to external FQDN address groups automatically. A new external FQDN custom group will be created unless the external connection matches an existing rule.
++ Enable ICMP learning (Discover mode) and blocking (Protect mode) through new Controller environment variable CTRL_EN_ICMP_POLICY = 1
++ Export CRDs into Github to support gitops to a default repo using console or REST API.
++ Support SAML SSO single logout with ADFS iDP
++ Add support for ARM64 platform. Pulling from ARM based platforms will automatically pull the appropriate ARM64 NeuVector images.
++ Support webhooks through a proxy
++ Improve admission control auditing function to include results of all rules. List the result of every rule, and adds another entry for the final action the would occur when evaluated in a live admission control deployment.
++ Apply disabled Admission C ontrol rules via CRD or yaml (kubectl)
++ Vulnerability Profile export / import through console, CRD, or REST API. Importing will replace the existing profile. Deleting the CRD will result in an empty profile.
++ Compliance Profile template export / import through console, CRD, or REST API. Importing will replace the existing template.
++ Add a 'Manual' status in the compliance reports for CIS benchmarks that must be run manually by users (not run by NeuVector).
++ Improve UI loading/performance of Vulnerabilities page
++ Unify browser session login. With this, all tabs in the browser share the same login session, opening a new tab from an existing session does not ask for credentials, and when one tab logs out, all tabs are logged out.
++ Enhancements to security of console (UI): 1) add mandatory security headers (X-Content-Type-Options nosniff; X-XSS-Protection 1; mode=block; X-Frame-Options SAMEORIGIN; Cache-Control private, no-cache, no-store, must-revalidate
+HTTP Strict Transport Security max-age=15724800, 2) add CSP header (e.g. set a ‘default-src’ directive), 3) remove server name disclosure
++ Support newer versions of CIS benchmarks. Kubernetes (1.8.0), Kubernetes V1.24 (1.0.0), Kubernetes V1.23 (1.0.1), RedHat OpenShift Container Platform (1.4.0)
++ Show in Assets -> Containers -> Container details containers which were scanned in registries versus runtime
++ Add link to Group in Security Risks -> Vulnerabilities -> Impact popup to easily edit group mode
++ Support deep linking in URL's to image and/or container vulnerability page 
++ Add password reset option for admin to reset user password in console Settings -> Users
++ Allow sending event logs to controller pod logs in Settings -> Configuration -> Notification. The events sent will begin with 'notification=' and be saved only to the leader controller pod.
++ Remove requirement for controller/enforcer to mount "/host/cgroup".
++ Add Get Support menu with links to slack, documentation, and other resources
++ Fill message field to /v1/log/activity logs
+
+#####Bug Fixes
++ Internal Server Error in Security Risks -> Vulnerabilities with a high number of CVEs 
++ SIGSEGV: segmentation violation on controller
++ Deleting vulnerable files (e.g. jar) doesn't remove from vulnerability list
++ Invalid Syslog certificate using the signature algorithm SHA256withECDSA
++ NeuVector shows security events that should be allowed by a Network Rule 
++ Un-managed node with "zombie" enforcer running 
++ Advanced Filter shows Remediation and Impact fields blank
++ Fix string handling to prevent unexpected Enforcer restart
++ Unexpected violations relating to built-in groups 
++ Support-bundle enforcer debug RPC call for data returns error 
++ Group is not matching in Security Events 
++ Send events to slack is not working - with proxy 
++ Showing security events for allowed network rules 
+
+#####Other
++ Add run-time container engine (socket) automatic detection to Helm chart
++ Remove setting for running controller in privileged mode in Helm chart, and requirement for controller/enforcer to mount "/host/cgroup".
++ The sample kubernetes deployment files have been removed from the NeuVector docs. Please refer to the link for examples.
+
+#####Highlighted Changes Which May Require Changes for Manual Deployments (all changes are already reflected in latest Helm chart for 5.3.x)
++ Auto detection of container run-time (socket) removes the need to specify the container run-time and socket path.
++ Removal of requirement to run the controller in privileged mode removes the need for mounting runtime socket and mounted /host/cgroup/
++ Added role/role binding for neuvector-binding-secret as well as neuvector-secret in yaml.
++ New service accounts and role bindings required for 5.3
++ All referenced deployment yaml files now have /5.3.0/ in their paths
+
 #### 5.2.4-s1 January 2024
 
 ##### Security Patch Release
