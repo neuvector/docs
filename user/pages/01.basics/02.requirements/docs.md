@@ -42,7 +42,7 @@ AWS Bottlerocket Note: Must change path of the containerd socket specific to Bot
 * Console: IE 11 not supported due to performance issues.
 * Nested container host in a container tools used for simple testing. For example, deployment of a Kubernetes cluster using 'kind' https://kind.sigs.k8s.io/docs/user/configuration/.
 
-Note 1: PKS is field tested and requires enabling privileged containers to the plan/tile, and changing the yaml hostPath as follows for Allinone, Controller, Enforcer:
+Note 1: PKS is field tested and requires enabling privileged containers to the plan/tile, and changing the yaml hostPath as follows for Allinone (if applicable) and Enforcer:
 <pre>
 <code>      hostPath:
             path: /var/vcap/sys/run/docker/docker.sock</code>
