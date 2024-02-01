@@ -211,28 +211,10 @@ If upgrading to 5.3.0+ from 5.2.0+, run the following before running the above c
 oc delete clusterrole neuvector-binding-nvsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-nvwafsecurityrules
 ```
 
-If upgrading to 5.3.0+ from a versions prior to 5.2.0, you will need to delete the old bindings, then create new ones:
+If upgrading to 5.3.0+ from a versions prior to 5.2.0, you will need to delete the old bindings before running the above commands
 ```
 oc delete clusterrolebinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-co
 oc delete rolebinding neuvector-admin -n neuvector
-oc create clusterrole neuvector-binding-nvsecurityrules --verb=get,list,delete --resource=nvsecurityrules,nvclustersecurityrules
-oc create clusterrole neuvector-binding-nvadmissioncontrolsecurityrules --verb=get,list,delete --resource=nvadmissioncontrolsecurityrules
-oc create clusterrole neuvector-binding-nvdlpsecurityrules --verb=get,list,delete --resource=nvdlpsecurityrules
-oc create clusterrole neuvector-binding-nvwafsecurityrules --verb=get,list,delete --resource=nvwafsecurityrules
-oc adm policy add-cluster-role-to-user neuvector-binding-app system:serviceaccount:neuvector:controller
-oc adm policy add-cluster-role-to-user neuvector-binding-rbac system:serviceaccount:neuvector:controller
-oc adm policy add-cluster-role-to-user neuvector-binding-admission system:serviceaccount:neuvector:controller
-oc adm policy add-cluster-role-to-user neuvector-binding-customresourcedefinition system:serviceaccount:neuvector:controller
-oc adm policy add-cluster-role-to-user neuvector-binding-nvsecurityrules system:serviceaccount:neuvector:controller
-oc adm policy add-cluster-role-to-user view system:serviceaccount:neuvector:controller --rolebinding-name=neuvector-binding-view
-oc adm policy add-cluster-role-to-user neuvector-binding-nvwafsecurityrules system:serviceaccount:neuvector:controller
-oc adm policy add-cluster-role-to-user neuvector-binding-nvadmissioncontrolsecurityrules system:serviceaccount:neuvector:controller
-oc adm policy add-cluster-role-to-user neuvector-binding-nvdlpsecurityrules system:serviceaccount:neuvector:controller
-oc create role neuvector-binding-scanner --verb=get,patch,update,watch --resource=deployments -n neuvector
-oc adm policy add-role-to-user neuvector-binding-scanner system:serviceaccount:neuvector:updater system:serviceaccount:neuvector:controller -n neuvector --role-namespace neuvector
-oc create clusterrole neuvector-binding-csp-usages --verb=get,create,update,delete --resource=cspadapterusagerecords
-oc adm policy add-cluster-role-to-user neuvector-binding-csp-usages system:serviceaccount:neuvector:controller
-oc adm policy add-cluster-role-to-user neuvector-binding-co system:serviceaccount:neuvector:enforcer system:serviceaccount:neuvector:controller
 ```
 
 8) Run the following command to check if the neuvector/controller, neuvector/enforcer and neuvector/updater service accounts are added successfully.
