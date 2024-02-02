@@ -56,7 +56,8 @@ kubectl create sa updater -n neuvector
 </li>
 <li>
 (<strong>Optional</strong>) Create the NeuVector Pod Security Admission (PSA) or Pod Security Policy (PSP).
- If you have enabled Pod Security Admission (aka Pod Security Standards) in Kubernetes 1.25+, or Pod Security Policies (prior to 1.25) in your Kubernetes cluster, add the following for NeuVector (for example, nv_psp.yaml). Note1: PSP is deprecated in Kubernetes 1.21 and will be totally removed in 1.25. Note2: The Manager and Scanner pods run without a uid. If your PSP has a rule `Run As User: Rule: MustRunAsNonRoot` then add the following into the sample yaml below (with appropriate value for ###):
+
+If you have enabled Pod Security Admission (aka Pod Security Standards) in Kubernetes 1.25+, or Pod Security Policies (prior to 1.25) in your Kubernetes cluster, add the following for NeuVector (for example, nv_psp.yaml). Note1: PSP is deprecated in Kubernetes 1.21 and will be totally removed in 1.25. Note2: The Manager and Scanner pods run without a uid. If your PSP has a rule `Run As User: Rule: MustRunAsNonRoot` then add the following into the sample yaml below (with appropriate value for ###):
 
 ```yaml
 securityContext:
@@ -70,12 +71,12 @@ kubectl label  namespace neuvector "pod-security.kubernetes.io/enforce=privilege
 ```
 
 <div id="full-wrapper">
-  <ul class="dopt-accordion fixed-height arrow-tri">  
-
-	<input class="title-option" id="acc0" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc0"><span><i class="icon-code"></i>View Sample NeuVector PSP (1.24 and earlier)</span></label>
-  <div class="accordion-content animated animation5">
-  <div class="wrap-content">
+<ul class="dopt-accordion fixed-height arrow-tri">  
+<input class="title-option" id="acc0" name="accordion-1" type="checkbox" />
+<label class="title-panel" onClick="" for="acc0"><span><i class="icon-code"></i>View Sample NeuVector PSP (1.24 and earlier)</span></label>
+<div class="accordion-content animated animation5">
+<div class="wrap-content">
+<li>
 
 ```yaml
 apiVersion: policy/v1beta1
@@ -149,9 +150,10 @@ subjects:
   name: enforcer
   namespace: neuvector
 ```
-</div>
-</div>
 </li>
+</div>
+</div>
+</ul>
 </div>
 
 Then create the PSP
@@ -259,17 +261,16 @@ NAME                        ROLE                             AGE   USERS   GROUP
 neuvector-binding-scanner   Role/neuvector-binding-scanner   70d                    neuvector/updater, neuvector/controller
 ```
 </li>
-<li>(<strong>Optional</strong>) Create the Federation Master and/or Remote Multi-Cluster Management Services. If you plan to use the multi-cluster management functions in NeuVector, one cluster must have the Federation Master service deployed, and each remote cluster must have the Federation Worker service. For flexibility, you may choose to deploy both Master and Worker services on each cluster so any cluster can be a master or remote.
+<li>
+(<strong>Optional</strong>) Create the Federation Master and/or Remote Multi-Cluster Management Services. If you plan to use the multi-cluster management functions in NeuVector, one cluster must have the Federation Master service deployed, and each remote cluster must have the Federation Worker service. For flexibility, you may choose to deploy both Master and Worker services on each cluster so any cluster can be a master or remote.
 
 <div id="full-wrapper">
-  <ul class="dopt-accordion fixed-height arrow-tri">  
-
-<!-- NOTE: Toggle Box #0.9 -->
-	<input class="title-option" id="acc090" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc090"><span><i class="icon-code"></i>View Multi-Cluster Management Services</span></label>
-  <!-- NOTE: Toggle box content animation option -->
-  <div class="accordion-content animated animation5">
-  <div class="wrap-content">
+<ul class="dopt-accordion fixed-height arrow-tri">  
+<input class="title-option" id="acc090" name="accordion-1" type="checkbox" />
+<label class="title-panel" onClick="" for="acc090"><span><i class="icon-code"></i>View Multi-Cluster Management Services</span></label>
+<div class="accordion-content animated animation5">
+<div class="wrap-content">
+<li>
 
 ```yaml
 apiVersion: v1
@@ -302,9 +303,10 @@ spec:
   selector:
     app: neuvector-controller-pod
 ```
-  </div>   
-  </div>
-  </li>
+</li>
+</div>   
+</div>
+</ul>
 </div>
 
 Then create the appropriate service(s):
@@ -371,22 +373,17 @@ If you have created your own namespace instead of using “neuvector”, replace
 
 <div id="full-wrapper">
 
-<!-- NOTE: ENTER CONTENT FOR TOGGLE BOXES HERE -->
+<div><h3 class="section"><span class="section">Kubernetes Deployment Examples for NeuVector</span></h3></div>
+<div class="myspacer">
 
-  <div><h3 class="section"><span class="section">Kubernetes Deployment Examples for NeuVector</span></h3></div>
-<!-- seperator -->
-  <div class="myspacer">
+<ul class="dopt-accordion fixed-height arrow-tri">  
 
-  <ul class="dopt-accordion fixed-height arrow-tri">  
-
-<!-- NOTE: Toggle Box #1 -->
 <li>
-	<input class="title-option" id="acc1" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc1"><span><i class="icon-code"></i>Kubernetes v1.19-1.27 with <strong>containerd</strong> Run-time</span></label>
+<input class="title-option" id="acc1" name="accordion-1" type="checkbox" />
+<label class="title-panel" onClick="" for="acc1"><span><i class="icon-code"></i>Kubernetes v1.19-1.27 with <strong>containerd</strong> Run-time</span></label>
 
-  <!-- NOTE: Toggle box content animation option -->
-  <div class="accordion-content animated animation5">
-  <div class="wrap-content">
+<div class="accordion-content animated animation5">
+<div class="wrap-content">
 
 ```yaml
 apiVersion: v1
@@ -720,18 +717,14 @@ spec:
           restartPolicy: Never
 ```
 
-  </div>  
-  </div>
-  </li>
-
-<!-- NOTE: Toggle Box #2 -->
+</div>  
+</div>
+</li>
 <li>
-	<input class="title-option" id="acc2" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc2"><span><i class="icon-code"></i>Kubernetes v1.19-1.27 with <strong>docker</strong> Run-time</span></label>
-
-  <!-- NOTE: Toggle box content animation option -->
-  <div class="accordion-content animated animation5">
-  <div class="wrap-content">
+<input class="title-option" id="acc2" name="accordion-1" type="checkbox" />
+<label class="title-panel" onClick="" for="acc2"><span><i class="icon-code"></i>Kubernetes v1.19-1.27 with <strong>docker</strong> Run-time</span></label>
+<div class="accordion-content animated animation5">
+<div class="wrap-content">
 
 ```yaml
 apiVersion: v1
@@ -1065,17 +1058,14 @@ spec:
           restartPolicy: Never
 ```
 
-  </div>
-  </div>
-  </li>
-<!-- NOTE: Toggle Box #2.5 -->
+</div>
+</div>
+</li>
 <li>
-	<input class="title-option" id="acc25" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc25"><span><i class="icon-code"></i>Kubernetes v1.19-1.27 with <strong>Rancher K3s containerd</strong> Run-time</span></label>
-
-  <!-- NOTE: Toggle box content animation option -->
-  <div class="accordion-content animated animation5">
-  <div class="wrap-content">
+<input class="title-option" id="acc25" name="accordion-1" type="checkbox" />
+<label class="title-panel" onClick="" for="acc25"><span><i class="icon-code"></i>Kubernetes v1.19-1.27 with <strong>Rancher K3s containerd</strong> Run-time</span></label>
+<div class="accordion-content animated animation5">
+<div class="wrap-content">
 
 ```yaml
 apiVersion: v1
@@ -1409,17 +1399,14 @@ spec:
           restartPolicy: Never
 ```
 
-  </div>   
-  </div>
-  </li>
-<!-- NOTE: Toggle Box #3 -->
+</div>   
+</div>
+</li>
 <li>
-	<input class="title-option" id="acc3" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acc3"><span><i class="icon-code"></i>Kubernetes v1.19-1.27 with <strong>AWS BottleRocket containerd</strong> Run-time</span></label>
-
-  <!-- NOTE: Toggle box content animation option -->
-  <div class="accordion-content animated animation5">
-  <div class="wrap-content">
+<input class="title-option" id="acc3" name="accordion-1" type="checkbox" />
+<label class="title-panel" onClick="" for="acc3"><span><i class="icon-code"></i>Kubernetes v1.19-1.27 with <strong>AWS BottleRocket containerd</strong> Run-time</span></label>
+<div class="accordion-content animated animation5">
+<div class="wrap-content">
 
 ```yaml
 # neuvector yaml version for 5.x.x AWS Bottlerocket containerd
@@ -1754,12 +1741,11 @@ spec:
           restartPolicy: Never
 ```
 
-  </div>   
-  </div>
-  </li>
-
-<!-- Final closing at end of all accordion boxes -->
-  </div>
+</div>   
+</div>
+</li>
+</ul>
+</div>
 </div>
 
 #### Containerd Run-time
@@ -1815,6 +1801,7 @@ Or for the AWS Bottlerocket OS with containerd:
 ```
 
 <strong>PKS Change</strong>
+
 :::note
 PKS is field tested and requires enabling privileged containers to the plan/tile, and changing the yaml hostPath as follows for Allinone, Controller, Enforcer:
 
@@ -1825,6 +1812,7 @@ PKS is field tested and requires enabling privileged containers to the plan/tile
 :::
 
 **Master Node Taints and Tolerations**
+
 All taint info must match to schedule Enforcers on nodes. To check the taint info on a node (e.g. Master):
 
 ```shell
@@ -1883,7 +1871,7 @@ Then add a nodeSelector to the yaml file for the Manager and Controller deployme
 To prevent the enforcer from being deployed on a controller node, if it is a dedicated management node (without application containers to be monitored), add a nodeAffinity to the Enforcer yaml section. For example:
 
 ```yaml
-app: neuvector-enforcer-pod
+  app: neuvector-enforcer-pod
     spec:
       affinity:
         nodeAffinity:
@@ -2366,6 +2354,7 @@ spec:
 ```
 
 <strong>Docker Run-time</strong>
+
 If using the docker run-time instead of containerd, the volumeMounts for controller and enforcer pods in the sample yamls change to:
 
 ```yaml

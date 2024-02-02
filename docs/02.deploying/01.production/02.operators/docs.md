@@ -27,11 +27,11 @@ NeuVector Certified Operator versions are tied to NeuVector product versions, an
 :::
 
 <div id="full-wrapper">
-  <ul class="dopt-accordion fixed-height arrow-tri">  
-	<input class="title-option" id="acccert" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acccert"><span><i class="icon-code"></i>Deploy Using Certified Operator</span></label>
-  <div class="accordion-content animated animation5">
-  <div class="wrap-content">
+<ul class="dopt-accordion fixed-height arrow-tri">  
+<input class="title-option" id="acccert" name="accordion-1" type="checkbox" />
+<label class="title-panel" onClick="" for="acccert"><span><i class="icon-code"></i>Deploy Using Certified Operator</span></label>
+<div class="accordion-content animated animation5">
+<div class="wrap-content">
 
 <strong>Deploy Using the Red Hat Certified Operator from Operator Hub</strong>
 
@@ -40,78 +40,84 @@ NeuVector Operator versions are tied to NeuVector product versions, and each new
 :::
 
 <strong>Technical notes</strong>
-&nbsp;
-<ul>
-<li>- NeuVector container images are pulled from registry.connect.redhat.com using the RedHat market place image pull secret.</li>
-<li>- The NeuVector manager UI is typically exposed via an OpenShift passthrough route on a domain. For example, on IBM Cloud neuvector-route-webui-neuvector.(cluster_name)-(random_hash)-0000.(region).containers.appdomain.cloud. It can also be exposed as the service neuvector-service-webui through a node port address or public IP.</li>
-<li>- OpenShift version >=4.6.</li>
-</ul>
+
++ NeuVector container images are pulled from registry.connect.redhat.com using the RedHat market place image pull secret.
++ The NeuVector manager UI is typically exposed via an OpenShift passthrough route on a domain. For example, on IBM Cloud neuvector-route-webui-neuvector.(cluster_name)-(random_hash)-0000.(region).containers.appdomain.cloud. It can also be exposed as the service neuvector-service-webui through a node port address or public IP.
++ OpenShift version >=4.6.
 
 <ol>
-<li>Create the project neuvector.
-<pre>
-<code>
+<li>
+Create the project neuvector.
+
+```shell
 oc new-project neuvector
-</code>
-</pre>
+```
+
 </li>
-<li>Apply security context constraint (SCC) to grant default service account in neuvector namespace to run privileged containers.
-<pre>
-<code>
+<li>
+Apply security context constraint (SCC) to grant default service account in neuvector namespace to run privileged containers.
+
+```shell
 oc adm policy add-scc-to-user privileged --serviceaccount default --namespace neuvector
-</code>
-</pre>
+```
+
 </li>
-<li>Install the RedHat Certified Operator from the Operator Hub
-<ul>
-<li>- In the OpenShift Console UI, navigate to OperatorHub</li>
-<li>- Search for NeuVector Operator and select the listing without community or marketplace badge</li>
-<li>- Click Install</li>
-</ul>
+<li>
+Install the RedHat Certified Operator from the Operator Hub
+
++ In the OpenShift Console UI, navigate to OperatorHub
++ Search for NeuVector Operator and select the listing without community or marketplace badge
++ Click Install
+
 </li>
-<li>Configure update channel
-  <ul>
-    <li>- Current latest channel is beta, but may be moved to stable in the future</li>
-    <li>- Select stable if available</li>
-  </ul>
+<li>
+Configure update channel
+
++ Current latest channel is beta, but may be moved to stable in the future
++ Select stable if available
+
 </li>
-<li>Configure installation mode and installed namespace
-  <ul>
-    <li>- Select specific namespace on the cluster</li>
-    <li>- Select neuvector as installed namespace</li>
-    <li>- Configure approval strategy</li>
-  </ul>
+<li>
+Configure installation mode and installed namespace
+
++ Select specific namespace on the cluster
++ Select neuvector as installed namespace
++ Configure approval strategy
+
 </li>
 <li>Confirm Install</li>
-<li>Prepare the YAML configuration values for the NeuVector installation as shown in the sample screen shot below. The YAML presented in the OpenShift Console provides all available configuration options and their default values.
+<li>
+Prepare the YAML configuration values for the NeuVector installation as shown in the sample screen shot below. The YAML presented in the OpenShift Console provides all available configuration options and their default values.
+
 <img src="/deploying/production/operators/operator_cert.png" />
 </li>
-<li>When the operator is installed and ready for use, a NeuVector instance can be installed.
-  <ul>
-  <li>- Click View operator (after the operator installation) or select the NeuVector Operator from the Installed operators view</li>
-  <li>- Click Create instance</li>
-  <li>- Select Configure via YAML View</li>
-  <li>- Paste the prepared YAML configuration values</li>
-  <li>- Click Create</li>
-  </ul>
+<li>
+When the operator is installed and ready for use, a NeuVector instance can be installed.
+
++ Click View operator (after the operator installation) or select the NeuVector Operator from the Installed operators view
++ Click Create instance
++ Select Configure via YAML View
++ Paste the prepared YAML configuration values
++ Click Create
+
 </li>
-<li>Verify the installation of the NeuVector instance
-<ul>
-<li>- Navigate to the Operator Details of the NeuVector Operator</li>
-<li>- Open the NeuVector tab</li>
-<li>- Select the neuvector-default instance</li>
-<li>- Open the Resources tab</li>
-<li>- Verify that resources are in status Created or Running</li>
-</ul>
+<li>
+Verify the installation of the NeuVector instance
+
++ Navigate to the Operator Details of the NeuVector Operator
++ Open the NeuVector tab
++ Select the neuvector-default instance
++ Open the Resources tab
++ Verify that resources are in status Created or Running
+
 </li>
 </ol>
 
 After you have successfully deployed the NeuVector Platform to your cluster, login to the NeuVector console at https://neuvector-route-webui-neuvector.(OC_INGRESS).
-<ul>
-<li>- Login with the initial username admin and password admin.</li>
-<li>- Accept the NeuVector end user license agreement.</li>
-<li>- Change the password of the admin user.</li>
-</ul>
+
++ Login with the initial username admin and password admin.
++ Accept the NeuVector end user license agreement.
++ Change the password of the admin user.
 
 Optionally, you can also create additional users in the Settings -> Users & Roles menu.
 
@@ -120,71 +126,73 @@ Now you are ready to navigate the NeuVector console to start vulnerability scann
 <strong>Upgrading NeuVector</strong>
 
 Upgrade the NeuVector version by updating the Operator version which is associated with the desired NeuVector version.
+
 </div>
 </div>
+</ul>
 </div>
 <div id="full-wrapper">
-  <ul class="dopt-accordion fixed-height arrow-tri">  
-
-	<input class="title-option" id="acccomm" name="accordion-1" type="checkbox" />
-  <label class="title-panel" onClick="" for="acccomm"><span><i class="icon-code"></i>Deploy Using Community Operator</span></label>
-  <div class="accordion-content animated animation5">
-  <div class="wrap-content">
+<ul class="dopt-accordion fixed-height arrow-tri">  
+<input class="title-option" id="acccomm" name="accordion-1" type="checkbox" />
+<label class="title-panel" onClick="" for="acccomm"><span><i class="icon-code"></i>Deploy Using Community Operator</span></label>
+<div class="accordion-content animated animation5">
+<div class="wrap-content">
 
 <strong>Deploy Using the NeuVector Community Operator from Operator Hub</strong>
 
 <strong>Technical notes</strong>
 
-<ul>
-<li>- NeuVector container images are pulled from Docker Hub from the NeuVector account. </li>
-<li>- NeuVector manager UI is typically exposed via an OpenShift passthrough route on a domain. For example, on IBM Cloud neuvector-route-webui-neuvector.(cluster_name)-(random_hash)-0000.(region).containers.appdomain.cloud. It can also be exposed as the service neuvector-service-webui through a node port address or public IP.</li>
-<li>- OpenShift version 4.6+</li>
-<li>- It is recommendeded to review and modify the NeuVector installation configuration by modifying the yaml values before creating the NeuVector instance. Examples include imagePullSecrets name, tag version, ingress/console access, multi-cluster federation, persistent volume PVC etc. Please refer to the Helm instructions at https://github.com/neuvector/neuvector-helm for the values that can be modified during installation.
-</li>
-</ul>
++ NeuVector container images are pulled from Docker Hub from the NeuVector account. 
++ NeuVector manager UI is typically exposed via an OpenShift passthrough route on a domain. For example, on IBM Cloud neuvector-route-webui-neuvector.(cluster_name)-(random_hash)-0000.(region).containers.appdomain.cloud. It can also be exposed as the service neuvector-service-webui through a node port address or public IP.
++ OpenShift version 4.6+
++ It is recommendeded to review and modify the NeuVector installation configuration by modifying the yaml values before creating the NeuVector instance. Examples include imagePullSecrets name, tag version, ingress/console access, multi-cluster federation, persistent volume PVC etc. Please refer to the Helm instructions at https://github.com/neuvector/neuvector-helm for the values that can be modified during installation.
 
 <ol>
-<li>Create the project neuvector
-<pre>
-<code>
+<li>
+Create the project neuvector
+
+```shell
 oc new-project neuvector
-</code>
-</pre>
+```
+
 </li>
-<li>Apply security context constraint (SCC) to grant default service account in neuvector namespace to run privileged containers.
-<pre>
-<code>
+<li>
+Apply security context constraint (SCC) to grant default service account in neuvector namespace to run privileged containers.
+
+```shell
 oc adm policy add-scc-to-user privileged --serviceaccount default --namespace neuvector
-</code>
-</pre>
+```
+
 </li>
-<li>Install the NeuVector Community Operator from the Operator Hub
-<ul>
-<li>- In the OpenShift Console UI, navigate to OperatorHub</li>
-<li>- Search for NeuVector Operator and select the listing with the community badge</li>
-<li>- Click Install</li>
-<li>- Configure update channel. Current latest channel is beta, but may be moved to stable in the future. Select stable if available.</li>
-<li>- Configure installation mode and installed namespace</li>
-<li>- Select specific namespace on the cluster</li>
-<li>- Select neuvector as installed namespace</li>
-<li>- Configure approval strategy</li>
-<li>- Confirm Install</li>
-</ul>
+<li>
+Install the NeuVector Community Operator from the Operator Hub
+
++ In the OpenShift Console UI, navigate to OperatorHub
++ Search for NeuVector Operator and select the listing with the community badge
++ Click Install
++ Configure update channel. Current latest channel is beta, but may be moved to stable in the future. Select stable if available.
++ Configure installation mode and installed namespace
++ Select specific namespace on the cluster
++ Select neuvector as installed namespace
++ Configure approval strategy
++ Confirm Install
+
 </li>
 
 <li>Download the Kubernetes secret manifest which contains the credentials to access the NeuVector container registry. Save the YAML manifest file to ./neuvector-secret-registry.yaml.</li>
 
-<li>Apply the Kubernetes secret manifest containing the registry credentials.
-<pre>
-<code>
+<li>
+Apply the Kubernetes secret manifest containing the registry credentials.
+
+```shell
 kubectl apply -n neuvector -f ./neuvector-secret-registry.yaml
-</code>
-</pre>
+```
+
 </li>
 <li>
 Prepare the YAML configuration values for the NeuVector installation starting from the following YAML snippet. Be sure to specify the desired NeuVector version in the 'tag' value. Check the reference of values in the NeuVector Helm chart to get available configuration options. There are other possible Helm values which can be configured in the YAML, such as whether you will configure the cluster to allow multi-cluster management by exposing the Master (Federated Master) or remote (Federated Worker) services.
-<pre>
-<code>
+
+```yaml
 apiVersion: apm.neuvector.com/v1alpha1
 kind: Neuvector
 metadata:
@@ -231,37 +239,38 @@ spec:
     image:
       repository: controller
     replicas: 3
-</code>
-</pre>
+```
+
 </li>
-<li>When the operator is installed and ready for use, a NeuVector instance can be installed.
-<ul>
-<li>- Click View operator (after the operator installation) or select the NeuVector Operator from the Installed operators view</li>
-<li>- Click Create instance</li>
-<li>- Select Configure via YAML View</li>
-<li>- Paste the prepared YAML configuration values</li>
-<li>- Click Create</li>
-</ul>
+<li>
+When the operator is installed and ready for use, a NeuVector instance can be installed.
+
++ Click View operator (after the operator installation) or select the NeuVector Operator from the Installed operators view
++ Click Create instance
++ Select Configure via YAML View
++ Paste the prepared YAML configuration values
++ Click Create
+
+</li>
+<li>
+Verify the installation of the NeuVector instance.
+
++ Navigate to the Operator Details of the NeuVector Operator
++ Open the NeuVector tab
++ Select the neuvector-default instance
++ Open the Resources tab
++ Verify that resources are in status Created or Running
+
 </li>
 
-<li>Verify the installation of the NeuVector instance.
-<ul>
-<li>- Navigate to the Operator Details of the NeuVector Operator</li>
-<li>- Open the NeuVector tab</li>
-<li>- Select the neuvector-default instance</li>
-<li>- Open the Resources tab</li>
-<li>- Verify that resources are in status Created or Running</li>
-</ul>
-</li>
+<li>
+After you have successfully deployed the NeuVector Platform to your cluster, login to the NeuVector console at https://neuvector-route-webui-neuvector.(INGRESS_DOMAIN).
 
++ Login with the initial username admin and password admin.
++ Accept the NeuVector end user license agreement.
++ Change the password of the admin user.
++ Optionally, you can also create additional users in the Settings -> Users & Roles menu.
 
-<li>After you have successfully deployed the NeuVector Platform to your cluster, login to the NeuVector console at https://neuvector-route-webui-neuvector.(INGRESS_DOMAIN).
-<ul>
-<li>- Login with the initial username admin and password admin.</li>
-<li>- Accept the NeuVector end user license agreement.</li>
-<li>- Change the password of the admin user.</li>
-<li>- Optionally, you can also create additional users in the Settings -> Users & Roles menu.</li>
-</ul>
 </li>
 </ol>
 
@@ -270,24 +279,33 @@ Now you are ready to navigate the NeuVector console to start vulnerability scann
 <strong>Upgrading NeuVector</strong>
 
 <ol>
-<li>From Operators > Installed Operators > NeuVector Operator
+<li>
+From Operators > Installed Operators > NeuVector Operator
+
 <img src="/deploying/production/operators/1_Installed.png" />
 </li>
 
-<li>Click on NeuVector to list instances
+<li>
+Click on NeuVector to list instances
+
 <img src="/deploying/production/operators/2_Instance.png"/>
 </li>
 
-<li>Click on YAML to edit parameters
+<li>
+Click on YAML to edit parameters
+
 <img src="/deploying/production/operators/3_YAML.png"/>
 </li>
 
-<li>Update tag and click Save
+<li>
+Update tag and click Save
+
 <img src="/deploying/production/operators/4_tag_save.png"/>
 </li>
 </ol>
 </div>   
 </div>
+</ul>
 </div>
 
 ### Troubleshooting
