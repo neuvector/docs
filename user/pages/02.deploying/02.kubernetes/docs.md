@@ -213,8 +213,23 @@ kubectl apply -f https://raw.githubusercontent.com/neuvector/manifests/main/kube
 
 &nbsp;
 </li>
-<li>Add read permission to access the kubernetes API. IMPORTANT: The standard NeuVector 5.2+ deployment uses least-privileged service accounts instead of the default. See below if upgrading from a version prior to 5.3.
+<li>Add read permission to access the kubernetes API. IMPORTANT: The standard NeuVector 5.2+ deployment uses least-privileged service accounts instead of the default. 
 
+NOTE: If upgrading to 5.3.0+ from 5.2.0+, run the following before running the "create" commands below.
+<pre>
+<code>
+kubectl delete clusterrole neuvector-binding-nvsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-nvwafsecurityrules</code>
+</pre>
+
+NOTE: If upgrading to 5.3.0+ from a version prior to 5.2.0, delete the following before running the  "create" commands below.
+<pre>
+<code>
+kubectl delete clusterrolebinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules
+kubectl delete rolebinding neuvector-admin -n neuvector
+</code>
+</pre>
+
+Apply the read permissions via the following "create clusterrole" commands:
 <pre>
 <code>kubectl create clusterrole neuvector-binding-app --verb=get,list,watch,update --resource=nodes,pods,services,namespaces
 kubectl create clusterrole neuvector-binding-rbac --verb=get,list,watch --resource=rolebindings.rbac.authorization.k8s.io,roles.rbac.authorization.k8s.io,clusterrolebindings.rbac.authorization.k8s.io,clusterroles.rbac.authorization.k8s.io
@@ -244,19 +259,7 @@ kubectl create clusterrolebinding neuvector-binding-nvcomplianceprofiles --clust
 kubectl create clusterrole neuvector-binding-nvvulnerabilityprofiles --verb=get,list,delete --resource=nvvulnerabilityprofiles
 kubectl create clusterrolebinding neuvector-binding-nvvulnerabilityprofiles --clusterrole=neuvector-binding-nvvulnerabilityprofiles --serviceaccount=neuvector:controller</code>
 </pre>
-If upgrading to 5.3.0+ from 5.2.0+, run the following before running the above create commands
-<pre>
-<code>
-kubectl delete clusterrole neuvector-binding-nvsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules neuvector-binding-nvwafsecurityrules</code>
-</pre>
 
-If upgrading to 5.3.0+ from a version prior to 5.2.0, delete the following before running the above create commands
-<pre>
-<code>
-kubectl delete clusterrolebinding neuvector-binding-app neuvector-binding-rbac neuvector-binding-admission neuvector-binding-customresourcedefinition neuvector-binding-nvsecurityrules neuvector-binding-view neuvector-binding-nvwafsecurityrules neuvector-binding-nvadmissioncontrolsecurityrules neuvector-binding-nvdlpsecurityrules
-kubectl delete rolebinding neuvector-admin -n neuvector
-</code>
-</pre>
 </li>
 <li>Run the following commands to check if the neuvector/controller and neuvector/updater service accounts are added successfully.
 <pre>
