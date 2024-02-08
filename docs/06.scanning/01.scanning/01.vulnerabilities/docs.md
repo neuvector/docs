@@ -2,6 +2,7 @@
 title: Vulnerability Management
 taxonomy:
     category: docs
+slug: /scanning/scanning/vulnerabilities
 ---
 
 ### Managing Vulnerabilities with NeuVector

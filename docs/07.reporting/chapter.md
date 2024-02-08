@@ -2,6 +2,7 @@
 title: Reporting
 taxonomy:
     category: docs
+slug: /reporting
 ---
 
 # Reporting

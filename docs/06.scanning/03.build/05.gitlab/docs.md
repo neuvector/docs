@@ -2,6 +2,7 @@
 title: Gitlab
 taxonomy:
     category: docs
+slug: /scanning/build/gitlab
 ---
 
 ### Scan for Vulnerabilities during Gitlab Build Pipeline

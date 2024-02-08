@@ -2,6 +2,7 @@
 title: Response Rules
 taxonomy:
     category: docs
+slug: /policy/responserules
 ---
 
 ### Policy: Response Rules

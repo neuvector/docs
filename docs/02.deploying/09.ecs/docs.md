@@ -2,6 +2,7 @@
 title: Amazon ECS
 taxonomy:
     category: docs
+slug: /deploying/ecs
 ---
 
 ### Important: Deployment on Amazon ECS is No Longer Supported

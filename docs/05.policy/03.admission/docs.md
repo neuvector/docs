@@ -2,6 +2,7 @@
 title: Admission Controls
 taxonomy:
     category: docs
+slug: /policy/admission
 ---
 
 ### Controlling Image / Container Deployments

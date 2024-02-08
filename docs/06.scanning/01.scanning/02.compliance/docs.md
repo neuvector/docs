@@ -2,6 +2,7 @@
 title: Compliance & CIS Benchmarks
 taxonomy:
     category: docs
+slug: /scanning/scanning/compliance
 ---
 
 ### Managing Compliance and CIS Benchmarks

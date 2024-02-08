@@ -2,6 +2,7 @@
 title: GCR Scanning using Service Accounts
 taxonomy:
     category: docs
+slug: /scanning/registry/gcr-sa
 ---
 
 ### Google GCR - Authentication/Scanning with GCP Service Accounts

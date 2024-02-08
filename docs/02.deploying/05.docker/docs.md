@@ -2,6 +2,7 @@
 title: Docker & Mirantis Kubernetes Engine
 taxonomy:
     category: docs
+slug: /deploying/docker
 ---
 
 ### Kubernetes Deployment on Mirantis Kubernetes Engine

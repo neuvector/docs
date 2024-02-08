@@ -2,6 +2,7 @@
 title: Deploy Using ConfigMap
 taxonomy:
     category: docs
+slug: /deploying/production/configmap
 ---
 
 ### Kubernetes ConfigMap
@@ -438,7 +439,7 @@ secret:
 
 After controller is deployed, all the configuration files from both configmap and secret will be stored in /etc/config folder.
 
-Note that the secret is referred to in the standard Kubernetes and OpenShift Controller [deployment yaml files](/deploying/kubernetes#kubernetes-deployment-examples-for-neuvector) under Volumes.
+Note that the secret is referred to in the standard Kubernetes and OpenShift Controller [deployment yaml files](/deploying/kubernetes#deploy-neuvector) under Volumes.
 
 ### ConfigMaps and Persistent Storage
 

@@ -2,6 +2,7 @@
 title: Enterprise Multi-Cluster Management
 taxonomy:
     category: docs
+slug: /navigation/multicluster
 ---
 
 ### Enterprise Console

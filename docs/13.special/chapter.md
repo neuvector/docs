@@ -2,6 +2,7 @@
 title: Special Use Cases With Allinone
 taxonomy:
     category: docs
+slug: /special
 ---
 
 # Deployment Examples for Special Deployments Using the Allinone Container

@@ -2,6 +2,7 @@
 title: NeuVector Workflow
 taxonomy:
     category: docs
+slug: /automation/ci_workflow
 ---
 
 ### NeuVector Integration into CI/CD Workflow

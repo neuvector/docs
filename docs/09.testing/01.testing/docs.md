@@ -2,6 +2,7 @@
 title: Evaluating and Testing NeuVector
 taxonomy:
     category: docs
+slug: /testing/testing
 ---
 
 ### Sample Applications 

@@ -2,6 +2,7 @@
 title: Connect to Manager, REST API server
 taxonomy:
     category: docs
+slug: /configuration/console
 ---
 
 ### Connect to UI

@@ -2,6 +2,7 @@
 title: Custom Compliance Checks
 taxonomy:
     category: docs
+slug: /policy/customcompliance
 ---
 
 ### Creating Custom Scripts for Compliance Checks

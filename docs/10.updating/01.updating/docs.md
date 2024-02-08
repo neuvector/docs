@@ -2,6 +2,7 @@
 title: Updating NeuVector
 taxonomy:
     category: docs
+slug: /updating/updating
 ---
 
 ### Updating NeuVector Components

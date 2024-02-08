@@ -2,6 +2,7 @@
 title: Harbor Pluggable Scanner Module
 taxonomy:
     category: docs
+slug: /scanning/registry/harbor
 ---
 
 ### Scanning Harbor Registries Using the Pluggable Scanner

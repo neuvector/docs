@@ -2,6 +2,7 @@
 title: SAML (Azure AD)
 taxonomy:
     category: docs
+slug: /integration/msazure
 ---
 
 ### Integrate with Azure AD SAML authentication

@@ -2,6 +2,7 @@
 title: Improve Security Risk Score
 taxonomy:
     category: docs
+slug: /navigation/improve_score
 ---
 
 ### Improving the Security Risk Score

@@ -2,6 +2,7 @@
 title: Mirantis Kubernetes Engine
 taxonomy:
     category: docs
+slug: /special/docker
 ---
 
 ### Mirantis Kubernetes Engine

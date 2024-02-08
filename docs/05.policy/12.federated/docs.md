@@ -2,6 +2,7 @@
 title: Federated Policy
 taxonomy:
     category: docs
+slug: /policy/federated
 ---
 
 ### Federated Policy

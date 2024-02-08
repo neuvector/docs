@@ -2,6 +2,7 @@
 title: RedHat OpenShift 
 taxonomy:
     category: docs
+slug: /deploying/openshift
 ---
 
 ### Deploy Separate NeuVector Components with RedHat OpenShift

@@ -2,6 +2,7 @@
 title: System Requirements
 taxonomy:
     category: docs
+slug: /basics/requirements
 ---
 
 #### System Requirements

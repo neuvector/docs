@@ -2,6 +2,7 @@
 title: Integrations & Other Components
 taxonomy:
     category: docs
+slug: /releasenotes/other
 ---
 
 ### Release Notes for Integration Modules, Plug-Ins, Other Components

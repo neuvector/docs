@@ -2,6 +2,7 @@
 title: Troubleshooting
 taxonomy:
     category: docs
+slug: /troubleshooting/troubleshooting
 ---
 
 ### Troubleshooting NeuVector Deployments

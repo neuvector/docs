@@ -2,6 +2,7 @@
 title: Testing NeuVector
 taxonomy:
     category: docs
+slug: /testing
 ---
 
 # Testing

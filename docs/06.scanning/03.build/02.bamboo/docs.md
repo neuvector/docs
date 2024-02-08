@@ -2,6 +2,7 @@
 title: Bamboo
 taxonomy:
     category: docs
+slug: /scanning/build/bamboo
 ---
 
 ### Scan for Vulnerabilities during Bamboo Build Pipeline

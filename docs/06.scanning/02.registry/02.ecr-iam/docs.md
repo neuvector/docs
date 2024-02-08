@@ -2,6 +2,7 @@
 title: ECR Scanning using IAM Roles
 taxonomy:
     category: docs
+slug: /scanning/registry/ecr-iam
 ---
 
 ### AWS ECR - IAM Roles

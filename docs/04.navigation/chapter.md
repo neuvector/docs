@@ -2,6 +2,7 @@
 title: Navigating NeuVector
 taxonomy:
     category: docs
+slug: /navigation
 ---
 
 # Navigating NeuVector

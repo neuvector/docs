@@ -2,6 +2,7 @@
 title: Process Profile Rules
 taxonomy:
     category: docs
+slug: /policy/processrules
 ---
 
 ### Policy -> Groups -> Process Profile Rules

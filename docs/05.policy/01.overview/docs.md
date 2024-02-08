@@ -2,6 +2,7 @@
 title: Security Policy Overview
 taxonomy:
     category: docs
+slug: /policy/overview
 ---
 
 ### NeuVector Security Policy

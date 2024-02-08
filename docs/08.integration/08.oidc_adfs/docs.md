@@ -2,6 +2,7 @@
 title: OpenID Connect (OIDC) for ADFS
 taxonomy:
     category: docs
+slug: /integration/oidc_adfs
 ---
 
 ### Integrating with OpenID Connect (OIDC) for ADFS

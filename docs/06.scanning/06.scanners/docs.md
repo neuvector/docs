@@ -2,6 +2,7 @@
 title: Parallel & Standalone Scanners
 taxonomy:
     category: docs
+slug: /scanning/scanners
 ---
 
 ### Increase Scanner Scalability with Multiple Scanners

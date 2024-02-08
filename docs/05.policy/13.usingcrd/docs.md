@@ -2,6 +2,7 @@
 title: CRD - Custom Resource Definitions
 taxonomy:
     category: docs
+slug: /policy/usingcrd
 ---
 
 ### NeuVector CRD for Policy As Code

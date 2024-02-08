@@ -1,5 +1,8 @@
 ---
 title: NeuVector Docs
+taxonomy:
+    category: docs
+slug: /
 ---
 
 <p class="titles">Welcome to the NeuVector Docs</p>
@@ -24,7 +27,7 @@ If deploying with the current NeuVector Helm chart (v1.8.9+), the following chan
 
 If upgrading from NeuVector 4.x, please see these <a href="/releasenotes/5x#upgrading-from-neuvector-4x-to-5x">instructions.</a>
 
-<table style="border: none">	
+<table style={{border: 'none'}}>	
 <tr>		
 	<td class="mainoptions">
 		<img src="install-neuvector-icon.png" width="100" height="100" class="mainoptionicon" />
@@ -64,7 +67,7 @@ If upgrading from NeuVector 4.x, please see these <a href="/releasenotes/5x#upgr
 
 <p class="titles">Popular Topics</p>
 
-<table style="border: none">
+<table style={{border: 'none'}}>
 <tr>		
 	<td class="poptopic"> 
 		<span class="poptopiccontainer">

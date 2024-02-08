@@ -2,6 +2,7 @@
 title: Configuration Assessment for Kubernetes Resources
 taxonomy:
     category: docs
+slug: /policy/admission/assessment
 ---
 
 ### Kubernetes Resource Deployment File Scanning

@@ -2,6 +2,7 @@
 title: Restoring NeuVector Configuration
 taxonomy:
     category: docs
+slug: /deploying/restore
 ---
 
 ### Restoring NeuVector Configuration 

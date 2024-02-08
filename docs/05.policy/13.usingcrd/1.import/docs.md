@@ -2,6 +2,7 @@
 title: Importing CRD from Console
 taxonomy:
     category: docs
+slug: /policy/usingcrd/import
 ---
 
 ### Importing a CRD format file from the Console or API

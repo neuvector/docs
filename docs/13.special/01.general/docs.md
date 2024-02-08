@@ -2,6 +2,7 @@
 title: General Guidelines
 taxonomy:
     category: docs
+slug: /special/general
 ---
 
 ### Testing NeuVector Using the Allinone Container

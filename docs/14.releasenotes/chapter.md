@@ -2,6 +2,7 @@
 title: Release Notes
 taxonomy:
     category: docs
+slug: /releasenotes
 ---
 
 # Release Notes

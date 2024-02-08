@@ -2,6 +2,7 @@
 title: Groups
 taxonomy:
     category: docs
+slug: /policy/groups
 ---
 
 ### Policy: Groups

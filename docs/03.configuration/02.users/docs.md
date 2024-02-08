@@ -2,6 +2,7 @@
 title: Users and Roles
 taxonomy:
     category: docs
+slug: /configuration/users
 ---
 
 ### Configuring Users and Custom Roles

@@ -2,6 +2,7 @@
 title: Navigating the Console
 taxonomy:
     category: docs
+slug: /navigation/navigation
 ---
 
 ### Console Access

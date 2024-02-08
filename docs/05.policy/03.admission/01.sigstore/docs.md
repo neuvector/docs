@@ -2,6 +2,7 @@
 title: Sigstore Cosign Signature Verifiers
 taxonomy:
     category: docs
+slug: /policy/admission/sigstore
 ---
 
 ### Configuring Sigstore/Cosign Verifiers for Requiring Image Signing

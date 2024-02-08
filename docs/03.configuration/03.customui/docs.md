@@ -2,6 +2,7 @@
 title: Custom Login, Header and Footer
 taxonomy:
     category: docs
+slug: /configuration/customui
 ---
  
 ### Customizing the Console (UI) Component

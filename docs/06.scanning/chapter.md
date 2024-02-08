@@ -2,6 +2,7 @@
 title: Security Risks, Scanning & Compliance
 taxonomy:
     category: docs
+slug: /scanning
 ---
 
 # Vulnerability Scanning, Compliance Testing, and Admission Controls

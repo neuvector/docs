@@ -2,6 +2,7 @@
 title: Jenkins Details
 taxonomy:
     category: docs
+slug: /scanning/build/jenkins
 ---
 
 ### Detailed Configuration for the Jenkins Plugin

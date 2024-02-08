@@ -2,6 +2,7 @@
 title: SAML (Okta)
 taxonomy:
     category: docs
+slug: /integration/saml
 ---
 
 ### SAML IDP Configuration

@@ -2,6 +2,7 @@
 title: OpenID Connect Azure/Okta
 taxonomy:
     category: docs
+slug: /integration/openid
 ---
 
 ### Integrating with OpenID Connect (OIDC) for Azure and Okta

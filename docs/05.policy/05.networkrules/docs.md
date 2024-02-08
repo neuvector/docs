@@ -2,6 +2,7 @@
 title: Network Rules
 taxonomy:
     category: docs
+slug: /policy/networkrules
 ---
 
 ### Policy: Network Rules

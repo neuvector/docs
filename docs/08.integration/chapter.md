@@ -2,6 +2,7 @@
 title: Enterprise Integration
 taxonomy:
     category: docs
+slug: /integration
 ---
 
 # Enterprise Integration

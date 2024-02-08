@@ -2,6 +2,7 @@
 title: Deploying NeuVector
 taxonomy:
     category: docs
+slug: /deploying/production
 ---
 
 ### Planning Deployments

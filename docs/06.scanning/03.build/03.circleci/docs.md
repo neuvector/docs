@@ -2,6 +2,7 @@
 title: CircleCI
 taxonomy:
     category: docs
+slug: /scanning/build/circleci
 ---
 
 ### Scan for Vulnerabilities in the CircleCI Build Pipeline

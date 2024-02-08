@@ -2,6 +2,7 @@
 title: Command Line
 taxonomy:
     category: docs
+slug: /tronubleshooting/cli
 ---
 
 ### Using the NeuVector Command Line

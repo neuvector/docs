@@ -2,6 +2,7 @@
 title: SAML (ADFS)
 taxonomy:
     category: docs
+slug: /integration/adfs
 ---
 
 ### Setting Up ADFS and NeuVector Integration

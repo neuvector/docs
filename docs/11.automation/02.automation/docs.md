@@ -2,6 +2,7 @@
 title: REST API and Automation
 taxonomy:
     category: docs
+slug: /automation/automation
 ---
 
 ### NeuVector Automation

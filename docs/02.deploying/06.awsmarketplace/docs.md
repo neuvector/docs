@@ -2,6 +2,7 @@
 title: AWS Marketplace Billing
 taxonomy:
     category: docs
+slug: /deploying/awsmarketplace
 ---
 
 ### Deploy NeuVector from AWS Marketplace Pay-As-You-Go Listing

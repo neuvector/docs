@@ -2,6 +2,7 @@
 title: 4.x Release Notes
 taxonomy:
     category: docs
+slug: /releasenotes/4x
 ---
 
 ### Release Notes for 4.x
@@ -78,7 +79,7 @@ taxonomy:
 
 + Add support for scanning embedded java jars and jars without Maven file, for example log4j-core-2.5.jar, when pom.xml doesn’t exist.
 + Add CVE database source of [GitHub advisories for Maven](https://github.com/advisories?query=maven), starting with scanner/CVE db version 2.531.
-+ Rest API [reference doc](/automation/automation#cli-and-rest-api) is updated to 4.4.1 and 4.4.2.
++ Rest API [reference doc](/automation/automation#rest-api) is updated to 4.4.1 and 4.4.2.
 
 ##### Bug Fixes
 
@@ -251,7 +252,7 @@ For example,
 + Report and display Image Modules detected during scan in scan results. This is shown in a tab in Image Scan results, and included in scan results from REST API.
 + Allow editing of filters in registry, group, and response rule configurations through console.
 + Update ConfigMap to add group_claim in oidcinitcfg.yaml and samlinitcfg.yaml, and Xff_Enabled in sysinitcfg.yaml
-+ API's yaml is updated for 4.2 in [Automation section](/automation/automation#cli-and-rest-api).
++ API's yaml is updated for 4.2 in [Automation section](/automation/automation#rest-api).
 
 ##### Bug Fixes
 
@@ -279,7 +280,7 @@ Please see release notes section [Integrations & Other Components](/releasenotes
 ##### Bug Fixes
 
 + Fixed that CVE-2020-1938 is not detected.
-+ Fix error from Manager "Failed to export configurations of section {policy, user, config}."
++ Fix error from Manager "Failed to export configurations of section \{policy, user, config\}."
 + Fix Network Activity Graph filter is not working.
 + Improve controller CPU and memory consumption.
 
@@ -485,6 +486,6 @@ Kubernetes (for OpenShift use the equivalent oc commands)
   - kubectl create clusterrolebinding neuvector-binding-view --clusterrole=view --serviceaccount=neuvector:default
   - kubectl create rolebinding neuvector-admin --clusterrole=admin --serviceaccount=neuvector:default -n neuvector
 + Set the version tags to 4.0.0 for the Controller, Manager, Enforcer yaml's and apply the update
-+ Create the [scanner pods](/scanning/scanners#manual-deployment-of-multiple-scanners)
-+ Create or update the [scanner cron job](/scanning/scanners#manual-deployment-of-multiple-scanners)
++ Create the [scanner pods](/scanning/scanners#manual-deployment-of-multiple-scanners-on-kubernetes)
++ Create or update the [scanner cron job](/scanning/scanners#manual-deployment-of-multiple-scanners-on-kubernetes)
 + Wait a few minutes for the rolling update of the controllers to complete, and check all settings after login...

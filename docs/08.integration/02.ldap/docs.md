@@ -2,6 +2,7 @@
 title: LDAP
 taxonomy:
     category: docs
+slug: /integration/ldap
 ---
 
 ### LDAP 

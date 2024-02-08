@@ -2,6 +2,7 @@
 title: Reporting & Notifications
 taxonomy:
     category: docs
+slug: /reporting/reporting
 ---
 
 ### Reporting 

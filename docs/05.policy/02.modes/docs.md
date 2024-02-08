@@ -1,5 +1,6 @@
 ---
 title: "Modes: Discover, Monitor, Protect"
+slug: /policy/modes
 ---
 
 ### NeuVector Modes

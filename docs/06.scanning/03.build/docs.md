@@ -2,6 +2,7 @@
 title: Build Phase Image Scanning
 taxonomy:
     category: docs
+slug: /scanning/build
 ---
 
 ### CI/CD Build Phase Vulnerability Scanning

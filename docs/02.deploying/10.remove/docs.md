@@ -2,6 +2,7 @@
 title: Removing or Resetting NeuVector
 taxonomy:
     category: docs
+slug: /deploying/remove
 ---
 
 ### Removing NeuVector Deployment / Containers

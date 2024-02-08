@@ -2,6 +2,7 @@
 title: Environment Variables Details
 taxonomy:
     category: docs
+slug: /deploying/production/details
 ---
 
 ### Environment Variables

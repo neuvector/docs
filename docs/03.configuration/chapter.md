@@ -2,6 +2,7 @@
 title: Initial Configuration & Console Login
 taxonomy:
     category: docs
+slug: /configuration
 ---
 
 # Configuring NeuVector and Accessing the Console

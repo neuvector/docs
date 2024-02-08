@@ -2,6 +2,7 @@
 title: IBM QRadar
 taxonomy:
     category: docs
+slug: /integration/ibmqr
 ---
 
 ### Integrating with IBM Qradar

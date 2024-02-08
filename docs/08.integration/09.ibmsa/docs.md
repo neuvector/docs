@@ -2,6 +2,7 @@
 title: IBM Security Advisor
 taxonomy:
     category: docs
+slug: /integration/ibmsa
 ---
 
 ### Integrating with IBM Security Advisor
@@ -21,7 +22,7 @@ IBM Security Advisor will communicate with your NeuVector cluster controller thr
 
 #### Verifying the Connection
 
-When the connection is successfully created between IBM Security Advisor & NeuVector, you will see the green "Connected at {date, time}" icon next to "Integrate with IBM Security Advisor" in the NeuVector Console.
+When the connection is successfully created between IBM Security Advisor & NeuVector, you will see the green "Connected at \{date, time\}" icon next to "Integrate with IBM Security Advisor" in the NeuVector Console.
 
 ![connected](ibmsa_connected.png)
 

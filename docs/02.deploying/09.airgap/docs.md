@@ -2,6 +2,7 @@
 title: Air Gapping NeuVector
 taxonomy:
     category: docs
+slug: /deploying/airgap
 ---
 
 ### Tools Needed

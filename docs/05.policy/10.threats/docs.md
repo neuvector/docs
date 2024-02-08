@@ -2,6 +2,7 @@
 title: Network Threat Signatures
 taxonomy:
     category: docs
+slug: /policy/threats
 ---
 
 ### Detecting Network Threats

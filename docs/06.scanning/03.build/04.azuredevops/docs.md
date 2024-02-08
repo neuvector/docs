@@ -2,6 +2,7 @@
 title: Azure DevOps
 taxonomy:
     category: docs
+slug: /scanning/build/azuredevops
 ---
 
 ### Scan for Vulnerabilities in the Azure DevOps Build Pipeline

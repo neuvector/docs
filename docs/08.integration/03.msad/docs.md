@@ -2,6 +2,7 @@
 title: Microsoft AD
 taxonomy:
     category: docs
+slug: /integration/msad
 ---
 
 ### Configuring Active Directory

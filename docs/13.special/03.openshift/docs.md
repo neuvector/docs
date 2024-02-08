@@ -2,6 +2,7 @@
 title: OpenShift (Allinone)
 taxonomy:
     category: docs
+slug: /special/openshift
 ---
 
 ### Deploy Using RedHat OpenShift

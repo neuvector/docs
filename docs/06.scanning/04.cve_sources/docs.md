@@ -2,6 +2,7 @@
 title: CVE Database Sources & Version
 taxonomy:
     category: docs
+slug: /scanning/cve_sources
 ---
 
 ### NeuVector Vulnerability (CVE) Database

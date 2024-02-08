@@ -2,6 +2,7 @@
 title: 5.x Release Notes
 taxonomy:
     category: docs
+slug: /releasenotes/5x
 ---
 
 ### Release Notes for 5.x

@@ -2,6 +2,7 @@
 title: Registry Scanning Configuration
 taxonomy:
     category: docs
+slug: /scanning/registry
 ---
 
 Registry scanning requires that the NeuVector Allinone or Controller container be deployed on a host/node. Please see the [Installation/Deployment](/basics/installation) section for how to deploy the NeuVector containers. Configure registry scanning from the NeuVector console after logging in to the manager.

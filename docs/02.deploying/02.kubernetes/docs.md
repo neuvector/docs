@@ -2,6 +2,7 @@
 title: Kubernetes 
 taxonomy:
     category: docs
+slug: /deploying/kubernetes
 ---
 
 ### Deploy Using Kubernetes

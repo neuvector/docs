@@ -2,6 +2,7 @@
 title: Azure Marketplace Billing
 taxonomy:
     category: docs
+slug: /deploying/azuremarketplace
 ---
 
 ### Deploy NeuVector from Azure Marketplace Pay-As-You-Go Listing

@@ -2,6 +2,7 @@
 title: Security Policy
 taxonomy:
     category: docs
+slug: /policy
 ---
 
 # Security Policy & Rules

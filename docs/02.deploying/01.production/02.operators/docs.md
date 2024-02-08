@@ -2,6 +2,7 @@
 title: Deploy Using Operators
 taxonomy:
     category: docs
+slug: /deploying/production/operators
 ---
 
 ### Operators

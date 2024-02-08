@@ -2,6 +2,7 @@
 title: Deployment Preparation
 taxonomy:
     category: docs
+slug: /basics/installation/native
 ---
 
 ### Understanding How to Deploy NeuVector

@@ -2,6 +2,7 @@
 title: Replacing Internal Certificates
 taxonomy:
     category: docs
+slug: /deploying/production/internal
 ---
 
 ### Internal Communication and Certificates

@@ -2,6 +2,7 @@
 title: Public Cloud K8s AKS, EKS, GKE, IBM...
 taxonomy:
     category: docs
+slug: /deploying/publick8s
 ---
 
 

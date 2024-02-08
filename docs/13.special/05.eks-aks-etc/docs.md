@@ -1,5 +1,8 @@
 ---
 title: "Example: Public Cloud K8s EKS, EKS Anywhere, AKS, GKE, IBM ..."
+taxonomy:
+    category: docs
+slug: /special/eks-aks-etc
 ---
 
 ### Deploy NeuVector on a Public Cloud Kubernetes Service

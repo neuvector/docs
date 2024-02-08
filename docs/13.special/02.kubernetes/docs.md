@@ -2,6 +2,7 @@
 title: Kubernetes (Allinone)
 taxonomy:
     category: docs
+slug: /special/kubernetes
 ---
 
 ### Deploy Using Kubernetes

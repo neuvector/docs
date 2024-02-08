@@ -2,6 +2,7 @@
 title: File Access Rules
 taxonomy:
     category: docs
+slug: /policy/filerules
 ---
 
 ### Policy: File Access Rules

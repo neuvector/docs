@@ -2,6 +2,7 @@
 title: Updating the CVE Database
 taxonomy:
     category: docs
+slug: /scanning/updating
 ---
 
 ### Updating the NeuVector CVE Vulnerability Database

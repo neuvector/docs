@@ -2,6 +2,7 @@
 title: Replacing Self-Signed Certificate
 taxonomy:
     category: docs
+slug: /configuration/console/replacecert
 ---
 
 ### Replacing the Self-Signed Certificate with PKCS Certificate for External Access

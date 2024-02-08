@@ -2,6 +2,7 @@
 title: GitHub
 taxonomy:
     category: docs
+slug: /scanning/build/github
 ---
 
 ### Scan for Vulnerabilities in a GitHub Action Pipeline
