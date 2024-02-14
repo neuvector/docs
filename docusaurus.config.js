@@ -55,7 +55,7 @@ const config = {
         },
         blog: false,
         theme: {
-          customCss: ['./src/css/custom.css', './src/css/toggle-box.css', './src/css/index.css'],
+          customCss: ['./src/css/custom.css', './src/css/index.css'],
         },
       }),
     ],

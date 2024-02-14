@@ -2,24 +2,19 @@ body {
 	margin: 30px 30px !important; 
 	background-color: none !important;
 }
-table {
+.htmltable {
+	border: none !important;
 	border-collapse: separate !important;
 	border-spacing: 15px !important;
 	background-color: none !important;
 }
-p {
-	text-align: center !important;
-	font-weight: normal !important;
-	background-color: none !important;
-	margin-left: 0px !important; 
-	}
 .titles {
 	font-size: 42px !important; 
 	margin-left: 0px !important; 
 	font-weight: bold !important;
 	text-align: center !important;
 	padding-bottom: 0px !important;
-	margin-bottom: -25px !important;
+	/* margin-bottom: -25px !important; */
 }
 .subtitles {
 	font-size: 18px !important; 
@@ -29,7 +24,7 @@ p {
 }
 .mainoptions {
 	/* viewport max-width adjustment for 3 across main options */
-	max-width: 210px !important;
+	max-width: 300px !important;
 	/* fix for center option box sized smaller at 1200px */
 	min-width: 200px !important;
 	border: 1px solid black !important;	
@@ -51,6 +46,7 @@ p {
 	top: 40px !important;
     margin-left: auto !important;
     margin-right: auto !important;
+	padding-bottom: 20px !important;
     left: 0 !important;
     right: 0 !important;
 	width: 100px !important;
