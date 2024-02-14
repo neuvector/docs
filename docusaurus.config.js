@@ -64,6 +64,11 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      docs: {
+        sidebar: {
+          autoCollapseCategories: true,
+        },
+      },
       navbar: {
         title: 'Neuvector',
         logo: {
@@ -73,7 +78,7 @@ const config = {
         items: [
           {
             type: 'doc',
-            docId: 'basics/chapter',
+            docId: 'basics/basics',
             position: 'left',
             label: 'Documentation',
           },

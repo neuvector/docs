@@ -1,8 +1,0 @@
-streams:
- schemes:
-   theme:
-     type: ReadOnlyStream
-     prefixes:
-       '':
-         - user/themes/nvlearn2
-         - user/themes/learn2
