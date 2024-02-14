@@ -53,9 +53,9 @@ body {
 	height: 100px !important;
 }
 /* override Grav framework CSS image control to position main option icons */
-img {
+/* img {
  	margin: 0 !important;
-}
+} */
 .mainheadingcontainer {
 	display: flex !important;
 	flex-direction: row !important;
