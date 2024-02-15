@@ -7,6 +7,11 @@ taxonomy:
 ### Release Notes for 5.x
 Note: To receive email notifications of new releases, please subscribe to this SUSE mailing list: https://lists.suse.com/mailman/listinfo/neuvector-updates
 
+#### 5.2.4-s2 February 2024
++ Remediates following CVEs:
+- High cve: CVE-2023-52425 in expat, CVE-2024-20952 and CVE-2024-20918 in openjdk11
+- Med cve: CVE-2023-52426 in expat, CVE-2024-20926, CVE-2024-20921, CVE-2024-20945 and CVE-2024-20919 in openjdk11, CVE-2024-0727 and CVE-2023-6237 in openssl
+
 #### 5.3.0 February 2024
 
 #####Enhancements
