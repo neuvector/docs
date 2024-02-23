@@ -23,7 +23,7 @@ Note: To receive email notifications of new releases, please subscribe to this S
 + Add support for ARM64 platform. Pulling from ARM based platforms will automatically pull the appropriate ARM64 NeuVector images.
 + Support webhooks through a proxy
 + Improve admission control auditing function to include results of all rules. List the result of every rule, and adds another entry for the final action the would occur when evaluated in a live admission control deployment.
-+ Apply disabled Admission C ontrol rules via CRD or yaml (kubectl)
++ Apply disabled Admission Control rules via CRD or yaml (kubectl)
 + Vulnerability Profile export / import through console, CRD, or REST API. Importing will replace the existing profile. Deleting the CRD will result in an empty profile.
 + Compliance Profile template export / import through console, CRD, or REST API. Importing will replace the existing template.
 + Add a 'Manual' status in the compliance reports for CIS benchmarks that must be run manually by users (not run by NeuVector).
@@ -36,7 +36,7 @@ HTTP Strict Transport Security max-age=15724800, 2) add CSP header (e.g. set a â
 + Add link to Group in Security Risks -> Vulnerabilities -> Impact popup to easily edit group mode
 + Support deep linking in URL's to image and/or container vulnerability page 
 + Add password reset option for admin to reset user password in console Settings -> Users
-+ Allow sending event logs to controller pod logs in Settings -> Configuration -> Notification. The events sent will begin with 'notification=' and be saved only to the leader controller pod.
++ Allow sending event logs to controller pod logs in Settings -> Configuration -> Notification. The events sent will begin with 'notification=' and be saved only to the leader controller pod. Note that there is a bug in this version where, in order to change the event level SYSLOG must be enabled (and can be disabled if desired after changing the level).
 + Remove requirement for controller/enforcer to mount "/host/cgroup".
 + Add Get Support menu with links to slack, documentation, and other resources
 + Fill message field to /v1/log/activity logs

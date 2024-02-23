@@ -36,7 +36,7 @@ This is why once the limit is reached, only the most recent 4K events of that ty
 
 ### SIEM and SYSLOG
 
-You can configure the SYSLOG server and webhook notifications in the NeuVector console in the Settings -> Configuration menu. Choose the logging level, TCP or UDP, and format if json is desired.
+You can configure the SYSLOG server and webhook notifications in the NeuVector console in the Settings -> Configuration menu. Choose the logging level, TCP or UDP, and format if json is desired. CVE data can be sent individually for each CVE and/or include layered scan results. You can also choose to send events to the controller's pod log instead of or in addition to syslog. Note that events are only sent to the lead controller's pod log. 
 
 You can then use your favorite reporting tools to monitor NeuVector events.
 
