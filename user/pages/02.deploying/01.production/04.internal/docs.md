@@ -24,7 +24,7 @@ openssl req -in cert.csr -noout -text
 openssl x509 -req -sha256 -in cert.csr -CA ca.cert -CAkey ca.key -CAcreateserial -out cert.pem -days 3650 -extfile ca.cfg
     // for sample ca.cfg see below, or see https://open-docs.neuvector.com/configuration/console/replacecert
 openssl x509 -in cert.pem -text
-kubectl create secret generic internal-cert -n neuvector --from-file=cert.key --from-file=cert.pem --from-file=ca.cert
+kubectl create secret generic internal-cert -n neuvector  --from-file=tls.key --from-file=tls.crt --from-file=ca.crt
 ```
 
 Then edit the Controller, Enforcer, and Scanner deployment yamls, adding:
