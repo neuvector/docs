@@ -12,18 +12,18 @@ These certificates can be replaced by your own to further harden communication. 
 WARNING: Replacing certificates is recommended to be performed only during initial deployment of NeuVector. Replacing on a running cluster (even with rolling upgrade) may result in an unstable state where NeuVector pods are unable to communicate with each other due to a mismatch in certificates, and DATA LOSS may occur.
 
 #### Replacing Certificates Used in Internal Communications of NeuVector
-To replace the internal encryption files ca.cert, cert.key, cert.pem, first create the new ca.cfg file (see sample below). Then delete the relevant file, kubernetes secret, then generate new files and secret.
+To replace the internal encryption files ca.crt, tls.key, tls.crt, first create the new ca.cfg file (see sample below). Then delete the relevant file, kubernetes secret, then generate new files and secret.
 
 ```bash
 kubectl delete secret internal-cert -n neuvector
 openssl genrsa -out ca.key 2048
-openssl req -x509 -sha256 -new -nodes -key ca.key -days 3650 -out ca.cert
-openssl genrsa -out cert.key 2048
-openssl req -new -key cert.key -sha256 -out cert.csr -config ca.cfg
+openssl req -x509 -sha256 -new -nodes -key ca.key -days 3650 -out ca.crt
+openssl genrsa -out tls.key 2048
+openssl req -new -key tls.key -sha256 -out cert.csr -config ca.cfg
 openssl req -in cert.csr -noout -text
-openssl x509 -req -sha256 -in cert.csr -CA ca.cert -CAkey ca.key -CAcreateserial -out cert.pem -days 3650 -extfile ca.cfg
+openssl x509 -req -sha256 -in cert.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out tls.crt -days 3650 -extfile ca.cfg
     // for sample ca.cfg see below, or see https://open-docs.neuvector.com/configuration/console/replacecert
-openssl x509 -in cert.pem -text
+openssl x509 -in tls.crt -text
 kubectl create secret generic internal-cert -n neuvector  --from-file=tls.key --from-file=tls.crt --from-file=ca.crt
 ```
 
@@ -33,18 +33,18 @@ Then edit the Controller, Enforcer, and Scanner deployment yamls, adding:
       containers:
         - name: neuvector-controller/enforcer/scanner-pod
           volumeMounts:
-            - mountPath: /etc/neuvector/certs/internal/cert.key
+            - mountPath: /etc/neuvector/certs/internal/tls.key
               name: internal-cert
               readOnly: true
-              subPath: cert.key
-            - mountPath: /etc/neuvector/certs/internal/cert.pem
+              subPath: tls.key
+            - mountPath: /etc/neuvector/certs/internal/tls.crt
               name: internal-cert
               readOnly: true
-              subPath: cert.pem
-            - mountPath: /etc/neuvector/certs/internal/ca.cert
+              subPath: tls.crt
+            - mountPath: /etc/neuvector/certs/internal/ca.crt
               name: internal-cert
               readOnly: true
-              subPath: ca.cert
+              subPath: ca.crt
       volumes:
         - name: internal-cert
           secret:
@@ -52,7 +52,7 @@ Then edit the Controller, Enforcer, and Scanner deployment yamls, adding:
             secretName: internal-cert
 ```
 
-Then proceed to deploy NeuVector as before. You can also shell into the controller/enforcer/scanner pods to confirm that the ca.cert, cert.key, cert.pem files are the customized ones and that the NeuVector communications are working using the new certificates.
+Then proceed to deploy NeuVector as before. You can also shell into the controller/enforcer/scanner pods to confirm that the ca.crt, tls.key, tls.crt files are the customized ones and that the NeuVector communications are working using the new certificates.
 
 Sample ca.cfg file referenced above:
 
@@ -83,7 +83,7 @@ NAMESPACE=neuvector
 
 kubectl patch deployment -n ${NAMESPACE} neuvector-controller-pod --type='json' -p='[{"op": "add", "path": "/spec/template/spec/volumes/-", "value": {"name": "internal-cert", "secret": {"defaultMode": 420, "secretName": "internal-cert"}} } ]'
 
-kubectl patch deployment -n ${NAMESPACE} neuvector-controller-pod --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/volumeMounts", "value": [{"mountPath": "/etc/neuvector/certs/internal/cert.key", "name": "internal-cert", "readOnly": true, "subPath": "cert.key"}, {"mountPath": "/etc/neuvector/certs/internal/cert.pem", "name": "internal-cert", "readOnly": true, "subPath": "cert.pem"}, {"mountPath": "/etc/neuvector/certs/internal/ca.cert", "name": "internal-cert", "readOnly": true, "subPath": "ca.cert"} ] } ]'
+kubectl patch deployment -n ${NAMESPACE} neuvector-controller-pod --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/volumeMounts", "value": [{"mountPath": "/etc/neuvector/certs/internal/tls.key", "name": "internal-cert", "readOnly": true, "subPath": "tls.key"}, {"mountPath": "/etc/neuvector/certs/internal/tls.crt", "name": "internal-cert", "readOnly": true, "subPath": "tls.crt"}, {"mountPath": "/etc/neuvector/certs/internal/ca.crt", "name": "internal-cert", "readOnly": true, "subPath": "ca.crt"} ] } ]'
 ```
 
 #### Updating/Deploying with Helm
