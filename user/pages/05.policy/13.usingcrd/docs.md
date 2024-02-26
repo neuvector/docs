@@ -706,7 +706,7 @@ Note: The CRD import behavior ignores the PolicyMode of any 'linked' group, leav
 
 <strong>Unsupported Export Group-Types</strong>
 + Federated 
-+ IP-Based
++ IP-Based (unsupported for learned service IP only, custom user created IP groups are supported)
 
 <strong>Import Scenarios</strong>
 + The import will create new groups in the destination system if the groups do not yet exist in the destination environment, and the currently used Kubernetes user-context has the necessary permissions to access the namespaces configured in the CRD-yaml file to be imported.
