@@ -56,11 +56,6 @@ oc delete rolebinding -n neuvector system:openshift:scc:privileged
 <code>
 oc new-project neuvector</code></pre></li>
 
-<li>Apply security context constraint (SCC) to grant default service account in neuvector namespace to run privileged containers.
-<pre>
-<code>
-oc adm policy add-scc-to-user privileged --serviceaccount default --namespace neuvector</code></pre></li>
-
 <li>Install the RedHat Certified Operator from the Operator Hub
 <p><ul>
 <li>- In the OpenShift Console UI, navigate to OperatorHub</li>
@@ -155,11 +150,6 @@ Upgrade the NeuVector version by updating the Operator version which is associat
 oc new-project neuvector</code></pre>
 </li>
 
-<li>Apply security context constraint (SCC) to grant default service account in neuvector namespace to run privileged containers.
-<pre>
-<code>
-oc adm policy add-scc-to-user privileged --serviceaccount default --namespace neuvector</code></pre>
-</li>
 
 <li>Install the NeuVector Community Operator from the Operator Hub
 <p><ul>
