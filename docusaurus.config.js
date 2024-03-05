@@ -81,21 +81,22 @@ const config = {
         },
       },
       navbar: {
-        title: 'Neuvector',
+        title: '',
         logo: {
           alt: 'Neuvector Logo',
           src: 'img/logo.svg',
+          srcDark: 'img/logo-dark.svg',
         },
         items: [
-          {
-            type: 'doc',
-            docId: 'basics/basics',
-            position: 'left',
-            label: 'Documentation',
-          },
+          // {
+          //   type: 'doc',
+          //   docId: 'basics/basics',
+          //   position: 'left',
+          //   label: 'Documentation',
+          // },
           { 
             type: 'search',
-            position: 'right',
+            position: 'left',
           },
           {
             type: `dropdown`,
