@@ -61,6 +61,17 @@ const config = {
     ],
   ],
 
+  plugins: [
+    [ 
+      require.resolve('docusaurus-lunr-search'), 
+      {
+        languages: ['en'],
+        indexBaseUrl: true,
+        maxHits: 10,
+      }
+    ]
+  ],
+
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
@@ -81,6 +92,10 @@ const config = {
             docId: 'basics/basics',
             position: 'left',
             label: 'Documentation',
+          },
+          { 
+            type: 'search',
+            position: 'right',
           },
           {
             type: `dropdown`,
