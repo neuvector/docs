@@ -68,7 +68,7 @@ The following scanner environment variables can be used in the docker run comman
 ####Host Scanning in Standalone Mode
 Use the following command to scan the host. Note: Requires privileged mode.
 ```
-docker run --rm --privileged  --pid=host neuvector/scanner -n
+docker run --rm --privileged --pid=host neuvector/scanner -n
 ```
 
 #### Manual Deployment of Multiple Scanners on Kubernetes
