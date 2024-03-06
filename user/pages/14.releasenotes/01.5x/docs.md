@@ -84,7 +84,7 @@ HTTP Strict Transport Security max-age=15724800, 2) add CSP header (e.g. set a â
 + Add support for NVD API 2.0 in Scanner.
 + Scan the container host in scanner standalone mode.
 ```
-docker run --rm --privileged  --pid=host neuvector/scanner -n
+docker run --rm --privileged --pid=host neuvector/scanner -n
 ```
 
 #####Bug Fixes
