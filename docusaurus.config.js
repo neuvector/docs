@@ -68,6 +68,7 @@ const config = {
         languages: ['en'],
         indexBaseUrl: true,
         maxHits: 10,
+        highlightResult: true,
       }
     ]
   ],
