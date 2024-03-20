@@ -17,7 +17,7 @@ taxonomy:
 * Recommended browser: Chrome for better performance
 
 #### Supported Platforms
-* Officially supported linux distributions, SUSE Linux, Ubuntu, CentOS/Red Hat (Including all RHEL version e.g. 6/7/8), Debian, Rancher OS, CoreOS, AWS 'Bottlerocket'(see Note below) and Photon.
+* Officially supported linux distributions, SUSE Linux, Ubuntu, CentOS/Red Hat (RHEL), Debian, CoreOS, AWS Bottlerocket and Photon.
 * AMD64 and Arm architectures 
 * CoreOS is supported (November 2023) for CVE scanning through RHEL mapping table provided by RedHat. Once an official feed is published by RedHat for CoreOS it will be supported.
 * Officially supported Kubernetes and Docker compliant container management systems. The following platforms are tested with every release of NeuVector: Kubernetes 1.19-1.29, SUSE Rancher (RKE, RKE2, K3s etc), RedHat OpenShift 4.6-4.13 (3.x to 4.12 supported prior to NeuVector 5.2.x), Google GKE, Amazon EKS, Microsoft Azure AKS, IBM IKS, native docker, docker swarm. The following Kubernetes and docker compliant platforms are supported and have been verified to work with NeuVector: VMware Photon and Tanzu, SUSE CaaS, Oracle OKE, Mirantis Kubernetes Engine, Nutanix Kubernetes Engine, docker UCP/DataCenter, docker Cloud.

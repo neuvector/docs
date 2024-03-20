@@ -7,6 +7,9 @@ taxonomy:
 ### Release Notes for 5.x
 Note: To receive email notifications of new releases, please subscribe to this SUSE mailing list: https://lists.suse.com/mailman/listinfo/neuvector-updates
 
+#### NeuVector UI Extension v. 1.0 for Rancher March 2024
++ After installation of NeuVector, [enabling/installing](/deploying/rancher#neuvector-ui-extension-for-rancher) the NeuVector UI Extension from Rancher will display a Dashboard for the cluster, including links to SSO to the full NeuVector cluster. NOTE: The extension may display as Third Party, which will be fixed in a future release. Also, after installation, Rancher 2.7.x users may see two NeuVector UI Ext icons in the list (bug). One icon will say Uninstall (meaning it is installed), and the other should say Install. This can be left as is, ie, don't Install again if the extension is already installed.
+ 
 #### 5.2.4-s2 February 2024
 + Remediates following CVEs:
 - High cve: CVE-2023-52425 in expat, CVE-2024-20952 and CVE-2024-20918 in openjdk11
