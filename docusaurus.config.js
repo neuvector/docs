@@ -18,7 +18,9 @@ const config = {
   url: 'https://open-docs.neuvector.com',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+
+  // ***** EDIT BEFORE MERGE *****
+  baseUrl: '/neuvector-docs/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
