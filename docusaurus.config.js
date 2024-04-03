@@ -118,6 +118,10 @@ const config = {
                 href: 'https://github.com/neuvector/docs/',
                 label: 'Docs GitHub',
               },
+              {
+                href: 'https://hub.docker.com/u/neuvector',
+                label: 'NeuVector images on Docker Hub',
+              },
             ]
           },
           {
