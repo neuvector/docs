@@ -7,7 +7,13 @@ taxonomy:
 ### Release Notes for 5.x
 Note: To receive email notifications of new releases, please subscribe to this SUSE mailing list: https://lists.suse.com/mailman/listinfo/neuvector-updates
 
+#### 5.3.2 April 2024
+##### Bug Fixes
++ After upgrading to v5.3.1 from a previous NeuVector release, pre-existing NvClusterSecurityRule custom resources may be deleted inadvertently. NOTE: The 5.3.1 version has been removed from docker hub in order to prevent the upgrade issue.
+
 #### 5.3.1 April 2024
+
+IMPORTANT: The 5.3.1 version has been removed from docker hub in order to prevent the upgrade issue fixed in 5.3.2. Please use the 5.3.2 release.
 
 ##### Enhancements
 + Allow users to define ‘accepted’ vulnerabilities when using Github actions so they don’t affect workflows.
