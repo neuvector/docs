@@ -20,9 +20,9 @@ There is a separate section for OpenShift instructions, and Docker EE on Kuberne
 
 ####NeuVector Images on Docker Hub
 <p>The images are on the NeuVector Docker Hub registry. Use the appropriate version tag for the manager, controller, enforcer, and leave the version as 'latest' for scanner and updater. For example:
-<li>neuvector/manager:5.3.0</li>
-<li>neuvector/controller:5.3.0</li>
-<li>neuvector/enforcer:5.3.0</li>
+<li>neuvector/manager:5.3.2</li>
+<li>neuvector/controller:5.3.2</li>
+<li>neuvector/enforcer:5.3.2</li>
 <li>neuvector/scanner:latest</li>
 <li>neuvector/updater:latest</li></p>
 <p>Please be sure to update the image references in appropriate yaml files.</p>
@@ -282,7 +282,7 @@ app: neuvector-enforcer-pod
 
 ### Rolling Updates
 
-Orchestration tools such as Kubernetes, RedHat OpenShift, and Rancher support rolling updates with configurable policies. You can use this feature to update the NeuVector containers. The most important will be to ensure that there is at least one Allinone/Controller running so that policies, logs, and connection data is not lost. Make sure that there is a minimum of 120 seconds between container updates so that a new leader can be elected and the data synchronized between controllers.
+Orchestration tools such as Kubernetes, RedHat OpenShift, and Rancher support rolling updates with configurable policies. You can use this feature to update the NeuVector containers. The most important will be to ensure that there is at least one Controller (or Allinone) running so that policies, logs, and connection data is not lost. Make sure that there is a minimum of 120 seconds between container updates so that a new leader can be elected and the data synchronized between controllers.
 
 The provided sample deployment yamls already configure the rolling update policy. If you are updating via the NeuVector Helm chart, please pull the latest chart to properly configure new features such as admission control, and delete the old cluster role and cluster role binding for NeuVector. If you are updating via Kubernetes you can manually update to a new version with the sample commands below. 
 
@@ -453,7 +453,7 @@ spec:
       serviceAccount: basic
       containers:
         - name: neuvector-manager-pod
-          image: neuvector/manager:5.3.0
+          image: neuvector/manager:5.3.2
           env:
             - name: CTRL_SERVER_IP
               value: neuvector-svc-controller.neuvector
@@ -496,7 +496,7 @@ spec:
       serviceAccount: controller
       containers:
         - name: neuvector-controller-pod
-          image: neuvector/controller:5.3.0
+          image: neuvector/controller:5.3.2
           securityContext:
             runAsUser: 0
           readinessProbe:
@@ -575,7 +575,7 @@ spec:
       serviceAccount: enforcer
       containers:
         - name: neuvector-enforcer-pod
-          image: neuvector/enforcer:5.3.0
+          image: neuvector/enforcer:5.3.2
           securityContext:
             # the following two lines are required for k8s v1.19+. pls comment out both lines if version is pre-1.19. Otherwise, a validating data error message will show
             seccompProfile:
