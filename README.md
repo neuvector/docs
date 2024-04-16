@@ -1,7 +1,36 @@
 # NeuVector Docs
 
-NeuVector documentation is written in Markdown language and uses [Grav](https://getgrav.org/) to manage the content. 
-A viewable version of these docs can be see at https://open-docs.neuvector.com
+NeuVector documentation is written in Markdown language and is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+
+A viewable version of these docs can be see at [https://open-docs.neuvector.com](https://open-docs.neuvector.com)
+
+### Installation
+
+```
+$ yarn install
+```
+
+### Local Development
+
+```shell
+yarn start
+```
+
+This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+
+### Build
+
+```shell
+yarn build
+```
+
+This command generates static content into the `build` directory and can be served using any static contents hosting service.
+
+To see the result of the build, you can run:
+
+```shell
+yarn serve
+```
 
 # License
 
