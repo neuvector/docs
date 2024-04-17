@@ -20,7 +20,7 @@ const config = {
   // For GitHub pages deployment, it is often '/<projectName>/'
 
   // ***** EDIT BEFORE MERGE *****
-  baseUrl: '/neuvector-docs/',
+  baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -178,7 +178,7 @@ const config = {
       },
       footer: {
         style: 'dark',
-        copyright: `Copyright © ${new Date().getFullYear()} SUSE Rancher. All Rights Reserved.`,
+        copyright: `Copyright © ${new Date().getFullYear()} SUSE NeuVector. All Rights Reserved.`,
       },
       prism: {
         theme: lightCodeTheme,
