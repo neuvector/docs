@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-scanning/registry/registry" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.1.1">
+<title data-rh="true">Registry Scanning Configuration | Neuvector Docs</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://open-docs.neuvector.com/next/scanning/registry"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Registry Scanning Configuration | Neuvector Docs"><meta data-rh="true" name="description" content="Registry scanning requires that the NeuVector Allinone or Controller container be deployed on a host/node. Please see the Installation/Deployment section for how to deploy the NeuVector containers. Configure registry scanning from the NeuVector console after logging in to the manager."><meta data-rh="true" property="og:description" content="Registry scanning requires that the NeuVector Allinone or Controller container be deployed on a host/node. Please see the Installation/Deployment section for how to deploy the NeuVector containers. Configure registry scanning from the NeuVector console after logging in to the manager."><link data-rh="true" rel="icon" href="/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://open-docs.neuvector.com/next/scanning/registry"><link data-rh="true" rel="alternate" href="https://open-docs.neuvector.com/next/scanning/registry" hreflang="en"><link data-rh="true" rel="alternate" href="https://open-docs.neuvector.com/next/scanning/registry" hreflang="x-default"><link rel="stylesheet" href="/assets/css/styles.b17240dc.css">
+<script src="/assets/js/runtime~main.ec3b2e87.js" defer="defer"></script>
+<script src="/assets/js/main.f0e3bb6e.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return localStorage.getItem("theme")}catch(t){}}();t(null!==e?e:"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/"><div class="navbar__logo"><img src="/img/logo.svg" alt="Neuvector Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/img/logo-dark.svg" alt="Neuvector Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate"></b></a><div class="navbarSearchContainer_Bca1"><div class="navbar__search"><span aria-label="expand searchbar" role="button" class="search-icon" tabindex="0"></span><input id="search_input_react" type="search" placeholder="Loading..." aria-label="Search" class="navbar__search-input search-bar" disabled=""></div></div><div class="navbar__item dropdown dropdown--hoverable"><a class="navbar__link" aria-haspopup="true" aria-expanded="false" role="button" href="/next/">Next 🚧</a><ul class="dropdown__menu"><li><a aria-current="page" class="dropdown__link dropdown__link--active" href="/next/scanning/registry">Next 🚧</a></li><li><a class="dropdown__link" href="/scanning/registry">5.3</a></li><li><a class="dropdown__link" href="/5.2/scanning/registry">5.2</a></li></ul></div></div><div class="navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href="#" aria-haspopup="true" aria-expanded="false" role="button" class="navbar__link">Quick Links</a><ul class="dropdown__menu"><li><a href="https://neuvector.com/" target="_blank" rel="noopener noreferrer" class="dropdown__link">Neuvector Home<svg width="12" height="12" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li><li><a href="https://github.com/neuvector/neuvector/" target="_blank" rel="noopener noreferrer" class="dropdown__link">GitHub<svg width="12" height="12" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li><li><a href="https://github.com/neuvector/docs/" target="_blank" rel="noopener noreferrer" class="dropdown__link">Docs GitHub<svg width="12" height="12" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li><li><a href="https://hub.docker.com/u/neuvector" target="_blank" rel="noopener noreferrer" class="dropdown__link">NeuVector images on Docker Hub<svg width="12" height="12" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li></ul></div><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href="#" aria-haspopup="true" aria-expanded="false" role="button" class="navbar__link">More From SUSE</a><ul class="dropdown__menu"><li><a href="https://www.rancher.com" target="_blank" rel="noopener noreferrer" class="dropdown__link navbar__icon navbar__rancher">Rancher</a></li><li><hr style="margin: 0.3rem 0;"></li><li><a href="http://harvesterhci.io" target="_blank" rel="noopener noreferrer" class="dropdown__link navbar__icon navbar__harvester">Harvester</a></li><li><a href="http://fleet.rancher.io" target="_blank" rel="noopener noreferrer" class="dropdown__link navbar__icon navbar__fleet">Fleet</a></li><li><a href="http://kubewarden.io" target="_blank" rel="noopener noreferrer" class="dropdown__link navbar__icon navbar__kubewarden">Kubewarden</a></li><li><a href="https://rancherdesktop.io" target="_blank" rel="noopener noreferrer" class="dropdown__link navbar__icon navbar__rd">Rancher Desktop</a></li><li><hr style="margin: 0.3rem 0;"></li><li><a href="https://opensource.suse.com" target="_blank" rel="noopener noreferrer" class="dropdown__link navbar__icon navbar__suse">More Projects...</a></li></ul></div><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="Switch between dark and light mode (currently light mode)" aria-label="Switch between dark and light mode (currently light mode)" aria-live="polite"><svg viewBox="0 0 24 24" width="24" height="24" class="lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" class="darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg></button></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" aria-expanded="false" href="/next/">1. Basics</a><button aria-label="Expand sidebar category &#x27;1. Basics&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" aria-expanded="false" href="/next/deploying">2. Deploying NeuVector 5.x</a><button aria-label="Expand sidebar category &#x27;2. Deploying NeuVector 5.x&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" aria-expanded="false" href="/next/configuration">3. Initial Configuration &amp; Console Login</a><button aria-label="Expand sidebar category &#x27;3. Initial Configuration &amp; Console Login&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" aria-expanded="false" href="/next/navigation">4. Navigating NeuVector</a><button aria-label="Expand sidebar category &#x27;4. Navigating NeuVector&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" aria-expanded="false" href="/next/policy">5. Security Policy</a><button aria-label="Expand sidebar category &#x27;5. Security Policy&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--active" aria-expanded="true" href="/next/scanning">6. Security Risks, Scanning &amp; Compliance</a><button aria-label="Collapse sidebar category &#x27;6. Security Risks, Scanning &amp; Compliance&#x27;" type="button" class="clean-btn menu__caret"></button></div><ul style="display:block;overflow:visible;height:auto" class="menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" aria-expanded="false" tabindex="0" href="/next/scanning/scanning">Scanning &amp; Compliance</a><button aria-label="Expand sidebar category &#x27;Scanning &amp; Compliance&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible menu__list-item-collapsible--active"><a class="menu__link menu__link--sublist menu__link--active" aria-current="page" aria-expanded="true" tabindex="0" href="/next/scanning/registry">Registry Scanning Configuration</a><button aria-label="Collapse sidebar category &#x27;Registry Scanning Configuration&#x27;" type="button" class="clean-btn menu__caret"></button></div><ul style="display:block;overflow:visible;height:auto" class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/next/scanning/registry/harbor">Harbor Pluggable Scanner Module</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/next/scanning/registry/ecr-iam">ECR Scanning using IAM Roles</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/next/scanning/registry/gcr-sa">GCR Scanning using Service Accounts</a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" aria-expanded="false" tabindex="0" href="/next/scanning/build">Build Phase Image Scanning</a><button aria-label="Expand sidebar category &#x27;Build Phase Image Scanning&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/next/scanning/cve_sources">CVE Database Sources &amp; Version</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/next/scanning/updating">Updating the CVE Database</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/next/scanning/scanners">Parallel &amp; Standalone Scanners</a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" aria-expanded="false" href="/next/reporting">7. Reporting</a><button aria-label="Expand sidebar category &#x27;7. Reporting&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" aria-expanded="false" href="/next/integration">8. Enterprise Integration</a><button aria-label="Expand sidebar category &#x27;8. Enterprise Integration&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" aria-expanded="false" href="/next/testing">9. Testing NeuVector</a><button aria-label="Expand sidebar category &#x27;9. Testing NeuVector&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" aria-expanded="false" href="/next/updating">10. Updating NeuVector</a><button aria-label="Expand sidebar category &#x27;10. Updating NeuVector&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" aria-expanded="false" href="/next/automation">11. Workflow &amp; Automation</a><button aria-label="Expand sidebar category &#x27;11. Workflow &amp; Automation&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" aria-expanded="false" href="/next/troubleshooting">12. Troubleshooting</a><button aria-label="Expand sidebar category &#x27;12. Troubleshooting&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" aria-expanded="false" href="/next/special">13. Special Use Cases With Allinone</a><button aria-label="Expand sidebar category &#x27;13. Special Use Cases With Allinone&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" aria-expanded="false" href="/next/releasenotes">14. Release Notes</a><button aria-label="Expand sidebar category &#x27;14. Release Notes&#x27;" type="button" class="clean-btn menu__caret"></button></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="theme-doc-version-banner alert alert--warning margin-bottom--md" role="alert"><div>This is unreleased documentation for <!-- -->Neuvector Docs<!-- --> <b>Next 🚧</b> version.</div><div class="margin-top--md">For up-to-date documentation, see the <b><a href="/scanning/registry">latest version</a></b> (<!-- -->5.3<!-- -->).</div></div><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li itemscope="" itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="breadcrumbs__item"><a class="breadcrumbs__link" itemprop="item" href="/next/scanning"><span itemprop="name">6. Security Risks, Scanning &amp; Compliance</span></a><meta itemprop="position" content="1"></li><li itemscope="" itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link" itemprop="name">Registry Scanning Configuration</span><meta itemprop="position" content="2"></li></ul></nav><span class="theme-doc-version-badge badge badge--secondary">Version: Next 🚧</span><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Registry Scanning Configuration</h1></header><p>Registry scanning requires that the NeuVector Allinone or Controller container be deployed on a host/node. Please see the <a href="/basics/installation">Installation/Deployment</a> section for how to deploy the NeuVector containers. Configure registry scanning from the NeuVector console after logging in to the manager.</p>
+<p>In addition, make sure there is a NeuVector scanner container deployed and configured to connect to the Allinone or Controller. In 4.0 and later, the neuvector/scanner container must be deployed separate from the allinone or controller.</p>
+<div class="theme-admonition theme-admonition-note admonition_xJq3 alert alert--secondary"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 14 16"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 0 1-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 0 1-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>note</div><div class="admonitionContent_BuS1"><p>Registry image scanning is performed by the scanner and the image is pulled and expanded in memory. If expanded image sizes larger than 500MB are expected, consider increasing the scanner memory to 1.5GB or more to provide capacity and headroom for the scanner.</p></div></div>
+<p>To increase registry scanning performance and scalability, multiple scanner pods can be deployed on different nodes to distribute the scanning tasks across multiple scanners. See the section <a href="/scanning/scanners">Multiple Parallel Scanners</a> for details.</p>
+<p>For multi-cluster (federated) environments, the primary (master) cluster can scan a registry/repo designated as a federated registry. The scan results from these registries will be synchronized to all managed (remote) clusters. This enables display of scan results in the managed cluster console as well as use of the results in admission control rules of the managed cluster. Registries only need to be scanned once instead of by each cluster, reducing CPU/memory and network bandwidth usage. See the <a href="/navigation/multicluster/">multi-cluster</a> section for more details.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="configure-registry-scanning">Configure Registry Scanning<a href="#configure-registry-scanning" class="hash-link" aria-label="Direct link to Configure Registry Scanning" title="Direct link to Configure Registry Scanning">​</a></h3>
+<p>To configure registries and repositories to be scanning, go to the Assets -&gt; Registries menu in the NeuVector console. Add or edit registries to be scanned. Use the Filter to define repositories or subsets of images to be scanned. If your registry requires access through a proxy, this can be configured in Settings -&gt; Configuration.</p>
+<p><img decoding="async" loading="lazy" alt="Registry" src="/assets/images/registry-scan-e44c29cefea3c9242e576664141e395d.png" width="2520" height="992" class="img_CujE"></p>
+<p>The registry will be scanned according to a schedule, which is configurable. By default, only new or updated images will be scanned. If you want to re-scan all applicable images whenever the CVE database is updated, select the Rescan After CVE DB Update button when configuring the registry. You can also select Layered Scan to show vulnerabilities by each layer in the image (note: layered scans can take longer and consume more resources to complete).</p>
+<p>After the scan is completed you will see the results below it. Click on the repository/tag to see vulnerabilities and click on the vulnerability to see more info. You can also download the report in a CSV file or see the results in the Event logs.</p>
+<p><img decoding="async" loading="lazy" alt="Layered" src="/assets/images/image_scan_4-2ae108767ee5c4f10b71291a60302805.png" width="2612" height="1428" class="img_CujE"></p>
+<p>The scan results include vulnerabilities by image layer, if this option was selected during registry/repository configuration, as well the compliance checks results. Click the compliance tab when viewing the scan results for the image to see compliance checks.</p>
+<p>Scanning will also discover and list all Modules (ie, an inventory) in the image, as shown below. It will also summarize the vulnerability risk by module and list all vulnerabilities for each module.</p>
+<p><img decoding="async" loading="lazy" alt="Modules" src="/assets/images/Image_Modules-006a6fa37fd5820a578ea97c21d38fd1.png" width="1287" height="627" class="img_CujE"></p>
+<p>Scanning is supported for images on public and private docker registries that are based on Native Docker, Amazon ECR, Redhat/Openshift, jFrog, Microsoft ACR, Sonatype Nexus, Harbor, Google cloud and other registries.  The scan report for the image comprises of the vulnerability status of various packages and binaries in the image. The brief summary of the scan report can be sent via webhook using the Response rule configuration in Policy -&gt; Response Rules, or by Syslog by configuring a syslog server in Settings -&gt; Configuration. Results can also be viewed in the Event logs.</p>
+<p>At least one repository filter is required (can&#x27;t be left blank).</p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="repository-filter-examples">Repository filter examples<a href="#repository-filter-examples" class="hash-link" aria-label="Direct link to Repository filter examples" title="Direct link to Repository filter examples">​</a></h4>
+<p><img decoding="async" loading="lazy" alt="filters" src="/assets/images/1-filter-examples-808b274b5655c57eed89d5a2aa89d413.png" width="1616" height="852" class="img_CujE"></p>
+<p>Notes:</p>
+<ol>
+<li>To scan all image tags, add filter as * or *:*. This works on all registry types except the public docker registry.</li>
+<li>Repository should be full name if organization is nil for public docker registry or add library before repository as given above.</li>
+<li>Create a virtual repository and add all local repository to it to scan all tags on a JFrog registry with the subdomain docker access method.</li>
+<li>Regular expressions can be used in a filter. For example alpine:3.[8|9].* will scan all 3.8.x and 3.9.x images and tags on docker hub.</li>
+</ol>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="registry-scan-options">Registry scan options<a href="#registry-scan-options" class="hash-link" aria-label="Direct link to Registry scan options" title="Direct link to Registry scan options">​</a></h4>
+<ul>
+<li>Scan Layers:<!-- -->
+<ul>
+<li>Provides vulnerability scan result for every image layer separately</li>
+<li>Provides information about commands executed, packages added in the layer</li>
+<li>Images size of each layer</li>
+</ul>
+</li>
+<li>Auto Scan:<!-- -->
+<ul>
+<li>Auto Scan is only supported with OpenShift imagestream integration. Proper role binding should be configured in advance.</li>
+<li>When Auto Scan is enabled, as soon as an image is pushed to the registry, the image scan will be scheduled.</li>
+</ul>
+</li>
+<li>Periodical Scan:<!-- -->
+<ul>
+<li>Enable periodic scan to scan periodically</li>
+<li>Scan interval can set to be between 5 minutes to every 7 days.</li>
+<li>Because many Admission Control checks rely on image scan result, enabling periodical scan helps make sure Admission Control has the up-to-date information of the images.</li>
+<li>Note that NeuVector will scan images in a regsistry that are new/changed from the previous scan.</li>
+</ul>
+</li>
+<li>Rescan after CVE DB update<!-- -->
+<ul>
+<li>Enable this option to rescan all images after the vulnerability database is updated.</li>
+</ul>
+</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="configuring-proxy-server-for-registry">Configuring Proxy server for Registry<a href="#configuring-proxy-server-for-registry" class="hash-link" aria-label="Direct link to Configuring Proxy server for Registry" title="Direct link to Configuring Proxy server for Registry">​</a></h4>
+<p>Please go to Settings -&gt; Configuration to configure proxy settings for registry scanning.</p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="native-docker-registry-also-quay-and-harbor">Native Docker registry (also Quay and Harbor)<a href="#native-docker-registry-also-quay-and-harbor" class="hash-link" aria-label="Direct link to Native Docker registry (also Quay and Harbor)" title="Direct link to Native Docker registry (also Quay and Harbor)">​</a></h4>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="add-native-docker-registry">Add Native Docker registry<a href="#add-native-docker-registry" class="hash-link" aria-label="Direct link to Add Native Docker registry" title="Direct link to Add Native Docker registry">​</a></h5>
+<ul>
+<li>Choose Docker registry as type</li>
+<li>Give unique name to the registry</li>
+<li>Type registry URL with port</li>
+<li>Provide username and password if required by the registry</li>
+<li>Add repository as filter in the below format<!-- -->
+<ul>
+<li>Organization/repository<!-- -->:tag</li>
+<li>Repository can have wildcard with starting string</li>
+<li>Example neuvector/all*:2*</li>
+</ul>
+</li>
+</ul>
+<p>Adding private docker registry with username/password, scan layers enabled, periodic scan for every 30 minutes enabled and * as filter to scan all tags from all repository.
+<img decoding="async" loading="lazy" alt="docker" src="/assets/images/2-dockerprivate-1ce112a2a16627f3fb287f896807cc06.png" width="1006" height="275" class="img_CujE"></p>
+<p>Adding public docker registry for scanning without username/password and 2 repositories with wildcard, scan layers enabled and periodic scan enabled.
+<img decoding="async" loading="lazy" alt="docker3" src="/assets/images/3-dockerpublic-bc218e0b81be5a2a955f75240dec18b9.png" width="997" height="268" class="img_CujE"></p>
+<p>Adding public docker registry for scanning with username/password, wildcard repository, scan layers enabled, and periodic scan enabled.
+<img decoding="async" loading="lazy" alt="docker4" src="/assets/images/4-dockerpub-wild-c0abb7e990498e66574c20afcde2b1c9.png" width="993" height="272" class="img_CujE"></p>
+<p>Note for Quay:</p>
+<ul>
+<li>Enter the top-level URL for your Quay registry; do not enter any directories to the path.</li>
+<li>You will need to generate an encrypted password in your Quay server/account, and use these credentials here.  Then, pass filter(s) as described above.</li>
+</ul>
+<p><img decoding="async" loading="lazy" src="https://user-images.githubusercontent.com/13239496/218163999-9b281bd9-d049-49f6-85cd-395d7c20c481.png" alt="4 1-quay" class="img_CujE"></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="start-scanning-the-docker-registry">Start scanning the Docker registry<a href="#start-scanning-the-docker-registry" class="hash-link" aria-label="Direct link to Start scanning the Docker registry" title="Direct link to Start scanning the Docker registry">​</a></h5>
+<ul>
+<li>Select registry to be scanned</li>
+<li>Click start button to scan</li>
+<li>Wait till status changes from scanning to idle<!-- -->
+<ul>
+<li>Scanning time varies depending on the size of the repository</li>
+</ul>
+</li>
+</ul>
+<p><img decoding="async" loading="lazy" alt="scandocker" src="/assets/images/5-scandocker-a47d799b42db210aab01f5f7b7f34ed5.png" width="1058" height="238" class="img_CujE"></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="view-the-scan-result">View the scan result<a href="#view-the-scan-result" class="hash-link" aria-label="Direct link to View the scan result" title="Direct link to View the scan result">​</a></h5>
+<ul>
+<li>Click on an image from images pane to view the scan result for the image.</li>
+<li>Access the scan result to find the vulnerability status of the image.</li>
+<li>Click download button to download scan result of the image if needed</li>
+<li>Move mouse in between CVE detail and images to get back to summary</li>
+</ul>
+<p>Showing images scanned for the selected registry</p>
+<p><img decoding="async" loading="lazy" alt="scanned" src="/assets/images/6-imagescan-58ee368c62433614e4f3c3566985f8a1.png" width="750" height="222" class="img_CujE"></p>
+<p>Example showing layer scan result of an image, which shows vulnerabilities of each layer, layer size and commands run on each layer. In addition, there is a Compliance tab which shows the compliance test results for the image.</p>
+<p><img decoding="async" loading="lazy" alt="layered" src="/assets/images/image_scan_4-2ae108767ee5c4f10b71291a60302805.png" width="2612" height="1428" class="img_CujE"></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="amazon-ecr-registry">Amazon ECR Registry<a href="#amazon-ecr-registry" class="hash-link" aria-label="Direct link to Amazon ECR Registry" title="Direct link to Amazon ECR Registry">​</a></h4>
+<p>Ref:  <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html" target="_blank" rel="noopener noreferrer">https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html</a></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="add-amazon-ecr-registry">Add Amazon ECR registry<a href="#add-amazon-ecr-registry" class="hash-link" aria-label="Direct link to Add Amazon ECR registry" title="Direct link to Add Amazon ECR registry">​</a></h5>
+<ul>
+<li>Choose Amazon registry as type</li>
+<li>Give unique name to the registry</li>
+<li>Registry URL is automatically found with other information</li>
+<li>Supply below information for the registry. Refer above amazon link to get below information<!-- -->
+<ul>
+<li>Registry id</li>
+<li>Region</li>
+<li>Access key id</li>
+<li>Secret access key</li>
+</ul>
+</li>
+<li>Add repository as filter in the following format<!-- -->
+<ul>
+<li>Organization/repository<!-- -->:tag</li>
+<li>Repository can have wildcard with starting string</li>
+<li>Example neuvector/all*:2*</li>
+<li>Organization can be empty if such image available in the registry</li>
+<li>* to scan all image tags</li>
+</ul>
+</li>
+</ul>
+<p><img decoding="async" loading="lazy" alt="aws" src="/assets/images/9-aws-11d4750f382b48868a181ab4382bc3f4.png" width="1018" height="295" class="img_CujE"></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="redhat-registry">Redhat registry<a href="#redhat-registry" class="hash-link" aria-label="Direct link to Redhat registry" title="Direct link to Redhat registry">​</a></h4>
+<p>Ref:  <a href="https://access.redhat.com/containers" target="_blank" rel="noopener noreferrer">https://access.redhat.com/containers</a></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="add-red-hat-registry">Add Red Hat registry<a href="#add-red-hat-registry" class="hash-link" aria-label="Direct link to Add Red Hat registry" title="Direct link to Add Red Hat registry">​</a></h5>
+<ul>
+<li>Choose Redhat registry as type</li>
+<li>Give unique name to the registry</li>
+<li>Type registry URL <a href="https://registry.connect.redhat.com/" target="_blank" rel="noopener noreferrer">https://registry.connect.redhat.com/</a></li>
+<li>Provide username and password of the account used for managing registry</li>
+<li>Add repository as filter in the below format<!-- -->
+<ul>
+<li>Organization/repository<!-- -->:tag</li>
+<li>Repository can have wildcard with starting string</li>
+<li>Example neuvector/all*:2*</li>
+<li>* to scan all image tags</li>
+</ul>
+</li>
+</ul>
+<p><img decoding="async" loading="lazy" alt="redhat" src="/assets/images/10-redhat-796f144bd7174d79c99ae736f0301b26.png" width="1010" height="227" class="img_CujE"></p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="openshift-registry">Openshift registry<a href="#openshift-registry" class="hash-link" aria-label="Direct link to Openshift registry" title="Direct link to Openshift registry">​</a></h4>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="add-openshift-registry-with-username-and-password">Add OpenShift registry with username and password<a href="#add-openshift-registry-with-username-and-password" class="hash-link" aria-label="Direct link to Add OpenShift registry with username and password" title="Direct link to Add OpenShift registry with username and password">​</a></h5>
+<ul>
+<li>Choose OpenShift registry as type</li>
+<li>Give unique name to the registry</li>
+<li>Type registry URL (obtain from the output of &quot;oc get is&quot; command in OpenShift network if it is different than default)<!-- -->
+<ul>
+<li>Default registry URL <a href="https://docker-registry.default.svc:5000/" target="_blank" rel="noopener noreferrer">https://docker-registry.default.svc:5000/</a></li>
+</ul>
+</li>
+<li>Provide username and password of the account used for managing registry</li>
+<li>Add repository as filter in the below format<!-- -->
+<ul>
+<li>Organization/repository<!-- -->:tag</li>
+<li>Example openshift/htt*:*</li>
+<li>* to scan all image tags</li>
+</ul>
+</li>
+<li>Enable auto scan to start the scan as soon as image is updated on OpenShift image stream.
+<img decoding="async" loading="lazy" alt="openshift" src="/assets/images/1a_openshift-332580feaf17de1dc2b7a2aaa7968930.png" width="991" height="277" class="img_CujE"></li>
+</ul>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="add-openshift-registry-with-token">Add OpenShift registry with token<a href="#add-openshift-registry-with-token" class="hash-link" aria-label="Direct link to Add OpenShift registry with token" title="Direct link to Add OpenShift registry with token">​</a></h5>
+<ul>
+<li>Choose OpenShift registry as type</li>
+<li>Give unique name to the registry</li>
+<li>Type registry URL (obtain from the output of &quot;oc get is&quot; command in OpenShift network if it is different than default)<!-- -->
+<ul>
+<li>Default registry URL <a href="https://docker-registry.default.svc:5000/" target="_blank" rel="noopener noreferrer">https://docker-registry.default.svc:5000/</a></li>
+</ul>
+</li>
+<li>Provide token of the service account which has access to all namespaces<!-- -->
+<ul>
+<li>Check below note to create service account and get token.</li>
+<li>Create service account<!-- -->
+<ul>
+<li>oc project default</li>
+<li>oc create sa nvqa</li>
+<li>oc get sa</li>
+</ul>
+</li>
+<li>Assign cluster admin role to service account to read all registry<!-- -->
+<ul>
+<li>oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:default<!-- -->:nvqa</li>
+</ul>
+</li>
+<li>Get token for the service account<!-- -->
+<ul>
+<li>oc sa get-token nvqa</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Add repository as filter in the below format<!-- -->
+<ul>
+<li>Organization/repository<!-- -->:tag</li>
+<li>Example openshift/htt*:*</li>
+<li>* to scan all image tags</li>
+</ul>
+</li>
+<li>Enable auto scan to start the scan as soon image is updated on OpenShift image stream.</li>
+</ul>
+<p><img decoding="async" loading="lazy" alt="openshift" src="/assets/images/1a_openshift_token-42136782027605231a66d49ba9636c16.png" width="1018" height="282" class="img_CujE"></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="stability-issues-in-openshift-37-registry">Stability issues in Openshift 3.7 Registry<a href="#stability-issues-in-openshift-37-registry" class="hash-link" aria-label="Direct link to Stability issues in Openshift 3.7 Registry" title="Direct link to Stability issues in Openshift 3.7 Registry">​</a></h5>
+<p>In OpenShift 3.7, API calls to pull container image metadata or to download an image can fail randomly. It can also fail on random images in different scan runs. You may see incomplete image lists or scans may fail on some images when this happens. If this occurs, the repository can be rescanned.</p>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="jfrog-artifactory">JFrog Artifactory<a href="#jfrog-artifactory" class="hash-link" aria-label="Direct link to JFrog Artifactory" title="Direct link to JFrog Artifactory">​</a></h4>
+<p>Adding JFrog Artifactory registry (Docker Access method – Repository Path)
+JFrog management page admin-&gt;HTTP Setting showing docker access method  - Repository Path</p>
+<p><img decoding="async" loading="lazy" alt="jfrog" src="/assets/images/12-jfrog-e8616ebb0a83ec8af88a69a34b3f81fa.png" width="814" height="745" class="img_CujE"></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="add-jfrog-artifactory-registry-docker-access-method--repository-path">Add JFrog Artifactory registry (Docker Access method – Repository Path)<a href="#add-jfrog-artifactory-registry-docker-access-method--repository-path" class="hash-link" aria-label="Direct link to Add JFrog Artifactory registry (Docker Access method – Repository Path)" title="Direct link to Add JFrog Artifactory registry (Docker Access method – Repository Path)">​</a></h5>
+<ul>
+<li>Choose JFrog Artifactory as type</li>
+<li>Give a unique name to the registry<!-- -->
+<ul>
+<li>Type the registry URL with port, for example <a href="http://10.1.7.122:8081/" target="_blank" rel="noopener noreferrer">http://10.1.7.122:8081/</a></li>
+</ul>
+</li>
+<li>Provide a username and password if required by the registry</li>
+<li>Add the repository as a filter in the below format<!-- -->
+<ul>
+<li>Organization/repository<!-- -->:tag</li>
+<li>Repository or tag can have wildcards at end, such as abc/*, abc/n*</li>
+<li>To scan all tags for a repository, for example alpine, use alpine:*</li>
+<li>The wildcard must be preceded by the full name, path, or starting string</li>
+<li>* to scan all tags</li>
+</ul>
+</li>
+</ul>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="adding-jfrog-artifactory-registry-docker-access-method--subdomain">Adding JFrog Artifactory registry (Docker Access method – subdomain)<a href="#adding-jfrog-artifactory-registry-docker-access-method--subdomain" class="hash-link" aria-label="Direct link to Adding JFrog Artifactory registry (Docker Access method – subdomain)" title="Direct link to Adding JFrog Artifactory registry (Docker Access method – subdomain)">​</a></h5>
+<p>JFrog management page admin-&gt;HTTP Setting showing docker access method – Sub Domain</p>
+<p><img decoding="async" loading="lazy" alt="artifactory" src="/assets/images/14-artifact-6abaa1bcbc1fd3e50aa3a97658416b41.png" width="495" height="687" class="img_CujE"></p>
+<p>Add JFrog Artifactory registry (Docker Access method – subdomain)</p>
+<ul>
+<li>Choose JFrog Artifactory as type</li>
+<li>Give a unique name to the registry</li>
+<li>Type the registry URL with port, for example <a href="http://10.1.7.122:8081/" target="_blank" rel="noopener noreferrer">http://10.1.7.122:8081/</a></li>
+<li>Choose Subdomain as JFrog Docker Access Method</li>
+<li>Provide a username and password if required by the registry</li>
+<li>Add the repository as a filter in the below format<!-- -->
+<ul>
+<li>Subdomain/repository<!-- -->:tag</li>
+<li>Repository or tag can have wildcards at end, such as abc/*, abc/n*</li>
+<li>To scan all tags for a repository, for example alpine, use alpine:*</li>
+<li>The wildcard must be preceded by the full name, path, or starting string</li>
+<li>* for scanning all tags from all subdomains</li>
+</ul>
+</li>
+</ul>
+<div class="theme-admonition theme-admonition-note admonition_xJq3 alert alert--secondary"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 14 16"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 0 1-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 0 1-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>note</div><div class="admonitionContent_BuS1"><p>Create a virtual repository and add all local and remote repository to it. Specify this virtual repository in the filter section to scan all tags from local and remote remote repository.</p></div></div>
+<p>Adding subdomain based JFrog registry to scan images from docker-local subdomain</p>
+<p><img decoding="async" loading="lazy" alt="local" src="/assets/images/jfrog_sub_local-32a21ac60a292555c53f633a2fe41964.png" width="977" height="406" class="img_CujE"></p>
+<p>Adding subdomain based JFrog registry to scan all tags from all subdomains</p>
+<p><img decoding="async" loading="lazy" alt="all" src="/assets/images/jfrog_all_subs-5aece3ef2563deca997d0bdcc4d22ccf.png" width="977" height="406" class="img_CujE"></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="add-jfrog-artifactory-registry-docker-access-method--port">Add JFrog Artifactory registry (Docker Access method – port)<a href="#add-jfrog-artifactory-registry-docker-access-method--port" class="hash-link" aria-label="Direct link to Add JFrog Artifactory registry (Docker Access method – port)" title="Direct link to Add JFrog Artifactory registry (Docker Access method – port)">​</a></h5>
+<p>JFrog management page admin-&gt;HTTP Setting showing docker access method - Port</p>
+<p><img decoding="async" loading="lazy" alt="jfrogport" src="/assets/images/jfrogport1-396253fe1118755278e1c0785c72b289.png" width="730" height="750" class="img_CujE"></p>
+<p>JFrog management page admin-&gt;Local Repository-&gt;docker-local repository-&gt; Advanced - showing repository URL and registry port 8181</p>
+<p><img decoding="async" loading="lazy" alt="jfrogport" src="/assets/images/jfrogport2-439875f43a3c1efb40fc4df30925d648.png" width="750" height="319" class="img_CujE"></p>
+<p>JFrog management page admin-&gt;Local Repository-&gt;guo repository-&gt; Advanced - showing repository URL and registry port 8182</p>
+<p><img decoding="async" loading="lazy" alt="jfrogport" src="/assets/images/jfrogport3-5624bc5d5029c3a493bda3fd20b04bf8.png" width="750" height="348" class="img_CujE"></p>
+<ul>
+<li>Choose JFrog Artifactory as type</li>
+<li>Give a unique name to the registry</li>
+<li>Type the registry URL with port, for example <a href="http://10.1.7.122:8181/" target="_blank" rel="noopener noreferrer">http://10.1.7.122:8181/</a>
+<ul>
+<li>Every Registry name has unique port</li>
+</ul>
+</li>
+<li>Choose Port as JFrog Docker Access Method</li>
+<li>Provide a username and password if required by the registry</li>
+<li>Add the repository as a filter in the below format<!-- -->
+<ul>
+<li>Organization/repository<!-- -->:tag</li>
+<li>Repository or tag can have wildcards at end, such as abc/<em>, abc/n</em></li>
+<li>To scan all tags for a repository, for example alpine, use alpine:*</li>
+<li>The wildcard must be preceded by the full name, path, or starting string</li>
+<li>* for scanning all tags</li>
+</ul>
+</li>
+</ul>
+<p>Adding JFrog registry for port access method for registry docker-local with port 8181</p>
+<p><img decoding="async" loading="lazy" alt="jfrogport" src="/assets/images/jfrog104-74c9f231ffe9f2a5a733bd1d7d5ba4df.png" width="998" height="347" class="img_CujE"></p>
+<p>Adding JFrog registry for port access method for registry with port 8182</p>
+<p><img decoding="async" loading="lazy" alt="jfrogport" src="/assets/images/jfrog105-dea72423178fac7f2e26d313271244d0.png" width="998" height="345" class="img_CujE"></p>
+<p>Adding JFrog registry for port access method for the virtual registry with port 8188, which has all local registries added to it.</p>
+<p><img decoding="async" loading="lazy" alt="jfrogport" src="/assets/images/jfrog106-392f1a27c22c53de3734f059f8ff6ba1.png" width="990" height="343" class="img_CujE"></p>
+<p>Showing scanned result for docker-local registry</p>
+<p><img decoding="async" loading="lazy" alt="jfrogport" src="/assets/images/jfrogport6-c51f6fc5869ed54ba1de95db849c7ca1.png" width="976" height="291" class="img_CujE"></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="add-saas-jfrog-artifactory-registry-docker-access-method--port">Add SaaS JFrog Artifactory registry (Docker access method – Port)<a href="#add-saas-jfrog-artifactory-registry-docker-access-method--port" class="hash-link" aria-label="Direct link to Add SaaS JFrog Artifactory registry (Docker access method – Port)" title="Direct link to Add SaaS JFrog Artifactory registry (Docker access method – Port)">​</a></h5>
+<p>Choose JFrog Artifactory as type</p>
+<ul>
+<li>Give a unique name to the registry</li>
+<li>Type the registry URL, for example <a href="https://jfrogtraining-docker-nv-virtual.jfrog.io" target="_blank" rel="noopener noreferrer">https://jfrogtraining-docker-nv-virtual.jfrog.io</a></li>
+<li>Choose Port as JFrog Docker Access Method</li>
+<li>Provide a username and password if required by the registry</li>
+<li>Add the repository as a filter in the below format<!-- -->
+<ul>
+<li>Organization/repository<!-- -->:tag</li>
+<li>* to scan all tags of all repository</li>
+</ul>
+</li>
+</ul>
+<p><img decoding="async" loading="lazy" alt="jfrogsaas" src="/assets/images/jfrog_saas-cd48504720a6444699764dfdec232dca.png" width="974" height="385" class="img_CujE"></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="start-scanning-a-jfrog-artifactory-registry">Start Scanning a JFrog Artifactory Registry<a href="#start-scanning-a-jfrog-artifactory-registry" class="hash-link" aria-label="Direct link to Start Scanning a JFrog Artifactory Registry" title="Direct link to Start Scanning a JFrog Artifactory Registry">​</a></h5>
+<ul>
+<li>Select registry to be scanned</li>
+<li>Click start button to scan</li>
+<li>Wait until status changes from scanning to idle<!-- -->
+<ul>
+<li>Scanning time varies depending on the size of the repository</li>
+</ul>
+</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="google-container-registry">Google Container Registry<a href="#google-container-registry" class="hash-link" aria-label="Direct link to Google Container Registry" title="Direct link to Google Container Registry">​</a></h4>
+<p>Ref:
+<a href="https://cloud.google.com/container-registry/docs/advanced-authentication" target="_blank" rel="noopener noreferrer">https://cloud.google.com/container-registry/docs/advanced-authentication</a>
+<a href="https://cloud.google.com/container-registry/docs/advanced-authentication#json_key_file" target="_blank" rel="noopener noreferrer">https://cloud.google.com/container-registry/docs/advanced-authentication#json_key_file</a></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="enable-cloud-resource-manager-api-for-the-project">Enable Cloud Resource Manager API for the project<a href="#enable-cloud-resource-manager-api-for-the-project" class="hash-link" aria-label="Direct link to Enable Cloud Resource Manager API for the project" title="Direct link to Enable Cloud Resource Manager API for the project">​</a></h5>
+<p>Google Cloud Platform-&gt;Choose Project-&gt;API and Services-&gt;Enable APIS and Services-&gt;Search “Cloud Resource Manager API”-&gt;Enable API
+<a href="https://console.cloud.google.com/apis/library?project=nvtest-219600&amp;q=Cloud%20Resource%20Manager%20API" target="_blank" rel="noopener noreferrer">https://console.cloud.google.com/apis/library?project=nvtest-219600&amp;q=Cloud%20Resource%20Manager%20API</a>   (change project name)
+<img decoding="async" loading="lazy" alt="gcp" src="/assets/images/17-gcp-886be9de6767fd03f0e0f67d9af9a3bb.png" width="750" height="609" class="img_CujE"></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="create-key-for-container-service-account">Create key for container service account<a href="#create-key-for-container-service-account" class="hash-link" aria-label="Direct link to Create key for container service account" title="Direct link to Create key for container service account">​</a></h5>
+<p>Google Cloud Platform--&gt;IAM--&gt;Service Account--&gt;account with container registry--&gt;CreateKey(action)--&gt;
+<img decoding="async" loading="lazy" alt="gcpiam" src="/assets/images/18-gcpiam-a13973b28f4b2542d4a94cc50453d095.png" width="992" height="296" class="img_CujE"></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="copy-json-file-to-client-machine">Copy json file to client machine<a href="#copy-json-file-to-client-machine" class="hash-link" aria-label="Direct link to Copy json file to client machine" title="Direct link to Copy json file to client machine">​</a></h5>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="add-google-container-registry-from-the-neuvector-gui">Add Google Container Registry from the NeuVector GUI<a href="#add-google-container-registry-from-the-neuvector-gui" class="hash-link" aria-label="Direct link to Add Google Container Registry from the NeuVector GUI" title="Direct link to Add Google Container Registry from the NeuVector GUI">​</a></h5>
+<ul>
+<li>Choose Google registry as type</li>
+<li>Give unique name to the registry</li>
+<li>Type registry URL. Sample <a href="https://gcr.io/" target="_blank" rel="noopener noreferrer">https://gcr.io/</a> (this could also be us.gcr.io, eu.gcr.io etc)</li>
+<li>Paste all content above captured json file into JSON key.</li>
+<li>Add repository as filter in the below format<!-- -->
+<ul>
+<li>Project-id/repository<!-- -->:tag</li>
+<li>Example nvtestid-1/neuvector*:*</li>
+<li>* to scan all image tags
+<img decoding="async" loading="lazy" alt="gcpscan" src="/assets/images/19-gcpscan-4a41916ecccebec12c5f246bcb3f095a.png" width="1012" height="285" class="img_CujE"></li>
+</ul>
+</li>
+</ul>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="start-scanning-a-google-container-registry">Start Scanning a Google Container Registry<a href="#start-scanning-a-google-container-registry" class="hash-link" aria-label="Direct link to Start Scanning a Google Container Registry" title="Direct link to Start Scanning a Google Container Registry">​</a></h5>
+<ul>
+<li>Select registry to be scanned</li>
+<li>Click start button to scan</li>
+<li>Wait until status changes from scanning to idle<!-- -->
+<ul>
+<li>Scanning time varies depending on the size of the repository</li>
+</ul>
+</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="azure-container-registry">Azure Container Registry<a href="#azure-container-registry" class="hash-link" aria-label="Direct link to Azure Container Registry" title="Direct link to Azure Container Registry">​</a></h4>
+<p>Ref:
+<a href="https://azure.microsoft.com/en-us/services/container-registry/" target="_blank" rel="noopener noreferrer">https://azure.microsoft.com/en-us/services/container-registry/</a></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="obtain-azure-container-username-and-password-as-shown-below">Obtain Azure container username and password as shown below<a href="#obtain-azure-container-username-and-password-as-shown-below" class="hash-link" aria-label="Direct link to Obtain Azure container username and password as shown below" title="Direct link to Obtain Azure container username and password as shown below">​</a></h5>
+<p>Azure container registry -&gt; user-&gt; access keys-&gt;password</p>
+<p>Showing azure portal username and password for container registry access</p>
+<p><img decoding="async" loading="lazy" alt="azure" src="/assets/images/20-azure-e7b5ecaca24f83199c6d1d9bfc309993.png" width="1016" height="711" class="img_CujE"></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="add-azure-container-registry-from-the-neuvector-gui">Add Azure Container Registry from the NeuVector GUI<a href="#add-azure-container-registry-from-the-neuvector-gui" class="hash-link" aria-label="Direct link to Add Azure Container Registry from the NeuVector GUI" title="Direct link to Add Azure Container Registry from the NeuVector GUI">​</a></h5>
+<ul>
+<li>Choose Azure registry as type</li>
+<li>Give unique name to the registry</li>
+<li>Type registry URL. Sample <a href="https://neuvector.azure.io" target="_blank" rel="noopener noreferrer">https://neuvector.azure.io</a> (obtain from azure portal)<!-- -->
+<ul>
+<li>Container registry-&gt;user-&gt;Overview-&gt;Login Server</li>
+</ul>
+</li>
+<li>Add username and password<!-- -->
+<ul>
+<li>Azure container registry -&gt; user-&gt; access keys-&gt;password</li>
+</ul>
+</li>
+<li>Add repository as filter in the below format<!-- -->
+<ul>
+<li>repository<!-- -->:tag</li>
+<li>example alpine:*</li>
+<li>* to scan all image tags</li>
+</ul>
+</li>
+</ul>
+<p>Showing azure portal login server for Azure container registry</p>
+<p><img decoding="async" loading="lazy" alt="azure" src="/assets/images/21-azurereg-91dbccf3fcdb6306b344f8d62f555ec1.png" width="1048" height="507" class="img_CujE"></p>
+<p>Adding Azure container registry to scan all tags</p>
+<p><img decoding="async" loading="lazy" alt="azureadd" src="/assets/images/22-azureadd-239a4613eae2529eaf259f8df73e6c18.png" width="1036" height="239" class="img_CujE"></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="start-scanning-a-azure-container-registry">Start Scanning a Azure Container Registry<a href="#start-scanning-a-azure-container-registry" class="hash-link" aria-label="Direct link to Start Scanning a Azure Container Registry" title="Direct link to Start Scanning a Azure Container Registry">​</a></h5>
+<ul>
+<li>Select registry to be scanned</li>
+<li>Click start button to scan</li>
+<li>Wait until status changes from scanning to idle<!-- -->
+<ul>
+<li>Scanning time varies depending on the size of the repository</li>
+</ul>
+</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="sonatype-nexus-docker-registry">Sonatype Nexus Docker registry<a href="#sonatype-nexus-docker-registry" class="hash-link" aria-label="Direct link to Sonatype Nexus Docker registry" title="Direct link to Sonatype Nexus Docker registry">​</a></h4>
+<p>Ref:
+<a href="https://help.sonatype.com/repomanager3/private-registry-for-docker" target="_blank" rel="noopener noreferrer">https://help.sonatype.com/repomanager3/private-registry-for-docker</a>
+<a href="https://hub.docker.com/r/sonatype/nexus3/" target="_blank" rel="noopener noreferrer">https://hub.docker.com/r/sonatype/nexus3/</a></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="add-sonatype-nexus-docker-registry">Add Sonatype Nexus Docker registry<a href="#add-sonatype-nexus-docker-registry" class="hash-link" aria-label="Direct link to Add Sonatype Nexus Docker registry" title="Direct link to Add Sonatype Nexus Docker registry">​</a></h5>
+<ul>
+<li>Choose Sonatype Nexus as type</li>
+<li>Give unique name to the registry</li>
+<li>Type registry URL with port</li>
+<li>Provide username and password if required by the registry</li>
+<li>Add repository as filter in the below format<!-- -->
+<ul>
+<li>Organization/repository<!-- -->:tag</li>
+<li>Repository can have wildcard with starting string</li>
+<li>Example neuvector/all*:2*</li>
+<li>* to scan all image tags</li>
+</ul>
+</li>
+</ul>
+<p>Adding Sonatype Nexus docker registry with username/password and repository *:*  for scanning</p>
+<p><img decoding="async" loading="lazy" alt="sonatype" src="/assets/images/23-sonatype-b1fc8bc9f45ea8d17cc73e66b7d59cf3.png" width="1068" height="249" class="img_CujE"></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="start-scanning-sonatype-nexus-docker-registry">Start scanning Sonatype Nexus Docker registry<a href="#start-scanning-sonatype-nexus-docker-registry" class="hash-link" aria-label="Direct link to Start scanning Sonatype Nexus Docker registry" title="Direct link to Start scanning Sonatype Nexus Docker registry">​</a></h5>
+<ul>
+<li>Select registry to be scanned</li>
+<li>Click start button to scan</li>
+<li>Wait till status changes from scanning to idle<!-- -->
+<ul>
+<li>Scanning time varies depending on the size of the repository</li>
+</ul>
+</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="gitlab-container-registry">Gitlab Container Registry<a href="#gitlab-container-registry" class="hash-link" aria-label="Direct link to Gitlab Container Registry" title="Direct link to Gitlab Container Registry">​</a></h4>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="sample-gitlab-environmnent-configurations">Sample GitLab Environmnent Configurations<a href="#sample-gitlab-environmnent-configurations" class="hash-link" aria-label="Direct link to Sample GitLab Environmnent Configurations" title="Direct link to Sample GitLab Environmnent Configurations">​</a></h5>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sudo docker run --detach \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  --hostname gitlab \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  --env GITLAB_OMNIBUS_CONFIG=&quot;external_url &#x27;http://10.1.7.73:9096&#x27;; gitlab_rails[&#x27;lfs_enabled&#x27;] = true;&quot; \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  --publish 10.1.7.73:9095:9095 --publish 10.1.7.73:9096:9096 --publish 10.1.7.73:6222:22 \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  --name gitlab \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  --restart always \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  --volume /srv/gitlab/config:/etc/gitlab \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  --volume /srv/gitlab/logs:/var/log/gitlab \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  --volume /srv/gitlab/data:/var/opt/gitlab \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">gitlab/gitlab-ce:latest</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">External_URL:  http://10.1.7.73:9096</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Registry_URL: https://10.1.7.73:9095</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="obtain-gitlab-private-token-as-shown-below">Obtain Gitlab private token as shown below<a href="#obtain-gitlab-private-token-as-shown-below" class="hash-link" aria-label="Direct link to Obtain Gitlab private token as shown below" title="Direct link to Obtain Gitlab private token as shown below">​</a></h5>
+<ul>
+<li>Navigate to the settings page from the icon located at the upper-righthand corner of the GitLab login page as illustrated below:</li>
+</ul>
+<p><img decoding="async" loading="lazy" alt="gitlab" src="/assets/images/gitlabsettings-52191332aeaa1dec011d1f2c10d77702.png" width="243" height="271" class="img_CujE"></p>
+<ul>
+<li>Navigate to the Access_Tokens page as shown below from the User_Settings page:</li>
+</ul>
+<p><img decoding="async" loading="lazy" alt="gitlab" src="/assets/images/gitlabusersettings-7f33187f5af05f620003782ba0b9d07a.png" width="1503" height="764" class="img_CujE"></p>
+<ul>
+<li>Fill in all applicable fields, and click “Create personal access token” when ready to generate the access token:</li>
+</ul>
+<p><img decoding="async" loading="lazy" alt="gitlab" src="/assets/images/gitlabpersonaltoken_new-1fe97ee01fa58ed6df5814002475020e.png" width="750" height="400" class="img_CujE"></p>
+<ul>
+<li>Access token will no longer be available once the user has navigated away from the generated token page.  Therefore, it is highly recommended to make a copy of the access token prior to navigating or closing the following page:</li>
+</ul>
+<p><img decoding="async" loading="lazy" alt="gitlab" src="/assets/images/gitlabaccesstoken-f4bc44601d6173665819cf96e85109dc.png" width="1502" height="368" class="img_CujE"></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="obtaining-external-and-registry-urls">Obtaining External and Registry URLs<a href="#obtaining-external-and-registry-urls" class="hash-link" aria-label="Direct link to Obtaining External and Registry URLs" title="Direct link to Obtaining External and Registry URLs">​</a></h5>
+<p>External-URL:   The external url is the API-Server&#x27;s URL.<br>
+<!-- -->Registry-URL:  This can be obtained from the Container Registry page of the GitLab webconsole.  One way to get to this page is navigating from the GitLab’s webconsole from Projects &gt; Your Projects &gt; Administrator / … &gt; Left-Pane (Container Registry) &gt; Mouse-over (root/.../)</p>
+<p>The following is a sample screen-capture of the page that reveals both the External-URL and the Registry-URL:</p>
+<p><img decoding="async" loading="lazy" alt="gitlab" src="/assets/images/gitlabexternalurl-6b01e44028c28cf2a6cc32ff5df521a6.png" width="750" height="437" class="img_CujE"></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="add-gitlab-registry-from-the-neuvector-console">Add Gitlab Registry from the NeuVector Console<a href="#add-gitlab-registry-from-the-neuvector-console" class="hash-link" aria-label="Direct link to Add Gitlab Registry from the NeuVector Console" title="Direct link to Add Gitlab Registry from the NeuVector Console">​</a></h5>
+<ul>
+<li>Choose Gitlab as the registry type</li>
+<li>Give unique name to the registry</li>
+<li>Type registry URL with port</li>
+<li>Provide username and password if required by the registry</li>
+<li>Provide Gitlab external URL and the private token obtained from the last section</li>
+</ul>
+<p><img decoding="async" loading="lazy" alt="gitlab" src="/assets/images/gitlabregistryscan-77487524931d17226d23b7b98c6b4957.png" width="836" height="489" class="img_CujE"></p>
+<div class="theme-admonition theme-admonition-note admonition_xJq3 alert alert--secondary"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 14 16"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 0 1-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 0 1-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>note</div><div class="admonitionContent_BuS1"><p>The Registry URL is used for pulling images into the NeuVector scanner-platform from GitLab to do registry scanning.  While the External URL is used for retrieving a list of images, registries, and metadata used by the registry scanning feature.</p></div></div>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="ibm-cloud-container-registry">IBM Cloud Container Registry<a href="#ibm-cloud-container-registry" class="hash-link" aria-label="Direct link to IBM Cloud Container Registry" title="Direct link to IBM Cloud Container Registry">​</a></h4>
+<p>Ref:  <a href="https://www.ibm.com/cloud/container-registry" target="_blank" rel="noopener noreferrer">https://www.ibm.com/cloud/container-registry</a></p>
+<h5 class="anchor anchorWithStickyNavbar_LWe7" id="add-ibm-container-registry">Add IBM Container registry<a href="#add-ibm-container-registry" class="hash-link" aria-label="Direct link to Add IBM Container registry" title="Direct link to Add IBM Container registry">​</a></h5>
+<ul>
+<li>Choose IBM Cloud Container Registry as type</li>
+<li>Give unique name to the registry</li>
+<li>Type registry URL <a href="https://us.icr.io/" target="_blank" rel="noopener noreferrer">https://us.icr.io/</a></li>
+<li>Provide iamapikey as username and the apikey below as password<!-- -->
+<ul>
+<li>Create apikey from CLI<!-- -->
+<ul>
+<li>ibmcloud iam api-key-create atibmKey</li>
+</ul>
+</li>
+<li>Create apikey from GUI<!-- -->
+<ul>
+<li>IBM Cloud-&gt;Manage-Access(IAM)-IBM Cloud API Keys</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Provide IBM Cloud Account<!-- -->
+<ul>
+<li>Obtain IBM cloud account from CLI<!-- -->
+<ul>
+<li>Ibmcloud cr info</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Add repository as filter in the below format<!-- -->
+<ul>
+<li>Organization/repository<!-- -->:tag</li>
+<li>Repository can have wildcard with starting string</li>
+<li>Example neuvector/all*:2*</li>
+<li>
+<ul>
+<li>to scan all image tags</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Enable other parameters if needed</li>
+</ul>
+<p><img decoding="async" loading="lazy" alt="ibm" src="/assets/images/ibm-1-d613fb651fbfe254bc15c195c69efefb.png" width="1022" height="350" class="img_CujE"></p>
+<div class="theme-admonition theme-admonition-note admonition_xJq3 alert alert--secondary"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 14 16"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 0 1-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 0 1-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>note</div><div class="admonitionContent_BuS1"><p>The username for the registry authentication must be &#x27;iamapikey&#x27;</p></div></div>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="harbor-registry">Harbor Registry<a href="#harbor-registry" class="hash-link" aria-label="Direct link to Harbor Registry" title="Direct link to Harbor Registry">​</a></h4>
+<p>Use the same instructions as for the Native Docker registry, choosing Docker as the registry.</p>
+<p>The filter field can not be left blank. Enter a repository filter, or add filter as * to scan all repositories.</p></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="theme-doc-footer-edit-meta-row row"><div class="col"><a href="https://github.com/neuvector/docs/edit/main/docs/06.scanning/02.registry/02.registry.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_vwxv"></div></div></footer></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/next/scanning/scanning/compliance"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Compliance &amp; CIS Benchmarks</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/next/scanning/registry/harbor"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Harbor Pluggable Scanner Module</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#configure-registry-scanning" class="table-of-contents__link toc-highlight">Configure Registry Scanning</a></li></ul></div></div></div></div></main></div></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2024 SUSE NeuVector. All Rights Reserved.</div></div></div></footer></div>
+</body>
+</html>
