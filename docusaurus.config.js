@@ -8,6 +8,10 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const lightCodeTheme = require('prism-react-renderer').themes.github;
 const darkCodeTheme = require('prism-react-renderer').themes.dracula;
 
+// Preprocessor imports
+import dsVariableProcessor from "./js-libs/variables.js";
+import lhSubstituteCurrentVersion from "./js-libs/versions.js";
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Neuvector Docs',
@@ -29,6 +33,20 @@ const config = {
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
+
+  // Preprocessor config
+  //
+  markdown: {
+    mermaid: true,
+    preprocessor: ({ filePath, fileContent }) => {
+      // Process versions
+      fileContent = lhSubstituteCurrentVersion(fileContent, filePath);
+
+      // Process variables
+      fileContent = dsVariableProcessor(fileContent);
+      return fileContent;
+    },
+  },
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
