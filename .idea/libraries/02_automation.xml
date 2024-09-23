@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="02.automation">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/docs/11.automation/02.automation/apis.zip!/" />
+      <root url="jar://$PROJECT_DIR$/docs/11.automation/02.automation/ImportExport.zip!/" />
+      <root url="jar://$PROJECT_DIR$/docs/11.automation/02.automation/apis_4_2_2.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
