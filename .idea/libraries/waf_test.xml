@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="waf_test">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/versioned_docs/version-5.3/05.policy/09.dlp/waf_test.zip!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

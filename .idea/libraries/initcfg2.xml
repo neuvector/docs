@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="initcfg2">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/versioned_docs/version-5.2/02.deploying/01.production/01.configmap/initcfg.zip!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
