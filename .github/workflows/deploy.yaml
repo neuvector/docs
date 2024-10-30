@@ -21,5 +21,8 @@ jobs:
           yarn install --frozen-lockfile
           yarn build
       - name: Deploy to GitHub Pages
+        permissions:
+          pages: write
+          id-token: write
+        id: deployment
         uses: actions/deploy-pages@v4
-          publish_dir: ./build
