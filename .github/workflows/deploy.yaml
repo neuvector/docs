@@ -7,6 +7,9 @@ on:
 
 jobs:
   deploy:
+    permissions:
+      pages: write
+      id-token: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main docs repo
@@ -22,3 +25,5 @@ jobs:
           yarn build
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
