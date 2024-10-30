@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main docs repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Docusaurus
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18.x
           cache: yarn
@@ -21,7 +21,7 @@ jobs:
           yarn install --frozen-lockfile
           yarn build
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: actions/deploy-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
