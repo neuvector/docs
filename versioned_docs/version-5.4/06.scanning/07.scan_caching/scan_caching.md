@@ -5,7 +5,9 @@ taxonomy:
 slug: /scanning/scan_caching
 ---
 
-> Note This feature is only supported from v5.4.0 onwards.
+:::note
+This feature is only supported from v5.4.0 onwards.
+:::
 
 ### Using scan caching with scanners
 Scanner caching feature is used to cache image layers on the scanner which will reused for other image scanning requests which significantely reduces the network bandwidth usage. 
