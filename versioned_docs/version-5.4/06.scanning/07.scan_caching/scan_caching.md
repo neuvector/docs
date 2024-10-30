@@ -180,4 +180,6 @@ Sample YAML configuration to use scan cache across all scanner pods on same node
 		  type: ""
 		name: scan-cache
 ```
-> NOTE: Mounting ```/tmp/images/caches``` on PVC is not supported.
+:::note
+Mounting ```/tmp/images/caches``` on PVC is not supported.
+:::
