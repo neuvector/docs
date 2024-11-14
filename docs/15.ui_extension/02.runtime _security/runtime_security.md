@@ -8,19 +8,19 @@ slug: /ui_extension/runtime_security
 
 ### Assets Security Scan Result
 
-As Rancher has its own Nodes and Workloads page to manage and monitor the assets' status, NeuVector injects components to display its runtime scan result.
+As Rancher has its own Nodes and Workloads page to manage and monitor the assets statuses, NeuVector injects components to display its runtime scan result.
 
 #### Nodes
 
-In nodes summary table, vulnerabilities column is injected to show each node's detected vulnerabilities amount by high / medium severity.
+In the nodes summary table, the vulnerabilities column is injected to show each node's detected vulnerabilities amount by high / medium severity.
 
 ![Nodes](nodes.png)
 
-Click on the vulnerabilities cell, a slide panel comes from right side of the page to show scan result details. The database version of the scanner is shown as well as a filterable vulnerability list.
+Click on the vulnerabilities cell, a slide panel will come from the right side of the page to show scan result details. The database version of the scanner is shown as well as a filterable vulnerability list.
 
 ![Nodes](nodes_vul.png)
 
-Click on the node name cell on nodes table, it redirects to node detail page. NeuVector inject a tab to show vulnerability list.
+Click on the node name cell on nodes table, it redirects to the node detail page. NeuVector injects a tab to show the vulnerability list.
 
 ![Nodes](node_detail_vul.png)
 
@@ -30,7 +30,7 @@ Click on the CVE name cell on the vulnerabilities table, it opens a popup to sho
 
 ![SUSE](suse_cve.png)
 
-A CSV file downloading button is provided above the vulnerabilities table. The file data includes all the fields which are in the table.
+A CSV file download button is provided above the vulnerabilities table. The file data includes all the fields which are in the table.
 
 ![CSV](download_vul.png)
 
@@ -38,10 +38,10 @@ A CSV file downloading button is provided above the vulnerabilities table. The f
 
 #### Workloads
 
-Temporarily, vulnerabilities column will not be injected in workloads table in v5.4 release due to potential performance concern. NeuVector team will work with Rancher team to deal with it and integrate it soon.
+Temporarily, the vulnerabilities column will not be injected in the workloads table in the v5.4 release due to potential performance concern. The NeuVector team will work with the Rancher team to integrate it soon.
 
 ![Workload](pods.png)
 
-Click on a pod name on the workloads table, it redirects to pod detail page. NeuVector inject a tab to show vulnerability list.
+Click on a pod name in the workloads table, it redirects to the pod detail page. NeuVector injects a tab to show the vulnerability list.
 
 ![Workload](pod_detail_vul.png)
