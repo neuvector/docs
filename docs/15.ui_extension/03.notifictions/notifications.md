@@ -36,23 +36,23 @@ Open the Advanced filter slide panel, there are multiple options supporting your
 
 ![Security Events](sec_events_adv_filter.png)
 
-To read the details of the event, click on a record to expand the panel. In the message box, it contains more informations.
+To read the details of the event, click on a record to expand the panel. In the message box you can view more information.
 
 ![Security Events](sec_event_detail.png)
 
-Host name is clickable for opening host detail popup. Vulnerabilities and Group have external link to redirect to NeuVector SSO page.
+The Host name is clickable for opening the host detail popup. Vulnerabilities and Group have an external link to redirect to the NeuVector SSO page.
 
 ![Security Events](node_detail_open.png)
 
-Workload name is clickable for opening workload detail popup. Group has external link to redirect to NeuVector SSO page.
+The Workload name is clickable for opening the workload detail popup. Group has an external link to redirect to the NeuVector SSO page.
 
 ![Security Events](pod_detail_open.png)
 
-Reported by field in the message box is clickable for opening enforcer detail popup.
+The Reported by field in the message box is clickable and opens the enforcer detail popup.
 
 ![Security Events](enforcer_detail_open.png)
 
-### Not included functions comparing with NeuVector standalone page
+### Functions Not Included When Comparing with NeuVector Standalone Page
 
 Review / Propose rule
 
