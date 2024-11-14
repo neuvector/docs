@@ -10,8 +10,8 @@ slug: /ui_extension/notifications
 
 #### Security Events
 
-In UI Extension on Rancher portal, Security Events works similar as NeuVector standalone page.
-The events can be triggered by several factors
+In the UI Extension on the Rancher portal, Security Events work similar to the NeuVector standalone page.
+The events can be triggered by several factors:
 
 - Dangerous conversation or data transportation from somewhere to the endpoint (Node or pod)
 - End-to-end violated connection against network policy
@@ -20,15 +20,15 @@ The events can be triggered by several factors
 
 ![Security Events](sec_events.png)
 
-Slide left or  / and right dot on the time slider to filter events by date.
+Slide the dot left or right on the time slider to filter events by date.
 
 ![Security Events](sec_events_time_filter.png)
 
-Type in keyword into quick filter box to filter any event which includes the keyword.
+Type in keywords into the quick filter box to filter any event which includes the keyword.
 
 ![Security Events](sec_events_quick_filter.png)
 
-Open the Advanced filter slide panel, there are multiple options supporting your searching.
+Open the Advanced filter slide panel, and you will find multiple options supporting your search:
 
 - Severity, Location and Category can be filtered according to the tags on the right side of the event title.
 - Autocomplete list can support user to enter Host, Source, Destination
