@@ -1,4 +1,16 @@
-# Sensitive information exposure in NeuVector manager container logs
+# Security Advisories and CVEs
+
+NeuVector is committed to informing the community of security issues. Below is a CVE reference list of published security advisories and CVEs (Common Vulnerabilities and Exposures) for issues we have resolved.
+
+## CVE List
+
+| ID | Description | Date | Release |
+| :---- | :---- | :---- | :---- |
+| [CVE-2025-8077](https://github.com/neuvector/neuvector/security/advisories/GHSA-8pxw-9c75-6w56) | For NeuVector deployment on the Kubernetes-based environment, the bootstrap password of the default admin user will be generated randomly and stored in a Kubernetes secret. The default admin will need to get the bootstrap password from the Kubernetes secret first and will be asked to change password after the first UI login is successful. | 25 Aug 2025 | [NeuVector v5.4.6](https://github.com/neuvector/neuvector/releases/tag/v5.4.6) |
+| [CVE-2025-53884](https://github.com/neuvector/neuvector/security/advisories/GHSA-8ff6-pc43-jwv3) | NeuVector uses a cryptographically secure salt with the PBKDF2 algorithm instead of a simple hash to protect user passwords.For rolling upgrades from earlier versions, NeuVector recalculates and stores the new password hash only after each user’s next successful login. | 25 Aug 2025 | [NeuVector v5.4.6](https://github.com/neuvector/neuvector/releases/tag/v5.4.6) |
+| [CVE-2025-54467](https://github.com/neuvector/neuvector/security/advisories/GHSA-w54x-xfxg-4gxq) | By default, NeuVector redacts process commands that contain the strings password,passwd, pwd, token, or key in security logs, syslog, enforcer debug logs, controller debug logs, webhooks, and support logs. Users can configure a Kubernetes ConfigMap to define custom regex patterns for additional process commands to redact. | 25 Aug 2025 | [NeuVector v5.4.6](https://github.com/neuvector/neuvector/releases/tag/v5.4.6) |
+
+## Sensitive information exposure in NeuVector manager container logs
 
 **CVE ID:** CVE-2025-46808
 **CVSS Score:** 6.8- [AV:N/AC:L/PR:L/UI:R/S:C/C:H/I:N/A:N](https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:N/AC:L/PR:L/UI:R/S:C/C:H/I:N/A:N&version=3.1)
@@ -11,7 +23,7 @@
 
 **Fixed version: `5.4.5`** 
 
-### **Impact**
+### Impact
 
 A vulnerability has been identified in the NeuVector version up to and including `5.4.4`, where sensitive information is leaked into the manager container’s log. The listed fields can be caught in the log:
 
@@ -37,17 +49,18 @@ In the patched version, X-R-Sess is partially masked so that users can confirm w
 
 Please consult the associated [Unsecured credentials](https://attack.mitre.org/techniques/T1552/) for further information about this category of attack.
 
-### **Patches**
+### Patches
 
 Patched versions include release `5.4.5` and above. Users are advised to rotate the GitHub token used in Remote Repository Configuration once they have upgraded to a fixed version.
 
-### **Workarounds**
+### Workarounds
 
 No workarounds are currently available. Customers are advised to upgrade to a fixed version at their earliest convenience.
 
-If you have any questions or comments about this advisory:
+## Questions and Support
 
-* Reach out to the [SUSE Rancher Security team](https://github.com/rancher/rancher/security/policy) for security related inquiries.
-* Open an issue in the [NeuVector](https://github.com/neuvector/neuvector/issues/new/choose) repository.
-* Verify with our [support matrix](https://www.suse.com/suse-neuvector/support-matrix/all-supported-versions/neuvector-v-all-versions/) and [product support lifecycle](https://www.suse.com/lifecycle/#suse-security).
-
+* Contact the [SUSE Rancher Security team](https://github.com/rancher/rancher/security/policy).
+* Open an issue in the [NeuVector GitHub repository](https://github.com/neuvector/neuvector/issues/new/choose).
+* References:
+  ** [NeuVector Support Matrix](https://www.suse.com/suse-neuvector/support-matrix/all-supported-versions/neuvector-v-all-versions/)
+  ** [Product Support Lifecycle](https://www.suse.com/lifecycle/#suse-security)
