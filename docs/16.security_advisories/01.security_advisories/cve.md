@@ -7,8 +7,12 @@ NeuVector is committed to informing the community of security issues. Below is a
 | ID | Description | Date | Release |
 | :---- | :---- | :---- | :---- |
 | [CVE-2025-8077](https://github.com/neuvector/neuvector/security/advisories/GHSA-8pxw-9c75-6w56) | For NeuVector deployment on the Kubernetes-based environment, the bootstrap password of the default admin user will be generated randomly and stored in a Kubernetes secret. The default admin will need to get the bootstrap password from the Kubernetes secret first and will be asked to change password after the first UI login is successful. | 25 Aug 2025 | [NeuVector v5.4.6](https://github.com/neuvector/neuvector/releases/tag/v5.4.6) |
-| [CVE-2025-53884](https://github.com/neuvector/neuvector/security/advisories/GHSA-8ff6-pc43-jwv3) | NeuVector uses a cryptographically secure salt with the PBKDF2 algorithm instead of a simple hash to protect user passwords.For rolling upgrades from earlier versions, NeuVector recalculates and stores the new password hash only after each user’s next successful login. | 25 Aug 2025 | [NeuVector v5.4.6](https://github.com/neuvector/neuvector/releases/tag/v5.4.6) |
+| [CVE-2025-53884](https://github.com/neuvector/neuvector/security/advisories/GHSA-8ff6-pc43-jwv3) | NeuVector uses a cryptographically secure salt with the PBKDF2 algorithm instead of a simple hash to protect user passwords. For rolling upgrades from earlier versions, NeuVector recalculates and stores the new password hash only after each user’s next successful login. | 25 Aug 2025 | [NeuVector v5.4.6](https://github.com/neuvector/neuvector/releases/tag/v5.4.6) |
 | [CVE-2025-54467](https://github.com/neuvector/neuvector/security/advisories/GHSA-w54x-xfxg-4gxq) | By default, NeuVector redacts process commands that contain the strings password,passwd, pwd, token, or key in security logs, syslog, enforcer debug logs, controller debug logs, webhooks, and support logs. Users can configure a Kubernetes ConfigMap to define custom regex patterns for additional process commands to redact. | 25 Aug 2025 | [NeuVector v5.4.6](https://github.com/neuvector/neuvector/releases/tag/v5.4.6) |
+| [CVE-2025-46808](?) | Sensitive information may be logged in the manager container depending on logging configuration and credential permissions. For more information, refer to [ Sensitive information exposure in NeuVector manager container logs](#sensitive-information-exposure-in-neuvector-manager-container-logs) | ? | [NeuVector v5.4.5](https://github.com/neuvector/neuvector/releases/tag/v5.4.5) |
+
+
+| — | . Fixed in 5.4.5. | < 5.0.0 – 5.4.4
 
 ## Sensitive information exposure in NeuVector manager container logs
 
