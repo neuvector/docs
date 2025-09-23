@@ -9,10 +9,9 @@ NeuVector is committed to informing the community of security issues. Below is a
 | [CVE-2025-8077](https://github.com/neuvector/neuvector/security/advisories/GHSA-8pxw-9c75-6w56) | For NeuVector deployment on the Kubernetes-based environment, the bootstrap password of the default admin user will be generated randomly and stored in a Kubernetes secret. The default admin will need to get the bootstrap password from the Kubernetes secret first and will be asked to change password after the first UI login is successful. | 25 Aug 2025 | [NeuVector v5.4.6](https://github.com/neuvector/neuvector/releases/tag/v5.4.6) |
 | [CVE-2025-53884](https://github.com/neuvector/neuvector/security/advisories/GHSA-8ff6-pc43-jwv3) | NeuVector uses a cryptographically secure salt with the PBKDF2 algorithm instead of a simple hash to protect user passwords. For rolling upgrades from earlier versions, NeuVector recalculates and stores the new password hash only after each user’s next successful login. | 25 Aug 2025 | [NeuVector v5.4.6](https://github.com/neuvector/neuvector/releases/tag/v5.4.6) |
 | [CVE-2025-54467](https://github.com/neuvector/neuvector/security/advisories/GHSA-w54x-xfxg-4gxq) | By default, NeuVector redacts process commands that contain the strings password,passwd, pwd, token, or key in security logs, syslog, enforcer debug logs, controller debug logs, webhooks, and support logs. Users can configure a Kubernetes ConfigMap to define custom regex patterns for additional process commands to redact. | 25 Aug 2025 | [NeuVector v5.4.6](https://github.com/neuvector/neuvector/releases/tag/v5.4.6) |
-| CVE-2025-46808 | Sensitive information may be logged in the manager container depending on logging configuration and credential permissions. For more information, refer to [ Sensitive information exposure in NeuVector manager container logs](#sensitive-information-exposure-in-neuvector-manager-container-logs) | 09 Jul 2025 | [NeuVector v5.4.5](https://github.com/neuvector/neuvector/releases/tag/v5.4.5) |
-
-
-| — | . Fixed in 5.4.5. | < 5.0.0 – 5.4.4
+| CVE-2025-46808 | Sensitive information may be logged in the manager container depending on logging configuration and credential permissions. For more information, refer to [Sensitive information exposure in NeuVector manager container logs](#sensitive-information-exposure-in-neuvector-manager-container-logs). | 09 Jul 2025 | [NeuVector v5.4.5](https://github.com/neuvector/neuvector/releases/tag/v5.4.5) |
+| [CVE-2024-41110](https://github.com/advisories/GHSA-v23v-6jw2-98fq) | A security vulnerability has been detected in certain versions of Docker Engine, which could allow an attacker to bypass [authorization plugins (AuthZ)](https://docs.docker.com/engine/extend/plugins_authorization/) under specific circumstances. The base likelihood of this being exploited is low. | 16 Nov 2024 | [NeuVector v5.4.1](https://github.com/neuvector/neuvector/releases/tag/v5.4.1) |
+| [CVE-2020-26160](https://github.com/advisories/GHSA-w73w-5m7g-f7qc) | `jwt-go` allows attackers to bypass intended access restrictions in situations with `[]string{}` for `m["aud"]` (which is allowed by the specification). Because the type assertion fails, "" is the value of `aud`. This is a security problem if the JWT token is presented to a service that lacks its own audience check. There is no patch available and users of `jwt-go` are advised to migrate to [`golang-jwt`](https://github.com/golang-jwt/jwt) at version 3.2.1. | 16 Nov 2024 | [NeuVector v5.4.1](https://github.com/neuvector/neuvector/releases/tag/v5.4.1) |
 
 ## Sensitive information exposure in NeuVector manager container logs
 
@@ -25,7 +24,7 @@ NeuVector is committed to informing the community of security issues. Below is a
 * All versions earlier than `5.0.0`
 * Versions from `5.0.0` up to and including `5.4.4`
 
-**Fixed version: `5.4.5`** 
+**Fixed version: `5.4.5`**
 
 ### Impact
 
