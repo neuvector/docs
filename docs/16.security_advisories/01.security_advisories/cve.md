@@ -96,7 +96,7 @@ Patched versions include release v5.4.7 and above.
 
 ### Workarounds
 
-If you cannot update to a patched version, you can temporarily disable the “Report anonymous cluster data”, which is enabled by default in NeuVector. o change this setting, go to **Settings** → **Configuration** → **Report anonymous cluster data** in the NeuVector UI.  
+If you cannot update to a patched version, you can temporarily disable the “Report anonymous cluster data”, which is enabled by default in NeuVector. To change this setting, go to **Settings** → **Configuration** → **Report anonymous cluster data** in the NeuVector UI.  
 
 Disabling this option prevents NeuVector from sending telemetry data to the telemetry server, which helps mitigate this vulnerability. 
 
