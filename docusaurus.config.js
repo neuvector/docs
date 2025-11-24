@@ -212,7 +212,7 @@ const config = {
       src: 'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js',
       type:'text/javascript',
       charset: 'UTF-8',
-      'data-domain-script': '0f98beb0-fc4c-417d-a42e-564e2cae42d2',
+      'data-domain-script': '019aa152-b11d-704d-bd13-5e5043531f07',
       async: true
     },
     {
