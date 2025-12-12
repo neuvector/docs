@@ -6,6 +6,7 @@ NeuVector is committed to informing the community of security issues. Below is a
 
 | ID | Description | Date | Resolution |
 | :---- | :---- | :---- | :---- |
+| [CVE-2025-66001](https://github.com/neuvector/neuvector/security/advisories/GHSA-4jj9-cgqc-x9h5) | In the patched version, the new NeuVector deployment enables TLS verification by default. For rolling upgrades, NeuVector does not automatically change this setting to prevent disruptions. For more information refer to [OpenID Connect is vulnerable to MITM](#openid-connect-is-vulnerable-to-mitm)| 12 Dec 2025 | [NeuVector v5.4.8](https://github.com/neuvector/neuvector/releases/tag/v5.4.8) |
 | [CVE-2025-54471](https://github.com/neuvector/neuvector/security/advisories/GHSA-h773-7gf7-9m2x) | NeuVector uses dynamically generated encryption keys and securely stores them in Kubernetes secrets. This improvement replaces previously hardcoded cryptographic material, enhancing data confidentiality and operational security in all deployments. For more information refer to [NeuVector is shipping cryptographic material into its binary](#neuvector-is-shipping-cryptographic-material-into-its-binary)| 17 Oct 2025 | [NeuVector v5.4.7](https://github.com/neuvector/neuvector/releases/tag/v5.4.7) |
 | [CVE-2025-54470](https://github.com/neuvector/neuvector/security/advisories/GHSA-qqj3-g7mx-5p4w) | NeuVector enforces TLS certificate and hostname verification for all telemetry communications. In addition, it limits telemetry response size to prevent denial-of-service risks. These enhancements ensure telemetry data is exchanged securely and efficiently. | 17 Oct 2025 | [NeuVector v5.4.7](https://github.com/neuvector/neuvector/releases/tag/v5.4.7) |
 | [CVE-2025-54469](https://github.com/neuvector/neuvector/security/advisories/GHSA-c8g6-qrwh-m3vp) | NeuVector strengthened the enforcer’s monitor process by validating environment variables before execution. This change prevents unsafe command execution and improves overall runtime security and process integrity.| 17 Oct 2025 | [NeuVector v5.4.7](https://github.com/neuvector/neuvector/releases/tag/v5.4.7) |
@@ -19,6 +20,55 @@ NeuVector is committed to informing the community of security issues. Below is a
 | [CVE-2024-41110](https://github.com/advisories/GHSA-v23v-6jw2-98fq) | A security vulnerability has been detected in certain versions of Docker Engine, which could allow an attacker to bypass [authorization plugins (AuthZ)](https://docs.docker.com/engine/extend/plugins_authorization/) under specific circumstances. The base likelihood of this being exploited is low. | 16 Nov 2024 | [NeuVector v5.4.1](https://github.com/neuvector/neuvector/releases/tag/v5.4.1) |
 | [CVE-2020-26160](https://github.com/advisories/GHSA-w73w-5m7g-f7qc) | `jwt-go` allows attackers to bypass intended access restrictions in situations with `[]string{}` for `m["aud"]` (which is allowed by the specification). Because the type assertion fails, "" is the value of `aud`. This is a security problem if the JWT token is presented to a service that lacks its own audience check. There is no patch available and users of `jwt-go` are advised to migrate to [`golang-jwt`](https://github.com/golang-jwt/jwt) at version 3.2.1. | 16 Nov 2024 | [NeuVector v5.4.1](https://github.com/neuvector/neuvector/releases/tag/v5.4.1) |
 
+## OpenID Connect is vulnerable to MITM
+
+* **CVE ID:** CVE-2025-66001[AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H](https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H&version=3.1)
+* **CVSS Score**:  8.8
+
+**Affected Versions**
+
+* All versions earlier than `5.3.0`
+* Versions from `5.3.0` up to and including `5.4.7`
+
+**Fixed version: `5.4.8`**
+
+### Impact
+
+NeuVector supports login authentication through OpenID Connect. However, the TLS verification (which verifies the remote server's authenticity and integrity) for OpenID Connect is not enforced by default. As a result this may expose the system to man-in-the-middle (MITM) attacks.
+
+Starting from version 5.4.0, NeuVector supports TLS verification for following connection types:
+
+* Registry Connections
+* Auth Server Connections (SAML, LDAP and OIDC)
+* Webhook Connections
+
+By default, TLS verification remains disabled, and its configuration is located under Settings > Configuration in the NeuVector UI.
+
+In the patched version, the new NeuVector deployment enables TLS verification by default. 
+For rolling upgrades, NeuVector does not automatically change this setting to prevent disruptions.
+
+:::note
+When TLS verification is enabled, it affects all connections to
+* Registry servers
+* Auth servers (SAML, LDAP and OIDC)
+* Webhook servers
+:::
+
+### Patches
+Patched versions include release v5.4.8 and above.
+
+### Workarounds
+To manually enable TLS verification:
+1. Open the NeuVector UI.
+1. Navigate to Settings > Configuration.
+1. In the TLS Self-Signed Certificate Configuration section, select Enable TLS verification.
+1. (Optional) Upload or paste the TLS self-signed certificate.
+
+## Questions and Support
+If you have any questions or comments about this advisory:
+* Reach out to the SUSE Rancher Security team for security related inquiries.
+* Open an issue in the NeuVector repository.
+* Verify with our support matrix and product support lifecycle.
 
 ## NeuVector is shipping cryptographic material into its binary
 
