@@ -4,7 +4,7 @@ Thanks for your interest in improving the NeuVector documentation!
 
 ## About this repo
 
-This repository contains the source for the NeuVector documentation site,published at https://open-docs.neuvector.com. Content is written in Markdown and built with [Docusaurus](https://docusaurus.io/).
+This repository contains the source for the NeuVector documentation site, published at https://open-docs.neuvector.com. Documentation content lives as Markdown files under `docs/`. The site itself is built with [Docusaurus](https://docusaurus.io/).
 
 ## Getting started
 
@@ -34,15 +34,14 @@ If you find an error, gap, or outdated instruction in the docs, please open an i
 ## Making a change
 
 1. Fork the repo and create a branch for your change.
-2. Edit the relevant `.md` file under `docs/`.
-3. Preview locally with `yarn start` to confirm formatting and any admonitions (`:::note`, `:::warning`, etc.) render correctly.
-4. Open a pull request against `main`, describing what changed and why. If your change addresses an open issue, reference it (e.g. `Fixes #123`).
+2. Edit the relevant file under `docs/` — most content is plain Markdown (`.md`), though Docusaurus also supports `.mdx` for pages that embed
+   React components, so check the file extension before assuming Markdown syntax alone will apply.
+3. If your change applies to content that also exists in an older doc version (see `versioned_docs/`), consider whether that version needs
+   the same fix.
+4. Preview locally with `yarn start` to confirm formatting and any admonitions (`:::note`, `:::warning`, etc.) render correctly.
+5. Open a pull request against `main`, describing what changed and why.
 
-Pull requests should stay focused in scope — please avoid bundling unrelated
-changes into a single PR.
-
-**Important**: by submitting a patch, you agree to allow the project owner
-to license your work under the same license as used by this project.
+**Important**: by submitting a pull request, you agree to allow the project owner to license your work under the same license as used by this project.
 
 ## Questions
 
