@@ -1,122 +1,70 @@
-# Contributing to Grav
+# Contributing to NeuVector Docs
 
-:+1::tada: First, thanks for getting involved with Grav! :tada::+1:
+Thanks for your interest in improving the NeuVector documentation!
 
-Please take a moment to review this document in order to make the contribution
-process easy and effective for everyone involved.
+## About this repo
 
-Following these guidelines helps to communicate that you respect the time of
-the developers managing and developing this open source project. In return,
-they should reciprocate that respect in addressing your issue or assessing
-patches and features.
+This repository contains the source code for the official [NeuVector documentation site](https://open-docs.neuvector.com). The documentation content is written in Markdown and the site is statically generated using [Docusaurus](https://docusaurus.io/).
 
-## Grav, Plugins, Themes and Skeletons
+## Getting started
+## Get started
 
-Grav is a large open source project—it's made up of over 100 repositories. When you initially consider contributing to Grav, you might be unsure about which of those 200 repositories implements the functionality you want to change or report a bug for.
+To preview your changes locally, install the following tools:
 
-[https://github.com/getgrav/grav](https://github.com/getgrav/grav) is the main Grav repository. The core of Grav is provided by this repo.
+* [Node.js](https://nodejs.org/)
+* [Yarn](https://yarnpkg.com/)
 
-[https://github.com/getgrav/grav-plugin-admin](https://github.com/getgrav/grav-plugin-admin) is the Admin Plugin repository.
+1. Fork the repository to your GitHub account, then clone your fork and navigate to the `docs` directory.
 
-Every Plugin and Theme has its own repository. If you have a problem you think is specific to a Theme or Plugin, please report it in its corresponding repository. Please read the Plugin or Theme documentation to ensure the problem is not addressed there already.
+   ```shell
+   git clone https://github.com/<your-fork>/docs.git
+   cd docs
+   ```
 
-Every Skeleton also has its own repository, so if an issue is not specific to a theme or plugin but rather to its usage in the skeleton, report it in the skeleton repository.
+2. Install the project dependencies.
 
-## Using the issue tracker
+   ```shell
+   yarn install
+   ```
 
-The issue tracker is the preferred channel for [bug reports](#bugs),
-[features requests](#features) and [submitting pull
-requests](#pull-requests), but please respect the following restrictions:
+3. Start the local development server.
 
-* Please **do not** use the issue tracker for support requests. Use
-  [the Forum](http://getgrav.org/forum) or [the Gitter chat](https://gitter.im/getgrav/grav).
+   ```shell
+   yarn start
+   ```
 
+`yarn start` launches a local development server (usually at http://localhost:3000) with live reload enabled. This allows you to preview your changes exactly as they will render on the live site before you submit a Pull Request.
 
-<a name="bugs"></a>
-## Bug reports
+If you need to test the static production build locally to ensure everything compiles correctly:
 
-A bug is a _demonstrable problem_ that is caused by the code in the repository.
-Good bug reports are extremely helpful - thank you!
+```shell
+yarn build
+yarn serve   # preview the built output
+```
 
-Guidelines for bug reports:
+## Reporting issues
 
-1. **Check you satisfy the Grav requirements** &mdash; [http://learn.getgrav.org/basics/requirements](http://learn.getgrav.org/basics/requirements)
+If you find a typo, an error, a gap in the documentation, or an outdated instruction, please open an issue.
 
-2. **Check this happens on a clean Grav install** &mdash; check if the issue happens on any Grav site, or just with a specific configuration of plugins / theme
+To help us resolve the issue quickly, please include:
 
-3. **Use the GitHub issue search** &mdash; check if the issue has already been
-   reported.
+- The URL or file path of the affected page.
+- A description of what is currently wrong or unclear.
+- What you would expect to see instead.
 
-4. **Check if the issue is already being solved in a PR** &mdash; check the open Pull Requests to see if one already solves the problem you're having
+## Making a change
 
-5. **Check if the issue has been fixed** &mdash; try to reproduce it using the
-   latest `develop` branch in the repository.
+When you are ready to contribute a fix or an update, follow these steps:
 
-6. **Isolate the problem** &mdash; create a [reduced test
-   case](http://css-tricks.com/reduced-test-cases/) and provide a step-by-step instruction set on how to recreate the problem. Include code samples, page snippets or yaml configurations if needed.
+1. Create a branch: Create a new branch on your fork for your changes (e.g., `git checkout -b fix/typo-in-getting-started`).
+2. Edit the content: Make your changes to the relevant files under the docs/ directory.
+   * Most content is plain Markdown (.md), but Docusaurus also supports `.mdx` for pages that embed React components. Be sure to check the file extension before assuming standard Markdown syntax alone will apply.
+3. Check older versions: If your change applies to content that also exists in an older documentation version (found in the `versioned_docs`/ directory), please consider applying the same fix to those versions.
+4. Preview locally: Use `yarn start` to verify that your formatting for Docusaurus-specific admonitions like `:::note`, `:::warning`, and `:::info—renders` correctly.
+5. Submit a Pull Request: Open a Pull Request against the `main` branch. Provide a clear and concise description of what was changed and why.
 
-A good bug report shouldn't leave others needing to chase you up for more
-information. Please try to be as detailed as possible in your report.
+**Important**: by submitting a pull request, you agree to allow the project owner to license your work under the same license as used by this project.
 
-What is your environment? Is it localhost, OSX, Linux, on a remote server? Same happening locally and or the server, or just locally or just on Linux?
+## Questions
 
-What steps will reproduce the issue? What browser(s) and OS experience the problem?
-
-What would you expect to be the outcome?
-
-Did the problem start happening recently (e.g. after updating to a new version of Grav) or was this always a problem?
-
-If the problem started happening recently, can you reproduce the problem in an older version of Grav? What's the most recent version in which the problem doesn't happen? You can download older versions of Grav from the releases page on Github.
-
-Can you reliably reproduce the issue? If not, provide details about how often the problem happens and under which conditions it normally happens.
-
-
-All these details will help people to fix any potential bugs.
-
-Important: [include Code Samples in triple backticks](https://help.github.com/articles/github-flavored-markdown/#fenced-code-blocks) so that Github will provide a proper indentation. [Add the language name after the backticks](https://help.github.com/articles/github-flavored-markdown/#syntax-highlighting) to add syntax highlighting to the code snippets.
-
-Example:
-
-> Short and descriptive example bug report title
->
-> A summary of the issue and the browser/OS environment in which it occurs. If
-> suitable, include the steps required to reproduce the bug.
->
-> 1. This is the first step
-> 2. This is the second step
-> 3. Further steps, etc.
->>
-> Any other information you want to share that is relevant to the issue being
-> reported. This might include the lines of code that you have identified as
-> causing the bug, and potential solutions (and your opinions on their
-> merits).
-
-
-<a name="features"></a>
-## Feature requests
-
-Feature requests are welcome. But take a moment to find out whether your idea
-fits with the scope and aims of the project. It's up to *you* to make a strong
-case to convince the project's developers of the merits of this feature. Please
-provide as much detail and context as possible.
-
-
-<a name="pull-requests"></a>
-## Pull requests
-
-Good pull requests - patches, improvements, new features - are a fantastic
-help. They should remain focused in scope and avoid containing unrelated
-commits.
-
-**Please ask first** in Gitter or in the Forum before embarking on any significant pull request (e.g.
-implementing features, refactoring code..),
-otherwise you risk spending a lot of time working on something that the
-project's developers might not want to merge into the project.
-
-Please adhere to the coding conventions used throughout the project (indentation,
-accurate comments, etc.) and any other requirements.
-
-See [Using Pull Request](https://help.github.com/articles/using-pull-requests/) and [Fork a Repo](https://help.github.com/articles/fork-a-repo/) if you're not familiar with Pull Requests.
-
-**IMPORTANT**: By submitting a patch, you agree to allow the project owner to
-license your work under the same license as that used by the project.
+For anything not covered here, or if you need assistance with your contribution, please feel free to open an issue. We are here to help!
