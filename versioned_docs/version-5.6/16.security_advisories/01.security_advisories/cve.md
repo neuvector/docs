@@ -2,7 +2,9 @@
 
 NeuVector is committed to informing the community of security issues. Below is a CVE reference list of published security advisories and CVEs (Common Vulnerabilities and Exposures) for issues we have resolved.
 
-## CVE List
+:::note
+Currently there are no new known security advisories or CVEs for {product-name}. This page will be updated as new advisories are published.
+:::
 
 ## Questions and Support
 
