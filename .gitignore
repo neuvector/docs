@@ -22,3 +22,6 @@ docs.code-workspace
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Yarn Berry cache
+.yarn/install-state.gz
