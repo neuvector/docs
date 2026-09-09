@@ -1,4 +1,10 @@
-# Security Advisories and CVEs
+---
+title: Security Advisories and CVEs
+sidebar_label: 16. Security Advisories and CVEs
+taxonomy:
+    category: docs
+slug: /cve
+---
 
 NeuVector is committed to informing the community about security issues. The following table lists published security advisories and CVEs (Common Vulnerabilities and Exposures) for resolved issues.
 
