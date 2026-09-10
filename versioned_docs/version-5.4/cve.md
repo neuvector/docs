@@ -1,0 +1,35 @@
+---
+title: Security Advisories and CVEs
+sidebar_label: 16. Security Advisories and CVEs
+taxonomy:
+    category: docs
+slug: /cve
+---
+
+NeuVector is committed to informing the community about security issues. The following table lists published security advisories and CVEs (Common Vulnerabilities and Exposures) for resolved issues.
+
+## CVE List
+
+| ID | Description | Date | Resolution |
+| :---- | :---- | :---- | :---- |
+| [CVE-2025-66001](https://github.com/neuvector/neuvector/security/advisories/GHSA-4jj9-cgqc-x9h5) | In the patched version, new NeuVector deployments enable TLS verification by default. For rolling upgrades, NeuVector does not change this setting automatically to avoid disruption. | 12 Dec 2025 | [NeuVector v5.4.8](https://github.com/neuvector/neuvector/releases/tag/v5.4.8) |
+| [CVE-2025-54471](https://github.com/neuvector/neuvector/security/advisories/GHSA-h773-7gf7-9m2x) | NeuVector uses dynamically generated encryption keys and securely stores them in Kubernetes secrets. This improvement replaces previously hardcoded cryptographic material, enhancing data confidentiality and operational security in all deployments. | 17 Oct 2025 | [NeuVector v5.4.7](https://github.com/neuvector/neuvector/releases/tag/v5.4.7) |
+| [CVE-2025-54470](https://github.com/neuvector/neuvector/security/advisories/GHSA-qqj3-g7mx-5p4w) | NeuVector enforces TLS certificate and hostname verification for all telemetry communications. In addition, it limits telemetry response size to prevent denial-of-service risks. These enhancements ensure telemetry data is exchanged securely and efficiently. | 17 Oct 2025 | [NeuVector v5.4.7](https://github.com/neuvector/neuvector/releases/tag/v5.4.7) |
+| [CVE-2025-54469](https://github.com/neuvector/neuvector/security/advisories/GHSA-c8g6-qrwh-m3vp) | NeuVector strengthened the enforcer’s monitor process by validating environment variables before execution. This change prevents unsafe command execution and improves overall runtime security and process integrity. | 17 Oct 2025 | [NeuVector v5.4.7](https://github.com/neuvector/neuvector/releases/tag/v5.4.7) |
+| [CVE-2025-8077](https://github.com/neuvector/neuvector/security/advisories/GHSA-8pxw-9c75-6w56) | For NeuVector deployments on Kubernetes-based environments, the bootstrap password of the default admin user is now generated randomly and stored in a Kubernetes secret. The default admin must retrieve the bootstrap password from the secret and change it after the first successful UI login. | 25 Aug 2025 | [NeuVector v5.4.6](https://github.com/neuvector/neuvector/releases/tag/v5.4.6) |
+| [CVE-2025-53884](https://github.com/neuvector/neuvector/security/advisories/GHSA-8ff6-pc43-jwv3) | NeuVector now uses a cryptographically secure salt with the PBKDF2 algorithm instead of a simple hash to protect user passwords. During rolling upgrades from earlier versions, NeuVector recalculates and stores the new password hash after each user’s next successful login. | 25 Aug 2025 | [NeuVector v5.4.6](https://github.com/neuvector/neuvector/releases/tag/v5.4.6) |
+| [CVE-2025-54467](https://github.com/neuvector/neuvector/security/advisories/GHSA-w54x-xfxg-4gxq) | NeuVector now redacts process commands containing `password`, `passwd`, `pwd`, `token`, or `key` from logs and debug outputs by default. Users can configure a Kubernetes ConfigMap to define additional regex patterns for redaction. | 25 Aug 2025 | [NeuVector v5.4.6](https://github.com/neuvector/neuvector/releases/tag/v5.4.6) |
+| [CVE-2025-46808](https://github.com/neuvector/manager/security/advisories/GHSA-fggw-hv56-8m6r) | Sensitive information may be logged in the manager container depending on logging configuration and credential permissions. | 09 Jul 2025 | [NeuVector v5.4.5](https://github.com/neuvector/neuvector/releases/tag/v5.4.5) |
+| [CVE-2024-38095](https://www.suse.com/security/cve/CVE-2024-38095.html) | In .NET, a malicious X.509 certificate or chain can cause excessive CPU use, leading to denial of service. This CVE was flagged as an affected .NET library detection issue. | 9 Jul 2025 | [NeuVector v5.4.5](https://github.com/neuvector/neuvector/releases/tag/v5.4.5) |
+| [CVE-2024-7347](https://www.suse.com/security/cve/CVE-2024-7347.html) | The NGINX `ngx_http_mp4_module` vulnerability allows crafted MP4 files to cause memory over-reads and worker process termination. Reported in NeuVector 5.4.2 as a possible **false negative** detection in the vulnerability scanner; not a NeuVector product issue. | 15 Jan 2025 | [NeuVector v5.4.2](https://github.com/neuvector/neuvector/releases/tag/v5.4.2) |
+| [CVE-2018-20796](https://www.suse.com/security/cve/CVE-2018-20796.html) | In the GNU C Library through 2.29, `check_dst_limits_calc_pos_1` in `posix/regexec.c` has uncontrolled recursion. | 15 Jan 2025 | Not applicable, flagged in [v5.4.2](https://github.com/neuvector/neuvector/releases/tag/v5.4.2) as a **false positive**. |
+| [CVE-2024-41110](https://github.com/advisories/GHSA-v23v-6jw2-98fq) | A security vulnerability in some Docker Engine versions may allow an attacker to bypass [authorization plugins (AuthZ)](https://docs.docker.com/engine/extend/plugins_authorization/). The likelihood of exploitation is low. | 16 Nov 2024 | [NeuVector v5.4.1](https://github.com/neuvector/neuvector/releases/tag/v5.4.1) |
+| [CVE-2020-26160](https://github.com/advisories/GHSA-w73w-5m7g-f7qc) | `jwt-go` allows attackers to bypass access restrictions when `[]string{}` is used for `m["aud"]`. Users should migrate to [`golang-jwt`](https://github.com/golang-jwt/jwt) v3.2.1. | 16 Nov 2024 | [NeuVector v5.4.1](https://github.com/neuvector/neuvector/releases/tag/v5.4.1) |
+
+## Questions and Support
+
+* Contact the [SUSE Rancher Security team](https://github.com/rancher/rancher/security/policy).
+* Open an issue in the [NeuVector GitHub repository](https://github.com/neuvector/neuvector/issues/new/choose).
+* References:
+  * [NeuVector Support Matrix](https://www.suse.com/suse-neuvector/support-matrix/all-supported-versions/neuvector-v-all-versions/)
+  * [Product Support Lifecycle](https://www.suse.com/lifecycle/#suse-security)
