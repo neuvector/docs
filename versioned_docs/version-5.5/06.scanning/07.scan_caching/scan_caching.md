@@ -11,7 +11,7 @@ This feature is only supported from v5.4.0 onwards.
 
 ### Using scan caching with scanners
 Scanner caching feature is used to cache image layers on the scanner which will reused for other image scanning requests which significantely reduces the network bandwidth usage. 
-The feature can be enabled by using "MAX_CACHE_RECORD_MB" environment variable and size allocated for the scanner cache. Recommneded to use "1000" (Size in MegaBytes)
+The feature can be enabled by using "MAX_CACHE_RECORD_MB" environment variable and size allocated for the scanner cache. Recommended to use "1000" (Size in MegaBytes)
 
 #### Enabling scan caching with HELM deployment
 Scan caching can be enabled when deploying NeuVector on the cluster or "helm update" can be used to enable the scan caching feature.
